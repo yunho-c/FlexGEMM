@@ -9,6 +9,8 @@
 It implements **Explicit**, **Implicit**, and **Masked Implicit** algorithm variants, featuring optional **Split-K** parallelism for sparse GEMM. FlexGEMM delivers **state-of-the-art performance** for Submanifold Convolution and voxel-based neural networks, consistently outperforming existing solutions.
 
 ### Resources
+- **Tenstorrent port**: implementation stages, hardware validation, and usage in
+  [docs/tenstorrent.md](docs/tenstorrent.md).
 - **Deep Dive**: Read the technical blog at [JeffreyXiang's Blog](https://jeffreyxiang.github.io/en/blogs/flexgemm).
 - **Real-world Demo**: See FlexGEMM in action in the [TRELLIS.2](https://github.com/microsoft/TRELLIS.2) project.
 

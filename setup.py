@@ -8,6 +8,16 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 
 BUILD_TARGET = os.environ.get("BUILD_TARGET", "auto")
 
+if BUILD_TARGET == "tenstorrent":
+    # TTNN is supplied by the matching TT-Metal installation. No CUDA extension
+    # or CUDA autotuning cache is needed for this backend.
+    from setuptools import find_packages
+    setup(
+        packages=find_packages(),
+        package_data={"flex_gemm.tenstorrent": ["kernels/*.cpp"]},
+    )
+    raise SystemExit(0)
+
 if BUILD_TARGET == "auto":
     if IS_HIP_EXTENSION:
         IS_HIP = True
