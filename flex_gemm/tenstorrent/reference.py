@@ -1,6 +1,8 @@
 """Host topology preparation and an independent sparse-convolution oracle."""
 
 from itertools import product
+import math
+import operator
 import torch
 
 
@@ -52,13 +54,50 @@ def build_subm_neighbor_map(coords, spatial_shape, kernel_size=(3, 3, 3), dilati
         raise ValueError("kernel_size must contain three positive odd sizes")
     if len(dilation) != 3 or any(d <= 0 for d in dilation):
         raise ValueError("dilation must contain three positive sizes")
+    spatial_shape = tuple(map(operator.index, spatial_shape))
+    kernel_size = tuple(map(operator.index, kernel_size))
+    dilation = tuple(map(operator.index, dilation))
+    offsets = list(product(*(range(-(k // 2), k // 2 + 1) for k in kernel_size)))
+    if math.prod(spatial_shape) <= torch.iinfo(torch.int64).max:
+        # Integer lattice keys preserve exact coordinate equality. Batch the
+        # lookups instead of issuing N*V scalar Tensor writes on the host.
+        values = coords.to(torch.int64)
+        if torch.any(values < 0) or torch.any(values >= torch.tensor(spatial_shape)):
+            raise ValueError("coordinate outside spatial_shape")
+        keys = values[:, 0]
+        for axis in range(1, 4):
+            keys = keys * spatial_shape[axis] + values[:, axis]
+        sorted_keys, order = keys.sort()
+        if torch.any(sorted_keys[1:] == sorted_keys[:-1]):
+            raise ValueError("duplicate sparse coordinates")
+        result = torch.full((len(coords), len(offsets)), -1, dtype=torch.int64)
+        if not len(coords):
+            return result
+        for v, offset in enumerate(offsets):
+            delta = tuple(o * d for o, d in zip(offset, dilation))
+            if any(abs(d) >= size for d, size in zip(delta, spatial_shape[1:])):
+                continue
+            valid = torch.ones(len(coords), dtype=torch.bool)
+            for axis, d in enumerate(delta, start=1):
+                if d > 0:
+                    valid &= values[:, axis] < spatial_shape[axis] - d
+                elif d < 0:
+                    valid &= values[:, axis] >= -d
+            rows = valid.nonzero().flatten()
+            shift = (delta[0] * spatial_shape[2] + delta[1]) * spatial_shape[3] + delta[2]
+            candidates = keys[rows] + shift
+            positions = torch.searchsorted(sorted_keys, candidates)
+            found = (positions < len(coords)) & (sorted_keys[positions.clamp_max(len(coords) - 1)] == candidates)
+            result[rows[found], v] = order[positions[found]]
+        return result
+    # Very large logical lattices can overflow int64 keys. Keep exact Python
+    # integer coordinate lookup for those uncommon cases.
     rows = [tuple(row) for row in coords.tolist()]
     if len(set(rows)) != len(rows):
         raise ValueError("duplicate sparse coordinates")
     if any(any(c < 0 or c >= s for c, s in zip(row, spatial_shape)) for row in rows):
         raise ValueError("coordinate outside spatial_shape")
     lookup = {row: i for i, row in enumerate(rows)}
-    offsets = list(product(*(range(-(k // 2), k // 2 + 1) for k in kernel_size)))
     result = torch.full((len(rows), len(offsets)), -1, dtype=torch.int64)
     for i, (b, x, y, z) in enumerate(rows):
         for v, offset in enumerate(offsets):

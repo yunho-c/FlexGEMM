@@ -1,0 +1,19 @@
+{
+  "threads": 16,
+  "torch": "2.11.0+cpu",
+  "baseline_commit": "51e179d19bab1247563ed307a10013ea321d25bb",
+  "cases": [
+    {
+      "voxels": 1000,
+      "old_seconds": 0.19204480201005936,
+      "batched_seconds": 0.007966289995238185,
+      "maps_equal": true
+    },
+    {
+      "voxels": 32768,
+      "old_seconds": 6.31102830497548,
+      "batched_seconds": 0.05656784900929779,
+      "maps_equal": true
+    }
+  ]
+}

@@ -248,10 +248,12 @@ TT_METAL_WATCHER=1 python -m pytest tests/tenstorrent -q \
     --junitxml=docs/results/tenstorrent-resident-tests.xml
 ```
 
-**69 passed, 4 expected failures**, on the hardware above with Watcher access
+**75 passed, 4 expected failures**, on the hardware above with Watcher access
 checks enabled and both external GenRecon checkpoints available.
 [JUnit results](results/tenstorrent-resident-tests.xml) include all four stages,
 coordinate integration, sentinel/bounds validation, exact cancellation checks,
+batched topology lookup against a coordinate oracle (including anisotropic
+kernels, dilation, batches, boundaries and int64-overflow fallback),
 pretrained wide layers, and device-resident convolution chaining. Explicit output chunks are concatenated
 in groups of at most four: a 17-input TTNN concat stalled on the pinned SDK,
 and both BF16/FP32 regressions now cover that case. The four strict expected failures preserve the
@@ -263,6 +265,13 @@ both feature values and mask/permutation data, and assert program-cache entry
 counts remain constant across same-shape invocations.
 A cancellation case produces split partials `257` and `-256`: the exact residual
 `1` survives FP32 workspace/reduction, whereas BF16 partial storage would lose it.
+
+Host topology construction uses sorted integer lattice keys and batched lookup,
+with exact Python-coordinate lookup retained when a logical lattice would
+overflow int64 keys. This removes one Tensor write per voxel/kernel offset.
+On a dense 32³ CPU fixture with 16 threads, construction fell from 6.311 seconds
+to 0.057 seconds with identical maps; this is a host-preparation measurement,
+not a convolution speedup. See [topology benchmark](results/tenstorrent-topology.json).
 It also checks that bias is applied once, in both masked and unmasked modes.
 The fractional residual `257.125 - 256 - 1 + 0.03125 = 0.15625` is checked
 exactly for four- and seven-way FP32 reductions.
