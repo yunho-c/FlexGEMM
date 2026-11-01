@@ -142,7 +142,13 @@ def sparse_conv_device(features, weights, topology, *, algorithm="implicit_gemm"
             outputs.append(ttnn.matmul(expanded, weights.weights,
                                          dtype=ttnn.float32 if fp32_output else ttnn.bfloat16,
                                          compute_kernel_config=_compute_config(weights.device)))
-        result = outputs[0] if len(outputs) == 1 else ttnn.concat(outputs, dim=0)
+        # The pinned Wormhole SDK stalled in row-major concat's NOC reader
+        # when handed 17 chunks. A bounded tree avoids the many-input path
+        # while retaining all output rows and logarithmic concat depth.
+        while len(outputs) > 1:
+            outputs = [ttnn.concat(outputs[i:i + 4], dim=0) if len(outputs[i:i + 4]) > 1
+                       else outputs[i] for i in range(0, len(outputs), 4)]
+        result = outputs[0]
         result = ttnn.slice(result, [0, 0], [m, weights.co])
         return result if weights.bias is None else ttnn.add(result, weights.bias)
     p = PreparedSparseConv(x, weights.weights, topology.indices, weights.bias,

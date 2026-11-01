@@ -248,11 +248,13 @@ TT_METAL_WATCHER=1 python -m pytest tests/tenstorrent -q \
     --junitxml=docs/results/tenstorrent-resident-tests.xml
 ```
 
-**67 passed, 4 expected failures**, on the hardware above with Watcher access
+**69 passed, 4 expected failures**, on the hardware above with Watcher access
 checks enabled and both external GenRecon checkpoints available.
 [JUnit results](results/tenstorrent-resident-tests.xml) include all four stages,
 coordinate integration, sentinel/bounds validation, exact cancellation checks,
-pretrained wide layers, and device-resident convolution chaining. The four strict expected failures preserve the
+pretrained wide layers, and device-resident convolution chaining. Explicit output chunks are concatenated
+in groups of at most four: a 17-input TTNN concat stalled on the pinned SDK,
+and both BF16/FP32 regressions now cover that case. The four strict expected failures preserve the
 known shape LayerNorm+SiLU tolerance miss described in the wide-layer report;
 this is not an all-green numerical validation. Twelve checkpoint-dependent
 cases skip explicitly when their external weights are unavailable.

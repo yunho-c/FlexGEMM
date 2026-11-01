@@ -51,3 +51,25 @@ def test_fp32_output_preserves_small_residual(device, algorithm):
     y = sparse_conv_device(xd, weights, top, algorithm=algorithm, split_k=2, fp32_output=True)
     assert y.dtype == ttnn.float32
     torch.testing.assert_close(ttnn.to_torch(ttnn.subtract(y, 256.)), torch.tensor([[1.125]]), atol=0, rtol=0)
+
+
+@pytest.mark.parametrize("fp32_output", [False, True])
+def test_explicit_many_row_chunks(device, fp32_output):
+    import ttnn
+    # Seventeen chunks, including a ragged final chunk, reproduced a stalled
+    # SDK concat reader in the complete decoder. Bounded integer inputs keep
+    # every sum in [-128,128], exactly representable in both output formats,
+    # while neighbors cross chunk boundaries.
+    generator = torch.Generator().manual_seed(96)
+    x = torch.randint(-2, 3, (1032, 32), generator=generator).bfloat16()
+    w = torch.randint(-2, 3, (512, 1, 32), generator=generator).bfloat16()
+    mapping = ((torch.arange(1032) + 1) % 1032)[:, None]
+    top = prepare_sparse_topology(mapping, len(x), device=device)
+    weights = prepare_sparse_weights(w, device=device)
+    xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+    actual = sparse_conv_device(xd, weights, top, algorithm="explicit_gemm",
+                                row_chunk=64, fp32_output=fp32_output)
+    expected = sparse_conv_reference(x, w, mapping)
+    if not fp32_output:
+        expected = expected.bfloat16().float()
+    torch.testing.assert_close(ttnn.to_torch(actual).float(), expected, atol=0, rtol=0)
