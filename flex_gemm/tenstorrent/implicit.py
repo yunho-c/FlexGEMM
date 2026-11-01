@@ -27,11 +27,21 @@ class PreparedSparseConv:
     permutation: object = None
     schedule: object = None
 
-    def run(self):
+    def run(self, *, split_k=1):
         import ttnn
-        result = _launch(self)
+        kt = self.volume * _round32(self.ci) // 32
+        if isinstance(split_k, bool) or not isinstance(split_k, int) or not 1 <= split_k <= kt:
+            raise ValueError(f"split_k must be an integer in [1,{kt}]")
+        result = _launch(self, split_k)
         if self.masks is not None:
             result = ttnn.to_layout(result, ttnn.TILE_LAYOUT)
+        if split_k > 1:
+            # Partials and reduction stay FP32 until the final BF16 conversion.
+            config = ttnn.init_device_compute_kernel_config(
+                self.device.arch(), math_fidelity=ttnn.MathFidelity.HiFi3,
+                math_approx_mode=False, fp32_dest_acc_en=True)
+            result = ttnn.sum(result, dim=0, keepdim=False, compute_kernel_config=config)
+            result = ttnn.typecast(result, ttnn.bfloat16)
         result = ttnn.slice(result, [0, 0], [self.m, self.co])
         if self.bias is not None:
             result = ttnn.add(result, self.bias)
@@ -86,13 +96,21 @@ def masked_implicit_gemm(feats, weight, neighbor_map, *, device, bias=None):
     return prepare_implicit(feats, weight, neighbor_map, device=device, bias=bias, masked=True).run()
 
 
-def _launch(p):
+def split_k_gemm(feats, weight, neighbor_map, *, device, split_k=2, masked=True, bias=None):
+    """Parallel reduction slices, FP32 device partials/reduction, then one bias add."""
+    return prepare_implicit(feats, weight, neighbor_map, device=device, bias=bias,
+                            masked=masked).run(split_k=split_k)
+
+
+def _launch(p, split_k=1):
     import ttnn
     mp, cp, op = _round32(p.m), _round32(p.ci), _round32(p.co)
     masked = p.masks is not None
     layout = ttnn.ROW_MAJOR_LAYOUT if masked else ttnn.TILE_LAYOUT
-    output = ttnn.allocate_tensor_on_device(ttnn.Shape([mp, op]), ttnn.bfloat16, layout, p.device)
-    tasks = (mp // 32) * (op // 32)
+    shape = [mp, op] if split_k == 1 else [split_k, mp, op]
+    out_dtype = ttnn.bfloat16 if split_k == 1 else ttnn.float32
+    output = ttnn.allocate_tensor_on_device(ttnn.Shape(shape), out_dtype, layout, p.device)
+    tasks = split_k * (mp // 32) * (op // 32)
     grid = p.device.compute_with_storage_grid_size()
     ncores = min(tasks, grid.x * grid.y)
     cores = [ttnn.CoreCoord(i % grid.x, i // grid.x) for i in range(ncores)]
@@ -107,15 +125,18 @@ def _launch(p):
         if masked:
             rr[c.x][c.y] = list(rr[c.x][c.y]) + [p.masks.buffer_address()]
             wr[c.x][c.y] = list(wr[c.x][c.y]) + [p.permutation.buffer_address()]
-    reader_ct = [p.volume, cp // 32, op // 32]
+    reader_ct = [p.volume, cp // 32, op // 32, mp // 32, split_k]
     for tensor in (p.features, p.weights, p.indices):
         reader_ct.extend(ttnn.TensorAccessorArgs(tensor).get_compile_time_args())
-    writer_ct = [op // 32] + ttnn.TensorAccessorArgs(output).get_compile_time_args()
+    out_bytes = 2 if split_k == 1 else 4
+    writer_ct = [op // 32, mp // 32, out_bytes] + ttnn.TensorAccessorArgs(output).get_compile_time_args()
     defines = []
     if masked:
         defines = [("MASKED", "1")]
         reader_ct.extend(ttnn.TensorAccessorArgs(p.masks).get_compile_time_args())
         writer_ct.extend(ttnn.TensorAccessorArgs(p.permutation).get_compile_time_args())
+    if masked or split_k > 1:
+        defines.append(("DYNAMIC_K", "1"))
     root = Path(__file__).parent / "kernels"
     kernels = [
         ttnn.KernelDescriptor(kernel_source=str(root / "reader.cpp"), core_ranges=ranges,
@@ -137,7 +158,7 @@ def _launch(p):
                                             (2, ttnn.uint32, 128, 1),
                                             (3, ttnn.uint32, 32, 2),
                                             (4, ttnn.uint32, 128, 1),
-                                            (16, ttnn.bfloat16, 2048, 2)]]
+                                            (16, out_dtype, 1024 * out_bytes, 2)]]
     operands = [p.features, p.weights, p.indices]
     if masked:
         operands += [p.masks, p.permutation]

@@ -10,7 +10,7 @@ void kernel_main() {
     matmul_init(0, 1);
     for (uint32_t task = 0; task < count; ++task) {
         uint32_t steps = KT;
-#ifdef MASKED
+#ifdef DYNAMIC_K
         cb_wait_front(3, 1);
         steps = read_tile_value(3, 0, 0);
         cb_pop_front(3, 1);

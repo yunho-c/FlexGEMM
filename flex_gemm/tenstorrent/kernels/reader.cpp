@@ -12,7 +12,9 @@ void kernel_main() {
     constexpr uint32_t V = get_compile_time_arg_val(0);
     constexpr uint32_t CT = get_compile_time_arg_val(1);
     constexpr uint32_t NT = get_compile_time_arg_val(2);
-    constexpr auto xa = TensorAccessorArgs<3>();
+    constexpr uint32_t MT = get_compile_time_arg_val(3);
+    constexpr uint32_t SPLITS = get_compile_time_arg_val(4);
+    constexpr auto xa = TensorAccessorArgs<5>();
     constexpr auto wa = TensorAccessorArgs<xa.next_compile_time_args_offset()>();
     constexpr auto ma = TensorAccessorArgs<wa.next_compile_time_args_offset()>();
     const auto x = TensorAccessor(xa, x_addr);
@@ -25,16 +27,23 @@ void kernel_main() {
     cb_reserve_back(2, 1);
     const uint32_t scratch = get_write_ptr(2);
     for (uint32_t task = start; task < start + count; ++task) {
-        const uint32_t mt = task / NT, nt = task % NT;
-#ifdef MASKED
+        const uint32_t split = task / (MT * NT);
+        const uint32_t mt = (task / NT) % MT, nt = task % NT;
+        const uint32_t begin = (V * CT) * split / SPLITS;
+        const uint32_t end = (V * CT) * (split + 1) / SPLITS;
+#ifdef DYNAMIC_K
         cb_reserve_back(3, 1);
         const uint32_t header = get_write_ptr(3);
+#ifdef MASKED
         noc_async_read_page(mt, masks, header);
         noc_async_read_barrier();
         const uint32_t mask = *reinterpret_cast<volatile uint32_t*>(header);
         uint32_t active = 0;
-        for (uint32_t v = 0; v < V; ++v) active += (mask >> v) & 1;
-        *reinterpret_cast<volatile uint32_t*>(header) = active ? active * CT : 1;
+        for (uint32_t k = begin; k < end; ++k) active += (mask >> (k / CT)) & 1;
+#else
+        const uint32_t active = end - begin;
+#endif
+        *reinterpret_cast<volatile uint32_t*>(header) = active ? active : 1;
         cb_push_back(3, 1);
         if (active == 0) {
             // A zero product clears destination registers even on empty blocks.
@@ -47,7 +56,7 @@ void kernel_main() {
             cb_push_back(1, 1);
         }
 #endif
-        for (uint32_t v = 0; v < V; ++v) {
+        for (uint32_t v = begin / CT; v < (end + CT - 1) / CT; ++v) {
 #ifdef MASKED
             if (((mask >> v) & 1) == 0) continue;
 #endif
@@ -55,6 +64,7 @@ void kernel_main() {
             noc_async_read_barrier();
             const volatile uint32_t* ids = reinterpret_cast<volatile uint32_t*>(scratch);
             for (uint32_t kt = 0; kt < CT; ++kt) {
+                if (v * CT + kt < begin || v * CT + kt >= end) continue;
                 cb_reserve_back(0, 1);
                 cb_reserve_back(1, 1);
                 const uint32_t a = get_write_ptr(0), b = get_write_ptr(1);

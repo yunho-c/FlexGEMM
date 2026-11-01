@@ -102,10 +102,31 @@ A host test demonstrates a structured map shrinking from 9 block-offset products
 to 2 (plus one zero initialization product for the empty block). Row order is
 checked against the original unsorted reference, with no CPU output permutation.
 
-## Remaining progression
+## Stage 4: split-K
 
-1. Split-K: distribute reduction ranges to independent workers, then reduce
-   partial outputs on the device and apply bias once.
+Use `split_k_gemm(..., split_k=2, masked=True)` or reuse a prepared problem with
+`prepared.run(split_k=2)`. Both masked and unmasked implicit GEMM support it.
+The reduction is partitioned over `V * ceil(Ci/32)` channel tiles with boundaries
+`floor(total_tiles * s / split_k)`. This permits uneven splits and boundaries
+inside a kernel offset while covering each product exactly once. Workers own
+independent `(split, output_tile)` tasks; there are no floating-point atomics.
+Partials are written as FP32 in `[split_k,M_padded,Co_padded]` storage. A TTNN
+device sum reduces axis 0, then casts to BF16 and adds bias once. Masked writers
+restore original row order separately for each split. Empty masked splits use
+the same deterministic zero initialization as stage 3.
+
+The workspace costs `4 * split_k * M_padded * Co_padded` bytes. Split count must
+be an integer from 1 through the number of channel tiles in the full reduction.
+Split-K trades extra workspace and a reduction launch for more core parallelism;
+it is not guaranteed to be faster. There is no automatic split-count selection.
+
+Validation: `python -m pytest tests/tenstorrent/test_splitk.py -q` → **9 passed**.
+Eight hardware combinations cover masked/unmasked execution, ragged channels,
+2/3/5/7-way splitting, offset-internal partition boundaries, empty splits, bias,
+and small output workloads. Each runs split → unsplit → split on the same device
+operands and compares every element with the FP32 sparse reference.
+
+## Limitations
 
 Current scope is forward sparse GEMM. Host coordinate preprocessing is explicit;
 device coordinate hashing, training/backward, automatic algorithm tuning, and
