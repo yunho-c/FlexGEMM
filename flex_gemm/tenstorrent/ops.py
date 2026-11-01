@@ -5,11 +5,23 @@ from dataclasses import dataclass
 from .reference import validate
 
 
+def _matmul_fidelity(device):
+    import ttnn
+    # Wormhole HiFi4 + FP32 destination accumulation can produce rare, large
+    # errors (tt-metal#38306). This affects BF16 inputs too. Keep FP32 accumulation
+    # but use the vendor-recommended HiFi3 workaround on this architecture.
+    return (ttnn.MathFidelity.HiFi3 if device.arch() == ttnn.Arch.WORMHOLE_B0
+            else ttnn.MathFidelity.HiFi4)
+
+
 def _compute_config(device):
     import ttnn
     return ttnn.init_device_compute_kernel_config(
-        device.arch(), math_fidelity=ttnn.MathFidelity.HiFi4,
-        math_approx_mode=False, fp32_dest_acc_en=True, packer_l1_acc=True,
+        device.arch(), math_fidelity=_matmul_fidelity(device),
+        math_approx_mode=False, fp32_dest_acc_en=True,
+        # The pretrained texture projection reproduced a ~-4 outlier with
+        # HiFi3 + packer L1 accumulation too. Disable that path on Wormhole.
+        packer_l1_acc=device.arch() != ttnn.Arch.WORMHOLE_B0,
     )
 
 

@@ -6,6 +6,10 @@ explicit GEMM → implicit GEMM → masking → split-K. The starting contract i
 contributing zero. The upstream `[Co,Kw,Kh,Kd,Ci]` weights and `0xffffffff`
 neighbor sentinel are accepted, as are `[Co,V,Ci]` weights and `-1`.
 
+The [1024 → 4096 GenRecon validation](tenstorrent-wide-validation.md) covers real
+shape/texture checkpoint weights and documents the precision fixes and one
+remaining shape-activation tolerance miss. This remains an experimental backend.
+
 ## Environment and installation
 
 Validated on 2026-11-01 using the locally installed stack:
@@ -34,6 +38,8 @@ The CPU reference and topology builder are usable without TTNN.
 `explicit_gemm` materializes the neighborhood-expanded BF16 matrix on the CPU,
 uploads it and flattened weights, and runs `ttnn.matmul` with FP32 destination
 accumulation and optional device bias addition. Results remain on the device.
+On Wormhole, matmul uses HiFi3 and disables L1 packer accumulation to avoid
+the numerical outliers found in the wide-layer validation.
 This establishes the mathematical baseline; host expansion and transfers are
 real costs and must be included in end-to-end timing.
 
@@ -76,11 +82,11 @@ The [TT-Metal single-core matmul example](https://github.com/tenstorrent/tt-meta
 documents the reader/compute/writer pipeline used here. Our reader implements the
 sparse gather, and output tile ownership extends the pipeline to multiple cores.
 
-Validation: `python -m pytest tests/tenstorrent/test_implicit.py -q` → **7 passed**
+Validation: `python -m pytest tests/tenstorrent/test_implicit.py -q` → **8 passed**
 on Wormhole. Six shapes are each run twice, including ragged channels/rows, 27
 offsets, all-missing rows, zero input points, and 81 output tiles scheduled across
-64 cores. A seventh test changes feature values and device addresses on repeated
-same-shape launches to check program-cache correctness. Elementwise comparison
+64 cores. Two cache cases change feature values and device addresses on repeated
+same-shape launches, with and without masking. Elementwise comparison
 uses the same FP32 oracle and tolerance as stage 1.
 
 ## Stage 3: masking
@@ -95,7 +101,7 @@ block sends one zero product to initialize the accumulator deterministically.
 The writer scatters tile rows back to original order on device, followed by a
 device tilize operation. Volumes above 32 are rejected in masked mode.
 
-Validation: masking plus implicit regression tests → **14 passed** on Wormhole.
+Validation: masking plus implicit regression tests → **15 passed** on Wormhole.
 Five masked hardware cases, each repeated, cover Gray grouping, randomly sparse
 maps, bit 31, completely empty blocks, channel tails, bias, and >64 output tiles.
 A host test demonstrates a structured map shrinking from 9 block-offset products
@@ -110,21 +116,25 @@ The reduction is partitioned over `V * ceil(Ci/32)` channel tiles with boundarie
 `floor(total_tiles * s / split_k)`. This permits uneven splits and boundaries
 inside a kernel offset while covering each product exactly once. Workers own
 independent `(split, output_tile)` tasks; there are no floating-point atomics.
-Partials are written as FP32 in `[split_k,M_padded,Co_padded]` storage. A TTNN
-device sum reduces axis 0, then casts to BF16 and adds bias once. Masked writers
+Partials are written as FP32 in `[split_k,M_padded,Co_padded]` storage. Device
+slices and `split_k-1` FP32 additions reduce the partials, followed by a BF16
+cast and one bias addition. The installed SDK's `ttnn.sum(dim=0)` lost low bits
+in wide-layer validation, so this path avoids that lowering. Masked writers
 restore original row order separately for each split. Empty masked splits use
 the same deterministic zero initialization as stage 3.
 
 The workspace costs `4 * split_k * M_padded * Co_padded` bytes. Split count must
 be an integer from 1 through the number of channel tiles in the full reduction.
-Split-K trades extra workspace and a reduction launch for more core parallelism;
+Split-K trades extra workspace and reduction launches for more core parallelism;
 it is not guaranteed to be faster. There is no automatic split-count selection.
 
-Validation: `python -m pytest tests/tenstorrent/test_splitk.py -q` → **9 passed**.
+Validation: `python -m pytest tests/tenstorrent/test_splitk.py -q` → **13 passed**.
 Eight hardware combinations cover masked/unmasked execution, ragged channels,
 2/3/5/7-way splitting, offset-internal partition boundaries, empty splits, bias,
 and small output workloads. Each runs split → unsplit → split on the same device
 operands and compares every element with the FP32 sparse reference.
+Four additional numerical cases check integer and fractional cancellation in
+FP32 partial storage and reduction; split-count validation is also covered.
 
 ## Limitations
 
@@ -166,7 +176,11 @@ execution measures host wall time including dispatch and device synchronization,
 excluding preparation, JIT warmup, and output download. These are **not device
 profiler kernel timings**. The common coordinate builder is timed separately.
 
-Recorded run: [raw results](results/tenstorrent-wormhole-256x64.json).
+Initial run before the wide-layer precision fixes:
+[raw results](results/tenstorrent-wormhole-256x64.json). These historical timings
+used HiFi4, enabled L1 packer accumulation, and the former axis-0 split sum.
+For measurements of the current implementation, see the
+[wide-layer report](tenstorrent-wide-validation.md#timing-and-memory).
 
 | Stage | Preparation (ms) | Warm median (ms) | Max absolute error |
 |---|---:|---:|---:|
@@ -199,12 +213,19 @@ TT_METAL_WATCHER=1 python -m pytest tests/tenstorrent -q \
     --junitxml=docs/results/tenstorrent-tests.xml
 ```
 
-**42 passed, zero skipped**, on the hardware above with Watcher access checks
-enabled. [JUnit results](results/tenstorrent-tests.xml) include all four stages,
-coordinate integration, sentinel/bounds validation, and exact integer checks.
+**52 passed, 4 expected failures**, on the hardware above with Watcher access
+checks enabled and both external GenRecon checkpoints available.
+[JUnit results](results/tenstorrent-tests.xml) include all four stages,
+coordinate integration, sentinel/bounds validation, exact cancellation checks,
+and pretrained wide layers. The four strict expected failures preserve the
+known shape LayerNorm+SiLU tolerance miss described in the wide-layer report;
+this is not an all-green numerical validation. Twelve checkpoint-dependent
+cases skip explicitly when their external weights are unavailable.
 Cache tests keep old device operands alive to force distinct addresses, change
 both feature values and mask/permutation data, and assert program-cache entry
 counts remain constant across same-shape invocations.
 A cancellation case produces split partials `257` and `-256`: the exact residual
 `1` survives FP32 workspace/reduction, whereas BF16 partial storage would lose it.
 It also checks that bias is applied once, in both masked and unmasked modes.
+The fractional residual `257.125 - 256 - 1 + 0.03125 = 0.15625` is checked
+exactly for four- and seven-way FP32 reductions.

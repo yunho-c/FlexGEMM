@@ -47,3 +47,15 @@ def test_fp32_partials_preserve_cancellation(device, masked):
                          device=device, bias=torch.tensor([3.]), masked=masked)
     actual = ttnn.to_torch(p.run(split_k=2)).float()
     torch.testing.assert_close(actual, torch.tensor([[4.]]), atol=0, rtol=0)
+
+
+@pytest.mark.parametrize("splits", [4, 7])
+def test_split_reduction_preserves_low_mantissa_bits(device, splits):
+    import ttnn
+    from flex_gemm.tenstorrent.implicit import _sum_split_partials
+    partials = torch.zeros(splits, 32, 32)
+    partials[0], partials[1], partials[2], partials[3] = 257.125, -256, -1, 0.03125
+    device_partials = ttnn.from_torch(partials, dtype=ttnn.float32,
+                                      layout=ttnn.TILE_LAYOUT, device=device)
+    actual = ttnn.to_torch(_sum_split_partials(device_partials))
+    torch.testing.assert_close(actual, torch.full((32, 32), 0.15625), atol=0, rtol=0)

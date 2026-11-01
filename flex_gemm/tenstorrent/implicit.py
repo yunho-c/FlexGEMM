@@ -4,11 +4,27 @@ from dataclasses import dataclass
 from pathlib import Path
 import torch
 from .reference import validate
-from .ops import _upload
+from .ops import _upload, _matmul_fidelity
 
 
 def _round32(n):
     return (n + 31) // 32 * 32
+
+
+def _sum_split_partials(partials):
+    """Accumulate tiled FP32 [S,M,N] partials without the axis-0 sum lowering.
+
+    The validated SDK's ttnn.sum(dim=0) loses low mantissa bits despite FP32
+    input/output. Sliced FP32 elementwise additions preserve the residuals.
+    This stays entirely on device and uses S-1 additions, with bounded scratch.
+    """
+    import ttnn
+    splits, m, n = partials.shape
+    result = ttnn.reshape(ttnn.slice(partials, [0, 0, 0], [1, m, n]), [m, n])
+    for split in range(1, splits):
+        part = ttnn.reshape(ttnn.slice(partials, [split, 0, 0], [split + 1, m, n]), [m, n])
+        result = ttnn.add(result, part)
+    return result
 
 
 @dataclass
@@ -37,10 +53,7 @@ class PreparedSparseConv:
             result = ttnn.to_layout(result, ttnn.TILE_LAYOUT)
         if split_k > 1:
             # Partials and reduction stay FP32 until the final BF16 conversion.
-            config = ttnn.init_device_compute_kernel_config(
-                self.device.arch(), math_fidelity=ttnn.MathFidelity.HiFi3,
-                math_approx_mode=False, fp32_dest_acc_en=True)
-            result = ttnn.sum(result, dim=0, keepdim=False, compute_kernel_config=config)
+            result = _sum_split_partials(result)
             result = ttnn.typecast(result, ttnn.bfloat16)
         result = ttnn.slice(result, [0, 0], [self.m, self.co])
         if self.bias is not None:
@@ -148,7 +161,7 @@ def _launch(p, split_k=1):
         ttnn.KernelDescriptor(kernel_source=str(root / "compute.cpp"), core_ranges=ranges,
                               compile_time_args=[p.volume * cp // 32], runtime_args=cr, defines=defines,
                               config=ttnn.ComputeConfigDescriptor(
-                                  math_fidelity=ttnn.MathFidelity.HiFi4, fp32_dest_acc_en=True)),
+                                  math_fidelity=_matmul_fidelity(p.device), fp32_dest_acc_en=True)),
     ]
     cbs = [ttnn.CBDescriptor(total_size=page * depth, core_ranges=ranges,
                              format_descriptors=[ttnn.CBFormatDescriptor(

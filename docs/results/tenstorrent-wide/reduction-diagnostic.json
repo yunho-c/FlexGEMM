@@ -1,0 +1,66 @@
+[
+  {
+    "masked": false,
+    "raw_dtype": "DataType.FLOAT32",
+    "tiled_dtype": "DataType.FLOAT32",
+    "sum_dtype": "DataType.FLOAT32",
+    "tilize_error": {
+      "max_abs": 0.0,
+      "relative_l2": 0.0
+    },
+    "device_sum_error": {
+      "max_abs": 0.119903564453125,
+      "relative_l2": 0.0008289225515909493
+    },
+    "add_error": {
+      "max_abs": 0.0,
+      "relative_l2": 0.0
+    },
+    "partials_error": {
+      "max_abs": 0.03224754333496094,
+      "relative_l2": 0.00032320813625119627
+    },
+    "device_vs_ref": {
+      "max_abs": 0.1451568603515625,
+      "relative_l2": 0.0008990707574412227
+    },
+    "point": {
+      "ref": 1.294790267944336,
+      "hostsum": 1.3115100860595703,
+      "ttsum": 1.328125,
+      "ttadd": 1.3115100860595703
+    }
+  },
+  {
+    "masked": true,
+    "raw_dtype": "DataType.FLOAT32",
+    "tiled_dtype": "DataType.FLOAT32",
+    "sum_dtype": "DataType.FLOAT32",
+    "tilize_error": {
+      "max_abs": 0.0,
+      "relative_l2": 0.0
+    },
+    "device_sum_error": {
+      "max_abs": 0.119903564453125,
+      "relative_l2": 0.0008289225515909493
+    },
+    "add_error": {
+      "max_abs": 0.0,
+      "relative_l2": 0.0
+    },
+    "partials_error": {
+      "max_abs": 0.03224754333496094,
+      "relative_l2": 0.00032320813625119627
+    },
+    "device_vs_ref": {
+      "max_abs": 0.1451568603515625,
+      "relative_l2": 0.0008990707574412227
+    },
+    "point": {
+      "ref": 1.294790267944336,
+      "hostsum": 1.3115100860595703,
+      "ttsum": 1.328125,
+      "ttadd": 1.3115100860595703
+    }
+  }
+]

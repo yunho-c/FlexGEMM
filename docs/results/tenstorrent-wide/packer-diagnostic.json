@@ -1,0 +1,170 @@
+[
+  {
+    "model": "shape",
+    "packer_l1_acc": true,
+    "fp32out": false,
+    "metrics": {
+      "all_finite": true,
+      "max_abs_error": 0.45569610595703125,
+      "relative_l2": 0.0023891102442834848,
+      "pcc": 0.9999971410997426,
+      "elementwise_failures_atol_rtol_0.025": 1,
+      "max_error_over_elementwise_tolerance": 1.0250956507009474,
+      "elements": 2101248,
+      "first_failures": [
+        {
+          "row": 305,
+          "channel": 2295,
+          "actual": -0.26171875,
+          "expected": -0.2949037551879883,
+          "tolerance": 0.03237259387969971
+        }
+      ]
+    }
+  },
+  {
+    "model": "shape",
+    "packer_l1_acc": true,
+    "fp32out": true,
+    "metrics": {
+      "all_finite": true,
+      "max_abs_error": 0.2691650390625,
+      "relative_l2": 0.001705579422499797,
+      "pcc": 0.9999985236434863,
+      "elementwise_failures_atol_rtol_0.025": 1,
+      "max_error_over_elementwise_tolerance": 1.0250956507009474,
+      "elements": 2101248,
+      "first_failures": [
+        {
+          "row": 305,
+          "channel": 2295,
+          "actual": -0.26171875,
+          "expected": -0.2949037551879883,
+          "tolerance": 0.03237259387969971
+        }
+      ]
+    }
+  },
+  {
+    "model": "shape",
+    "packer_l1_acc": false,
+    "fp32out": false,
+    "metrics": {
+      "all_finite": true,
+      "max_abs_error": 0.45569610595703125,
+      "relative_l2": 0.002389658268413929,
+      "pcc": 0.9999971399657314,
+      "elementwise_failures_atol_rtol_0.025": 1,
+      "max_error_over_elementwise_tolerance": 1.0250956507009474,
+      "elements": 2101248,
+      "first_failures": [
+        {
+          "row": 305,
+          "channel": 2295,
+          "actual": -0.26171875,
+          "expected": -0.2949037551879883,
+          "tolerance": 0.03237259387969971
+        }
+      ]
+    }
+  },
+  {
+    "model": "shape",
+    "packer_l1_acc": false,
+    "fp32out": true,
+    "metrics": {
+      "all_finite": true,
+      "max_abs_error": 0.2691650390625,
+      "relative_l2": 0.0017055226384974302,
+      "pcc": 0.999998523568497,
+      "elementwise_failures_atol_rtol_0.025": 1,
+      "max_error_over_elementwise_tolerance": 1.0250956507009474,
+      "elements": 2101248,
+      "first_failures": [
+        {
+          "row": 305,
+          "channel": 2295,
+          "actual": -0.26171875,
+          "expected": -0.2949037551879883,
+          "tolerance": 0.03237259387969971
+        }
+      ]
+    }
+  },
+  {
+    "model": "tex",
+    "packer_l1_acc": true,
+    "fp32out": false,
+    "metrics": {
+      "all_finite": true,
+      "max_abs_error": 4.006642818450928,
+      "relative_l2": 0.002475422594136669,
+      "pcc": 0.9999971668516623,
+      "elementwise_failures_atol_rtol_0.025": 1,
+      "max_error_over_elementwise_tolerance": 24.572084004992767,
+      "elements": 2101248,
+      "first_failures": [
+        {
+          "row": 77,
+          "channel": 1112,
+          "actual": 1.515625,
+          "expected": 5.522267818450928,
+          "tolerance": 0.1630566954612732
+        }
+      ]
+    }
+  },
+  {
+    "model": "tex",
+    "packer_l1_acc": true,
+    "fp32out": true,
+    "metrics": {
+      "all_finite": true,
+      "max_abs_error": 3.9988303184509277,
+      "relative_l2": 0.0017469466949852025,
+      "pcc": 0.9999984167437188,
+      "elementwise_failures_atol_rtol_0.025": 1,
+      "max_error_over_elementwise_tolerance": 24.524171222399577,
+      "elements": 2101248,
+      "first_failures": [
+        {
+          "row": 77,
+          "channel": 1112,
+          "actual": 1.5234375,
+          "expected": 5.522267818450928,
+          "tolerance": 0.1630566954612732
+        }
+      ]
+    }
+  },
+  {
+    "model": "tex",
+    "packer_l1_acc": false,
+    "fp32out": false,
+    "metrics": {
+      "all_finite": true,
+      "max_abs_error": 1.65716552734375,
+      "relative_l2": 0.002429532862367594,
+      "pcc": 0.9999972835220532,
+      "elementwise_failures_atol_rtol_0.025": 0,
+      "max_error_over_elementwise_tolerance": 0.2941631036119331,
+      "elements": 2101248,
+      "first_failures": []
+    }
+  },
+  {
+    "model": "tex",
+    "packer_l1_acc": false,
+    "fp32out": true,
+    "metrics": {
+      "all_finite": true,
+      "max_abs_error": 0.5422515869140625,
+      "relative_l2": 0.0016855855388245367,
+      "pcc": 0.9999985292242597,
+      "elementwise_failures_atol_rtol_0.025": 0,
+      "max_error_over_elementwise_tolerance": 0.2474171167304796,
+      "elements": 2101248,
+      "first_failures": []
+    }
+  }
+]
