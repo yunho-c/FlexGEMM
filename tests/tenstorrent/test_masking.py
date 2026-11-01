@@ -15,6 +15,9 @@ def test_gray_schedule():
     assert s.dense_offsets == 9
     assert s.block_masks.tolist() == [0, 1, 4]
     assert sorted(s.permutation.tolist()) == list(range(96))
+    highest_bit = torch.full((2, 32), -1)
+    highest_bit[1, 31] = 0
+    assert make_mask_schedule(highest_bit).permutation[:2].tolist() == [1, 0]
 
 
 @pytest.mark.parametrize("m,ci,co,v,mode", [

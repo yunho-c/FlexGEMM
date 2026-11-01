@@ -34,3 +34,16 @@ def test_split_validation(device):
     for split in (0, -1, 2, 1.5, True):
         with pytest.raises(ValueError, match="split_k"):
             p.run(split_k=split)
+
+
+@pytest.mark.parametrize("masked", [False, True])
+def test_fp32_partials_preserve_cancellation(device, masked):
+    import ttnn
+    # The first partial is 257, which rounds to 256 in BF16. Keeping partials
+    # in FP32 preserves the residual 1 after the second partial subtracts 256.
+    x = torch.zeros(1, 64)
+    x[0, 0], x[0, 1], x[0, 32] = 256, 1, -256
+    p = prepare_implicit(x, torch.ones(1, 1, 64), torch.tensor([[0]]),
+                         device=device, bias=torch.tensor([3.]), masked=masked)
+    actual = ttnn.to_torch(p.run(split_k=2)).float()
+    torch.testing.assert_close(actual, torch.tensor([[4.]]), atol=0, rtol=0)

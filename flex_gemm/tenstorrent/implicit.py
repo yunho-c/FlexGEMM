@@ -50,12 +50,12 @@ class PreparedSparseConv:
 
 def prepare_implicit(feats, weight, neighbor_map, *, device, bias=None, masked=False):
     """Upload BF16 operands with channel tails zero-padded independently per offset."""
-    import ttnn
     w, indices = validate(feats, weight, neighbor_map, bias)
     m, v = indices.shape
     co, _, ci = w.shape
     if m == 0:
         raise ValueError("device GEMM requires at least one output row")
+    import ttnn
     mp, cp, op = _round32(m), _round32(ci), _round32(co)
     schedule = None
     if masked:

@@ -60,7 +60,9 @@ setup(
         "flex_gemm.kernels.triton",
         "flex_gemm.kernels.triton.spconv",
         "flex_gemm.kernels.triton.grid_sample",
+        "flex_gemm.tenstorrent",
     ],
+    package_data={"flex_gemm.tenstorrent": ["kernels/*.cpp"]},
     ext_modules=[
         CUDAExtension(
             name="flex_gemm.kernels.cuda",

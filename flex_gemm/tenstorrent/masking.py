@@ -22,7 +22,8 @@ def make_mask_schedule(indices):
     order_key = bits.clone()
     for shift in (1, 2, 4, 8, 16):
         order_key ^= order_key >> shift
-    order = torch.argsort(order_key, stable=True)
+    # Upstream stores decoded keys in int32, so bit-31 keys sort as signed.
+    order = torch.argsort(order_key.to(torch.int32), stable=True)
     mp = (m + 31) // 32 * 32
     permutation = torch.cat((order, torch.arange(m, mp)))
     padded_bits = torch.zeros(mp, dtype=torch.int64)

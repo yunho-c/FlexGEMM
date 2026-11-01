@@ -1,0 +1,75 @@
+{
+  "arch": "Arch.WORMHOLE_B0",
+  "torch": "2.11.0+cpu",
+  "seed": 42,
+  "points": 256,
+  "ci": 64,
+  "co": 64,
+  "volume": 27,
+  "split_k": 4,
+  "topology_ms": 49.74708898225799,
+  "timing": "host wall time including dispatch/synchronize; warm execution excludes preparation, compilation, and output download",
+  "stages": [
+    {
+      "stage": "explicit",
+      "prepare_ms": 11.391220963560045,
+      "warm_median_ms": 0.4233409999869764,
+      "warm_samples_ms": [
+        0.5222920444793999,
+        0.41305198101326823,
+        0.408291001804173,
+        0.4263219889253378,
+        0.4233409999869764
+      ],
+      "max_abs_error": 0.01414799690246582,
+      "relative_l2": 0.0020568857435137033
+    },
+    {
+      "stage": "implicit",
+      "prepare_ms": 2.1643569925799966,
+      "warm_median_ms": 0.7405829965136945,
+      "warm_samples_ms": [
+        0.8884730050340295,
+        0.7405829965136945,
+        0.7352829561568797,
+        0.7588519947603345,
+        0.7270729984156787
+      ],
+      "max_abs_error": 0.01414799690246582,
+      "relative_l2": 0.0020568857435137033
+    },
+    {
+      "stage": "masked",
+      "prepare_ms": 4.828806966543198,
+      "warm_median_ms": 1.2371150078251958,
+      "warm_samples_ms": [
+        1.4296949957497418,
+        1.2244340032339096,
+        1.2371150078251958,
+        1.2576139997690916,
+        1.2046049814671278
+      ],
+      "max_abs_error": 0.01414799690246582,
+      "relative_l2": 0.0020568857435137033,
+      "active_block_offsets": 198,
+      "dense_block_offsets": 216
+    },
+    {
+      "stage": "split_k",
+      "prepare_ms": 3.4645829582586884,
+      "warm_median_ms": 1.579736010171473,
+      "warm_samples_ms": [
+        1.8202760256826878,
+        1.579736010171473,
+        1.5915859839878976,
+        1.5673350426368415,
+        1.56246597180143
+      ],
+      "max_abs_error": 0.013148307800292969,
+      "relative_l2": 0.0020087629090994596,
+      "active_block_offsets": 198,
+      "dense_block_offsets": 216
+    }
+  ],
+  "tt_metal_commit": "9f9cd4fd590f4b606bd0981a4fe0b6403eb38ec9"
+}

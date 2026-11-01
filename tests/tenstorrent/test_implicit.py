@@ -24,11 +24,24 @@ def test_implicit_device(device, m, n, ci, co, v, bias):
         torch.testing.assert_close(actual, expected, atol=0.025, rtol=0.025)
 
 
-def test_new_addresses_on_cache_hit(device):
+@pytest.mark.parametrize("masked", [False, True])
+def test_new_addresses_on_cache_hit(device, masked):
     import ttnn
-    for value in (1.0, 2.0, -0.5):
-        x = torch.full((32, 32), value)
-        w = torch.ones(32, 1, 32)
-        mapping = torch.arange(32).reshape(32, 1)
-        y = ttnn.to_torch(implicit_gemm(x, w, mapping, device=device))
-        torch.testing.assert_close(y.float(), torch.full((32, 32), value * 32))
+    keep_alive = []
+    cache_entries = None
+    for i, value in enumerate((1.0, 2.0, -0.5)):
+        x = torch.zeros(32, 32)
+        x[:, 0] = torch.arange(32) * value
+        w = torch.zeros(32, 3, 32)
+        w[:, :, 0] = torch.arange(1, 4)
+        mapping = torch.arange(32).reshape(32, 1).expand(-1, 3).clone()
+        mapping[torch.arange(32), (torch.arange(32) + i) % 3] = -1
+        p = prepare_implicit(x, w, mapping, device=device, masked=masked)
+        keep_alive.append(p)  # Force distinct input addresses on each invocation.
+        y = ttnn.to_torch(p.run())
+        torch.testing.assert_close(y.float(), sparse_conv_reference(x, w, mapping), atol=0, rtol=0)
+        current = device.num_program_cache_entries()
+        if cache_entries is not None:
+            assert current == cache_entries
+        cache_entries = current
+    assert len({p.features.buffer_address() for p in keep_alive}) == 3

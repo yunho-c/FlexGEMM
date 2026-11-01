@@ -1,6 +1,7 @@
 """Device entry points for the successive sparse GEMM algorithms."""
 
 import torch
+from dataclasses import dataclass
 from .reference import validate
 
 
@@ -18,13 +19,27 @@ def _upload(tensor, device):
                            dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT)
 
 
-def explicit_gemm(feats, weight, neighbor_map, *, device, bias=None):
-    """Materialize host im2col, then run BF16 GEMM and optional bias on Tensix.
+@dataclass
+class PreparedExplicitConv:
+    expanded: object
+    weights: object
+    bias: object
+    device: object
 
-    Returns a TTNN device tensor [M,Co]. Inputs are CPU tensors; BF16 rounding
-    occurs at upload. The explicit expansion and transfers are part of this API.
+    def run(self):
+        import ttnn
+        result = ttnn.matmul(self.expanded, self.weights,
+                             compute_kernel_config=_compute_config(self.device))
+        if self.bias is not None:
+            result = ttnn.add(result, self.bias)
+        return result
+
+
+def prepare_explicit(feats, weight, neighbor_map, *, device, bias=None):
+    """Materialize host im2col and upload reusable BF16 device operands.
+
+    Inputs are CPU tensors; BF16 rounding occurs at upload.
     """
-    import ttnn
     w, indices = validate(feats, weight, neighbor_map, bias)
     m, v = indices.shape
     co, _, ci = w.shape
@@ -35,7 +50,10 @@ def explicit_gemm(feats, weight, neighbor_map, *, device, bias=None):
     expanded[valid] = feats[indices[valid]].to(torch.bfloat16)
     a = _upload(expanded.reshape(m, v * ci), device)
     b = _upload(w.permute(1, 2, 0).reshape(v * ci, co), device)
-    result = ttnn.matmul(a, b, compute_kernel_config=_compute_config(device))
-    if bias is not None:
-        result = ttnn.add(result, _upload(bias.reshape(1, co), device))
-    return result
+    bdev = None if bias is None else _upload(bias.reshape(1, co), device)
+    return PreparedExplicitConv(a, b, bdev, device)
+
+
+def explicit_gemm(feats, weight, neighbor_map, *, device, bias=None):
+    """Host im2col and upload, then Tensix GEMM/bias; returns device [M,Co]."""
+    return prepare_explicit(feats, weight, neighbor_map, device=device, bias=bias).run()

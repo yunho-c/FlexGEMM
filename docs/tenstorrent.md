@@ -25,7 +25,7 @@ python -m pytest tests/tenstorrent -q
 
 TTNN is provided by TT-Metal, not installed from an arbitrary PyPI version.
 In environments without pip, the verified equivalent installation command is
-`BUILD_TARGET=tenstorrent uv pip install --python "$VIRTUAL_ENV/bin/python" -e . --no-build-isolation --no-deps`.
+`BUILD_TARGET=tenstorrent uv pip install --python "$(command -v python)" -e . --no-build-isolation --no-deps`.
 Package imports load legacy CUDA/Triton modules only when requested.
 The CPU reference and topology builder are usable without TTNN.
 
@@ -132,3 +132,79 @@ Current scope is forward sparse GEMM. Host coordinate preprocessing is explicit;
 device coordinate hashing, training/backward, automatic algorithm tuning, and
 performance parity with the CUDA backend are not yet implemented. Empty output
 sets and autograd inputs are rejected rather than silently falling back to CPU.
+
+## Coordinate API and reproducible comparison
+
+`flex_gemm.tenstorrent.sparse_submanifold_conv3d` accepts the upstream coordinate,
+shape, and weight conventions and returns `(device_features, cpu_neighbor_map)`:
+
+```python
+from flex_gemm.tenstorrent import sparse_submanifold_conv3d
+
+y, cache = sparse_submanifold_conv3d(
+    x, coords, (1, 32, 4, 4, 4), w, device=device,
+    algorithm="masked_implicit_gemm_splitk", split_k=4,
+)
+```
+
+Supported algorithms are `explicit_gemm`, `implicit_gemm`, `masked_implicit_gemm`,
+`implicit_gemm_splitk`, and `masked_implicit_gemm_splitk`. Dilation is supported.
+The returned map can be passed as `neighbor_map=cache` only while the topology,
+kernel shape, and dilation remain unchanged. For repeated layers with the same
+operands, `prepare_explicit` and `prepare_implicit` return reusable device buffers.
+
+```bash
+python examples/tenstorrent_progression.py \
+    --points 256 --ci 64 --co 64 --split-k 4 --repeat 5 \
+    --output /tmp/tt-progression.json
+```
+
+The script samples 256 unique voxels from an 8³ grid, builds a real 3×3×3
+submanifold topology, and verifies every stage against FP32 on BF16-rounded
+inputs. Preparation includes host expansion/sorting and device uploads. Warm
+execution measures host wall time including dispatch and device synchronization,
+excluding preparation, JIT warmup, and output download. These are **not device
+profiler kernel timings**. The common coordinate builder is timed separately.
+
+Recorded run: [raw results](results/tenstorrent-wormhole-256x64.json).
+
+| Stage | Preparation (ms) | Warm median (ms) | Max absolute error |
+|---|---:|---:|---:|
+| Explicit | 11.391 | 0.423 | 0.01415 |
+| Implicit | 2.164 | 0.741 | 0.01415 |
+| Masked | 4.829 | 1.237 | 0.01415 |
+| Masked split-K (4) | 3.465 | 1.580 | 0.01315 |
+
+This prototype reproduces the algorithms but does **not** reproduce the CUDA
+speedups. The optimized TTNN dense GEMM baseline wins warm execution on this
+small case. Sorting reduced active block offsets from 216 to 198; its writer
+scatter/tilize overhead and split-K's reduction outweigh the saved work here.
+The explicit activation expansion is 864 KiB, versus 32 KiB of source features
+and 27 KiB of indices for implicit GEMM (common weights excluded). Four FP32
+split partials add 256 KiB. Improving gather coalescing, reusing input tiles
+across output-channel tiles, and profiling device execution are future tuning
+work; current timings should not be extrapolated to other shapes or devices.
+
+The coordinate integration tests compare all five algorithm choices, with
+non-unit dilation and two batches, directly to dense PyTorch conv3d. Installation
+was also checked by building a pure-Python wheel and inspecting that all three
+Metal kernel source files are packaged. The wheel was extracted into a fresh
+temporary directory outside the checkout; a masked split-K hardware smoke test
+compiled those bundled sources and passed against the independent reference.
+
+Final validation command:
+
+```bash
+TT_METAL_WATCHER=1 python -m pytest tests/tenstorrent -q \
+    --junitxml=docs/results/tenstorrent-tests.xml
+```
+
+**42 passed, zero skipped**, on the hardware above with Watcher access checks
+enabled. [JUnit results](results/tenstorrent-tests.xml) include all four stages,
+coordinate integration, sentinel/bounds validation, and exact integer checks.
+Cache tests keep old device operands alive to force distinct addresses, change
+both feature values and mask/permutation data, and assert program-cache entry
+counts remain constant across same-shape invocations.
+A cancellation case produces split partials `257` and `-256`: the exact residual
+`1` survives FP32 workspace/reduction, whereas BF16 partial storage would lose it.
+It also checks that bias is applied once, in both masked and unmasked modes.
