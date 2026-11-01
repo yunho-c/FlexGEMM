@@ -83,11 +83,28 @@ offsets, all-missing rows, zero input points, and 81 output tiles scheduled acro
 same-shape launches to check program-cache correctness. Elementwise comparison
 uses the same FP32 oracle and tolerance as stage 1.
 
+## Stage 3: masking
+
+Use `masked_implicit_gemm(...)` or `prepare_implicit(..., masked=True).run()`.
+Host preprocessing builds 32-bit neighbor masks, sorts rows by inverse Gray code
+(the upstream ordering), and ORs masks over each 32-row output block. The reader
+skips inactive offsets entirely, including feature and weight reads. It streams
+the exact number of products through a metadata circular buffer; compute threads
+receive the same count via `read_tile_value`'s mailbox synchronization. An empty
+block sends one zero product to initialize the accumulator deterministically.
+The writer scatters tile rows back to original order on device, followed by a
+device tilize operation. Volumes above 32 are rejected in masked mode.
+
+Validation: masking plus implicit regression tests → **14 passed** on Wormhole.
+Five masked hardware cases, each repeated, cover Gray grouping, randomly sparse
+maps, bit 31, completely empty blocks, channel tails, bias, and >64 output tiles.
+A host test demonstrates a structured map shrinking from 9 block-offset products
+to 2 (plus one zero initialization product for the empty block). Row order is
+checked against the original unsorted reference, with no CPU output permutation.
+
 ## Remaining progression
 
-1. Masking: sort by neighborhood pattern, skip inactive block/offset products,
-   and restore original output order.
-2. Split-K: distribute reduction ranges to independent workers, then reduce
+1. Split-K: distribute reduction ranges to independent workers, then reduce
    partial outputs on the device and apply bias once.
 
 Current scope is forward sparse GEMM. Host coordinate preprocessing is explicit;

@@ -18,11 +18,39 @@ void kernel_main() {
     const auto x = TensorAccessor(xa, x_addr);
     const auto w = TensorAccessor(wa, w_addr);
     const auto map = TensorAccessor(ma, map_addr);
+#ifdef MASKED
+    constexpr auto mask_args = TensorAccessorArgs<ma.next_compile_time_args_offset()>();
+    const auto masks = TensorAccessor(mask_args, get_arg_val<uint32_t>(5));
+#endif
     cb_reserve_back(2, 1);
     const uint32_t scratch = get_write_ptr(2);
     for (uint32_t task = start; task < start + count; ++task) {
         const uint32_t mt = task / NT, nt = task % NT;
+#ifdef MASKED
+        cb_reserve_back(3, 1);
+        const uint32_t header = get_write_ptr(3);
+        noc_async_read_page(mt, masks, header);
+        noc_async_read_barrier();
+        const uint32_t mask = *reinterpret_cast<volatile uint32_t*>(header);
+        uint32_t active = 0;
+        for (uint32_t v = 0; v < V; ++v) active += (mask >> v) & 1;
+        *reinterpret_cast<volatile uint32_t*>(header) = active ? active * CT : 1;
+        cb_push_back(3, 1);
+        if (active == 0) {
+            // A zero product clears destination registers even on empty blocks.
+            cb_reserve_back(0, 1);
+            cb_reserve_back(1, 1);
+            auto a = reinterpret_cast<volatile uint32_t*>(get_write_ptr(0));
+            auto b = reinterpret_cast<volatile uint32_t*>(get_write_ptr(1));
+            for (uint32_t i = 0; i < 512; ++i) { a[i] = 0; b[i] = 0; }
+            cb_push_back(0, 1);
+            cb_push_back(1, 1);
+        }
+#endif
         for (uint32_t v = 0; v < V; ++v) {
+#ifdef MASKED
+            if (((mask >> v) & 1) == 0) continue;
+#endif
             noc_async_read(get_noc_addr(v, map) + mt * 128, scratch, 128);
             noc_async_read_barrier();
             const volatile uint32_t* ids = reinterpret_cast<volatile uint32_t*>(scratch);
