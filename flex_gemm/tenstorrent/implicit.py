@@ -43,18 +43,19 @@ class PreparedSparseConv:
     permutation: object = None
     schedule: object = None
 
-    def run(self, *, split_k=1):
+    def run(self, *, split_k=1, fp32_output=False):
         import ttnn
         kt = self.volume * _round32(self.ci) // 32
         if isinstance(split_k, bool) or not isinstance(split_k, int) or not 1 <= split_k <= kt:
             raise ValueError(f"split_k must be an integer in [1,{kt}]")
-        result = _launch(self, split_k)
+        result = _launch(self, split_k, fp32_output=fp32_output)
         if self.masks is not None:
             result = ttnn.to_layout(result, ttnn.TILE_LAYOUT)
         if split_k > 1:
             # Partials and reduction stay FP32 until the final BF16 conversion.
             result = _sum_split_partials(result)
-            result = ttnn.typecast(result, ttnn.bfloat16)
+            if not fp32_output:
+                result = ttnn.typecast(result, ttnn.bfloat16)
         result = ttnn.slice(result, [0, 0], [self.m, self.co])
         if self.bias is not None:
             result = ttnn.add(result, self.bias)
@@ -115,13 +116,13 @@ def split_k_gemm(feats, weight, neighbor_map, *, device, split_k=2, masked=True,
                             masked=masked).run(split_k=split_k)
 
 
-def _launch(p, split_k=1):
+def _launch(p, split_k=1, *, fp32_output=False):
     import ttnn
     mp, cp, op = _round32(p.m), _round32(p.ci), _round32(p.co)
     masked = p.masks is not None
     layout = ttnn.ROW_MAJOR_LAYOUT if masked else ttnn.TILE_LAYOUT
     shape = [mp, op] if split_k == 1 else [split_k, mp, op]
-    out_dtype = ttnn.bfloat16 if split_k == 1 else ttnn.float32
+    out_dtype = ttnn.bfloat16 if split_k == 1 and not fp32_output else ttnn.float32
     output = ttnn.allocate_tensor_on_device(ttnn.Shape(shape), out_dtype, layout, p.device)
     tasks = split_k * (mp // 32) * (op // 32)
     grid = p.device.compute_with_storage_grid_size()
@@ -141,7 +142,7 @@ def _launch(p, split_k=1):
     reader_ct = [p.volume, cp // 32, op // 32, mp // 32, split_k]
     for tensor in (p.features, p.weights, p.indices):
         reader_ct.extend(ttnn.TensorAccessorArgs(tensor).get_compile_time_args())
-    out_bytes = 2 if split_k == 1 else 4
+    out_bytes = 2 if out_dtype == ttnn.bfloat16 else 4
     writer_ct = [op // 32, mp // 32, out_bytes] + ttnn.TensorAccessorArgs(output).get_compile_time_args()
     defines = []
     if masked:

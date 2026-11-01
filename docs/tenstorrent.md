@@ -163,6 +163,41 @@ The returned map can be passed as `neighbor_map=cache` only while the topology,
 kernel shape, and dilation remain unchanged. For repeated layers with the same
 operands, `prepare_explicit` and `prepare_implicit` return reusable device buffers.
 
+For network integration, prepare weights and topology independently and pass
+device features directly between convolutions:
+
+```python
+from flex_gemm.tenstorrent import (
+    prepare_sparse_weights, prepare_sparse_topology, sparse_conv_device,
+)
+
+weights = prepare_sparse_weights(w.detach(), bias=None, device=device)
+topology = prepare_sparse_topology(cache, x.shape[0], device=device, masked=True)
+x_device = ttnn.from_torch(x.bfloat16(), dtype=ttnn.bfloat16,
+                           layout=ttnn.TILE_LAYOUT, device=device)
+y_device = sparse_conv_device(x_device, weights, topology,
+                               algorithm="masked_implicit_gemm")
+```
+
+`sparse_conv_device` supports the same five algorithms. Features stay on device;
+the host prepares only weights and integer metadata. Explicit GEMM gathers
+`row_chunk` output rows at a time on device (default 256), with access to every
+input neighbor, and reuses the packed weights. Its expansion workspace therefore
+scales with `row_chunk * V * ceil(Ci/32)*32`, not the whole output row count.
+Each chunk's output is retained until device concatenation, so output storage
+still scales with the complete result. Chunk indices are cached in the topology.
+No host feature download or re-upload is needed between layers.
+
+The feature input contract remains BF16. `fp32_output=True` retains FP32 output
+through reduction and bias for clients that need residual correction or later
+FP32 arithmetic; it does not make BF16 inputs or HiFi3 multiplication exact.
+Prepared topology must match the actual coordinate layout, not merely its size.
+Masked and unmasked implicit algorithms require their corresponding topology;
+explicit GEMM can consume either. Empty outputs should be handled by the network
+without issuing a device convolution. Fifteen hardware tests cover chaining,
+changed input values with cached maps/weights, ragged channels, row chunks that
+cross tile boundaries, and FP32 cancellation across reduction tiles.
+
 ```bash
 python examples/tenstorrent_progression.py \
     --points 256 --ci 64 --co 64 --split-k 4 --repeat 5 \
@@ -210,14 +245,14 @@ Final validation command:
 
 ```bash
 TT_METAL_WATCHER=1 python -m pytest tests/tenstorrent -q \
-    --junitxml=docs/results/tenstorrent-tests.xml
+    --junitxml=docs/results/tenstorrent-resident-tests.xml
 ```
 
-**52 passed, 4 expected failures**, on the hardware above with Watcher access
+**67 passed, 4 expected failures**, on the hardware above with Watcher access
 checks enabled and both external GenRecon checkpoints available.
-[JUnit results](results/tenstorrent-tests.xml) include all four stages,
+[JUnit results](results/tenstorrent-resident-tests.xml) include all four stages,
 coordinate integration, sentinel/bounds validation, exact cancellation checks,
-and pretrained wide layers. The four strict expected failures preserve the
+pretrained wide layers, and device-resident convolution chaining. The four strict expected failures preserve the
 known shape LayerNorm+SiLU tolerance miss described in the wide-layer report;
 this is not an all-green numerical validation. Twelve checkpoint-dependent
 cases skip explicitly when their external weights are unavailable.
