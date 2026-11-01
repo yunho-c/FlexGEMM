@@ -61,13 +61,33 @@ The independent FP32 oracle sums per-offset products; its coordinate/weight
 conventions are checked against `torch.nn.functional.conv3d` for two batches.
 Hardware checks use elementwise `atol=rtol=0.025` on BF16-rounded inputs.
 
+## Stage 2: implicit GEMM
+
+`prepare_implicit(..., device=device, bias=None)` uploads row-major features,
+transposed neighbor indices, and tiled weights. Its `run()` method launches
+custom reader, compute, and writer kernels through `ttnn.generic_op`. The
+convenience wrapper `implicit_gemm` includes preparation. The reader gathers
+32 feature rows directly into the four 16×16 faces of each L1 BF16 tile, filling
+missing rows with zeros. Two input tiles per operand are buffered; no expanded
+matrix is written to DRAM. Channel padding is applied separately at each kernel
+offset. Output tiles are distributed over available cores with FP32 accumulation.
+
+The [TT-Metal single-core matmul example](https://github.com/tenstorrent/tt-metal/tree/main/tt_metal/programming_examples/matmul/matmul_single_core)
+documents the reader/compute/writer pipeline used here. Our reader implements the
+sparse gather, and output tile ownership extends the pipeline to multiple cores.
+
+Validation: `python -m pytest tests/tenstorrent/test_implicit.py -q` → **7 passed**
+on Wormhole. Six shapes are each run twice, including ragged channels/rows, 27
+offsets, all-missing rows, zero input points, and 81 output tiles scheduled across
+64 cores. A seventh test changes feature values and device addresses on repeated
+same-shape launches to check program-cache correctness. Elementwise comparison
+uses the same FP32 oracle and tolerance as stage 1.
+
 ## Remaining progression
 
-1. Implicit: fuse sparse row gathering into a Metal reader feeding Tensix matmul;
-   keep only tile-sized expansion in L1, with no DRAM im2col tensor.
-2. Masking: sort by neighborhood pattern, skip inactive block/offset products,
+1. Masking: sort by neighborhood pattern, skip inactive block/offset products,
    and restore original output order.
-3. Split-K: distribute reduction ranges to independent workers, then reduce
+2. Split-K: distribute reduction ranges to independent workers, then reduce
    partial outputs on the device and apply bias once.
 
 Current scope is forward sparse GEMM. Host coordinate preprocessing is explicit;
