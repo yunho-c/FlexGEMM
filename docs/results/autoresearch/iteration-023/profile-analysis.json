@@ -1,0 +1,6206 @@
+{
+  "scope": "Unpaired diagnostic observations, not promotion scores or bus counters",
+  "baseline_analysis": "/home/user/GitHub/flexgemm-autoresearch/docs/results/autoresearch/iteration-022/analysis.json",
+  "baseline_sha256": "4247ce685b7555c724da25fe74d75c699ea7e067f56e0b3623f4f87d4c30d4c4",
+  "candidate": [
+    {
+      "report": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-023/probe-largest-compute-v1.json",
+      "case": "n2389000-64x64-k3x3x3",
+      "mode": "compute",
+      "scope": "chunks",
+      "samples": [
+        {
+          "label": "r0-v0-p0",
+          "wall_ms": 1.2525839847512543,
+          "programs": 1,
+          "device_span_us": 285.76,
+          "kernel_union_us": 285.76,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            285.76
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 165.462,
+              "median": 181.5565,
+              "max": 201.226
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 75.954,
+              "median": 113.999,
+              "max": 145.632
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.49,
+              "median": 0.632,
+              "max": 0.727
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 25.827,
+              "median": 35.672,
+              "max": 42.422
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.974,
+              "median": 0.986,
+              "max": 1.004
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6277129687588914,
+              "median": 0.6735570992072384,
+              "max": 0.7326878977079304
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.29015880534979577,
+              "median": 0.41999124099455193,
+              "max": 0.5122242036065886
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0018039842280236065,
+              "median": 0.0023413397648125163,
+              "max": 0.002689504642817506
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.0964150922265402,
+              "median": 0.13166897429562302,
+              "max": 0.15759886128756273
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0034547418266507647,
+              "median": 0.0036500274539431484,
+              "max": 0.0038256286203392055
+            }
+          }
+        },
+        {
+          "label": "r0-v0-p1",
+          "wall_ms": 1.0292839724570513,
+          "programs": 1,
+          "device_span_us": 280.771,
+          "kernel_union_us": 280.771,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            280.771
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 163.28,
+              "median": 177.2345,
+              "max": 196.788
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 82.733,
+              "median": 112.53299999999999,
+              "max": 136.916
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.477,
+              "median": 0.619,
+              "max": 0.69
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 26.013,
+              "median": 35.6255,
+              "max": 42.985
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.971,
+              "median": 0.993,
+              "max": 1.015
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6216632732263182,
+              "median": 0.6667266185216056,
+              "max": 0.729052359376563
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.3174054493696625,
+              "median": 0.4211624904896454,
+              "max": 0.5084219594795318
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0017368064607743898,
+              "median": 0.002327288640852681,
+              "max": 0.0026699066693494714
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.09802959723199975,
+              "median": 0.13424966840426003,
+              "max": 0.1608256602700569
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0035056842165511223,
+              "median": 0.003723341173217548,
+              "max": 0.004023647539821144
+            }
+          }
+        },
+        {
+          "label": "r0-v0-p2",
+          "wall_ms": 1.0214340290986001,
+          "programs": 1,
+          "device_span_us": 280.693,
+          "kernel_union_us": 280.693,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            280.693
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 158.292,
+              "median": 179.99849999999998,
+              "max": 202.169
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 70.23,
+              "median": 111.75450000000001,
+              "max": 138.473
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.491,
+              "median": 0.64,
+              "max": 0.719
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 25.794,
+              "median": 35.7545,
+              "max": 42.74
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.981,
+              "median": 0.9964999999999999,
+              "max": 1.014
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.626748687651553,
+              "median": 0.673575089747402,
+              "max": 0.733179083421882
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.27911468620959634,
+              "median": 0.4187358977169237,
+              "max": 0.5068799027772186
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0018689027523494505,
+              "median": 0.002403692900409381,
+              "max": 0.0027410995124238923
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.09770316678548294,
+              "median": 0.13314637549689098,
+              "max": 0.15834092980856884
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.003551323101969076,
+              "median": 0.003742187678598952,
+              "max": 0.004031915281201802
+            }
+          }
+        },
+        {
+          "label": "r0-v1-p0",
+          "wall_ms": 1.2346929870545864,
+          "programs": 1,
+          "device_span_us": 283.139,
+          "kernel_union_us": 283.139,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            283.139
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 154.216,
+              "median": 178.6205,
+              "max": 201.448
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 80.465,
+              "median": 113.6135,
+              "max": 145.547
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.519,
+              "median": 0.635,
+              "max": 0.726
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 26.029,
+              "median": 35.302,
+              "max": 42.349
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.972,
+              "median": 0.99,
+              "max": 1.008
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6237848737472539,
+              "median": 0.670355917513788,
+              "max": 0.7318892297574519
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.3240441109649175,
+              "median": 0.4269597961815581,
+              "max": 0.5179497946663061
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0019779797247835313,
+              "median": 0.002380735373382189,
+              "max": 0.002983639300200964
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.09719016277291964,
+              "median": 0.13251623587114053,
+              "max": 0.15897905631407647
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0034744448711930462,
+              "median": 0.003730809297412257,
+              "max": 0.004102256035089308
+            }
+          }
+        },
+        {
+          "label": "r0-v1-p1",
+          "wall_ms": 1.0213329805992544,
+          "programs": 1,
+          "device_span_us": 281.77,
+          "kernel_union_us": 281.77,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            281.77
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 157.511,
+              "median": 176.9355,
+              "max": 199.36
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 67.071,
+              "median": 107.4755,
+              "max": 139.237
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.442,
+              "median": 0.6315,
+              "max": 0.685
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 26.035,
+              "median": 35.626000000000005,
+              "max": 42.119
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.971,
+              "median": 0.993,
+              "max": 1.016
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6148810337087424,
+              "median": 0.6646961634202424,
+              "max": 0.7295348922311268
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.27458068425124965,
+              "median": 0.4036685268626279,
+              "max": 0.502568119227146
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0016396179170917184,
+              "median": 0.0023714506280021596,
+              "max": 0.002677915213685906
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.09917471506211475,
+              "median": 0.13539585769622514,
+              "max": 0.16361101048933344
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0035062338985828974,
+              "median": 0.003757654585801136,
+              "max": 0.004134259145668229
+            }
+          }
+        },
+        {
+          "label": "r0-v1-p2",
+          "wall_ms": 1.0206729639321566,
+          "programs": 1,
+          "device_span_us": 286.813,
+          "kernel_union_us": 286.813,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            286.813
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 156.381,
+              "median": 178.252,
+              "max": 200.234
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 79.644,
+              "median": 109.565,
+              "max": 141.377
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.425,
+              "median": 0.6325000000000001,
+              "max": 0.731
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 26.138,
+              "median": 35.665,
+              "max": 42.942
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.979,
+              "median": 0.996,
+              "max": 1.008
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6161972385966018,
+              "median": 0.6683369516563904,
+              "max": 0.7344008199247659
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.31548050528217136,
+              "median": 0.41886613366938247,
+              "max": 0.5079798616460849
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0016543595293055193,
+              "median": 0.0023562971766135123,
+              "max": 0.0027711857338903506
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.09685224641037518,
+              "median": 0.13411643807603799,
+              "max": 0.161880275350183
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0035051098374612173,
+              "median": 0.0037380688781045177,
+              "max": 0.004044618880396612
+            }
+          }
+        },
+        {
+          "label": "r1179648-v0-p0",
+          "wall_ms": 1.3360939919948578,
+          "programs": 1,
+          "device_span_us": 341.582,
+          "kernel_union_us": 341.582,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            341.582
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 194.647,
+              "median": 229.913,
+              "max": 253.984
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 100.326,
+              "median": 136.507,
+              "max": 187.282
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.18,
+              "median": 0.46950000000000003,
+              "max": 0.612
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 22.852,
+              "median": 41.385999999999996,
+              "max": 49.234
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.976,
+              "median": 0.987,
+              "max": 1.007
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6436569138382582,
+              "median": 0.7047387178363976,
+              "max": 0.783165127627147
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.31531545316554865,
+              "median": 0.42120638676586963,
+              "max": 0.5923739937688792
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0006029564966887639,
+              "median": 0.0014110905913746804,
+              "max": 0.0018819408213460536
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07479608803236407,
+              "median": 0.12348577060973207,
+              "max": 0.15501268972709661
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0028889417891454555,
+              "median": 0.0030615760856356365,
+              "max": 0.003333120961441089
+            }
+          }
+        },
+        {
+          "label": "r1179648-v0-p1",
+          "wall_ms": 1.0838030138984323,
+          "programs": 1,
+          "device_span_us": 336.794,
+          "kernel_union_us": 336.794,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            336.794
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 194.852,
+              "median": 221.5,
+              "max": 244.837
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 87.619,
+              "median": 125.751,
+              "max": 182.704
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.245,
+              "median": 0.4835,
+              "max": 0.65
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 22.851,
+              "median": 41.3515,
+              "max": 48.837
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.977,
+              "median": 0.995,
+              "max": 1.018
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6502791056981522,
+              "median": 0.6938709773992237,
+              "max": 0.7777781315672164
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.2957922881121336,
+              "median": 0.3969565846146125,
+              "max": 0.5811288347460997
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0008136231018109471,
+              "median": 0.001485313208173548,
+              "max": 0.002145044616928032
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07722368963257696,
+              "median": 0.1273646856086666,
+              "max": 0.1532844831202186
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.002966964571663373,
+              "median": 0.0031463723899471155,
+              "max": 0.0034922096860848873
+            }
+          }
+        },
+        {
+          "label": "r1179648-v0-p2",
+          "wall_ms": 1.1061730328947306,
+          "programs": 1,
+          "device_span_us": 339.811,
+          "kernel_union_us": 339.811,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            339.811
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 189.418,
+              "median": 221.6565,
+              "max": 239.453
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 79.399,
+              "median": 121.74600000000001,
+              "max": 177.991
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.238,
+              "median": 0.47050000000000003,
+              "max": 0.607
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 22.87,
+              "median": 41.1985,
+              "max": 49.786
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.973,
+              "median": 0.998,
+              "max": 1.014
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6510746168573371,
+              "median": 0.6971383153825184,
+              "max": 0.7782755248468393
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.27402872160885183,
+              "median": 0.3834492206080313,
+              "max": 0.5803937254005653
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0007845874991193405,
+              "median": 0.001471768073521714,
+              "max": 0.0019091892707966383
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07671922173767191,
+              "median": 0.12799849008372916,
+              "max": 0.15572578299233977
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0029704870594835604,
+              "median": 0.0031637540802626945,
+              "max": 0.0034958680336544114
+            }
+          }
+        },
+        {
+          "label": "r1179648-v1-p0",
+          "wall_ms": 1.5064540202729404,
+          "programs": 1,
+          "device_span_us": 334.511,
+          "kernel_union_us": 334.511,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            334.511
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 189.888,
+              "median": 215.9955,
+              "max": 238.388
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 87.576,
+              "median": 116.478,
+              "max": 173.582
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.241,
+              "median": 0.4835,
+              "max": 0.613
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 22.84,
+              "median": 41.229,
+              "max": 50.255
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.975,
+              "median": 0.991,
+              "max": 1.01
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.642481576970706,
+              "median": 0.6911168143863854,
+              "max": 0.7662283498492028
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.2764316136745133,
+              "median": 0.3768414614606256,
+              "max": 0.5678043889626345
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0008358615565599652,
+              "median": 0.001535852254831399,
+              "max": 0.001971561908008787
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.08040742665337135,
+              "median": 0.13013472326161507,
+              "max": 0.1552050196205567
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.002994775646892545,
+              "median": 0.003186770735391712,
+              "max": 0.0035638120744503725
+            }
+          }
+        },
+        {
+          "label": "r1179648-v1-p1",
+          "wall_ms": 1.2646130053326488,
+          "programs": 1,
+          "device_span_us": 336.483,
+          "kernel_union_us": 336.483,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            336.483
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 194.681,
+              "median": 221.934,
+              "max": 240.238
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 86.83,
+              "median": 128.143,
+              "max": 196.168
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.241,
+              "median": 0.456,
+              "max": 0.643
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 22.837,
+              "median": 41.212999999999994,
+              "max": 49.512
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.974,
+              "median": 0.995,
+              "max": 1.021
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6467344242814974,
+              "median": 0.6991921830979344,
+              "max": 0.7721946559639332
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.2860104543931838,
+              "median": 0.4038028927956058,
+              "max": 0.6064788192447766
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0007980290999158923,
+              "median": 0.0014533576784122805,
+              "max": 0.0020080822970212926
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07838823060975107,
+              "median": 0.12629040914109785,
+              "max": 0.15618828903287676
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0029501909924055983,
+              "median": 0.0031599286573567777,
+              "max": 0.003487112471413587
+            }
+          }
+        },
+        {
+          "label": "r1179648-v1-p2",
+          "wall_ms": 1.3012639828957617,
+          "programs": 1,
+          "device_span_us": 332.797,
+          "kernel_union_us": 332.797,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            332.797
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 195.972,
+              "median": 220.27800000000002,
+              "max": 240.083
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 93.484,
+              "median": 126.967,
+              "max": 186.752
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.235,
+              "median": 0.47350000000000003,
+              "max": 0.577
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 22.812,
+              "median": 41.7005,
+              "max": 49.589
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.98,
+              "median": 0.996,
+              "max": 1.014
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6505686645980325,
+              "median": 0.6985569407041186,
+              "max": 0.7769697420065259
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.294195026466349,
+              "median": 0.40988248980557596,
+              "max": 0.5829482527506986
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.000792264798495034,
+              "median": 0.001464364037044022,
+              "max": 0.0018823053510320057
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07690699822667539,
+              "median": 0.12821616497287042,
+              "max": 0.15579621356356074
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0029885725705357633,
+              "median": 0.0031663791444631675,
+              "max": 0.0034366485013623974
+            }
+          }
+        },
+        {
+          "label": "r2375680-v0-p0",
+          "wall_ms": 1.2154339929111302,
+          "programs": 1,
+          "device_span_us": 232.814,
+          "kernel_union_us": 232.814,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            232.814
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 138.174,
+              "median": 161.08100000000002,
+              "max": 177.324
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 66.652,
+              "median": 89.4495,
+              "max": 119.072
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.087,
+              "median": 0.209,
+              "max": 0.39
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 10.347,
+              "median": 18.529,
+              "max": 27.959
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.733,
+              "median": 0.8525,
+              "max": 0.883
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6735780663622359,
+              "median": 0.7538058718328755,
+              "max": 0.8048180214019628
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.35167963911331324,
+              "median": 0.41213270097357335,
+              "max": 0.5379455382718735
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.00043565512798528043,
+              "median": 0.0009807576587822567,
+              "max": 0.0017776805371330115
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.053348905650281435,
+              "median": 0.08473426635279824,
+              "max": 0.1268480148798534
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.00331560219961902,
+              "median": 0.003814292784333493,
+              "max": 0.004016288539848749
+            }
+          }
+        },
+        {
+          "label": "r2375680-v0-p1",
+          "wall_ms": 1.3696040259674191,
+          "programs": 1,
+          "device_span_us": 234.125,
+          "kernel_union_us": 234.125,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            234.125
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 139.602,
+              "median": 162.0335,
+              "max": 180.264
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 72.964,
+              "median": 90.521,
+              "max": 118.318
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.086,
+              "median": 0.1755,
+              "max": 0.388
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 10.346,
+              "median": 18.2665,
+              "max": 27.976
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.736,
+              "median": 0.8565,
+              "max": 0.889
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6885047370468982,
+              "median": 0.7544682327670734,
+              "max": 0.8038599339271959
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.34195516771100376,
+              "median": 0.4248212141155908,
+              "max": 0.5671826171619407
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0004497437506536973,
+              "median": 0.0008428371746118611,
+              "max": 0.0017089198569440285
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.05353580651646125,
+              "median": 0.08470759256751069,
+              "max": 0.12199280497111087
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0033313348329599294,
+              "median": 0.0038054353637697394,
+              "max": 0.004062637297071538
+            }
+          }
+        },
+        {
+          "label": "r2375680-v0-p2",
+          "wall_ms": 1.12009298754856,
+          "programs": 1,
+          "device_span_us": 235.215,
+          "kernel_union_us": 235.215,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            235.215
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 124.198,
+              "median": 159.95999999999998,
+              "max": 181.636
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 72.571,
+              "median": 87.734,
+              "max": 122.153
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.093,
+              "median": 0.1985,
+              "max": 0.32
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 10.411,
+              "median": 18.2775,
+              "max": 28.018
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.736,
+              "median": 0.8565,
+              "max": 0.885
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6739008765235088,
+              "median": 0.7481496599457911,
+              "max": 0.8003005704488448
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.35629077658762315,
+              "median": 0.42054797366723085,
+              "max": 0.556195689214517
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0004906201861191416,
+              "median": 0.0009322586091345733,
+              "max": 0.001418313979257158
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.05530401549934977,
+              "median": 0.08484672961292192,
+              "max": 0.1271392853518346
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0034092684316446276,
+              "median": 0.0038737531404202307,
+              "max": 0.004268151241011367
+            }
+          }
+        },
+        {
+          "label": "r2375680-v1-p0",
+          "wall_ms": 1.2623640359379351,
+          "programs": 1,
+          "device_span_us": 233.423,
+          "kernel_union_us": 233.423,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            233.423
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 131.084,
+              "median": 159.0635,
+              "max": 177.025
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 64.787,
+              "median": 88.667,
+              "max": 117.473
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.091,
+              "median": 0.216,
+              "max": 0.386
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 10.366,
+              "median": 18.409,
+              "max": 27.777
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.728,
+              "median": 0.8545,
+              "max": 0.878
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6778611419634155,
+              "median": 0.7483447841794146,
+              "max": 0.8005962673038028
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.34971984410593027,
+              "median": 0.4121728132702292,
+              "max": 0.5183745333556911
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0004477822610083862,
+              "median": 0.0010217867859061021,
+              "max": 0.0017227682118023013
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.054463100922607546,
+              "median": 0.08782553692905276,
+              "max": 0.1256065080061318
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.003443695121894773,
+              "median": 0.003814129695578576,
+              "max": 0.004091732436278949
+            }
+          }
+        },
+        {
+          "label": "r2375680-v1-p1",
+          "wall_ms": 1.146374037489295,
+          "programs": 1,
+          "device_span_us": 238.861,
+          "kernel_union_us": 238.861,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            238.861
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 123.582,
+              "median": 166.94,
+              "max": 182.623
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 64.816,
+              "median": 90.049,
+              "max": 119.724
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.089,
+              "median": 0.1795,
+              "max": 0.384
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 10.346,
+              "median": 18.613500000000002,
+              "max": 27.972
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.732,
+              "median": 0.851,
+              "max": 0.886
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6932265226366835,
+              "median": 0.7512027777260081,
+              "max": 0.811440150557121
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.3444084504427572,
+              "median": 0.40750025435316184,
+              "max": 0.5204282565888136
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0004284088627083473,
+              "median": 0.0008917611767606725,
+              "max": 0.001627629002314285
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.051358931718335034,
+              "median": 0.08491377730997986,
+              "max": 0.1196926198545125
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0032691833209967927,
+              "median": 0.0036989098347944252,
+              "max": 0.0044053892985264735
+            }
+          }
+        },
+        {
+          "label": "r2375680-v1-p2",
+          "wall_ms": 1.1163330054841936,
+          "programs": 1,
+          "device_span_us": 235.151,
+          "kernel_union_us": 235.151,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            235.151
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 139.553,
+              "median": 158.073,
+              "max": 171.492
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 69.056,
+              "median": 90.691,
+              "max": 111.032
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.091,
+              "median": 0.193,
+              "max": 0.382
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 10.36,
+              "median": 18.4675,
+              "max": 28.073
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.736,
+              "median": 0.8574999999999999,
+              "max": 0.896
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6811080638299798,
+              "median": 0.7499875857768412,
+              "max": 0.8069453671998774
+            },
+            "FG_K6_WAIT_GATHER@TRISC_0": {
+              "min": 0.35329514722267213,
+              "median": 0.4238400502788372,
+              "max": 0.5026318023601325
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0004636848166152028,
+              "median": 0.0009244424230679476,
+              "max": 0.0017001806998335426
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.053119936408939444,
+              "median": 0.08683968368941135,
+              "max": 0.12483469862117211
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.003454624919795047,
+              "median": 0.003849000283244264,
+              "max": 0.004057841901699187
+            }
+          }
+        }
+      ],
+      "checks": 30,
+      "all_checks_pass": true
+    },
+    {
+      "report": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-023/probe-largest-operator-v1.json",
+      "case": "n2389000-64x64-k3x3x3",
+      "mode": "base",
+      "scope": "operator",
+      "samples": [
+        {
+          "label": "operator-v0",
+          "wall_ms": 445.7598750013858,
+          "programs": 1924,
+          "device_span_us": 438872.523,
+          "kernel_union_us": 370755.896,
+          "inter_program_gap_us": 68116.62699999998,
+          "k6_programs": 584,
+          "k6_kernel_spans_us": [
+            290.928,
+            284.543,
+            286.407,
+            274.896,
+            319.54,
+            312.633,
+            320.729,
+            312.182,
+            280.261,
+            283.713,
+            284.813,
+            281.464,
+            278.044,
+            292.747,
+            281.712,
+            278.842,
+            317.105,
+            313.96,
+            309.737,
+            318.968,
+            288.746,
+            294.162,
+            289.171,
+            285.923,
+            312.207,
+            315.792,
+            317.853,
+            322.39,
+            310.481,
+            312.24,
+            314.606,
+            311.708,
+            293.722,
+            285.679,
+            286.293,
+            289.978,
+            306.88,
+            309.144,
+            307.414,
+            314.314,
+            296.787,
+            305.267,
+            300.707,
+            297.334,
+            300.131,
+            307.581,
+            308.383,
+            307.162,
+            360.679,
+            354.507,
+            364.189,
+            363.258,
+            356.36,
+            358.82,
+            349.624,
+            352.942,
+            331.55,
+            339.838,
+            332.334,
+            323.043,
+            302.225,
+            310.614,
+            308.268,
+            306.111,
+            283.614,
+            268.832,
+            277.667,
+            284.409,
+            303.248,
+            307.068,
+            302.447,
+            304.393,
+            350.176,
+            345.37,
+            343.152,
+            352.655,
+            337.588,
+            340.173,
+            353.07,
+            341.873,
+            339.085,
+            343.639,
+            334.492,
+            330.795,
+            317.463,
+            318.716,
+            329.732,
+            317.918,
+            335.367,
+            330.106,
+            327.429,
+            336.998,
+            326.675,
+            324.361,
+            339.445,
+            334.219,
+            335.965,
+            334.686,
+            333.073,
+            342.514,
+            315.685,
+            320.2,
+            321.707,
+            313.09,
+            320.895,
+            326.668,
+            333.439,
+            332.004,
+            310.595,
+            317.288,
+            318.031,
+            321.879,
+            333.669,
+            342.665,
+            351.785,
+            337.105,
+            313.071,
+            321.278,
+            317.058,
+            328.642,
+            376.103,
+            374.274,
+            370.865,
+            364.847,
+            347.537,
+            350.888,
+            354.145,
+            355.103,
+            363.208,
+            357.967,
+            359.592,
+            351.49,
+            364.597,
+            370.209,
+            368.958,
+            366.151,
+            326.969,
+            342.163,
+            331.853,
+            326.465,
+            322.17,
+            324.358,
+            326.297,
+            320.22,
+            335.373,
+            335.966,
+            343.661,
+            341.778,
+            349.169,
+            350.371,
+            354.944,
+            364.233,
+            330.998,
+            329.915,
+            339.73,
+            335.816,
+            388.876,
+            399.631,
+            383.714,
+            393.874,
+            349.832,
+            352.796,
+            347.912,
+            347.168,
+            340.769,
+            363.671,
+            359.824,
+            361.15,
+            349.226,
+            354.78,
+            347.272,
+            346.82,
+            346.584,
+            344.076,
+            350.914,
+            347.32,
+            337.87,
+            338.655,
+            344.605,
+            339.922,
+            333.249,
+            343.542,
+            341.489,
+            333.387,
+            375.175,
+            373.161,
+            376.419,
+            382.729,
+            355.182,
+            346.192,
+            346.88,
+            355.461,
+            380.9,
+            380.226,
+            380.703,
+            381.719,
+            361.841,
+            365.869,
+            376.155,
+            369.283,
+            333.516,
+            336.19,
+            335.694,
+            320.696,
+            342.357,
+            355.192,
+            352.428,
+            353.317,
+            326.131,
+            335.549,
+            340.101,
+            338.114,
+            345.761,
+            345.107,
+            340.491,
+            339.448,
+            349.292,
+            342.788,
+            338.307,
+            336.652,
+            343.119,
+            316.211,
+            326.086,
+            322.97,
+            393.092,
+            398.476,
+            393.163,
+            394.911,
+            343.416,
+            334.237,
+            337.062,
+            346.313,
+            376.923,
+            369.043,
+            375.309,
+            379.625,
+            348.326,
+            353.522,
+            356.606,
+            353.515,
+            365.205,
+            365.856,
+            356.764,
+            366.562,
+            331.373,
+            328.973,
+            321.719,
+            332.339,
+            336.362,
+            342.789,
+            341.791,
+            339.811,
+            343.278,
+            343.55,
+            338.717,
+            339.426,
+            320.09,
+            316.536,
+            314.998,
+            313.932,
+            319.068,
+            338.935,
+            325.823,
+            333.808,
+            385.272,
+            379.034,
+            390.024,
+            384.405,
+            353.112,
+            354.501,
+            357.169,
+            354.481,
+            372.391,
+            366.917,
+            375.883,
+            370.675,
+            342.065,
+            344.98,
+            352.526,
+            350.52,
+            311.365,
+            311.156,
+            307.218,
+            316.796,
+            314.422,
+            308.84,
+            324.101,
+            309.962,
+            344.586,
+            336.972,
+            334.469,
+            333.779,
+            342.067,
+            341.107,
+            335.135,
+            337.782,
+            339.196,
+            328.547,
+            335.635,
+            331.932,
+            343.34,
+            338.032,
+            342.223,
+            347.792,
+            323.602,
+            319.371,
+            328.678,
+            320.901,
+            324.447,
+            330.341,
+            344.315,
+            322.56,
+            348.704,
+            332.632,
+            341.055,
+            350.355,
+            360.842,
+            362.811,
+            363.062,
+            357.751,
+            395.542,
+            385.567,
+            384.518,
+            389.223,
+            329.95,
+            323.098,
+            328.172,
+            335.412,
+            335.906,
+            325.957,
+            323.027,
+            328.101,
+            317.391,
+            317.02,
+            316.95,
+            316.748,
+            394.937,
+            401.214,
+            395.751,
+            400.237,
+            332.438,
+            337.326,
+            340.288,
+            338.31,
+            435.961,
+            439.34,
+            419.291,
+            434.602,
+            417.236,
+            425.891,
+            411.81,
+            410.928,
+            346.055,
+            332.625,
+            344.302,
+            346.568,
+            328.759,
+            325.959,
+            326.721,
+            324.661,
+            381.867,
+            377.334,
+            372.012,
+            376.455,
+            411.628,
+            403.966,
+            400.287,
+            403.587,
+            362.309,
+            361.959,
+            363.718,
+            370.475,
+            431.988,
+            433.652,
+            434.175,
+            434.627,
+            406.5,
+            392.408,
+            407.057,
+            396.587,
+            319.085,
+            319.173,
+            322.616,
+            319.483,
+            318.911,
+            323.143,
+            326.891,
+            322.973,
+            344.207,
+            343.868,
+            328.518,
+            341.283,
+            359.368,
+            360.412,
+            352.957,
+            360.601,
+            408.462,
+            403.98,
+            405.368,
+            403.264,
+            439.9,
+            433.76,
+            439.546,
+            437.878,
+            416.302,
+            414.661,
+            412.902,
+            409.373,
+            363.774,
+            363.034,
+            373.362,
+            359.203,
+            384.9,
+            382.603,
+            372.914,
+            373.182,
+            374.593,
+            366.241,
+            378.955,
+            379.326,
+            369.49,
+            371.617,
+            371.922,
+            374.514,
+            360.434,
+            361.907,
+            360.542,
+            357.317,
+            435.165,
+            433.689,
+            426.774,
+            428.757,
+            386.051,
+            391.297,
+            386.513,
+            380.074,
+            423.185,
+            416.594,
+            416.63,
+            415.018,
+            417.203,
+            428.863,
+            414.119,
+            419.959,
+            298.568,
+            304.859,
+            299.489,
+            307.131,
+            407.97,
+            399.636,
+            397.911,
+            390.897,
+            447.605,
+            447.129,
+            446.175,
+            449.83,
+            424.99,
+            432.012,
+            432.42,
+            426.224,
+            334.964,
+            333.189,
+            331.492,
+            335.358,
+            359.775,
+            359.427,
+            356.678,
+            351.98,
+            436.334,
+            442.988,
+            433.15,
+            436.222,
+            429.959,
+            431.39,
+            440.319,
+            433.162,
+            349.679,
+            344.255,
+            347.948,
+            342.021,
+            354.322,
+            339.007,
+            337.773,
+            348.869,
+            302.216,
+            297.612,
+            294.86,
+            301.783,
+            338.895,
+            327.907,
+            337.683,
+            328.562,
+            359.748,
+            361.765,
+            358.99,
+            361.123,
+            298.921,
+            295.643,
+            305.914,
+            295.506,
+            342.85,
+            349.902,
+            338.552,
+            338.923,
+            309.258,
+            301.697,
+            314.714,
+            308.414,
+            310.518,
+            312.902,
+            314.111,
+            311.517,
+            310.55,
+            316.098,
+            309.766,
+            324.397,
+            319.539,
+            317.823,
+            323.685,
+            316.375,
+            322.286,
+            310.438,
+            311.508,
+            305.868,
+            322.432,
+            315.519,
+            323.535,
+            316.113,
+            346.217,
+            351.773,
+            347.05,
+            345.845,
+            276.245,
+            275.947,
+            284.962,
+            282.28,
+            300.33,
+            298.345,
+            299.524,
+            297.651,
+            290.467,
+            296.404,
+            293.495,
+            288.946,
+            263.967,
+            252.289,
+            255.614,
+            261.317,
+            255.511,
+            243.879,
+            249.127,
+            249.51,
+            244.823,
+            253.784,
+            246.801,
+            250.144,
+            252.752,
+            253.717,
+            254.414,
+            252.497,
+            249.168,
+            256.075,
+            251.71,
+            255.487,
+            255.409,
+            249.292,
+            247.411,
+            250.831,
+            256.722,
+            254.22,
+            249.718,
+            250.929,
+            246.605,
+            251.417,
+            250.159,
+            244.304,
+            276.994,
+            266.009,
+            265.697,
+            268.516,
+            229.05,
+            232.569,
+            237.75,
+            237.401
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.436,
+              "median": 73.102,
+              "max": 33310.286
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.015,
+              "median": 11.219,
+              "max": 19266.246
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6063799538581697,
+              "median": 0.7084374130755472,
+              "max": 0.8293386226902333
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.002206530343155832,
+              "median": 0.0031183615141848033,
+              "max": 0.004658022720695996
+            }
+          },
+          "phase_unions": {
+            "feature_preparation_and_scale": {
+              "programs": 18,
+              "microseconds": 63008.205
+            },
+            "k6_products": {
+              "programs": 584,
+              "microseconds": 198762.195
+            },
+            "loop_reconstruction_epilogue_assembly": {
+              "programs": 1322,
+              "microseconds": 108985.496
+            }
+          },
+          "phase_overlap_us": 0.0
+        },
+        {
+          "label": "operator-v1",
+          "wall_ms": 908.0235050059855,
+          "programs": 1924,
+          "device_span_us": 451613.788,
+          "kernel_union_us": 370639.97,
+          "inter_program_gap_us": 80973.81800000003,
+          "k6_programs": 584,
+          "k6_kernel_spans_us": [
+            286.069,
+            282.465,
+            292.322,
+            287.042,
+            311.012,
+            311.563,
+            318.502,
+            322.885,
+            280.043,
+            282.979,
+            290.076,
+            285.39,
+            278.601,
+            280.036,
+            280.779,
+            279.032,
+            318.922,
+            309.653,
+            313.118,
+            314.313,
+            300.299,
+            290.053,
+            285.265,
+            297.358,
+            315.977,
+            312.418,
+            322.727,
+            312.734,
+            314.391,
+            313.098,
+            311.463,
+            314.332,
+            293.419,
+            295.149,
+            289.219,
+            296.675,
+            306.398,
+            309.631,
+            309.342,
+            313.977,
+            300.084,
+            304.566,
+            303.23,
+            304.951,
+            305.263,
+            312.911,
+            316.068,
+            308.604,
+            357.917,
+            364.72,
+            360.996,
+            354.044,
+            352.399,
+            353.967,
+            347.979,
+            352.272,
+            325.153,
+            334.405,
+            341.48,
+            328.602,
+            312.659,
+            312.999,
+            313.903,
+            306.49,
+            278.694,
+            283.675,
+            284.613,
+            289.035,
+            308.335,
+            311.149,
+            305.725,
+            311.078,
+            345.415,
+            346.06,
+            341.116,
+            352.944,
+            331.222,
+            344.478,
+            346.772,
+            347.145,
+            326.975,
+            327.007,
+            336.749,
+            333.974,
+            327.05,
+            325.691,
+            318.774,
+            324.506,
+            341.054,
+            337.835,
+            336.481,
+            333.125,
+            341.785,
+            341.591,
+            339.997,
+            345.693,
+            338.097,
+            334.344,
+            338.857,
+            329.711,
+            312.363,
+            315.41,
+            310.157,
+            313.147,
+            328.017,
+            328.346,
+            333.844,
+            320.868,
+            316.159,
+            317.338,
+            311.189,
+            310.703,
+            342.129,
+            335.205,
+            343.699,
+            347.006,
+            322.443,
+            323.817,
+            323.907,
+            320.427,
+            362.512,
+            360.444,
+            371.003,
+            366.273,
+            349.065,
+            346.421,
+            346.388,
+            354.14,
+            367.769,
+            359.26,
+            365.461,
+            362.216,
+            357.048,
+            363.407,
+            368.282,
+            358.879,
+            327.604,
+            322.476,
+            328.34,
+            337.348,
+            319.132,
+            321.604,
+            329.826,
+            322.049,
+            327.639,
+            347.238,
+            339.499,
+            339.819,
+            360.038,
+            344.652,
+            353.098,
+            361.345,
+            336.946,
+            326.106,
+            339.526,
+            333.955,
+            382.332,
+            397.138,
+            398.116,
+            388.906,
+            351.279,
+            349.23,
+            334.223,
+            352.558,
+            367.674,
+            353.383,
+            360.061,
+            356.115,
+            344.965,
+            352.986,
+            349.299,
+            349.438,
+            337.807,
+            338.32,
+            343.649,
+            350.295,
+            339.53,
+            337.373,
+            328.67,
+            334.343,
+            336.93,
+            328.432,
+            331.211,
+            333.201,
+            368.376,
+            378.802,
+            372.383,
+            373.686,
+            363.778,
+            352.088,
+            359.39,
+            355.377,
+            381.622,
+            389.772,
+            374.836,
+            378.714,
+            378.095,
+            370.416,
+            371.469,
+            364.865,
+            330.964,
+            329.488,
+            334.009,
+            330.314,
+            348.947,
+            363.213,
+            356.769,
+            361.251,
+            330.377,
+            331.181,
+            332.177,
+            347.192,
+            346.457,
+            351.363,
+            350.182,
+            348.774,
+            340.302,
+            337.963,
+            340.761,
+            335.672,
+            324.042,
+            318.676,
+            326.02,
+            321.171,
+            397.056,
+            392.621,
+            390.435,
+            398.725,
+            339.464,
+            345.42,
+            342.202,
+            331.369,
+            378.379,
+            374.514,
+            374.571,
+            374.332,
+            350.898,
+            356.783,
+            352.465,
+            349.473,
+            359.736,
+            353.518,
+            355.38,
+            355.697,
+            329.205,
+            338.484,
+            336.534,
+            329.291,
+            336.862,
+            336.214,
+            334.428,
+            336.241,
+            326.34,
+            334.712,
+            333.954,
+            334.706,
+            304.277,
+            301.313,
+            315.575,
+            319.719,
+            337.234,
+            324.268,
+            326.996,
+            330.513,
+            391.172,
+            384.5,
+            376.522,
+            388.444,
+            362.556,
+            359.065,
+            365.396,
+            359.773,
+            356.366,
+            371.467,
+            361.741,
+            365.684,
+            344.297,
+            333.667,
+            343.679,
+            347.704,
+            307.964,
+            307.417,
+            312.342,
+            308.945,
+            314.245,
+            319.505,
+            312.594,
+            302.689,
+            339.065,
+            330.653,
+            337.468,
+            342.345,
+            350.281,
+            333.65,
+            338.265,
+            341.894,
+            333.503,
+            332.127,
+            332.661,
+            327.457,
+            348.161,
+            333.078,
+            353.461,
+            327.801,
+            319.929,
+            319.381,
+            326.202,
+            325.652,
+            326.922,
+            327.605,
+            332.429,
+            334.878,
+            344.024,
+            345.228,
+            343.42,
+            338.637,
+            374.984,
+            364.915,
+            367.568,
+            355.487,
+            389.806,
+            390.434,
+            390.72,
+            383.048,
+            324.769,
+            320.5,
+            328.463,
+            329.485,
+            332.066,
+            325.041,
+            329.278,
+            318.695,
+            316.797,
+            315.953,
+            314.352,
+            314.372,
+            394.973,
+            387.514,
+            382.557,
+            398.636,
+            338.341,
+            334.146,
+            337.761,
+            335.786,
+            435.065,
+            437.585,
+            433.803,
+            434.72,
+            424.699,
+            409.503,
+            409.867,
+            426.163,
+            350.4,
+            351.922,
+            349.151,
+            341.307,
+            318.216,
+            335.85,
+            326.687,
+            321.317,
+            371.893,
+            370.43,
+            376.985,
+            379.641,
+            403.752,
+            403.08,
+            407.38,
+            408.822,
+            363.948,
+            362.239,
+            360.003,
+            362.119,
+            441.261,
+            433.942,
+            435.381,
+            445.261,
+            398.782,
+            396.126,
+            397.386,
+            409.572,
+            317.549,
+            320.167,
+            319.627,
+            322.582,
+            316.267,
+            317.165,
+            326.415,
+            319.996,
+            344.361,
+            343.657,
+            332.259,
+            330.569,
+            357.454,
+            365.584,
+            353.418,
+            345.85,
+            399.664,
+            403.117,
+            394.25,
+            397.49,
+            436.319,
+            450.484,
+            435.795,
+            436.96,
+            409.352,
+            414.817,
+            404.982,
+            404.16,
+            366.698,
+            375.839,
+            371.264,
+            364.963,
+            380.695,
+            382.97,
+            382.324,
+            382.169,
+            371.093,
+            380.764,
+            382.037,
+            380.918,
+            375.624,
+            368.786,
+            374.588,
+            366.435,
+            354.59,
+            354.916,
+            358.588,
+            358.583,
+            428.393,
+            447.365,
+            427.556,
+            435.905,
+            386.513,
+            378.228,
+            375.315,
+            390.757,
+            429.39,
+            414.523,
+            417.848,
+            418.679,
+            415.214,
+            420.334,
+            424.109,
+            423.104,
+            310.295,
+            304.438,
+            300.465,
+            303.138,
+            403.0,
+            403.11,
+            401.99,
+            401.886,
+            443.669,
+            440.556,
+            441.302,
+            446.141,
+            428.939,
+            426.164,
+            430.257,
+            422.145,
+            326.014,
+            324.381,
+            336.706,
+            332.862,
+            344.984,
+            363.039,
+            351.422,
+            357.692,
+            429.101,
+            437.571,
+            436.467,
+            438.647,
+            438.18,
+            439.406,
+            430.426,
+            425.597,
+            348.486,
+            345.692,
+            344.001,
+            348.987,
+            353.084,
+            353.308,
+            344.527,
+            346.984,
+            299.475,
+            295.712,
+            297.514,
+            297.3,
+            337.825,
+            320.197,
+            337.064,
+            318.391,
+            362.84,
+            358.32,
+            358.215,
+            364.693,
+            299.366,
+            303.979,
+            298.749,
+            296.735,
+            346.191,
+            338.321,
+            338.721,
+            338.537,
+            300.7,
+            303.566,
+            300.037,
+            305.975,
+            319.134,
+            315.985,
+            318.71,
+            318.125,
+            314.137,
+            310.222,
+            305.231,
+            305.443,
+            311.177,
+            320.97,
+            319.41,
+            313.17,
+            315.559,
+            323.235,
+            311.527,
+            321.148,
+            310.108,
+            331.184,
+            334.499,
+            317.266,
+            331.543,
+            338.828,
+            343.582,
+            341.784,
+            285.278,
+            281.833,
+            291.193,
+            285.514,
+            299.593,
+            299.697,
+            299.25,
+            300.004,
+            290.886,
+            285.058,
+            293.618,
+            283.381,
+            261.368,
+            263.092,
+            266.722,
+            260.067,
+            247.565,
+            252.517,
+            247.493,
+            250.042,
+            251.582,
+            254.27,
+            251.344,
+            251.105,
+            265.481,
+            257.369,
+            249.643,
+            254.287,
+            246.616,
+            251.755,
+            254.853,
+            251.094,
+            253.363,
+            256.807,
+            250.488,
+            250.24,
+            255.649,
+            248.637,
+            253.805,
+            259.131,
+            245.621,
+            249.49,
+            243.573,
+            249.261,
+            268.144,
+            261.091,
+            265.212,
+            271.973,
+            233.267,
+            230.58,
+            237.52,
+            232.417
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.437,
+              "median": 72.921,
+              "max": 33326.074
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.015,
+              "median": 11.217,
+              "max": 19243.622
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6063823643776444,
+              "median": 0.7084948570051717,
+              "max": 0.8291880437207227
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0021988929864661254,
+              "median": 0.003120195050095323,
+              "max": 0.00473967684021544
+            }
+          },
+          "phase_unions": {
+            "feature_preparation_and_scale": {
+              "programs": 18,
+              "microseconds": 63112.656
+            },
+            "k6_products": {
+              "programs": 584,
+              "microseconds": 198619.726
+            },
+            "loop_reconstruction_epilogue_assembly": {
+              "programs": 1322,
+              "microseconds": 108907.588
+            }
+          },
+          "phase_overlap_us": 0.0
+        }
+      ],
+      "checks": 6,
+      "all_checks_pass": true
+    },
+    {
+      "report": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-023/probe-largest-weight-v1.json",
+      "case": "n2389000-64x64-k3x3x3",
+      "mode": "weight",
+      "scope": "chunks",
+      "samples": [
+        {
+          "label": "r0-v0-p0",
+          "wall_ms": 1.3408830272965133,
+          "programs": 1,
+          "device_span_us": 280.636,
+          "kernel_union_us": 280.636,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            280.636
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 156.892,
+              "median": 180.937,
+              "max": 197.786
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 25.166,
+              "median": 53.263,
+              "max": 84.547
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.483,
+              "median": 0.628,
+              "max": 0.698
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 26.232,
+              "median": 35.939499999999995,
+              "max": 42.515
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.979,
+              "median": 0.992,
+              "max": 1.013
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6191182737991886,
+              "median": 0.6757622555153038,
+              "max": 0.7367319268132785
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.09391454917956316,
+              "median": 0.19776096907787286,
+              "max": 0.31525978626455164
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0018024876568780016,
+              "median": 0.002368678062457357,
+              "max": 0.0026632709315236557
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.09749570724527797,
+              "median": 0.13349280518883472,
+              "max": 0.16534112385032126
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0035229386850334486,
+              "median": 0.003711371002677949,
+              "max": 0.003957851655912784
+            }
+          }
+        },
+        {
+          "label": "r0-v0-p1",
+          "wall_ms": 1.1169129866175354,
+          "programs": 1,
+          "device_span_us": 281.963,
+          "kernel_union_us": 281.963,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            281.963
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 165.705,
+              "median": 179.25,
+              "max": 202.741
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 23.726,
+              "median": 53.559,
+              "max": 81.992
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.494,
+              "median": 0.6325000000000001,
+              "max": 0.691
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 25.924,
+              "median": 35.659000000000006,
+              "max": 43.709
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.973,
+              "median": 0.985,
+              "max": 1.004
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6314614766538702,
+              "median": 0.6742261642794738,
+              "max": 0.7374625796149384
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.0882483122872924,
+              "median": 0.20144647429212936,
+              "max": 0.323392640916316
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0017917376954045918,
+              "median": 0.0023753382897675696,
+              "max": 0.0026885965445055857
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.09841020120890949,
+              "median": 0.13452276098845814,
+              "max": 0.1622385045951925
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.00348350145323987,
+              "median": 0.0037005624766321067,
+              "max": 0.004023612675181444
+            }
+          }
+        },
+        {
+          "label": "r0-v0-p2",
+          "wall_ms": 1.0993930045515299,
+          "programs": 1,
+          "device_span_us": 278.193,
+          "kernel_union_us": 278.193,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            278.193
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 158.668,
+              "median": 178.59,
+              "max": 197.205
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 27.776,
+              "median": 54.064499999999995,
+              "max": 83.903
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.525,
+              "median": 0.6405000000000001,
+              "max": 0.724
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 26.227,
+              "median": 35.8935,
+              "max": 42.993
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.976,
+              "median": 0.9944999999999999,
+              "max": 1.014
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6198204512980886,
+              "median": 0.6722789956111659,
+              "max": 0.730453818117166
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.10697436173941174,
+              "median": 0.19924255310510514,
+              "max": 0.30552510933329446
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.001938692988578329,
+              "median": 0.0024046496696504545,
+              "max": 0.0026955311534579266
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.09970506490050561,
+              "median": 0.13612457265442957,
+              "max": 0.16519249980788445
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0035752967641209735,
+              "median": 0.003756693906504432,
+              "max": 0.004021045471822674
+            }
+          }
+        },
+        {
+          "label": "r0-v1-p0",
+          "wall_ms": 1.3722340227104723,
+          "programs": 1,
+          "device_span_us": 282.962,
+          "kernel_union_us": 282.962,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            282.962
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 158.16,
+              "median": 180.768,
+              "max": 201.213
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 24.105,
+              "median": 49.6225,
+              "max": 79.782
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.491,
+              "median": 0.6345000000000001,
+              "max": 0.703
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 26.214,
+              "median": 36.28,
+              "max": 42.862
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.976,
+              "median": 0.991,
+              "max": 1.014
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6214416219720634,
+              "median": 0.6768514162505501,
+              "max": 0.7375131729369225
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.08812819444139777,
+              "median": 0.1862392646660426,
+              "max": 0.2881007063309789
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0017918203946384061,
+              "median": 0.002350370974582839,
+              "max": 0.0026497325697870007
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.09740093261745963,
+              "median": 0.13490569373425532,
+              "max": 0.16464301536459047
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0035345219168748583,
+              "median": 0.0036972638782004205,
+              "max": 0.004050173549936615
+            }
+          }
+        },
+        {
+          "label": "r0-v1-p1",
+          "wall_ms": 1.0848829988390207,
+          "programs": 1,
+          "device_span_us": 286.996,
+          "kernel_union_us": 286.996,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            286.996
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 165.825,
+              "median": 188.2165,
+              "max": 206.09
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 31.785,
+              "median": 58.1015,
+              "max": 84.647
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.48,
+              "median": 0.636,
+              "max": 0.709
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 26.213,
+              "median": 35.914,
+              "max": 42.639
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.968,
+              "median": 0.987,
+              "max": 1.002
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6395798372483285,
+              "median": 0.6833749243048548,
+              "max": 0.7403509024025751
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.11224209369186537,
+              "median": 0.21342896804561814,
+              "max": 0.3170224295453082
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0017227889081107466,
+              "median": 0.002291497918371561,
+              "max": 0.002681127359221906
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.09667555670265698,
+              "median": 0.13090685783241884,
+              "max": 0.15719770101286124
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.003424561107122242,
+              "median": 0.0036150669147212828,
+              "max": 0.003882420384683812
+            }
+          }
+        },
+        {
+          "label": "r0-v1-p2",
+          "wall_ms": 1.322804018855095,
+          "programs": 1,
+          "device_span_us": 281.556,
+          "kernel_union_us": 281.556,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            281.556
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 159.728,
+              "median": 182.11599999999999,
+              "max": 200.89
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 27.415,
+              "median": 53.5045,
+              "max": 82.801
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.487,
+              "median": 0.642,
+              "max": 0.703
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 26.212,
+              "median": 35.8935,
+              "max": 42.766
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.971,
+              "median": 0.9955,
+              "max": 1.011
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6230102854735726,
+              "median": 0.6746734810654373,
+              "max": 0.7394357112581317
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.10229859323109071,
+              "median": 0.19872292498129293,
+              "max": 0.29905553047404065
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.001864978612103596,
+              "median": 0.002398688508257402,
+              "max": 0.0027991071606831256
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.0968380246205225,
+              "median": 0.13498474973220545,
+              "max": 0.16281359322284528
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.003534715831674763,
+              "median": 0.003726658047088459,
+              "max": 0.004038077874931533
+            }
+          }
+        },
+        {
+          "label": "r1179648-v0-p0",
+          "wall_ms": 1.3229140313342214,
+          "programs": 1,
+          "device_span_us": 337.148,
+          "kernel_union_us": 337.148,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            337.148
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 199.611,
+              "median": 218.906,
+              "max": 235.347
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 27.621,
+              "median": 74.54249999999999,
+              "max": 115.441
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.24,
+              "median": 0.4625,
+              "max": 0.616
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 22.975,
+              "median": 41.858999999999995,
+              "max": 49.502
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.975,
+              "median": 0.993,
+              "max": 1.015
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6558002438913053,
+              "median": 0.7012550031992184,
+              "max": 0.7791019683211139
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.09164244579352673,
+              "median": 0.24136457539713246,
+              "max": 0.36946913276001675
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0008219350605017119,
+              "median": 0.0014415310411879797,
+              "max": 0.0019511471455201015
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07772301176247713,
+              "median": 0.12949995352442578,
+              "max": 0.15358172234166986
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0029375961713032275,
+              "median": 0.0032074020298662096,
+              "max": 0.003522183324998214
+            }
+          }
+        },
+        {
+          "label": "r1179648-v0-p1",
+          "wall_ms": 1.2473640381358564,
+          "programs": 1,
+          "device_span_us": 335.23,
+          "kernel_union_us": 335.23,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            335.23
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 187.967,
+              "median": 214.37900000000002,
+              "max": 237.572
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 25.328,
+              "median": 77.10900000000001,
+              "max": 115.078
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.239,
+              "median": 0.4885,
+              "max": 0.639
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 22.897,
+              "median": 41.689,
+              "max": 50.21
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.973,
+              "median": 0.9884999999999999,
+              "max": 1.007
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6530759021325978,
+              "median": 0.6961107531005333,
+              "max": 0.7783729699560299
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.08341676766612215,
+              "median": 0.25405485112616266,
+              "max": 0.3702328634026754
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0008035585202419417,
+              "median": 0.0015531466026007495,
+              "max": 0.0020446102601678565
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07803781325671513,
+              "median": 0.12918318069525164,
+              "max": 0.156047016117503
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0029481485028793083,
+              "median": 0.003200698949623565,
+              "max": 0.0035863243422666726
+            }
+          }
+        },
+        {
+          "label": "r1179648-v0-p2",
+          "wall_ms": 1.280552998650819,
+          "programs": 1,
+          "device_span_us": 336.866,
+          "kernel_union_us": 336.866,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            336.866
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 190.107,
+              "median": 222.055,
+              "max": 242.702
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 28.751,
+              "median": 75.378,
+              "max": 114.534
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.233,
+              "median": 0.47350000000000003,
+              "max": 0.646
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 23.009,
+              "median": 41.588499999999996,
+              "max": 49.747
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.979,
+              "median": 0.994,
+              "max": 1.021
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6537017194243884,
+              "median": 0.6989350162755102,
+              "max": 0.786073776216929
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.09450966294363386,
+              "median": 0.24789317601654998,
+              "max": 0.35820083315611045
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0007880433863543356,
+              "median": 0.0015000255407324834,
+              "max": 0.0020237651429949846
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07509618736418931,
+              "median": 0.1289755047153444,
+              "max": 0.15458452321393615
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.00296088886241101,
+              "median": 0.00317404900422292,
+              "max": 0.003459062018257501
+            }
+          }
+        },
+        {
+          "label": "r1179648-v1-p0",
+          "wall_ms": 1.3533730525523424,
+          "programs": 1,
+          "device_span_us": 337.311,
+          "kernel_union_us": 337.311,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            337.311
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 199.284,
+              "median": 216.325,
+              "max": 234.851
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 26.242,
+              "median": 72.012,
+              "max": 110.353
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.241,
+              "median": 0.46599999999999997,
+              "max": 0.634
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 23.06,
+              "median": 41.8585,
+              "max": 49.847
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.977,
+              "median": 0.993,
+              "max": 1.014
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6540055724567051,
+              "median": 0.6980224579524292,
+              "max": 0.7769567297833072
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.08504431694006083,
+              "median": 0.23279727590213928,
+              "max": 0.35162632712626973
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0008281241651974142,
+              "median": 0.0014583157349704668,
+              "max": 0.002015064071211973
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07871066768994628,
+              "median": 0.1297779349739962,
+              "max": 0.15483367967223605
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.002977157085633864,
+              "median": 0.0031861476815524554,
+              "max": 0.003528776978417266
+            }
+          }
+        },
+        {
+          "label": "r1179648-v1-p1",
+          "wall_ms": 1.2685630354098976,
+          "programs": 1,
+          "device_span_us": 337.857,
+          "kernel_union_us": 337.857,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            337.857
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 204.487,
+              "median": 222.372,
+              "max": 239.469
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 33.18,
+              "median": 73.63,
+              "max": 110.73
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.236,
+              "median": 0.4835,
+              "max": 0.622
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 22.968,
+              "median": 41.419,
+              "max": 49.374
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.969,
+              "median": 0.9884999999999999,
+              "max": 1.012
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6619137482884638,
+              "median": 0.7001156704295222,
+              "max": 0.7848788003015116
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.10111630203238281,
+              "median": 0.24163703529189437,
+              "max": 0.353551963166482
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0007820421905134305,
+              "median": 0.0015102538557517473,
+              "max": 0.001979793986654722
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07579422567328095,
+              "median": 0.12800675874275125,
+              "max": 0.15200278305415565
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.002924992501922774,
+              "median": 0.003164458730648046,
+              "max": 0.00353951349177203
+            }
+          }
+        },
+        {
+          "label": "r1179648-v1-p2",
+          "wall_ms": 1.1378040071576834,
+          "programs": 1,
+          "device_span_us": 335.36,
+          "kernel_union_us": 335.36,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            335.36
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 205.646,
+              "median": 219.683,
+              "max": 240.543
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 34.075,
+              "median": 74.67949999999999,
+              "max": 103.031
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.24,
+              "median": 0.49,
+              "max": 0.642
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 23.035,
+              "median": 41.8225,
+              "max": 49.978
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.979,
+              "median": 0.9955,
+              "max": 1.009
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6561247844489732,
+              "median": 0.7000168207172792,
+              "max": 0.7860805286222685
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.10605881400878975,
+              "median": 0.2394874588188169,
+              "max": 0.3523891229520439
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0007861378774929703,
+              "median": 0.0015135658041233767,
+              "max": 0.0020679658560154614
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.0755507858116792,
+              "median": 0.1289698940110932,
+              "max": 0.15640265751204047
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0029771522267303388,
+              "median": 0.0031788331589744593,
+              "max": 0.003477114203421591
+            }
+          }
+        },
+        {
+          "label": "r2375680-v0-p0",
+          "wall_ms": 1.216464035678655,
+          "programs": 1,
+          "device_span_us": 234.354,
+          "kernel_union_us": 234.354,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            234.354
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 133.223,
+              "median": 161.2335,
+              "max": 176.223
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 34.786,
+              "median": 53.5215,
+              "max": 69.236
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.089,
+              "median": 0.1995,
+              "max": 0.384
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 10.482,
+              "median": 18.536,
+              "max": 28.311
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.73,
+              "median": 0.8534999999999999,
+              "max": 0.881
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6933578964411208,
+              "median": 0.7502222553300582,
+              "max": 0.8055227941060842
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.1637774366990273,
+              "median": 0.2474654451362055,
+              "max": 0.34311600601516634
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.00046513086378459736,
+              "median": 0.0009081252403762847,
+              "max": 0.001666305055326535
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.05478091813696797,
+              "median": 0.08750582000656792,
+              "max": 0.12358672591868272
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0033462710388856643,
+              "median": 0.0038126261983309597,
+              "max": 0.004107026484694762
+            }
+          }
+        },
+        {
+          "label": "r2375680-v0-p1",
+          "wall_ms": 0.9722120012156665,
+          "programs": 1,
+          "device_span_us": 235.296,
+          "kernel_union_us": 235.296,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            235.296
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 125.144,
+              "median": 156.8,
+              "max": 178.083
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 28.193,
+              "median": 49.843,
+              "max": 70.331
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.087,
+              "median": 0.211,
+              "max": 0.379
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 10.452,
+              "median": 18.4985,
+              "max": 28.163
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.73,
+              "median": 0.8534999999999999,
+              "max": 0.875
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6852374712364175,
+              "median": 0.7362534324997277,
+              "max": 0.7995028241307475
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.14237625310561705,
+              "median": 0.24317631769178408,
+              "max": 0.3335427748106902
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.000459757919772243,
+              "median": 0.0009946983555085191,
+              "max": 0.0017249383300412349
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.05593372720267146,
+              "median": 0.09261211911385955,
+              "max": 0.12580393072722046
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.003376310090552728,
+              "median": 0.0038676025615540788,
+              "max": 0.0042744890199783395
+            }
+          }
+        },
+        {
+          "label": "r2375680-v0-p2",
+          "wall_ms": 0.9629130363464355,
+          "programs": 1,
+          "device_span_us": 233.403,
+          "kernel_union_us": 233.403,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            233.403
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 140.61,
+              "median": 158.078,
+              "max": 175.614
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 25.469,
+              "median": 44.456,
+              "max": 61.36
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.088,
+              "median": 0.21,
+              "max": 0.377
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 10.499,
+              "median": 18.526,
+              "max": 27.79
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.736,
+              "median": 0.8554999999999999,
+              "max": 0.882
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6847591822748055,
+              "median": 0.7482530500360411,
+              "max": 0.8088458027568552
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.11756804165589571,
+              "median": 0.20620675299809543,
+              "max": 0.2945214027205791
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.00041442578481882994,
+              "median": 0.001008935736041135,
+              "max": 0.0016915994364326546
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.053912247699425486,
+              "median": 0.08740681795014674,
+              "max": 0.12496795981598816
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.003424277713081573,
+              "median": 0.0038355539096209664,
+              "max": 0.004060660157894007
+            }
+          }
+        },
+        {
+          "label": "r2375680-v1-p0",
+          "wall_ms": 1.2240439536981285,
+          "programs": 1,
+          "device_span_us": 232.749,
+          "kernel_union_us": 232.749,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            232.749
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 125.658,
+              "median": 162.697,
+              "max": 178.952
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 27.0,
+              "median": 50.3895,
+              "max": 70.406
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.09,
+              "median": 0.2105,
+              "max": 0.385
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 10.53,
+              "median": 18.5525,
+              "max": 28.361
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.732,
+              "median": 0.854,
+              "max": 0.879
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6834710855841404,
+              "median": 0.7492026466866955,
+              "max": 0.8045302321193667
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.1348293291055192,
+              "median": 0.22901812826886814,
+              "max": 0.33658093507983555
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0004702145223142914,
+              "median": 0.0009693764264621209,
+              "max": 0.001738808396863822
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.055166612679073364,
+              "median": 0.08643223405567854,
+              "max": 0.12783862970475549
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0033519502666221543,
+              "median": 0.003846850395833084,
+              "max": 0.004342884974429743
+            }
+          }
+        },
+        {
+          "label": "r2375680-v1-p1",
+          "wall_ms": 0.9869830100797117,
+          "programs": 1,
+          "device_span_us": 234.225,
+          "kernel_union_us": 234.225,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            234.225
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 148.554,
+              "median": 161.9765,
+              "max": 176.38
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 27.789,
+              "median": 45.0605,
+              "max": 63.075
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.094,
+              "median": 0.1935,
+              "max": 0.382
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 10.454,
+              "median": 18.425,
+              "max": 28.266
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.73,
+              "median": 0.8474999999999999,
+              "max": 0.874
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.680811028238727,
+              "median": 0.7517558303234382,
+              "max": 0.8156569894277563
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.13256679226705545,
+              "median": 0.20720244685767322,
+              "max": 0.30497976471953464
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0004419141464240213,
+              "median": 0.0009537856051047742,
+              "max": 0.0016539159273835655
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.05144279977954492,
+              "median": 0.08649399153275047,
+              "max": 0.12815676602072923
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.003448909494395522,
+              "median": 0.003756323995946169,
+              "max": 0.004062895490186006
+            }
+          }
+        },
+        {
+          "label": "r2375680-v1-p2",
+          "wall_ms": 1.087673008441925,
+          "programs": 1,
+          "device_span_us": 233.204,
+          "kernel_union_us": 233.204,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            233.204
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 140.107,
+              "median": 162.0795,
+              "max": 178.208
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 26.812,
+              "median": 48.3415,
+              "max": 66.441
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.087,
+              "median": 0.21,
+              "max": 0.382
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 10.511,
+              "median": 18.554000000000002,
+              "max": 28.168
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.732,
+              "median": 0.8554999999999999,
+              "max": 0.892
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.6858037857761198,
+              "median": 0.7583152228874916,
+              "max": 0.8101603736310495
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.13177361011607822,
+              "median": 0.21156817282928958,
+              "max": 0.30409553040475734
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0004605026359806059,
+              "median": 0.0009677465300005528,
+              "max": 0.0016745792729169681
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.05361021589565885,
+              "median": 0.08570927369007075,
+              "max": 0.12535546605549497
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.003354963226175928,
+              "median": 0.00378656127367369,
+              "max": 0.00411203521169063
+            }
+          }
+        }
+      ],
+      "checks": 30,
+      "all_checks_pass": true
+    },
+    {
+      "report": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-023/probe-narrow-weight-v1.json",
+      "case": "n388659-128x128-k3x3x3",
+      "mode": "weight",
+      "scope": "chunks",
+      "samples": [
+        {
+          "label": "r0-v0-p0",
+          "wall_ms": 1.4342149952426553,
+          "programs": 1,
+          "device_span_us": 446.046,
+          "kernel_union_us": 446.046,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            446.046
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 219.891,
+              "median": 243.802,
+              "max": 267.676
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 93.43,
+              "median": 180.84699999999998,
+              "max": 206.454
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.341,
+              "median": 0.4675,
+              "max": 0.976
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 67.06,
+              "median": 97.725,
+              "max": 99.634
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 12.743,
+              "median": 12.852,
+              "max": 12.96
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5414002707025962,
+              "median": 0.5696584793218847,
+              "max": 0.6548510862552146
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.22988138091219334,
+              "median": 0.42364982978954835,
+              "max": 0.48543716714280677
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.00083050155372999,
+              "median": 0.0010954529996328615,
+              "max": 0.0023961269161650186
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.1649246206438602,
+              "median": 0.2268233231797154,
+              "max": 0.24485848546514485
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.028994630956984704,
+              "median": 0.030030209901399027,
+              "max": 0.031806174978192235
+            }
+          }
+        },
+        {
+          "label": "r0-v0-p1",
+          "wall_ms": 1.4462239923886955,
+          "programs": 1,
+          "device_span_us": 438.01,
+          "kernel_union_us": 438.01,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            438.01
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 215.614,
+              "median": 237.731,
+              "max": 270.772
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 105.184,
+              "median": 174.265,
+              "max": 192.535
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.353,
+              "median": 0.47,
+              "max": 0.92
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 67.298,
+              "median": 97.6695,
+              "max": 99.617
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 12.715,
+              "median": 12.844000000000001,
+              "max": 12.994
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5367805218084047,
+              "median": 0.5644290301450962,
+              "max": 0.6525211539413133
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.25401425304344255,
+              "median": 0.4152082123608535,
+              "max": 0.46716809342372206
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.000832806439740674,
+              "median": 0.0011188656280756342,
+              "max": 0.0022994251437140714
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.16629190161552568,
+              "median": 0.22991200353649938,
+              "max": 0.2459087987811384
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.029531113260559162,
+              "median": 0.030494089719881788,
+              "max": 0.03209586547844591
+            }
+          }
+        },
+        {
+          "label": "r0-v0-p2",
+          "wall_ms": 1.2040930450893939,
+          "programs": 1,
+          "device_span_us": 436.363,
+          "kernel_union_us": 436.363,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            436.363
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 219.321,
+              "median": 238.89100000000002,
+              "max": 265.987
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 97.224,
+              "median": 175.5565,
+              "max": 201.402
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.341,
+              "median": 0.4685,
+              "max": 0.97
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 67.082,
+              "median": 97.74449999999999,
+              "max": 99.194
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 12.729,
+              "median": 12.8465,
+              "max": 12.985
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5437384943793819,
+              "median": 0.5661675221951568,
+              "max": 0.6509304048242844
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.23829995833231207,
+              "median": 0.4134394091207796,
+              "max": 0.5006288870439326
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0007941646366172779,
+              "median": 0.0011116636078562147,
+              "max": 0.0024186510410173293
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.1665321970026091,
+              "median": 0.2293286075171989,
+              "max": 0.2410467410357397
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.02935983152008976,
+              "median": 0.03035454273434937,
+              "max": 0.032112504705562664
+            }
+          }
+        },
+        {
+          "label": "r0-v1-p0",
+          "wall_ms": 1.4091440243646502,
+          "programs": 1,
+          "device_span_us": 436.479,
+          "kernel_union_us": 436.479,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            436.479
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 211.053,
+              "median": 233.14100000000002,
+              "max": 259.81
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 101.481,
+              "median": 168.67450000000002,
+              "max": 187.871
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.35,
+              "median": 0.4695,
+              "max": 0.913
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 67.138,
+              "median": 97.769,
+              "max": 98.871
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 12.714,
+              "median": 12.8655,
+              "max": 13.072
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5320719206012622,
+              "median": 0.5586030914134346,
+              "max": 0.6471573464705156
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.2520584487679113,
+              "median": 0.4097331045771734,
+              "max": 0.4675058747081536
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0008411439557798606,
+              "median": 0.001149075567892231,
+              "max": 0.002322150723605565
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.1688725897083755,
+              "median": 0.23307023441159974,
+              "max": 0.24684916332724344
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.029418048736781405,
+              "median": 0.03086096426088486,
+              "max": 0.03283549419951234
+            }
+          }
+        },
+        {
+          "label": "r0-v1-p1",
+          "wall_ms": 1.2421730207279325,
+          "programs": 1,
+          "device_span_us": 438.714,
+          "kernel_union_us": 438.714,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            438.714
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 221.549,
+              "median": 241.70850000000002,
+              "max": 270.218
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 89.492,
+              "median": 172.63600000000002,
+              "max": 206.359
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.352,
+              "median": 0.4695,
+              "max": 0.882
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 67.603,
+              "median": 97.6435,
+              "max": 99.52
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 12.698,
+              "median": 12.844999999999999,
+              "max": 13.007
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5427860940294486,
+              "median": 0.5683079303031282,
+              "max": 0.6532389860135538
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.21849006208602198,
+              "median": 0.4121211006734564,
+              "max": 0.48264111403726245
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0008455704838248612,
+              "median": 0.0011185429512369192,
+              "max": 0.002175469787885522
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.16693335308788304,
+              "median": 0.22791705833372303,
+              "max": 0.24374294328421084
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.029215963653732326,
+              "median": 0.03019255414372246,
+              "max": 0.03172000118192832
+            }
+          }
+        },
+        {
+          "label": "r0-v1-p2",
+          "wall_ms": 1.3430339749902487,
+          "programs": 1,
+          "device_span_us": 433.505,
+          "kernel_union_us": 433.505,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            433.505
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 215.946,
+              "median": 234.4275,
+              "max": 272.739
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 127.846,
+              "median": 169.76749999999998,
+              "max": 202.44
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.348,
+              "median": 0.4695,
+              "max": 0.973
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 66.691,
+              "median": 97.8425,
+              "max": 99.043
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 12.725,
+              "median": 12.857,
+              "max": 12.989
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5372432529257225,
+              "median": 0.5598726293974721,
+              "max": 0.6610268081115077
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.3042021266602791,
+              "median": 0.40487813421596663,
+              "max": 0.49064588135211185
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0008258559356022222,
+              "median": 0.0011431044574400726,
+              "max": 0.002358387667547325
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.16142469864936826,
+              "median": 0.2326279749360382,
+              "max": 0.24607812445650284
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.029761808190349487,
+              "median": 0.03070201682411174,
+              "max": 0.03209038875497228
+            }
+          }
+        },
+        {
+          "label": "r188416-v0-p0",
+          "wall_ms": 1.437144004739821,
+          "programs": 1,
+          "device_span_us": 425.601,
+          "kernel_union_us": 425.601,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            425.601
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 205.963,
+              "median": 231.1155,
+              "max": 263.311
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 94.888,
+              "median": 168.8185,
+              "max": 204.461
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.34,
+              "median": 0.6485000000000001,
+              "max": 1.314
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 74.366,
+              "median": 91.8435,
+              "max": 98.322
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 12.694,
+              "median": 12.836500000000001,
+              "max": 12.978
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5317246204327364,
+              "median": 0.5612718600416089,
+              "max": 0.6220244412402625
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.24509869763549294,
+              "median": 0.4100659980421363,
+              "max": 0.4842852872601183
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0008160110977509295,
+              "median": 0.001599636835955859,
+              "max": 0.003431920517347653
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.1856450510783477,
+              "median": 0.22704261440906687,
+              "max": 0.24574026527567763
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.03017873046239969,
+              "median": 0.03147064417822733,
+              "max": 0.03399776282251114
+            }
+          }
+        },
+        {
+          "label": "r188416-v0-p1",
+          "wall_ms": 1.3905640225857496,
+          "programs": 1,
+          "device_span_us": 419.832,
+          "kernel_union_us": 419.832,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            419.832
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 198.229,
+              "median": 229.0315,
+              "max": 253.275
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 84.099,
+              "median": 163.965,
+              "max": 193.956
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.397,
+              "median": 0.6445000000000001,
+              "max": 1.321
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 74.259,
+              "median": 91.8615,
+              "max": 99.252
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 12.726,
+              "median": 12.847,
+              "max": 13.054
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5219945596216489,
+              "median": 0.5603977393573042,
+              "max": 0.619023426474739
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.2215189373286237,
+              "median": 0.4045394285330134,
+              "max": 0.4813448948494339
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0009664036833649074,
+              "median": 0.001626425339296889,
+              "max": 0.003500162952325184
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.18640617312461719,
+              "median": 0.22809746808711512,
+              "max": 0.2493399114271588
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.03070738010912224,
+              "median": 0.031950936646045786,
+              "max": 0.034083143055430476
+            }
+          }
+        },
+        {
+          "label": "r188416-v0-p2",
+          "wall_ms": 1.3136329944245517,
+          "programs": 1,
+          "device_span_us": 412.162,
+          "kernel_union_us": 412.162,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            412.162
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 195.916,
+              "median": 219.999,
+              "max": 249.866
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 86.656,
+              "median": 162.84949999999998,
+              "max": 200.417
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.345,
+              "median": 0.6355,
+              "max": 1.255
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 73.758,
+              "median": 92.2445,
+              "max": 98.379
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 12.729,
+              "median": 12.849499999999999,
+              "max": 13.055
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5176909539638835,
+              "median": 0.5508010381435849,
+              "max": 0.6155824673106344
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.2255315826458111,
+              "median": 0.4056991072015836,
+              "max": 0.4879852350725464
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0008513158381759633,
+              "median": 0.0016368603247739247,
+              "max": 0.003337783711615487
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.19082627773314384,
+              "median": 0.23277243880913917,
+              "max": 0.2543405526354675
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.031129777567969398,
+              "median": 0.032297215046532754,
+              "max": 0.03485255407418482
+            }
+          }
+        },
+        {
+          "label": "r188416-v1-p0",
+          "wall_ms": 1.4035640051588416,
+          "programs": 1,
+          "device_span_us": 418.054,
+          "kernel_union_us": 418.054,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            418.054
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 204.725,
+              "median": 227.34300000000002,
+              "max": 261.232
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 82.508,
+              "median": 166.3635,
+              "max": 205.233
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.344,
+              "median": 0.6145,
+              "max": 1.427
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 74.031,
+              "median": 92.1055,
+              "max": 98.603
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 12.747,
+              "median": 12.866,
+              "max": 13.017
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5263110537532681,
+              "median": 0.5588774890392163,
+              "max": 0.6270691707954066
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.21233645244639346,
+              "median": 0.40408893775817534,
+              "max": 0.5001779099239618
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0008311567817802702,
+              "median": 0.001543720372667704,
+              "max": 0.0037178014167767418
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.18479743579293598,
+              "median": 0.22833625979059957,
+              "max": 0.24798650567270095
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.030809060551662902,
+              "median": 0.03170033770776394,
+              "max": 0.03393060088208614
+            }
+          }
+        },
+        {
+          "label": "r188416-v1-p1",
+          "wall_ms": 1.344473974313587,
+          "programs": 1,
+          "device_span_us": 417.002,
+          "kernel_union_us": 417.002,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            417.002
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 201.067,
+              "median": 223.6395,
+              "max": 259.547
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 81.744,
+              "median": 159.322,
+              "max": 203.619
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.356,
+              "median": 0.6465000000000001,
+              "max": 1.37
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 73.777,
+              "median": 91.57300000000001,
+              "max": 98.12
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 12.716,
+              "median": 12.82,
+              "max": 13.043
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5220715960460413,
+              "median": 0.5560349381792599,
+              "max": 0.6261779422621316
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.21237393025829682,
+              "median": 0.3926905049275898,
+              "max": 0.4941404863384099
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0009337974341554773,
+              "median": 0.001591862417072,
+              "max": 0.003595894905378094
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.18560200846175345,
+              "median": 0.2304363870185811,
+              "max": 0.2503953952656278
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.030663309598185834,
+              "median": 0.031735689829458014,
+              "max": 0.034235033492220145
+            }
+          }
+        },
+        {
+          "label": "r188416-v1-p2",
+          "wall_ms": 1.384013972710818,
+          "programs": 1,
+          "device_span_us": 422.256,
+          "kernel_union_us": 422.256,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            422.256
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 201.566,
+              "median": 227.0255,
+              "max": 259.094
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 89.72,
+              "median": 168.032,
+              "max": 203.313
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.352,
+              "median": 0.6525000000000001,
+              "max": 1.359
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 73.639,
+              "median": 92.09100000000001,
+              "max": 98.363
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 12.733,
+              "median": 12.8305,
+              "max": 12.982
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5257850282500612,
+              "median": 0.5591904060820019,
+              "max": 0.6255770605165053
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.2342436426296277,
+              "median": 0.40732704369276634,
+              "max": 0.4890058878990206
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0008827320557124299,
+              "median": 0.00159544942569716,
+              "max": 0.003582934790059531
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.18532434717832047,
+              "median": 0.22917380839592663,
+              "max": 0.24928856442693834
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.03031678401608277,
+              "median": 0.03161230600155861,
+              "max": 0.034158631333183836
+            }
+          }
+        },
+        {
+          "label": "r385024-v0-p0",
+          "wall_ms": 1.2818830437026918,
+          "programs": 1,
+          "device_span_us": 296.338,
+          "kernel_union_us": 296.338,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            296.338
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 177.0,
+              "median": 229.87099999999998,
+              "max": 249.662
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 101.056,
+              "median": 162.07100000000003,
+              "max": 190.798
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.361,
+              "median": 0.831,
+              "max": 1.04
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 6.986,
+              "median": 14.122499999999999,
+              "max": 32.281
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.376,
+              "median": 4.6415,
+              "max": 4.725
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.7761371225050085,
+              "median": 0.8508570171621134,
+              "max": 0.9169675090252708
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.4599308210449663,
+              "median": 0.5661965526840722,
+              "max": 0.7020358087964359
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0015285602716326777,
+              "median": 0.0029293902220408237,
+              "max": 0.0038833393509046413
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.029309934388847356,
+              "median": 0.052590094253460076,
+              "max": 0.1126794359676486
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0015810805723678982,
+              "median": 0.016014651397885313,
+              "max": 0.018697870272896593
+            }
+          }
+        },
+        {
+          "label": "r385024-v0-p1",
+          "wall_ms": 1.2553739943541586,
+          "programs": 1,
+          "device_span_us": 292.818,
+          "kernel_union_us": 292.818,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            292.818
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 177.189,
+              "median": 225.1365,
+              "max": 245.314
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 94.961,
+              "median": 167.985,
+              "max": 197.798
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.312,
+              "median": 0.849,
+              "max": 1.087
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 7.015,
+              "median": 14.214500000000001,
+              "max": 32.235
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.371,
+              "median": 4.6395,
+              "max": 4.736
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.7772378312004091,
+              "median": 0.8342751419611332,
+              "max": 0.9132516194698662
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.4304552006745057,
+              "median": 0.5927798890285596,
+              "max": 0.7016103859250851
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.001412832321256334,
+              "median": 0.0030490998581980166,
+              "max": 0.00397975568609118
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.030219472955184845,
+              "median": 0.057655477344072587,
+              "max": 0.11167202505364174
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0016018464294326362,
+              "median": 0.016217370152171152,
+              "max": 0.01926106706896624
+            }
+          }
+        },
+        {
+          "label": "r385024-v0-p2",
+          "wall_ms": 1.2054130202159286,
+          "programs": 1,
+          "device_span_us": 292.221,
+          "kernel_union_us": 292.221,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            292.221
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 173.292,
+              "median": 224.2375,
+              "max": 245.349
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 75.406,
+              "median": 161.77800000000002,
+              "max": 191.076
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.367,
+              "median": 0.8725,
+              "max": 1.083
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 7.015,
+              "median": 14.2055,
+              "max": 32.311
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.358,
+              "median": 4.634,
+              "max": 4.742
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.7729990521732314,
+              "median": 0.8475444480333985,
+              "max": 0.9129623805280355
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.34897421776294785,
+              "median": 0.5613734916176696,
+              "max": 0.7214299753226616
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0016554199756914645,
+              "median": 0.003086560903111931,
+              "max": 0.00390063641962636
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.030614824111843252,
+              "median": 0.05417727485152299,
+              "max": 0.11488600645702662
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0015878208903138563,
+              "median": 0.01621107782585306,
+              "max": 0.019435256697655928
+            }
+          }
+        },
+        {
+          "label": "r385024-v1-p0",
+          "wall_ms": 1.3291739742271602,
+          "programs": 1,
+          "device_span_us": 301.951,
+          "kernel_union_us": 301.951,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            301.951
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 181.415,
+              "median": 234.654,
+              "max": 254.795
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 93.159,
+              "median": 170.695,
+              "max": 202.5
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.357,
+              "median": 0.8165,
+              "max": 1.052
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 6.983,
+              "median": 14.14,
+              "max": 32.204
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.373,
+              "median": 4.637,
+              "max": 4.752
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.783498273407755,
+              "median": 0.8425890934690683,
+              "max": 0.9127737354564308
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.4152599414279283,
+              "median": 0.5864378432697136,
+              "max": 0.7476863321064553
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0015747614699538157,
+              "median": 0.0028346241094244066,
+              "max": 0.0037296791686564864
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.030598741521041837,
+              "median": 0.055647322491273285,
+              "max": 0.10979009474858945
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0016479049958471026,
+              "median": 0.015754456285103184,
+              "max": 0.019610416552004437
+            }
+          }
+        },
+        {
+          "label": "r385024-v1-p1",
+          "wall_ms": 1.1658440344035625,
+          "programs": 1,
+          "device_span_us": 304.199,
+          "kernel_union_us": 304.199,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            304.199
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 181.56,
+              "median": 236.171,
+              "max": 256.152
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 91.965,
+              "median": 170.756,
+              "max": 205.116
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.311,
+              "median": 0.8545,
+              "max": 1.097
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 7.001,
+              "median": 14.221,
+              "max": 32.267
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.368,
+              "median": 4.641500000000001,
+              "max": 4.747
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.7854015530548676,
+              "median": 0.8409730408217715,
+              "max": 0.9115236130942937
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.4081238683565875,
+              "median": 0.5762528048675138,
+              "max": 0.739370141202602
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0013750596890861823,
+              "median": 0.002940850221055678,
+              "max": 0.0040720312174906265
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.030847538086907596,
+              "median": 0.05561106550371085,
+              "max": 0.10950509558382736
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.0016384081525081262,
+              "median": 0.01560089656725478,
+              "max": 0.019753317375351295
+            }
+          }
+        },
+        {
+          "label": "r385024-v1-p2",
+          "wall_ms": 1.1780830100178719,
+          "programs": 1,
+          "device_span_us": 297.656,
+          "kernel_union_us": 297.656,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            297.656
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 173.062,
+              "median": 230.608,
+              "max": 250.642
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 87.629,
+              "median": 168.3615,
+              "max": 195.526
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.361,
+              "median": 0.871,
+              "max": 1.064
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 7.017,
+              "median": 14.2085,
+              "max": 32.185
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.361,
+              "median": 4.625500000000001,
+              "max": 4.73
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.7819583516725354,
+              "median": 0.8366897710655256,
+              "max": 0.9164619885492024
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.4061580247600243,
+              "median": 0.5830432238403419,
+              "max": 0.7021752797686408
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0016690708684716673,
+              "median": 0.003030947833352778,
+              "max": 0.003842144813710518
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.029423570634130838,
+              "median": 0.05741213983404632,
+              "max": 0.11401733569897243
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.001511332903517512,
+              "median": 0.015879164064441897,
+              "max": 0.01885844308295946
+            }
+          }
+        }
+      ],
+      "checks": 30,
+      "all_checks_pass": true
+    },
+    {
+      "report": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-023/probe-wide-weight-v1.json",
+      "case": "n388659-128x512-k3x3x3",
+      "mode": "weight",
+      "scope": "chunks",
+      "samples": [
+        {
+          "label": "r0-v0-p0",
+          "wall_ms": 3.123918955679983,
+          "programs": 1,
+          "device_span_us": 1968.183,
+          "kernel_union_us": 1968.183,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            1968.183
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 753.389,
+              "median": 826.9505,
+              "max": 953.723
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 559.06,
+              "median": 648.461,
+              "max": 800.147
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 8.401,
+              "median": 8.7065,
+              "max": 8.81
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 322.283,
+              "median": 328.49850000000004,
+              "max": 329.007
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 280.122,
+              "median": 284.979,
+              "max": 334.038
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.40580251122921607,
+              "median": 0.4273139584685052,
+              "max": 0.4892856868021229
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.2908112972485129,
+              "median": 0.3346464062541311,
+              "max": 0.4104970462468225
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0043084614264233155,
+              "median": 0.004513682689231342,
+              "max": 0.004735669417429202
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.16528316556266937,
+              "median": 0.17010504745350963,
+              "max": 0.1771181180442915
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.1453595745310174,
+              "median": 0.14809333480625497,
+              "max": 0.170300868027763
+            }
+          }
+        },
+        {
+          "label": "r0-v0-p1",
+          "wall_ms": 2.9709289665333927,
+          "programs": 1,
+          "device_span_us": 2017.842,
+          "kernel_union_us": 2017.842,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            2017.842
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 844.194,
+              "median": 851.3025,
+              "max": 983.916
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 572.78,
+              "median": 675.171,
+              "max": 839.372
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 8.279,
+              "median": 8.6985,
+              "max": 8.785
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 323.634,
+              "median": 333.5905,
+              "max": 334.053
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 290.666,
+              "median": 295.9545,
+              "max": 365.852
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.421803661786378,
+              "median": 0.43432786727590167,
+              "max": 0.4907223610947634
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.2875489661078979,
+              "median": 0.3437005330524124,
+              "max": 0.41863188491378706
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0041277400685447154,
+              "median": 0.00441596842231003,
+              "max": 0.004479990824978791
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.16135729307203778,
+              "median": 0.16965198018129657,
+              "max": 0.17100666577578028
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.14853481650457256,
+              "median": 0.15124193019656146,
+              "max": 0.18230797596149054
+            }
+          }
+        },
+        {
+          "label": "r0-v0-p2",
+          "wall_ms": 2.912728989031166,
+          "programs": 1,
+          "device_span_us": 1951.809,
+          "kernel_union_us": 1951.809,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            1951.809
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 740.808,
+              "median": 810.152,
+              "max": 893.523
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 524.559,
+              "median": 625.2570000000001,
+              "max": 718.267
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 8.284,
+              "median": 8.690000000000001,
+              "max": 8.817
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 324.017,
+              "median": 333.5905,
+              "max": 334.086
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 286.195,
+              "median": 295.62350000000004,
+              "max": 337.856
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.40050408474073207,
+              "median": 0.42114950608765417,
+              "max": 0.4747069619717668
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.27627116076461095,
+              "median": 0.3265388893779029,
+              "max": 0.3874404215669046
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.004368601963941565,
+              "median": 0.004534737699933358,
+              "max": 0.004741782540577261
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.17095493218906657,
+              "median": 0.17372598002782424,
+              "max": 0.1805407695541791
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.15146264923382308,
+              "median": 0.15492953419062,
+              "max": 0.17328179165625934
+            }
+          }
+        },
+        {
+          "label": "r0-v1-p0",
+          "wall_ms": 3.1740490230731666,
+          "programs": 1,
+          "device_span_us": 1996.588,
+          "kernel_union_us": 1996.588,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            1996.588
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 771.546,
+              "median": 840.127,
+              "max": 966.059
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 604.576,
+              "median": 658.5165,
+              "max": 818.649
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 8.243,
+              "median": 8.6855,
+              "max": 8.788
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 323.728,
+              "median": 333.5795,
+              "max": 334.113
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 290.73,
+              "median": 295.59000000000003,
+              "max": 358.864
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.41040837853407575,
+              "median": 0.43094858084918625,
+              "max": 0.48745608874186486
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.3078510606136947,
+              "median": 0.33701221995553965,
+              "max": 0.413075639885803
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.00415794228515827,
+              "median": 0.004450396084168317,
+              "max": 0.004657054070322686
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.1632952007873003,
+              "median": 0.17093898877564315,
+              "max": 0.17763048767002101
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.14935340808623898,
+              "median": 0.1521426779819596,
+              "max": 0.18079228112317072
+            }
+          }
+        },
+        {
+          "label": "r0-v1-p1",
+          "wall_ms": 3.019378986209631,
+          "programs": 1,
+          "device_span_us": 2023.186,
+          "kernel_union_us": 2023.186,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            2023.186
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 847.722,
+              "median": 856.6475,
+              "max": 980.198
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 595.839,
+              "median": 678.5515,
+              "max": 835.427
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 8.329,
+              "median": 8.7025,
+              "max": 8.808
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 323.57,
+              "median": 333.5475,
+              "max": 334.098
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 290.565,
+              "median": 295.90049999999997,
+              "max": 364.777
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.4216577585289993,
+              "median": 0.43579798605939496,
+              "max": 0.4896040103455407
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.3012431152910057,
+              "median": 0.34386348275333267,
+              "max": 0.4172916181740261
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.004158989339125658,
+              "median": 0.004404566149453117,
+              "max": 0.004480019723293199
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.16157091853294384,
+              "median": 0.16926074421118792,
+              "max": 0.17059643429024554
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.1481537190756868,
+              "median": 0.15076115144313065,
+              "max": 0.18150923701499197
+            }
+          }
+        },
+        {
+          "label": "r0-v1-p2",
+          "wall_ms": 2.991059038322419,
+          "programs": 1,
+          "device_span_us": 2025.965,
+          "kernel_union_us": 2025.965,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            2025.965
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 853.874,
+              "median": 860.6279999999999,
+              "max": 985.536
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 580.153,
+              "median": 685.988,
+              "max": 851.943
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 8.255,
+              "median": 8.69,
+              "max": 8.796
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 323.872,
+              "median": 333.537,
+              "max": 334.212
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 290.465,
+              "median": 295.913,
+              "max": 366.27
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.4243753060034779,
+              "median": 0.43688410283701773,
+              "max": 0.49099795238166405
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.29190548756900075,
+              "median": 0.3466907294589543,
+              "max": 0.42444138879339977
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.004111354710053619,
+              "median": 0.004392206683879497,
+              "max": 0.004461815110619637
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.16130256482792077,
+              "median": 0.169009099242456,
+              "max": 0.1698909591782053
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.14773145136557436,
+              "median": 0.15039108666312972,
+              "max": 0.18185230476831668
+            }
+          }
+        },
+        {
+          "label": "r188416-v0-p0",
+          "wall_ms": 3.0187200172804296,
+          "programs": 1,
+          "device_span_us": 1869.807,
+          "kernel_union_us": 1869.807,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            1869.807
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 582.999,
+              "median": 748.719,
+              "max": 823.123
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 357.903,
+              "median": 553.149,
+              "max": 663.531
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 8.372,
+              "median": 8.628,
+              "max": 8.805
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 326.783,
+              "median": 332.231,
+              "max": 334.047
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 287.671,
+              "median": 294.138,
+              "max": 314.935
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.34738610670058717,
+              "median": 0.4041127000553482,
+              "max": 0.4468121499315813
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.21322953350249363,
+              "median": 0.29955210487594186,
+              "max": 0.36039373688304127
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0045375846552233425,
+              "median": 0.004695363069177781,
+              "max": 0.005181736033467141
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.17682235592487505,
+              "median": 0.18015744022480396,
+              "max": 0.19859331078183812
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.1566394803288808,
+              "median": 0.15969897074556078,
+              "max": 0.17530486624367736
+            }
+          }
+        },
+        {
+          "label": "r188416-v0-p1",
+          "wall_ms": 2.858259016647935,
+          "programs": 1,
+          "device_span_us": 1868.606,
+          "kernel_union_us": 1868.606,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            1868.606
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 627.459,
+              "median": 748.8679999999999,
+              "max": 819.488
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 348.474,
+              "median": 555.352,
+              "max": 657.301
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 8.374,
+              "median": 8.637,
+              "max": 8.788
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 326.981,
+              "median": 332.16499999999996,
+              "max": 334.092
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 287.644,
+              "median": 294.228,
+              "max": 319.624
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.3641752357426961,
+              "median": 0.404810863511035,
+              "max": 0.4456815859841214
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.2022192975126041,
+              "median": 0.29978200993795423,
+              "max": 0.35779449091968596
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.004556713557975417,
+              "median": 0.004700420935644016,
+              "max": 0.005097767145505635
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.17698680586829252,
+              "median": 0.18018401616242594,
+              "max": 0.19340596742719382
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.1579202198684615,
+              "median": 0.15994766687180606,
+              "max": 0.1729600793089043
+            }
+          }
+        },
+        {
+          "label": "r188416-v0-p2",
+          "wall_ms": 2.8325780294835567,
+          "programs": 1,
+          "device_span_us": 1860.903,
+          "kernel_union_us": 1860.903,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            1860.903
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 629.88,
+              "median": 745.946,
+              "max": 818.988
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 361.189,
+              "median": 547.3595,
+              "max": 648.952
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 8.382,
+              "median": 8.6395,
+              "max": 8.812
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 326.987,
+              "median": 332.2415,
+              "max": 334.05
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 288.027,
+              "median": 293.43399999999997,
+              "max": 295.806
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.3651575636219864,
+              "median": 0.4039433846751499,
+              "max": 0.4426593678147873
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.2093511886200369,
+              "median": 0.30168858943755095,
+              "max": 0.3508878551920915
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.004547326682154134,
+              "median": 0.004724805492119005,
+              "max": 0.005073638752284731
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.1778186885235269,
+              "median": 0.18164983548721955,
+              "max": 0.19310576198237736
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.15630186342184152,
+              "median": 0.1607364146995,
+              "max": 0.17059390126295879
+            }
+          }
+        },
+        {
+          "label": "r188416-v1-p0",
+          "wall_ms": 3.0371479806490242,
+          "programs": 1,
+          "device_span_us": 1883.725,
+          "kernel_union_us": 1883.725,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            1883.725
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 629.298,
+              "median": 752.508,
+              "max": 832.565
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 412.158,
+              "median": 555.482,
+              "max": 694.981
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 8.332,
+              "median": 8.631,
+              "max": 8.792
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 326.597,
+              "median": 332.3115,
+              "max": 334.215
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 287.823,
+              "median": 294.887,
+              "max": 335.698
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.3648172024060736,
+              "median": 0.40723960650658153,
+              "max": 0.45008195608711193
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.2261499183264298,
+              "median": 0.3009799164159467,
+              "max": 0.3758358520431698
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.004485318980312596,
+              "median": 0.004684002299042355,
+              "max": 0.005021335462052074
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.174074954946902,
+              "median": 0.18004323079778994,
+              "max": 0.19307231812141346
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.15673136568501142,
+              "median": 0.1600840612739482,
+              "max": 0.17870106917853976
+            }
+          }
+        },
+        {
+          "label": "r188416-v1-p1",
+          "wall_ms": 2.911919029429555,
+          "programs": 1,
+          "device_span_us": 1881.945,
+          "kernel_union_us": 1881.945,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            1881.945
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 632.324,
+              "median": 762.3805,
+              "max": 843.418
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 351.008,
+              "median": 557.2,
+              "max": 680.666
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 8.384,
+              "median": 8.662500000000001,
+              "max": 8.817
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 327.156,
+              "median": 332.297,
+              "max": 334.084
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 287.498,
+              "median": 293.7335,
+              "max": 295.786
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.3660693299616634,
+              "median": 0.4103462898014516,
+              "max": 0.4500730539318384
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.2031631374387558,
+              "median": 0.3088606197183409,
+              "max": 0.36311947318105775
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.004471077980954189,
+              "median": 0.004699474473977155,
+              "max": 0.005075983497121719
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.17542688288964747,
+              "median": 0.18168739122905536,
+              "max": 0.19283434137354616
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.1544277586881916,
+              "median": 0.16040858188689416,
+              "max": 0.17026497559168816
+            }
+          }
+        },
+        {
+          "label": "r188416-v1-p2",
+          "wall_ms": 2.8925389633513987,
+          "programs": 1,
+          "device_span_us": 1882.366,
+          "kernel_union_us": 1882.366,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            1882.366
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 641.027,
+              "median": 760.0085,
+              "max": 839.833
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 407.332,
+              "median": 555.3205,
+              "max": 690.048
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 8.414,
+              "median": 8.631499999999999,
+              "max": 8.774
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 326.611,
+              "median": 332.315,
+              "max": 334.043
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 287.786,
+              "median": 294.119,
+              "max": 321.452
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.3690680991202616,
+              "median": 0.4091907014295294,
+              "max": 0.45215464625058044
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.23447873307387082,
+              "median": 0.29892343513549724,
+              "max": 0.3717069859892374
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.004506152240134169,
+              "median": 0.004668128028185628,
+              "max": 0.005022083471205168
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.17435982577416945,
+              "median": 0.17871619020009338,
+              "max": 0.19190435770907363
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.15537466375504635,
+              "median": 0.15872760739722147,
+              "max": 0.17164108574525513
+            }
+          }
+        },
+        {
+          "label": "r385024-v0-p0",
+          "wall_ms": 2.636788005474955,
+          "programs": 1,
+          "device_span_us": 1201.384,
+          "kernel_union_us": 1201.384,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            1201.384
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 538.362,
+              "median": 718.1925,
+              "max": 797.311
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 358.438,
+              "median": 587.956,
+              "max": 681.705
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 1.783,
+              "median": 3.6555,
+              "max": 3.727
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 73.935,
+              "median": 149.983,
+              "max": 155.184
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 8.527,
+              "median": 136.35399999999998,
+              "max": 144.018
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5691870493059423,
+              "median": 0.6220992233870156,
+              "max": 0.7982975326853516
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.4348663947763581,
+              "median": 0.4944550734270192,
+              "max": 0.6888351324560527
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0018065141547301084,
+              "median": 0.003069378310701702,
+              "max": 0.0037012696041822256
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07465180664742861,
+              "median": 0.12911360231255722,
+              "max": 0.15115558874782176
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.008794108169752752,
+              "median": 0.11951689640192503,
+              "max": 0.13923773226294558
+            }
+          }
+        },
+        {
+          "label": "r385024-v0-p1",
+          "wall_ms": 2.282157016452402,
+          "programs": 1,
+          "device_span_us": 1210.137,
+          "kernel_union_us": 1210.137,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            1210.137
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 552.459,
+              "median": 734.7225,
+              "max": 826.977
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 340.699,
+              "median": 602.671,
+              "max": 714.977
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 1.845,
+              "median": 3.7995,
+              "max": 3.896
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 78.43,
+              "median": 158.99200000000002,
+              "max": 160.701
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 8.813,
+              "median": 134.778,
+              "max": 140.558
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5885426944131341,
+              "median": 0.6245072112021188,
+              "max": 0.8069209790653311
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.41129637811853387,
+              "median": 0.5110652193835246,
+              "max": 0.6976372267296349
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0017990679950191657,
+              "median": 0.003181108174760411,
+              "max": 0.00368633094632502
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07648200337406263,
+              "median": 0.13288334738933605,
+              "max": 0.1533155814821513
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.008596757170142242,
+              "median": 0.11603251627762796,
+              "max": 0.13235509226825157
+            }
+          }
+        },
+        {
+          "label": "r385024-v0-p2",
+          "wall_ms": 2.282806031871587,
+          "programs": 1,
+          "device_span_us": 1191.63,
+          "kernel_union_us": 1191.63,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            1191.63
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 561.787,
+              "median": 711.611,
+              "max": 875.994
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 359.275,
+              "median": 583.6215,
+              "max": 768.42
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 1.664,
+              "median": 3.532,
+              "max": 3.605
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 78.714,
+              "median": 160.67849999999999,
+              "max": 166.691
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 8.715,
+              "median": 136.0615,
+              "max": 142.846
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5842279720109013,
+              "median": 0.6364105933776755,
+              "max": 0.8151329159625706
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.42472439010849433,
+              "median": 0.5282645937408956,
+              "max": 0.7150108356122703
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.001628481215734235,
+              "median": 0.002990067107389722,
+              "max": 0.0032741622064200015
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07320087602237484,
+              "median": 0.13995039810406576,
+              "max": 0.14963627267845586
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.008107949698149824,
+              "median": 0.11982058659419595,
+              "max": 0.12772758158411843
+            }
+          }
+        },
+        {
+          "label": "r385024-v1-p0",
+          "wall_ms": 2.2489569964818656,
+          "programs": 1,
+          "device_span_us": 1206.64,
+          "kernel_union_us": 1206.64,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            1206.64
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 535.965,
+              "median": 725.1955,
+              "max": 825.4
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 351.674,
+              "median": 593.598,
+              "max": 736.534
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 1.744,
+              "median": 3.6405000000000003,
+              "max": 3.722
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 73.883,
+              "median": 150.027,
+              "max": 155.136
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 8.558,
+              "median": 136.285,
+              "max": 144.015
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.583852683310891,
+              "median": 0.6181630322418443,
+              "max": 0.8052572940467155
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.43104752169186095,
+              "median": 0.5062921053893241,
+              "max": 0.7186237405151411
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0017530756825587495,
+              "median": 0.0030587142079716353,
+              "max": 0.0035678912840277784
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07203367935004626,
+              "median": 0.12864053900400316,
+              "max": 0.1461965016568315
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.008498760394255095,
+              "median": 0.11931428953279014,
+              "max": 0.13462086192761719
+            }
+          }
+        },
+        {
+          "label": "r385024-v1-p1",
+          "wall_ms": 2.234005951322615,
+          "programs": 1,
+          "device_span_us": 1199.925,
+          "kernel_union_us": 1199.925,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            1199.925
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 505.94,
+              "median": 713.2860000000001,
+              "max": 800.253
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 356.514,
+              "median": 567.0985000000001,
+              "max": 687.145
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 1.851,
+              "median": 3.8120000000000003,
+              "max": 3.895
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 78.353,
+              "median": 158.95600000000002,
+              "max": 160.632
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 8.789,
+              "median": 134.772,
+              "max": 140.613
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5723001726625038,
+              "median": 0.6115577137368915,
+              "max": 0.7993621621950712
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.4317362885364502,
+              "median": 0.4929721337573754,
+              "max": 0.6972198264928213
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0018769488174005628,
+              "median": 0.003253147017558654,
+              "max": 0.0038880015971251747
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07945085187115562,
+              "median": 0.13669988417172263,
+              "max": 0.15934261486444606
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.008915474927318947,
+              "median": 0.11697454703213694,
+              "max": 0.13765686694162968
+            }
+          }
+        },
+        {
+          "label": "r385024-v1-p2",
+          "wall_ms": 2.1762659889645875,
+          "programs": 1,
+          "device_span_us": 1218.426,
+          "kernel_union_us": 1218.426,
+          "inter_program_gap_us": 0.0,
+          "k6_programs": 1,
+          "k6_kernel_spans_us": [
+            1218.426
+          ],
+          "core_totals_us": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 537.004,
+              "median": 734.0075,
+              "max": 869.377
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 315.273,
+              "median": 609.886,
+              "max": 757.409
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 1.715,
+              "median": 3.5309999999999997,
+              "max": 3.617
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 78.773,
+              "median": 160.676,
+              "max": 166.732
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 8.764,
+              "median": 136.0355,
+              "max": 142.846
+            }
+          },
+          "core_fractions": {
+            "CB-COMPUTE-WAIT-FRONT@TRISC_0": {
+              "min": 0.5919172398892623,
+              "median": 0.6353661310198176,
+              "max": 0.8139357653436193
+            },
+            "FG_K6_WAIT_WEIGHT@TRISC_0": {
+              "min": 0.38561919625820723,
+              "median": 0.5109852595663185,
+              "max": 0.70910079896941
+            },
+            "FG_K6_MATH_DEST_WAIT@TRISC_1": {
+              "min": 0.0016336077844311377,
+              "median": 0.002932590068086329,
+              "max": 0.0032911150021449785
+            },
+            "FG_K6_MATMUL_REGION@TRISC_1": {
+              "min": 0.07370228293413174,
+              "median": 0.1374323120806752,
+              "max": 0.15046716286851575
+            },
+            "CB-COMPUTE-RESERVE-BACK@TRISC_2": {
+              "min": 0.008202912576832106,
+              "median": 0.11734491575713839,
+              "max": 0.12861104029734394
+            }
+          }
+        }
+      ],
+      "checks": 30,
+      "all_checks_pass": true
+    }
+  ],
+  "comparison": [
+    {
+      "case": "n2389000-64x64-k3x3x3",
+      "mode": "compute",
+      "scope": "chunks",
+      "paired": false,
+      "candidate_median_kernel_union_us": 282.4545,
+      "baseline_median_kernel_union_us": 314.6495,
+      "selected_zones": {
+        "FG_K6_WAIT_GATHER@TRISC_0": {
+          "baseline": {
+            "median_core_us": 93.689,
+            "median_core_fraction": 0.3199309613796588
+          },
+          "candidate": {
+            "median_core_us": 112.14375,
+            "median_core_fraction": 0.41545435549357645
+          }
+        },
+        "FG_K6_MATMUL_REGION@TRISC_1": {
+          "baseline": {
+            "median_core_us": 49.495000000000005,
+            "median_core_fraction": 0.1693321084599517
+          },
+          "candidate": {
+            "median_core_us": 35.6455,
+            "median_core_fraction": 0.12768158784619787
+          }
+        }
+      }
+    },
+    {
+      "case": "n2389000-64x64-k3x3x3",
+      "mode": "base",
+      "scope": "operator",
+      "paired": false,
+      "candidate_median_kernel_union_us": 370697.93299999996
+    },
+    {
+      "case": "n2389000-64x64-k3x3x3",
+      "mode": "weight",
+      "scope": "chunks",
+      "paired": false,
+      "candidate_median_kernel_union_us": 281.7595,
+      "baseline_median_kernel_union_us": 314.8065,
+      "selected_zones": {
+        "FG_K6_WAIT_WEIGHT@TRISC_0": {
+          "baseline": {
+            "median_core_us": 81.62899999999999,
+            "median_core_fraction": 0.2814035978189094
+          },
+          "candidate": {
+            "median_core_us": 53.54025,
+            "median_core_fraction": 0.22122354815724316
+          }
+        },
+        "FG_K6_MATMUL_REGION@TRISC_1": {
+          "baseline": {
+            "median_core_us": 49.6905,
+            "median_core_fraction": 0.17126943429979175
+          },
+          "candidate": {
+            "median_core_us": 35.90375,
+            "median_core_fraction": 0.12907934270529803
+          }
+        }
+      }
+    },
+    {
+      "case": "n388659-128x128-k3x3x3",
+      "mode": "weight",
+      "scope": "chunks",
+      "paired": false,
+      "candidate_median_kernel_union_us": 418.943,
+      "baseline_median_kernel_union_us": 627.7270000000001,
+      "selected_zones": {
+        "FG_K6_WAIT_WEIGHT@TRISC_0": {
+          "baseline": {
+            "median_core_us": 317.81300000000005,
+            "median_core_fraction": 0.525269830078056
+          },
+          "candidate": {
+            "median_core_us": 168.51800000000003,
+            "median_core_fraction": 0.412780254897118
+          }
+        },
+        "FG_K6_MATMUL_REGION@TRISC_1": {
+          "baseline": {
+            "median_core_us": 129.04425,
+            "median_core_fraction": 0.21190526317482938
+          },
+          "candidate": {
+            "median_core_us": 91.97625000000001,
+            "median_core_fraction": 0.2280072632104191
+          }
+        }
+      }
+    },
+    {
+      "case": "n388659-128x512-k3x3x3",
+      "mode": "weight",
+      "scope": "chunks",
+      "paired": false,
+      "candidate_median_kernel_union_us": 1875.876,
+      "baseline_median_kernel_union_us": 2754.0190000000002,
+      "selected_zones": {
+        "FG_K6_WAIT_WEIGHT@TRISC_0": {
+          "baseline": {
+            "median_core_us": 1199.1912499999999,
+            "median_core_fraction": 0.4704239160906586
+          },
+          "candidate": {
+            "median_core_us": 590.777,
+            "median_core_fraction": 0.340356376503976
+          }
+        },
+        "FG_K6_MATMUL_REGION@TRISC_1": {
+          "baseline": {
+            "median_core_us": 308.506,
+            "median_core_fraction": 0.11207219694270176
+          },
+          "candidate": {
+            "median_core_us": 332.23625,
+            "median_core_fraction": 0.1698785138174031
+          }
+        }
+      }
+    }
+  ]
+}

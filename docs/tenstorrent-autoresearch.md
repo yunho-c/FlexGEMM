@@ -853,6 +853,27 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   Keep full operator/workspace and decoder gates; SOTA remains unproven.
   See [iteration-022](results/autoresearch/iteration-022/README.md).
 
+### 023 — retain BF16 integer weights for reads and multicast
+
+- Store/transfer the existing BF16 digits directly instead of an FP32 encoding.
+  Keep HiFi3, FP32 accumulation, arithmetic order, tap grouping and original
+  eligibility bounds. Actual CB footprint and requested weight payload shrink;
+  only the work-model name and weight-byte count change.
+- All 36 cases pass with unchanged 24/12 dispatch and a maximum workspace bound
+  of 726,282,240 bytes. Twenty-two Watcher tests include 40 bitwise weight-format
+  product comparisons; 15 CPU tests pass. Complete decoder outputs/guides match
+  all 12 iteration021 records; its original strict FP32 failure remains.
+- Three A/B/A rounds confirm 1.120–1.123× narrow and 1.366–1.367× wide speedups.
+  Largest and fallback cases are neutral within noise; retain all rounds.
+- Five diagnostic workers confirm lower selected weight waits. Full largest-case
+  device spans separate approximately 63 ms preparation/scale, 199 ms K6 and
+  109 ms reconstruction/epilogue/assembly. Large-report supervisor polling can
+  perturb diagnostic host time; use only lean runs for promotion.
+- All 79 workers terminate normally without a timeout/reset. Retain compact
+  weights; next test immutable dispatch metadata caching, then consider fused
+  reconstruction or larger tap groups. SOTA remains unproven. Exact evidence and
+  replay checks are in [iteration-023](results/autoresearch/iteration-023/README.md).
+
 The additional CPU capture tools are:
 
 ```bash

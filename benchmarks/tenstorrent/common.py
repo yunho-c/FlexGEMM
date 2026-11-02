@@ -211,13 +211,18 @@ def _digit_implicit_accounting(mapping, ci, co, row_chunk, cores, policy):
             unused_output += 4 * (blocks * 32 + 1) * nt * 32 * 2
     senders = policy["grid"][1] if policy["multicast"] else cores
     model = "digit_implicit_k6_v1" if policy.get("unused_bf16_output_included", True) else "digit_implicit_k6_fp32_output_v1"
+    weight_tile_bytes = policy.get("weight_tile_bytes", 4096)
+    if weight_tile_bytes not in (2048, 4096):
+        raise ValueError("implicit weight tile bytes must describe BF16 or FP32")
+    if weight_tile_bytes == 2048:
+        model += "_bf16_weights"
     return {"kind": "modeled", "model": model,
         "valid_interactions": edges, "useful_flops": useful, "issued_flops": issued,
         "issued_scope": "four_custom_kernel_products_with_empty_tap_skips",
         "work_efficiency": useful / issued if issued else None, "dummy_tile_products": 0,
         "active_block_offsets": int(active.sum()), "dense_block_offsets": mt * volume,
         "requested_feature_bytes": 4 * edges * ct * 64,
-        "requested_weight_bytes": 4 * len(expected) * senders * volume * ct * nt * 4096,
+        "requested_weight_bytes": 4 * len(expected) * senders * volume * ct * nt * weight_tile_bytes,
         "requested_map_bytes": index_bytes, "gather_output_bytes": 0,
         "fp32_product_write_bytes": 4 * mt * nt * 32 * 32 * 4,
         "unused_bf16_table_write_bytes": unused_output,

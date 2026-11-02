@@ -1,0 +1,57 @@
+{
+  "baseline": "d88bbf2a9694f7e1a28cf35729efd376b543f5fc",
+  "baseline_root": "/home/user/GitHub/flexgemm-output-evaluator",
+  "candidate_root": "/home/user/GitHub/flexgemm-autoresearch",
+  "created_utc": "2026-11-02T17:45:35.086476+00:00",
+  "change": "Keep integer weights in BF16, use 2048-byte weight tiles, preserve FP32 partials and original arithmetic order",
+  "fixed": [
+    "HiFi3",
+    "BF16 operand rounding and immutable CPU goldens",
+    "original tap grouping",
+    "original per-core FP32-weight eligibility bound",
+    "row chunks",
+    "four products",
+    "FP32-only product outputs",
+    "scale/bias/assembly",
+    "1 GiB workspace limit"
+  ],
+  "gates": [
+    "22 Watcher tests, including 40 exact bitwise BF16-versus-FP32-weight product comparisons",
+    "36 full numerical/residency/integrity/workspace captures",
+    "3 A/B/A rounds x11 repetitions for narrow/largest/wide-feasible/fallback",
+    "Unchanged complete-decoder adapter; compare saved outputs/guides to iteration021; original strict CPU gates retained"
+  ],
+  "promotion": "existing noise-aware sweep rule unchanged",
+  "accounting": "Old policy defaults reproduce old counts; compact-weight policy changes only model label and requested weight bytes /2",
+  "fallbacks": "Original eligibility preserved so any new dispatch opportunity is a separate experiment",
+  "post_confirmation_profiles": {
+    "diagnostic_only": true,
+    "runs": [
+      {
+        "group": "narrow",
+        "mode": "weight"
+      },
+      {
+        "group": "largest",
+        "mode": "weight"
+      },
+      {
+        "group": "largest",
+        "mode": "compute"
+      },
+      {
+        "group": "wide-feasible",
+        "mode": "weight",
+        "reason": "First bracket shows materially larger gain; inspect weights and math regions"
+      }
+    ],
+    "purpose": "Compare selected waits with iteration022 to evaluate the compact-transfer hypothesis; not a promotion score",
+    "additional_operator_probe": {
+      "group": "largest",
+      "mode": "base",
+      "scope": "operator",
+      "reason": "Largest paired result is neutral; measure the full operator to distinguish kernel wait changes from other device costs",
+      "profiler_program_support_count": 6000
+    }
+  }
+}

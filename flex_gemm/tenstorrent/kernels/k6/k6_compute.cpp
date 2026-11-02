@@ -3,7 +3,7 @@
 //
 // Per (chunk, live block of this core): tilize the present taps' gathered rows (CB_GATH, row-major [32, CIN_T * 32]
 // per tap) into CB_TL at slot p * CIN_T (CB_TL always takes TG * CIN_T pages per block: fixed increments), then for
-// each output tile n: DEST[0] (+)= sum over present taps p, input tiles c of TL[p, c] x W[p, c, n] (fp32 weights,
+// each output tile n: DEST[0] (+)= sum over present taps p, input tiles c of TL[p, c] x W[p, c, n] (BF16 or FP32 weights,
 // HiFi3, fp32 DEST, tap-major / channel order = the stock im2col matmul's K order). Between chunks the fp32 partial
 // goes through CB_ACC (UnpackToDestFp32 reload: exact). Last chunk, the epilogue in the order of the stock programs:
 //   y = acc + bias                       add_binary_tile<NearestEven> (binary_ng's fp32 SFPU add)

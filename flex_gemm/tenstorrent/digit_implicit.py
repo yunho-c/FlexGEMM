@@ -49,9 +49,10 @@ def prepare_sparse_digit_implicit(weights, topology, *, row_chunk=256):
     grid = device.compute_with_storage_grid_size()
     info = {"path": "digit_implicit_gemm", "reason": None, "row_chunk": row_chunk,
             "grid": [grid.x, grid.y], "cb_budget_bytes": CB_BUDGET, "chunks": [],
-            "product_calls": 4, "weight_storage": "FP32 encoding of BF16 integer digits",
+            "product_calls": 4, "weight_storage": "BF16 integer digits", "weight_tile_bytes": 2048,
             "unused_bf16_output_included": False,
-            "tap_planning": "conservative_original_table_output_bound"}
+            "tap_planning": "conservative_original_table_output_bound",
+            "cb_eligibility": "conservative_fp32_weight_bound"}
 
     def fallback(reason):
         info.update(path="digit_explicit_gemm", reason=reason)
@@ -71,10 +72,12 @@ def prepare_sparse_digit_implicit(weights, topology, *, row_chunk=256):
         end = min(start + row_chunk, rows)
         nbmax = (_round32(end - start) // 32 + grid.x * grid.y - 1) // (grid.x * grid.y)
         tg, nch = layer.plan(nbmax)
-        cb_bytes = layer.cb_bytes(tg, nch, nbmax, has_res=False, write_y=True, write_table=False)
+        original_cb_bytes = layer.cb_bytes(tg, nch, nbmax, has_res=False, write_y=True, write_table=False)
+        cb_bytes = layer.cb_bytes(tg, nch, nbmax, has_res=False, write_y=True, write_table=False,
+                                  weight_tile_bytes=2048)
         info["chunks"].append({"start": start, "end": end, "tap_chunk": tg,
                                "tap_chunks": nch, "cb_bytes": cb_bytes})
-        if cb_bytes > CB_BUDGET:
+        if original_cb_bytes > CB_BUDGET:
             return fallback("per_core_cb_budget")
     physical = [[device.worker_core_from_logical_core(ttnn.CoreCoord(x, y))
                  for x in range(grid.x)] for y in range(grid.y)]
@@ -113,7 +116,7 @@ def _prepare_layers(weights, multicast):
     for digit in weights.digits:
         layer = K6Layer(spec)
         layer.mcast = multicast
-        layer._dev = (ttnn.typecast(digit.weights, ttnn.float32), zero_bias)
+        layer._dev = (digit.weights, zero_bias)
         layers.append(layer)
     weights.implicit_layers = tuple(layers)
 

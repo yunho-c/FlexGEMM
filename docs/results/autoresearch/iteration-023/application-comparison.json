@@ -1,0 +1,276 @@
+{
+  "scope": "New kernel versus iteration021 stage-cache application; identical adapter, inputs and checkpoints; no paired latency claim",
+  "cpu_status": "numerical_failure",
+  "baseline_report": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-021/application/result.json",
+  "baseline_report_sha256": "2115e45fea94e76ff471c2ef88ba412f17113e22b9d633ec1aea412329d47e93",
+  "comparisons": {
+    "shape_tt_fixed.pt": {
+      "coordinates_equal": true,
+      "actual_voxels": 1711800,
+      "reference_voxels": 1711800,
+      "common_voxels": 1711800,
+      "missing_voxels": 0,
+      "extra_voxels": 0,
+      "common_features": {
+        "finite": true,
+        "relative_l2": 0.0,
+        "pcc": 1.0000000000018634,
+        "max_abs": 0.0
+      },
+      "common_features_bitwise_equal": true,
+      "strict_continuous_gate_passed": true,
+      "common_edge_sign_mismatches": 0
+    },
+    "shape_tt_predicted.pt": {
+      "coordinates_equal": true,
+      "actual_voxels": 1724221,
+      "reference_voxels": 1724221,
+      "common_voxels": 1724221,
+      "missing_voxels": 0,
+      "extra_voxels": 0,
+      "common_features": {
+        "finite": true,
+        "relative_l2": 0.0,
+        "pcc": 0.9999999999967929,
+        "max_abs": 0.0
+      },
+      "common_features_bitwise_equal": true,
+      "strict_continuous_gate_passed": true,
+      "common_edge_sign_mismatches": 0
+    },
+    "texture_tt_fixed.pt": {
+      "coordinates_equal": true,
+      "actual_voxels": 1711800,
+      "reference_voxels": 1711800,
+      "common_voxels": 1711800,
+      "missing_voxels": 0,
+      "extra_voxels": 0,
+      "common_features": {
+        "finite": true,
+        "relative_l2": 0.0,
+        "pcc": 1.0000000000113323,
+        "max_abs": 0.0
+      },
+      "common_features_bitwise_equal": true,
+      "strict_continuous_gate_passed": true
+    },
+    "texture_tt_predicted.pt": {
+      "coordinates_equal": true,
+      "actual_voxels": 1724221,
+      "reference_voxels": 1724221,
+      "common_voxels": 1724221,
+      "missing_voxels": 0,
+      "extra_voxels": 0,
+      "common_features": {
+        "finite": true,
+        "relative_l2": 0.0,
+        "pcc": 0.9999999999928952,
+        "max_abs": 0.0
+      },
+      "common_features_bitwise_equal": true,
+      "strict_continuous_gate_passed": true
+    },
+    "fixed_tt_guides.pt": [
+      {
+        "coordinates_equal": true,
+        "actual_voxels": 4490,
+        "reference_voxels": 4490,
+        "common_voxels": 4490,
+        "missing_voxels": 0,
+        "extra_voxels": 0,
+        "common_features": {
+          "finite": true,
+          "relative_l2": 0.0,
+          "pcc": 1.0000000000000018,
+          "max_abs": 0.0
+        },
+        "common_features_bitwise_equal": true,
+        "strict_continuous_gate_passed": true,
+        "common_sign_mismatches": 0
+      },
+      {
+        "coordinates_equal": true,
+        "actual_voxels": 20251,
+        "reference_voxels": 20251,
+        "common_voxels": 20251,
+        "missing_voxels": 0,
+        "extra_voxels": 0,
+        "common_features": {
+          "finite": true,
+          "relative_l2": 0.0,
+          "pcc": 1.0000000000000089,
+          "max_abs": 0.0
+        },
+        "common_features_bitwise_equal": true,
+        "strict_continuous_gate_passed": true,
+        "common_sign_mismatches": 0
+      },
+      {
+        "coordinates_equal": true,
+        "actual_voxels": 88524,
+        "reference_voxels": 88524,
+        "common_voxels": 88524,
+        "missing_voxels": 0,
+        "extra_voxels": 0,
+        "common_features": {
+          "finite": true,
+          "relative_l2": 0.0,
+          "pcc": 1.0000000000002889,
+          "max_abs": 0.0
+        },
+        "common_features_bitwise_equal": true,
+        "strict_continuous_gate_passed": true,
+        "common_sign_mismatches": 0
+      },
+      {
+        "coordinates_equal": true,
+        "actual_voxels": 388659,
+        "reference_voxels": 388659,
+        "common_voxels": 388659,
+        "missing_voxels": 0,
+        "extra_voxels": 0,
+        "common_features": {
+          "finite": true,
+          "relative_l2": 0.0,
+          "pcc": 1.000000000000064,
+          "max_abs": 0.0
+        },
+        "common_features_bitwise_equal": true,
+        "strict_continuous_gate_passed": true,
+        "common_sign_mismatches": 0
+      }
+    ],
+    "predicted_tt_guides.pt": [
+      {
+        "coordinates_equal": true,
+        "actual_voxels": 4490,
+        "reference_voxels": 4490,
+        "common_voxels": 4490,
+        "missing_voxels": 0,
+        "extra_voxels": 0,
+        "common_features": {
+          "finite": true,
+          "relative_l2": 0.0,
+          "pcc": 1.0000000000000018,
+          "max_abs": 0.0
+        },
+        "common_features_bitwise_equal": true,
+        "strict_continuous_gate_passed": true,
+        "common_sign_mismatches": 0
+      },
+      {
+        "coordinates_equal": true,
+        "actual_voxels": 20250,
+        "reference_voxels": 20250,
+        "common_voxels": 20250,
+        "missing_voxels": 0,
+        "extra_voxels": 0,
+        "common_features": {
+          "finite": true,
+          "relative_l2": 0.0,
+          "pcc": 1.0000000000000084,
+          "max_abs": 0.0
+        },
+        "common_features_bitwise_equal": true,
+        "strict_continuous_gate_passed": true,
+        "common_sign_mismatches": 0
+      },
+      {
+        "coordinates_equal": true,
+        "actual_voxels": 88519,
+        "reference_voxels": 88519,
+        "common_voxels": 88519,
+        "missing_voxels": 0,
+        "extra_voxels": 0,
+        "common_features": {
+          "finite": true,
+          "relative_l2": 0.0,
+          "pcc": 1.0000000000000226,
+          "max_abs": 0.0
+        },
+        "common_features_bitwise_equal": true,
+        "strict_continuous_gate_passed": true,
+        "common_sign_mismatches": 0
+      },
+      {
+        "coordinates_equal": true,
+        "actual_voxels": 389307,
+        "reference_voxels": 389307,
+        "common_voxels": 389307,
+        "missing_voxels": 0,
+        "extra_voxels": 0,
+        "common_features": {
+          "finite": true,
+          "relative_l2": 0.0,
+          "pcc": 0.9999999999998906,
+          "max_abs": 0.0
+        },
+        "common_features_bitwise_equal": true,
+        "strict_continuous_gate_passed": true,
+        "common_sign_mismatches": 0
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-023/application/shape_tt_fixed.pt",
+      "sha256": "2ad60ad1488f8f8f6e0526938332ac006323c45ab6d6035a93100296f27294fd",
+      "bytes": 75321117
+    },
+    {
+      "path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-021/application/shape_tt_fixed.pt",
+      "sha256": "2ad60ad1488f8f8f6e0526938332ac006323c45ab6d6035a93100296f27294fd",
+      "bytes": 75321117
+    },
+    {
+      "path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-023/application/shape_tt_predicted.pt",
+      "sha256": "7284b7cdbacaef3e51a7cf029945797163c20dad2008226e27f9de844bde61d1",
+      "bytes": 75867645
+    },
+    {
+      "path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-021/application/shape_tt_predicted.pt",
+      "sha256": "7284b7cdbacaef3e51a7cf029945797163c20dad2008226e27f9de844bde61d1",
+      "bytes": 75867645
+    },
+    {
+      "path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-023/application/texture_tt_fixed.pt",
+      "sha256": "fef1999db248dc757197d09990a9b59ec8e3bf4620556d5960762ecbf158b6e9",
+      "bytes": 68473965
+    },
+    {
+      "path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-021/application/texture_tt_fixed.pt",
+      "sha256": "fef1999db248dc757197d09990a9b59ec8e3bf4620556d5960762ecbf158b6e9",
+      "bytes": 68473965
+    },
+    {
+      "path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-023/application/texture_tt_predicted.pt",
+      "sha256": "dff1fcdc0dab3946da4ff844712b83809062f232217a6e8f08181c915538b498",
+      "bytes": 68970829
+    },
+    {
+      "path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-021/application/texture_tt_predicted.pt",
+      "sha256": "dff1fcdc0dab3946da4ff844712b83809062f232217a6e8f08181c915538b498",
+      "bytes": 68970829
+    },
+    {
+      "path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-023/application/fixed_tt_guides.pt",
+      "sha256": "fb75228d1397f06faddfd99be17d53e6db9265c9c3a0a106ddf761d1e4b03417",
+      "bytes": 24095805
+    },
+    {
+      "path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-021/application/fixed_tt_guides.pt",
+      "sha256": "fb75228d1397f06faddfd99be17d53e6db9265c9c3a0a106ddf761d1e4b03417",
+      "bytes": 24095805
+    },
+    {
+      "path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-023/application/predicted_tt_guides.pt",
+      "sha256": "b1ed071b1ea2c9d592c733cdfcfde934a7fb765af2878220d6198db873223997",
+      "bytes": 24126645
+    },
+    {
+      "path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-021/application/predicted_tt_guides.pt",
+      "sha256": "b1ed071b1ea2c9d592c733cdfcfde934a7fb765af2878220d6198db873223997",
+      "bytes": 24126645
+    }
+  ]
+}

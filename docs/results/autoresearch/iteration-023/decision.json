@@ -1,0 +1,102 @@
+{
+  "iteration": 23,
+  "decision": "retain compact BF16 integer-weight transfers for opt-in digit_implicit_gemm",
+  "baseline_commit": "d88bbf2a9694f7e1a28cf35729efd376b543f5fc",
+  "fixed_contract_unchanged": true,
+  "full_cases_passed": 36,
+  "implicit_cases": 24,
+  "fallback_cases": 12,
+  "watcher_tests_passed": 22,
+  "cpu_tests_passed": 15,
+  "bitwise_weight_product_comparisons": 40,
+  "paired_results": {
+    "narrow": {
+      "bf16_weight_digit_implicit": {
+        "cases": {
+          "n388659-128x128-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 1.1212811816436232,
+            "minimum_speedup": 1.1204466527249985,
+            "maximum_noise_fraction": 0.011527208329567098,
+            "consistent_screening_win": true
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 1.1212811816436232,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    },
+    "largest": {
+      "bf16_weight_digit_implicit": {
+        "cases": {
+          "n2389000-64x64-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 1.0025772394474057,
+            "minimum_speedup": 0.9986638229984055,
+            "maximum_noise_fraction": 0.06287043060859981,
+            "consistent_screening_win": false
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 1.0025772394474057,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    },
+    "wide-feasible": {
+      "bf16_weight_digit_implicit": {
+        "cases": {
+          "n388659-128x512-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 1.3671726379249198,
+            "minimum_speedup": 1.365991474682623,
+            "maximum_noise_fraction": 0.0024321970676597043,
+            "consistent_screening_win": true
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 1.3671726379249198,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    },
+    "fallback": {
+      "bf16_weight_digit_implicit": {
+        "cases": {
+          "n4490-1024x4096-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 0.998061521526915,
+            "minimum_speedup": 0.9934763917388945,
+            "maximum_noise_fraction": 0.018861768843511158,
+            "consistent_screening_win": false
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 0.998061521526915,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    }
+  },
+  "maximum_workspace_bytes": 726282240,
+  "memory_replays": 36,
+  "normal_device_worker_exits": 79,
+  "timeouts": 0,
+  "device_recovery_required": false,
+  "limitations": [
+    "one update to an opt-in kernel; defaults unchanged",
+    "full-decoder remains outside original FP32 parity gates; one poster only",
+    "no SOTA claim"
+  ],
+  "confirmed_paired_case_groups": [
+    "narrow",
+    "wide-feasible"
+  ],
+  "application_matched_output_and_guide_records": 12,
+  "application_bitwise_equal_to_iteration021": true,
+  "original_application_cpu_gates": "unchanged numerical_failure",
+  "diagnostic_workers": 5,
+  "diagnostic_csv_segments": 74,
+  "next": "Test caching immutable per-device dispatch metadata with lean A/B/A; consider fused reconstruction and compact-weight tap planning next"
+}

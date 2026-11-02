@@ -3,7 +3,7 @@
 //
 // One layer y[o] = sum_k W_k^T x[nmap[o, k]] (+ bias, + identity, ReLU) over 32-row output blocks. Block b of this
 // core: b = me, me + NC, me + 2 NC, ... (strided, so the live blocks, a prefix of the level, spread over all cores).
-// Taps are processed in NCH chunks of TG taps (the chunk's fp32 weights resident in L1).
+// Taps are processed in NCH chunks of TG taps (BF16 or FP32 weights resident in L1).
 //
 // Per chunk:  the chunk's weight tiles -> CB_W (always TG * CIN_T * COUT_T pages; the tail chunk part filled).
 // Per block:  the block's index row (K * 32 uint32, tile order: entry k * 32 + v = row of output 32 b + v at tap k)
@@ -18,7 +18,8 @@
 // CT args: [0] per-core RT-arg count (P3) [1] K [2] CIN_T [3] COUT_T [4] NCH [5] TG [6] NBLK [7] NC [8] SENT
 //          [9] HAS_RES [10] DEAD_SKIP (0: all-sentinel blocks are computed like the stock layer, relu(bias)
 //          (+ identity), so every output row is written and deterministic) [11] MCAST [12] NRECV
-//          [13] SPLIT (the writer gathers the odd-rank present taps into CB_GATH2; no CB_WMETA), then the TensorAccessorArgs of table, index, weight, bias, identity.
+//          [13] SPLIT (writer gathers odd-rank taps; no CB_WMETA) [14] weight tile bytes (BF16 or FP32),
+//          then TensorAccessorArgs of table, index, weight, bias, identity.
 // Common RT args: [table, index, weight, bias, identity]. Per-core RT args: [me, is_sender, sender x, y (virtual),
 // the receivers' rectangle x0, y0, x1, y1 (virtual, NOC 0 order)].
 // MCAST: the chunk's weights are read from DRAM once per grid row, by the row's first core, and multicast to the
@@ -43,8 +44,10 @@ constexpr uint32_t DEAD_SKIP = get_compile_time_arg_val(10);
 constexpr uint32_t MCAST = get_compile_time_arg_val(11);
 constexpr uint32_t NRECV = get_compile_time_arg_val(12);
 constexpr uint32_t SPLIT = get_compile_time_arg_val(13);
+constexpr uint32_t WTB = get_compile_time_arg_val(14);
+static_assert(WTB == 2048 || WTB == 4096);
 constexpr uint32_t NPARTS = SPLIT ? 2 : 1;
-constexpr auto t_args = TensorAccessorArgs<14>();
+constexpr auto t_args = TensorAccessorArgs<15>();
 constexpr auto i_args = TensorAccessorArgs<t_args.next_compile_time_args_offset()>();
 constexpr auto w_args = TensorAccessorArgs<i_args.next_compile_time_args_offset()>();
 constexpr auto b_args = TensorAccessorArgs<w_args.next_compile_time_args_offset()>();
@@ -70,7 +73,7 @@ void kernel_main() {
     volatile tt_l1_ptr uint32_t* valid_ptr = reinterpret_cast<volatile tt_l1_ptr uint32_t*>(valid_addr);
     const auto tab = TensorAccessor(t_args, get_common_arg_val<uint32_t>(0), ROWB);
     const auto idx = TensorAccessor(i_args, get_common_arg_val<uint32_t>(1), IDXB);
-    const auto wt = TensorAccessor(w_args, get_common_arg_val<uint32_t>(2), TB32);
+    const auto wt = TensorAccessor(w_args, get_common_arg_val<uint32_t>(2), WTB);
     const auto bs = TensorAccessor(b_args, get_common_arg_val<uint32_t>(3), TB32);
     const auto rs = TensorAccessor(r_args, get_common_arg_val<uint32_t>(4), TB32);
 
@@ -116,7 +119,7 @@ void kernel_main() {
             const uint32_t cnt = nt * CIN_T * COUT_T;
             if (!MCAST || is_sender) {
                 for (uint32_t i = 0; i < cnt; ++i) {
-                    noc_async_read(wt.get_noc_addr(first + i), wp + i * TB32, TB32);
+                    noc_async_read(wt.get_noc_addr(first + i), wp + i * WTB, WTB);
                 }
                 noc_async_read_barrier();
             }
@@ -124,7 +127,7 @@ void kernel_main() {
                 if (is_sender) {
                     noc_semaphore_wait(ready_ptr, NRECV);
                     noc_semaphore_set(ready_ptr, 0);
-                    noc_async_write_multicast(wp, get_noc_multicast_addr(mx0, my0, mx1, my1, wp), cnt * TB32, NRECV,
+                    noc_async_write_multicast(wp, get_noc_multicast_addr(mx0, my0, mx1, my1, wp), cnt * WTB, NRECV,
                                               true);
                     noc_async_writes_flushed();
                     *valid_ptr = 1;

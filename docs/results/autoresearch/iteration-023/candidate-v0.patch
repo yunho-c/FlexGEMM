@@ -1,0 +1,259 @@
+diff --git a/benchmarks/tenstorrent/common.py b/benchmarks/tenstorrent/common.py
+index 32144a4..3324b6f 100644
+--- a/benchmarks/tenstorrent/common.py
++++ b/benchmarks/tenstorrent/common.py
+@@ -211,13 +211,18 @@ def _digit_implicit_accounting(mapping, ci, co, row_chunk, cores, policy):
+             unused_output += 4 * (blocks * 32 + 1) * nt * 32 * 2
+     senders = policy["grid"][1] if policy["multicast"] else cores
+     model = "digit_implicit_k6_v1" if policy.get("unused_bf16_output_included", True) else "digit_implicit_k6_fp32_output_v1"
++    weight_tile_bytes = policy.get("weight_tile_bytes", 4096)
++    if weight_tile_bytes not in (2048, 4096):
++        raise ValueError("implicit weight tile bytes must describe BF16 or FP32")
++    if weight_tile_bytes == 2048:
++        model += "_bf16_weights"
+     return {"kind": "modeled", "model": model,
+         "valid_interactions": edges, "useful_flops": useful, "issued_flops": issued,
+         "issued_scope": "four_custom_kernel_products_with_empty_tap_skips",
+         "work_efficiency": useful / issued if issued else None, "dummy_tile_products": 0,
+         "active_block_offsets": int(active.sum()), "dense_block_offsets": mt * volume,
+         "requested_feature_bytes": 4 * edges * ct * 64,
+-        "requested_weight_bytes": 4 * len(expected) * senders * volume * ct * nt * 4096,
++        "requested_weight_bytes": 4 * len(expected) * senders * volume * ct * nt * weight_tile_bytes,
+         "requested_map_bytes": index_bytes, "gather_output_bytes": 0,
+         "fp32_product_write_bytes": 4 * mt * nt * 32 * 32 * 4,
+         "unused_bf16_table_write_bytes": unused_output,
+diff --git a/flex_gemm/tenstorrent/_k6.py b/flex_gemm/tenstorrent/_k6.py
+index 1bc33a6..8f108e2 100644
+--- a/flex_gemm/tenstorrent/_k6.py
++++ b/flex_gemm/tenstorrent/_k6.py
+@@ -42,10 +42,10 @@ class K6Layer:
+         self._dev: Optional[Tuple[Any, Any]] = None
+ 
+     def cb_bytes(self, tg: int, nch: int, nbmax: int, has_res: bool = True, write_y: bool = True,
+-                 write_table: bool = True) -> int:
++                 write_table: bool = True, weight_tile_bytes: int = TB32) -> int:
+         """Circular-buffer bytes per core of the layer (the descriptor in :meth:`__call__`)."""
+         ci, co, K = self.cin_t, self.cout_t, self.K
+-        b = 2 * tg * ci * TB16 + tg * ci * co * TB32 + co * TB32 + 4 * 32 + tg * ci * TB16 + 2 * K * 128 + 4 * 32 \
++        b = 2 * tg * ci * TB16 + tg * ci * co * weight_tile_bytes + co * TB32 + 4 * 32 + tg * ci * TB16 + 2 * K * 128 + 4 * 32 \
+             + ci * TB16
+         b += co * 64 + 2 * co * TB16 if write_table else 0
+         b += 2 * co * TB32 if has_res else 0
+@@ -79,7 +79,8 @@ class K6Layer:
+         ``[1, 1, rows + 1, cout_pad]`` (zero last row). ``dead_skip``: only live blocks' rows are written (else
+         all-sentinel blocks are computed as the stock layer does: every row written, deterministic).
+         ``write_table=False`` omits the BF16 table and requires ``write_y=True``.
+-        Tap planning deliberately retains the original table-output CB bound."""
++        Weights may be BF16 digits or their exact FP32 encoding. Tap planning
++        deliberately retains the original FP32-weight/table-output CB bound."""
+         import ttnn
+         if not write_table and not write_y:
+             raise ValueError("K6 requires at least one output")
+@@ -95,6 +96,9 @@ class K6Layer:
+         sent = int(table.shape[-2]) - 1
+         has_res = identity is not None
+         w, b = self._upload(dev)
++        if w.dtype not in (ttnn.bfloat16, ttnn.float32):
++            raise ValueError("K6 weights must be BF16 or FP32")
++        weight_tile_bytes = TB16 if w.dtype == ttnn.bfloat16 else TB32
+         tmc = ttnn.L1_MEMORY_CONFIG if table_memory == "l1" else ttnn.DRAM_MEMORY_CONFIG
+         out = None
+         if write_table:
+@@ -127,7 +131,7 @@ class K6Layer:
+                 ttnn.CBFormatDescriptor(buffer_index=idx, data_format=dtype, page_size=size)])
+ 
+         cbs = [cb(0, 2 * tg * cin_t, ttnn.bfloat16, TB16),               # gathered tap rows (row-major)
+-               cb(1, tg * cin_t * cout_t, ttnn.float32, TB32),           # the chunk's weights
++               cb(1, tg * cin_t * cout_t, w.dtype, weight_tile_bytes),   # the chunk's weights
+                cb(2, cout_t, ttnn.float32, TB32),                        # bias tiles
+                cb(4, 4, ttnn.float32, 32),                               # meta (compute)
+                cb(5, tg * cin_t, ttnn.bfloat16, TB16),                   # tilized taps
+@@ -169,7 +173,7 @@ class K6Layer:
+         yt = y if write_y else out
+         ot = out if write_table else y  # unused accessor when the table writer is compiled out
+         rd_ct = [N_RT_READER, K, cin_t, cout_t, nch, tg, nblk, nc, sent, int(has_res), int(bool(dead_skip)),
+-                 int(mcast), int(g.x) - 1, int(split)] + acc(table) + acc(index) + acc(w) \
++                 int(mcast), int(g.x) - 1, int(split), weight_tile_bytes] + acc(table) + acc(index) + acc(w) \
+             + acc(b) + acc(ident)
+         wr_ct = [N_RT, cout_t, nblk, nc, rows, int(bool(write_y)), int(split), K, cin_t, nch, tg, sent,
+                  int(bool(dead_skip)), int(bool(write_table))] + acc(ot) + acc(yt) + acc(table) + acc(index)
+diff --git a/flex_gemm/tenstorrent/digit_implicit.py b/flex_gemm/tenstorrent/digit_implicit.py
+index feb885e..e52d9d7 100644
+--- a/flex_gemm/tenstorrent/digit_implicit.py
++++ b/flex_gemm/tenstorrent/digit_implicit.py
+@@ -49,9 +49,10 @@ def prepare_sparse_digit_implicit(weights, topology, *, row_chunk=256):
+     grid = device.compute_with_storage_grid_size()
+     info = {"path": "digit_implicit_gemm", "reason": None, "row_chunk": row_chunk,
+             "grid": [grid.x, grid.y], "cb_budget_bytes": CB_BUDGET, "chunks": [],
+-            "product_calls": 4, "weight_storage": "FP32 encoding of BF16 integer digits",
++            "product_calls": 4, "weight_storage": "BF16 integer digits", "weight_tile_bytes": 2048,
+             "unused_bf16_output_included": False,
+-            "tap_planning": "conservative_original_table_output_bound"}
++            "tap_planning": "conservative_original_table_output_bound",
++            "cb_eligibility": "conservative_fp32_weight_bound"}
+ 
+     def fallback(reason):
+         info.update(path="digit_explicit_gemm", reason=reason)
+@@ -71,10 +72,12 @@ def prepare_sparse_digit_implicit(weights, topology, *, row_chunk=256):
+         end = min(start + row_chunk, rows)
+         nbmax = (_round32(end - start) // 32 + grid.x * grid.y - 1) // (grid.x * grid.y)
+         tg, nch = layer.plan(nbmax)
+-        cb_bytes = layer.cb_bytes(tg, nch, nbmax, has_res=False, write_y=True, write_table=False)
++        original_cb_bytes = layer.cb_bytes(tg, nch, nbmax, has_res=False, write_y=True, write_table=False)
++        cb_bytes = layer.cb_bytes(tg, nch, nbmax, has_res=False, write_y=True, write_table=False,
++                                  weight_tile_bytes=2048)
+         info["chunks"].append({"start": start, "end": end, "tap_chunk": tg,
+                                "tap_chunks": nch, "cb_bytes": cb_bytes})
+-        if cb_bytes > CB_BUDGET:
++        if original_cb_bytes > CB_BUDGET:
+             return fallback("per_core_cb_budget")
+     physical = [[device.worker_core_from_logical_core(ttnn.CoreCoord(x, y))
+                  for x in range(grid.x)] for y in range(grid.y)]
+@@ -113,7 +116,7 @@ def _prepare_layers(weights, multicast):
+     for digit in weights.digits:
+         layer = K6Layer(spec)
+         layer.mcast = multicast
+-        layer._dev = (ttnn.typecast(digit.weights, ttnn.float32), zero_bias)
++        layer._dev = (digit.weights, zero_bias)
+         layers.append(layer)
+     weights.implicit_layers = tuple(layers)
+ 
+diff --git a/flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp b/flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp
+index 6da3a27..3a480a2 100644
+--- a/flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp
++++ b/flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp
+@@ -3,7 +3,7 @@
+ //
+ // Per (chunk, live block of this core): tilize the present taps' gathered rows (CB_GATH, row-major [32, CIN_T * 32]
+ // per tap) into CB_TL at slot p * CIN_T (CB_TL always takes TG * CIN_T pages per block: fixed increments), then for
+-// each output tile n: DEST[0] (+)= sum over present taps p, input tiles c of TL[p, c] x W[p, c, n] (fp32 weights,
++// each output tile n: DEST[0] (+)= sum over present taps p, input tiles c of TL[p, c] x W[p, c, n] (BF16 or FP32 weights,
+ // HiFi3, fp32 DEST, tap-major / channel order = the stock im2col matmul's K order). Between chunks the fp32 partial
+ // goes through CB_ACC (UnpackToDestFp32 reload: exact). Last chunk, the epilogue in the order of the stock programs:
+ //   y = acc + bias                       add_binary_tile<NearestEven> (binary_ng's fp32 SFPU add)
+diff --git a/flex_gemm/tenstorrent/kernels/k6/k6_reader.cpp b/flex_gemm/tenstorrent/kernels/k6/k6_reader.cpp
+index 355ab2c..03b3ca4 100644
+--- a/flex_gemm/tenstorrent/kernels/k6/k6_reader.cpp
++++ b/flex_gemm/tenstorrent/kernels/k6/k6_reader.cpp
+@@ -3,7 +3,7 @@
+ //
+ // One layer y[o] = sum_k W_k^T x[nmap[o, k]] (+ bias, + identity, ReLU) over 32-row output blocks. Block b of this
+ // core: b = me, me + NC, me + 2 NC, ... (strided, so the live blocks, a prefix of the level, spread over all cores).
+-// Taps are processed in NCH chunks of TG taps (the chunk's fp32 weights resident in L1).
++// Taps are processed in NCH chunks of TG taps (BF16 or FP32 weights resident in L1).
+ //
+ // Per chunk:  the chunk's weight tiles -> CB_W (always TG * CIN_T * COUT_T pages; the tail chunk part filled).
+ // Per block:  the block's index row (K * 32 uint32, tile order: entry k * 32 + v = row of output 32 b + v at tap k)
+@@ -18,7 +18,8 @@
+ // CT args: [0] per-core RT-arg count (P3) [1] K [2] CIN_T [3] COUT_T [4] NCH [5] TG [6] NBLK [7] NC [8] SENT
+ //          [9] HAS_RES [10] DEAD_SKIP (0: all-sentinel blocks are computed like the stock layer, relu(bias)
+ //          (+ identity), so every output row is written and deterministic) [11] MCAST [12] NRECV
+-//          [13] SPLIT (the writer gathers the odd-rank present taps into CB_GATH2; no CB_WMETA), then the TensorAccessorArgs of table, index, weight, bias, identity.
++//          [13] SPLIT (writer gathers odd-rank taps; no CB_WMETA) [14] weight tile bytes (BF16 or FP32),
++//          then TensorAccessorArgs of table, index, weight, bias, identity.
+ // Common RT args: [table, index, weight, bias, identity]. Per-core RT args: [me, is_sender, sender x, y (virtual),
+ // the receivers' rectangle x0, y0, x1, y1 (virtual, NOC 0 order)].
+ // MCAST: the chunk's weights are read from DRAM once per grid row, by the row's first core, and multicast to the
+@@ -43,8 +44,10 @@ constexpr uint32_t DEAD_SKIP = get_compile_time_arg_val(10);
+ constexpr uint32_t MCAST = get_compile_time_arg_val(11);
+ constexpr uint32_t NRECV = get_compile_time_arg_val(12);
+ constexpr uint32_t SPLIT = get_compile_time_arg_val(13);
++constexpr uint32_t WTB = get_compile_time_arg_val(14);
++static_assert(WTB == 2048 || WTB == 4096);
+ constexpr uint32_t NPARTS = SPLIT ? 2 : 1;
+-constexpr auto t_args = TensorAccessorArgs<14>();
++constexpr auto t_args = TensorAccessorArgs<15>();
+ constexpr auto i_args = TensorAccessorArgs<t_args.next_compile_time_args_offset()>();
+ constexpr auto w_args = TensorAccessorArgs<i_args.next_compile_time_args_offset()>();
+ constexpr auto b_args = TensorAccessorArgs<w_args.next_compile_time_args_offset()>();
+@@ -70,7 +73,7 @@ void kernel_main() {
+     volatile tt_l1_ptr uint32_t* valid_ptr = reinterpret_cast<volatile tt_l1_ptr uint32_t*>(valid_addr);
+     const auto tab = TensorAccessor(t_args, get_common_arg_val<uint32_t>(0), ROWB);
+     const auto idx = TensorAccessor(i_args, get_common_arg_val<uint32_t>(1), IDXB);
+-    const auto wt = TensorAccessor(w_args, get_common_arg_val<uint32_t>(2), TB32);
++    const auto wt = TensorAccessor(w_args, get_common_arg_val<uint32_t>(2), WTB);
+     const auto bs = TensorAccessor(b_args, get_common_arg_val<uint32_t>(3), TB32);
+     const auto rs = TensorAccessor(r_args, get_common_arg_val<uint32_t>(4), TB32);
+ 
+@@ -116,7 +119,7 @@ void kernel_main() {
+             const uint32_t cnt = nt * CIN_T * COUT_T;
+             if (!MCAST || is_sender) {
+                 for (uint32_t i = 0; i < cnt; ++i) {
+-                    noc_async_read(wt.get_noc_addr(first + i), wp + i * TB32, TB32);
++                    noc_async_read(wt.get_noc_addr(first + i), wp + i * WTB, WTB);
+                 }
+                 noc_async_read_barrier();
+             }
+@@ -124,7 +127,7 @@ void kernel_main() {
+                 if (is_sender) {
+                     noc_semaphore_wait(ready_ptr, NRECV);
+                     noc_semaphore_set(ready_ptr, 0);
+-                    noc_async_write_multicast(wp, get_noc_multicast_addr(mx0, my0, mx1, my1, wp), cnt * TB32, NRECV,
++                    noc_async_write_multicast(wp, get_noc_multicast_addr(mx0, my0, mx1, my1, wp), cnt * WTB, NRECV,
+                                               true);
+                     noc_async_writes_flushed();
+                     *valid_ptr = 1;
+diff --git a/tests/tenstorrent/test_autoresearch.py b/tests/tenstorrent/test_autoresearch.py
+index 602b94a..d9ecdce 100644
+--- a/tests/tenstorrent/test_autoresearch.py
++++ b/tests/tenstorrent/test_autoresearch.py
+@@ -218,6 +218,13 @@ def test_implicit_digit_accounting_empty_taps_chunks_and_fallback():
+     assert fp32_only.pop('unused_bf16_table_write_bytes') == 0
+     old = dict(r); old.pop('model'); assert old.pop('unused_bf16_table_write_bytes') > 0
+     assert fp32_only == old
++    compact = work_accounting(mapping, 17, 35, algorithm='digit_implicit_gemm', row_chunk=64,
++        available_cores=4, digit_implicit_policy=dict(policy, unused_bf16_output_included=False,
++                                                     weight_tile_bytes=2048))
++    assert compact.pop('model') == 'digit_implicit_k6_fp32_output_v1_bf16_weights'
++    assert compact.pop('unused_bf16_table_write_bytes') == 0
++    assert compact.pop('requested_weight_bytes') * 2 == fp32_only['requested_weight_bytes']
++    assert compact == {k: v for k, v in fp32_only.items() if k != 'requested_weight_bytes'}
+     empty = work_accounting(torch.full_like(mapping, -1), 17, 35, algorithm='digit_implicit_gemm',
+         row_chunk=64, available_cores=4, digit_implicit_policy=policy)
+     assert empty['issued_flops'] == empty['useful_flops'] == 0 and empty['work_efficiency'] is None
+diff --git a/tests/tenstorrent/test_resident.py b/tests/tenstorrent/test_resident.py
+index ab73278..05c2650 100644
+--- a/tests/tenstorrent/test_resident.py
++++ b/tests/tenstorrent/test_resident.py
+@@ -245,3 +245,41 @@ def test_digit_implicit_fp32_only_products_match_table_path(device,rows,ci,co,vo
+                                                ttnn.to_torch(old).view(torch.int32),atol=0,rtol=0)
+                     del old,unused,actual
+         torch.testing.assert_close(ttnn.to_torch(resident),values,atol=0,rtol=0)
++
++
++@pytest.mark.parametrize('rows,ci,co,volume', [
++    (65, 17, 45, 27), (257, 128, 128, 27), (8193, 64, 64, 27), (1025, 128, 512, 27)])
++def test_digit_implicit_bf16_weights_match_fp32_products(device, rows, ci, co, volume):
++    import ttnn
++    from flex_gemm.tenstorrent._k6 import K6Layer
++    from flex_gemm.tenstorrent.digits import _feature_digits
++    g = torch.Generator().manual_seed(231)
++    inputs = rows + 19
++    mapping = torch.randint(-1, inputs, (rows, volume), generator=g)
++    mapping[:32] = -1
++    mapping[-1] = inputs - 1
++    weights = prepare_sparse_digit_weights(torch.randn(co, volume, ci, generator=g).bfloat16(), device=device)
++    topology = prepare_sparse_topology(mapping, inputs, device=device)
++    plan = prepare_sparse_digit_implicit(weights, topology, row_chunk=8192)
++    assert plan.info['path'] == 'digit_implicit_gemm' and plan.info['weight_tile_bytes'] == 2048
++    controls = []
++    for layer, digit in zip(weights.implicit_layers, weights.digits):
++        assert layer._dev[0].buffer_address() == digit.weights.buffer_address()
++        control = K6Layer(layer.spec)
++        control.mcast, control.split = layer.mcast, layer.split
++        control._dev = (ttnn.typecast(layer._dev[0], ttnn.float32), layer._dev[1])
++        controls.append(control)
++    original = torch.randn(inputs, ci, generator=g).bfloat16()
++    for values in (original, (original.float() * .5 + .03125).bfloat16()):
++        resident = ttnn.from_torch(values, device=device, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT)
++        high, low, scale = _feature_digits(resident, (ci + 31) // 32 * 32)
++        for _, _, index in plan.chunks:
++            for table in (high, low):
++                for layer, control in zip(weights.implicit_layers, controls):
++                    old, _ = control(table, index, write_y=True, dead_skip=False, write_table=False)
++                    actual, _ = layer(table, index, write_y=True, dead_skip=False, write_table=False)
++                    assert (layer.tg, layer.nch) == (control.tg, control.nch)
++                    torch.testing.assert_close(ttnn.to_torch(actual).view(torch.int32),
++                                               ttnn.to_torch(old).view(torch.int32), atol=0, rtol=0)
++                    del old, actual
++        torch.testing.assert_close(ttnn.to_torch(resident), values, atol=0, rtol=0)

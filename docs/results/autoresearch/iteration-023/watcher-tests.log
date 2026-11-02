@@ -1,0 +1,12 @@
+......................                                                   [100%]2026-11-02 17:45:41.440 | info     |           Metal | Watcher checking device 0 (watcher_device_reader.cpp:415)
+
+22 passed, 53 deselected in 44.52s
+2026-11-02 17:45:42.449 | info     |           Metal | Watcher checking device 0 (watcher_device_reader.cpp:415)
+2026-11-02 17:45:42.471 | info     |    BuildKernels | JIT cache stats: 329/462 hits (71.2%) [329 cached, 307 build-once dedup, 0 merged artifacts, 0 merged genfiles] (build_cache_telemetry.cpp:207)
+2026-11-02 17:45:42.471 | info     |    BuildKernels | JIT telemetry: 3 registered TelemetryTokens (build_cache_telemetry.cpp:230)
+2026-11-02 17:45:42.472 | info     |       LLRuntime | Watcher thread stopped watching... (watcher_server.cpp:613)
+2026-11-02 17:45:42.478 | info     |          Device | Closing user mode device drivers (tt_cluster.cpp:513)
+2026-11-02 17:45:42.478 | info     |             UMD | Closing devices in cluster (cluster.cpp:1201)
+2026-11-02 17:45:42.483 | info     |             UMD | Closing devices in cluster completed. (cluster.cpp:1210)
+2026-11-02 17:45:42.483 | info     |             UMD | Cluster destructor started. (cluster.cpp:916)
+2026-11-02 17:45:42.483 | info     |             UMD | Cluster destructor completed. (cluster.cpp:919)

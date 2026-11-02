@@ -218,6 +218,13 @@ def test_implicit_digit_accounting_empty_taps_chunks_and_fallback():
     assert fp32_only.pop('unused_bf16_table_write_bytes') == 0
     old = dict(r); old.pop('model'); assert old.pop('unused_bf16_table_write_bytes') > 0
     assert fp32_only == old
+    compact = work_accounting(mapping, 17, 35, algorithm='digit_implicit_gemm', row_chunk=64,
+        available_cores=4, digit_implicit_policy=dict(policy, unused_bf16_output_included=False,
+                                                     weight_tile_bytes=2048))
+    assert compact.pop('model') == 'digit_implicit_k6_fp32_output_v1_bf16_weights'
+    assert compact.pop('unused_bf16_table_write_bytes') == 0
+    assert compact.pop('requested_weight_bytes') * 2 == fp32_only['requested_weight_bytes']
+    assert compact == {k: v for k, v in fp32_only.items() if k != 'requested_weight_bytes'}
     empty = work_accounting(torch.full_like(mapping, -1), 17, 35, algorithm='digit_implicit_gemm',
         row_chunk=64, available_cores=4, digit_implicit_policy=policy)
     assert empty['issued_flops'] == empty['useful_flops'] == 0 and empty['work_efficiency'] is None

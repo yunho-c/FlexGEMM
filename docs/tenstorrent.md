@@ -203,8 +203,9 @@ cross tile boundaries, and FP32 cancellation across reduction tiles.
 `digit_implicit_gemm` uses the validated integer-digit decomposition with four
 fused gather/matmul calls on Wormhole. It avoids materializing the two expanded
 activation matrices in DRAM. Each call writes only its FP32 product; unused BF16
-product tables, conversions and writes are omitted. Reconstruction, final output
-dtype and conservative tap planning remain unchanged. The existing explicit digit path remains available
+product tables, conversions and writes are omitted. Integer weights retain their
+BF16 storage for transfers; FP32 product accumulation and reconstruction remain.
+Conservative tap planning is unchanged. The existing explicit digit path remains available
 as `digit_explicit_gemm`; neither changes the default algorithm.
 
 ```python
@@ -231,8 +232,10 @@ Calling the preparation function explicitly separates its cost from warm executi
 the forward also prepares lazily when needed.
 
 Unsupported architectures, kernel volumes above 32, non-tile-aligned row chunks,
-and plans exceeding the 900 KiB per-core circular-buffer budget fall back to
-`digit_explicit_gemm`. The returned policy reports the selected path and reason.
+and plans exceeding the conservative 900 KiB per-core circular-buffer bound fall
+back to `digit_explicit_gemm`. Tap grouping and eligibility use the original
+FP32-weight bound; the reported actual CB footprint reflects compact BF16 weights.
+The returned policy reports the selected path and reason.
 Both paths support BF16 or `fp32_output=True` results, with original row order.
 Small shapes and some wide outputs can be slower on the implicit path; this is
 an opt-in algorithm, not a universal performance dispatch policy.

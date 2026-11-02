@@ -1,0 +1,25 @@
+{
+  "returncode": 0,
+  "timeout": null,
+  "elapsed_seconds": 28.552148840972222,
+  "device_recovery_required": false,
+  "command": [
+    "/home/user/tt-metal/python_env/bin/python",
+    "-m",
+    "benchmarks.tenstorrent.k6_profile",
+    "--corpus",
+    "/home/user/tt-scratchpad/flexgemm-autoresearch/full-sampler-shape-corpus-v1",
+    "--case",
+    "n2389000-64x64-k3x3x3",
+    "--row-chunk",
+    "16384",
+    "--mode",
+    "weight",
+    "--scope",
+    "chunks",
+    "--output",
+    "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-023/probe-largest-weight-v1.json"
+  ],
+  "lock": "/tmp/genrecon-tt-pjrt.lock",
+  "lock_wait_seconds": 0.00046076206490397453
+}

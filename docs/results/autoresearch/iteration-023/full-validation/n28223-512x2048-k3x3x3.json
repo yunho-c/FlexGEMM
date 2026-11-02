@@ -1,0 +1,395 @@
+{
+  "status": "passed",
+  "phase": "complete",
+  "case": {
+    "name": "n28223-512x2048-k3x3x3",
+    "split": "application",
+    "file": "n28223-512x2048-k3x3x3.pt",
+    "sha256": "c21fc7bbfd06ba2505558d577d47dba588ec14548e11b73649c26f26170e739d",
+    "points": 28223,
+    "ci": 512,
+    "co": 2048,
+    "volume": 27,
+    "occurrences": 1,
+    "valid_interactions": 414833,
+    "topology_oracle_rows": 1024,
+    "prepare_seconds": 12.00828750000801,
+    "provenance": {
+      "kind": "captured_decoder_layer",
+      "layer": "blocks.1.16.conv1",
+      "capture_sha256": "c831f3312e0107f4b499f07ceacd57eac8b805b66cb66d582eecb000ca833f0f",
+      "scene_input_sha256": "6f62d5a77923330962996c0782cc1be2c105971fd5acd4654c9880f892596cc0",
+      "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581"
+    }
+  },
+  "config": {
+    "algorithm": "digit_implicit_gemm",
+    "row_chunk": 2048
+  },
+  "contract": {
+    "version": 1,
+    "operation": "forward sparse convolution; submanifold coordinate fixtures",
+    "input_dtype": "bfloat16",
+    "output_dtype": "bfloat16",
+    "input_layout": "TILE_LAYOUT, device DRAM",
+    "output_layout": "TILE_LAYOUT, device DRAM, original output row order",
+    "accumulation": "float32",
+    "wormhole_math_fidelity": "HiFi3",
+    "atol": 0.025,
+    "rtol": 0.025,
+    "max_relative_l2": 0.01,
+    "allow_input_mutation": false,
+    "allow_feature_dependent_preparation": false,
+    "persistent_state": [
+      "weights",
+      "integer topology",
+      "shape-dependent schedules"
+    ],
+    "timing": "host wall time including all required device operations and synchronization; excludes compilation, initial input upload, output download and static preparation",
+    "score": "per-case median completed-operator latency; geometric mean for synthetic coverage only; application score requires measured occurrence counts",
+    "workspace_limit_bytes": 1073741824,
+    "workspace_scope": "temporary tensors beyond resident input, output, weights and topology; estimates must be labeled, allocator snapshots are not peaks",
+    "promotion": "all selected correctness gates pass, evaluator/corpus hashes unchanged, and paired timing improvement exceeds measured baseline noise",
+    "known_failure_policy": "report numerical_failure; never convert xfail into a pass or exclude it silently",
+    "device_lock": "/tmp/genrecon-tt-pjrt.lock"
+  },
+  "mode": "memory",
+  "torch": "2.11.0+cpu",
+  "candidate": {
+    "root": "/home/user/GitHub/flexgemm-autoresearch",
+    "commit": "d88bbf2a9694f7e1a28cf35729efd376b543f5fc",
+    "dirty": true,
+    "sha256": {
+      "flex_gemm/tenstorrent/__init__.py": "77a358e234274658599c29d251bbeaaee81611cb5d985f02152a4cf32a8815e0",
+      "flex_gemm/tenstorrent/_k6.py": "f87d8ec42112a67e181823890e5e456a838fc53e710083f5e40a7b403c0a35b2",
+      "flex_gemm/tenstorrent/conv.py": "389903b43e5246a94bfba678070a0b031da45c749de5e5c0484c20ac65c7f6c5",
+      "flex_gemm/tenstorrent/digit_implicit.py": "32a8bcbd9e2d9ae40da80b71b0b3dfa4f29e50c3bea8acafcead12756da6e32d",
+      "flex_gemm/tenstorrent/digits.py": "7ae1cb8e5828f47061f15d1e409bfedce551b08f9a408159d263b962db059a07",
+      "flex_gemm/tenstorrent/feature_digits.py": "33a6117dcfc96b4224fc7c82ddccb4fda00308f1999aff5cbc7209867659fd76",
+      "flex_gemm/tenstorrent/gather.py": "84bb18bfd4d77468aee9366342a3976f92cf0d71dd2da13a157d955156895315",
+      "flex_gemm/tenstorrent/implicit.py": "b512b11eff94b770c9131ba3a1f376b7f060bd17206a8ab0c3aae693e0eee688",
+      "flex_gemm/tenstorrent/kernels/compute.cpp": "431780ae171a14f2e4ea9db2b8b7db5fc23b064bde7e12623da60070a4cee075",
+      "flex_gemm/tenstorrent/kernels/copy_output_tiles.cpp": "c1f12ea86cbc2545842495c5c9cf8774e9bf45b1533b3cbb40859834e2e2c642",
+      "flex_gemm/tenstorrent/kernels/feature_digits_compute.cpp": "671870f8c356b59efbf92f719fe52216f3907f0583c32464ec6bd09117b45a19",
+      "flex_gemm/tenstorrent/kernels/feature_digits_reader.cpp": "f68826bc0b439952af1f9afd70b2130632a0d2b4ee3ff2f2c1dc08f37cfe7263",
+      "flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp": "b3014798f33717b0e77c0ad86c0dd298903cb9bb13aabdde02aeb6bb1fc0ec0c",
+      "flex_gemm/tenstorrent/kernels/gather.cpp": "b546a590ae983e7a16c6cd0d9029ae6ed15eb5923b25a06cc85a882b67c537a7",
+      "flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp": "d23850c47cdb048fc80fd9ea78eaad270d8dd262e37882399b69d18021f8b9ff",
+      "flex_gemm/tenstorrent/kernels/k6/k6_gather.hpp": "65d87341df1520505bc29b978eb150ba833ed72f7d7d7a5213e06e880b24cb1d",
+      "flex_gemm/tenstorrent/kernels/k6/k6_reader.cpp": "a02e7f4e2478c0f188ab9092e2b35a9a1a49bd77b633f68ad9344c75a4bc1d41",
+      "flex_gemm/tenstorrent/kernels/k6/k6_writer.cpp": "828c61d3cad1d80205cd1f535b3ded91e6277a0153ef29b6ac86440f3483229e",
+      "flex_gemm/tenstorrent/kernels/reader.cpp": "6ba3b2ef6f4f80f3b354cb40210c181753d593236ffb080ff36825d61ceeddab",
+      "flex_gemm/tenstorrent/kernels/writer.cpp": "494dcd0566cec973a6b792109071a37f40c6579a155ed1d4d6ef3029505d83fc",
+      "flex_gemm/tenstorrent/masking.py": "32c66f47bd2caef0ec94e34c23e0ae09562206a47267cc490db304cf7f0d10b7",
+      "flex_gemm/tenstorrent/ops.py": "c5e99c9032b6f472ee6d276ad196bb6caeaaadc539cb96a6fad25eb17b4a12db",
+      "flex_gemm/tenstorrent/reference.py": "a0dc3709115acfb282ea9d472b63ed470e62421e478ab67d20b2387b8ea0bdd3",
+      "flex_gemm/tenstorrent/resident.py": "88e039e8c320a7b29853626403e6a56a3da469e35a136fa13e4db2bb868ecb25"
+    }
+  },
+  "evaluator_sha256": {
+    "/home/user/tt-scratchpad/flexgemm-autoresearch/full-sampler-shape-corpus-v1/manifest.json": "22773c74e348d2b0701d51dd70ade31f00a5f2f723d9f2020c201ac430f055eb",
+    "/home/user/tt-scratchpad/flexgemm-autoresearch/full-sampler-shape-corpus-v1/contract.json": "f49de05e37d42f895008c14caeac408513fad7a3537fbca5d74ad265131f5733",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/__init__.py": "d530c6c7c2ea23e5361ce345bf5e48dcdc62ea4c81a5bf695e4f33b72fa2ca85",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/calibrate.py": "0d5ccfa1374ed9ec8385d9cb5019e92310746c0260c2960ad67f1b5bcce7038b",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/capture_genrecon.py": "a6f42d5fb7f501a8011b980ea05af7b49c4d71164850fa50f6212fd612a1bf59",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/common.py": "ab1f1920fb700b182475005cd3007a616bb4b0ac3b11808364ae17ba6972fe23",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/components.py": "04f5c01941b6774cac690c30fa08558558e0678352431d4ef47f14e838cc1832",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/digit_study.py": "dc49489ad55a5fd986d94047cc77a8d6f6acbdbf930470eb92a02e89067f64ae",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/evaluate.py": "191b81fa9042d27a4cb2ecdc5a7387c68bb7f59d6b5b54c2914b6f5681e22ee3",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/k6_profile.py": "0a0bebaa623e7e46115e91e42035dcd66554315395b78376bf69e54203c17bf6",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/memory.py": "b6a8a3630beb6e5610c01003a09ff22d5b5c5688ca91d657291f262d58a6de86",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/precision_probe.py": "73948a4f3c8d72aad3d33b7c5674b9459555c66cfb23f6c6a76414777559a5e2",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/prepare.py": "04596d045e5bcf018513ea70da93a5c6b3e533082c49651daec832309bc662d1",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/prepare_captures.py": "85db26d0fb7378e314192b667b755bd30c271300029ec700ed332fb28c1a3ca4",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/prepare_lidar.py": "870ab1cc9c693754c7eb097f61c9a37caf077a43479fe18a5a93aa84190e6179",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/profile.py": "389702bc16bd2f9a368c17034210fe3b359dcc07878448bd9839760e09b9183e",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/run.py": "a0c4fd16c74b486030f4dd8de854a5fe953db3c7cd52ae96677bee1933c4b14b",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/sol.py": "11763b2f1580dd6d60748cc1c2384b6f6865db22f09ac0899ab90a49722385e8",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/sweep.py": "0913455c05513ed17ed3eb1b16842f08d4294fe6bed853c1b606eb2c835c0536"
+  },
+  "timing_scope": "host wall time including all required device operations and synchronization; excludes compilation, initial input upload, output download and static preparation",
+  "samples": [
+    {
+      "variant": 0,
+      "ms": 251.06098398100585
+    },
+    {
+      "variant": 1,
+      "ms": 250.987884006463
+    },
+    {
+      "variant": 0,
+      "ms": 250.4626529989764
+    }
+  ],
+  "checks": [
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016210010129451907,
+      "max_abs_error": 0.499969482421875,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.19444736556328004,
+      "first_failures": [],
+      "label": "warmup",
+      "feature_variant": 0,
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.001685032593266512,
+      "max_abs_error": 0.25061798095703125,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.1531675012601627,
+      "first_failures": [],
+      "label": "warmup",
+      "feature_variant": 1,
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016210010129451907,
+      "max_abs_error": 0.499969482421875,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.19444736556328004,
+      "first_failures": [],
+      "label": "memory_capture",
+      "feature_variant": 0,
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.001685032593266512,
+      "max_abs_error": 0.25061798095703125,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.1531675012601627,
+      "first_failures": [],
+      "label": "last_timed",
+      "feature_variant": 1,
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "repeat_bitwise_equal": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016210010129451907,
+      "max_abs_error": 0.499969482421875,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.19444736556328004,
+      "first_failures": [],
+      "label": "last_timed",
+      "feature_variant": 0,
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "repeat_bitwise_equal": true
+    }
+  ],
+  "workspace_peak_measured": false,
+  "profiler": null,
+  "tt_metal_commit": "9f9cd4fd590f4b606bd0981a4fe0b6403eb38ec9",
+  "arch": "Arch.WORMHOLE_B0",
+  "available_grid": [
+    8,
+    8
+  ],
+  "math_fidelity": "MathFidelity.HiFi3",
+  "work": {
+    "kind": "modeled",
+    "model": "digit_explicit_v4",
+    "valid_interactions": 414833,
+    "useful_flops": 869967855616,
+    "issued_flops": 6392521949184,
+    "issued_scope": "logical_padded_gemm",
+    "work_efficiency": 0.13609149292433023,
+    "dummy_tile_products": 0,
+    "active_block_offsets": 21580,
+    "dense_block_offsets": 23814,
+    "requested_feature_bytes": 849577984,
+    "requested_weight_bytes": null,
+    "requested_map_bytes": 6096384,
+    "gather_output_bytes": 1560674304,
+    "output_assembly_copy_bytes": 231211008,
+    "split_partial_bytes": 0,
+    "reduction_add_payload_bytes": 0,
+    "explicit_expansion_bytes": 113246208,
+    "available_cores": 64,
+    "selected_cores": null,
+    "core_tile_products": [],
+    "core_work_max_over_mean": null,
+    "dram_bus_bytes": null,
+    "noc_bus_bytes": null,
+    "peak_workspace_bytes": null,
+    "dispatch_fallback": "per_core_cb_budget"
+  },
+  "feature_digit_preparation": "fused_sfpu",
+  "digit_implicit_policy": {
+    "path": "digit_explicit_gemm",
+    "reason": "per_core_cb_budget",
+    "row_chunk": 2048,
+    "grid": [
+      8,
+      8
+    ],
+    "cb_budget_bytes": 921600,
+    "chunks": [
+      {
+        "start": 0,
+        "end": 2048,
+        "tap_chunk": 1,
+        "tap_chunks": 27,
+        "cb_bytes": 3389184
+      }
+    ],
+    "product_calls": 4,
+    "weight_storage": "BF16 integer digits",
+    "weight_tile_bytes": 2048,
+    "unused_bf16_output_included": false,
+    "tap_planning": "conservative_original_table_output_bound",
+    "cb_eligibility": "conservative_fp32_weight_bound"
+  },
+  "static_prepare_ms": 455.89634496718645,
+  "input_contract": [
+    {
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1
+    },
+    {
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1
+    }
+  ],
+  "memory": {
+    "before": {
+      "dram": {
+        "allocated_bytes": 0,
+        "capacity_bytes": 12849278208
+      },
+      "l1": {
+        "allocated_bytes": 0,
+        "capacity_bytes": 89182208
+      }
+    },
+    "prepared": {
+      "dram": {
+        "allocated_bytes": 176292864,
+        "capacity_bytes": 12849278208
+      },
+      "l1": {
+        "allocated_bytes": 0,
+        "capacity_bytes": 89182208
+      }
+    },
+    "scope": "live allocator snapshots, not transient peaks",
+    "after_execution": {
+      "dram": {
+        "allocated_bytes": 177005568,
+        "capacity_bytes": 12849278208
+      },
+      "l1": {
+        "allocated_bytes": 0,
+        "capacity_bytes": 89182208
+      }
+    }
+  },
+  "memory_capture": {
+    "python_io_recording": false,
+    "scope": "C++ graph including allocator events; Python I/O sidecar disabled",
+    "elapsed_ms": 429.2701439699158
+  },
+  "workspace": {
+    "kind": "conservative_bound_from_allocator_trace",
+    "new_dram_peak_bytes": 388153344,
+    "dram_allocations": 222,
+    "dram_banks": 12,
+    "inclusive_upper_bound_bytes": 477335552,
+    "temporary_dram_peak_bytes": 272547840,
+    "excluded_final_output": {
+      "device_id": 1,
+      "address": 22546240,
+      "event_index": 235,
+      "aligned_bytes": 115605504,
+      "expected_padded_bytes": 115605504,
+      "excluded_bytes": 115605504
+    },
+    "all_l1_capacity_bytes": 89182208,
+    "workspace_upper_bound_bytes": 361730048,
+    "workspace_limit_bytes": 1073741824,
+    "trace_valid": true,
+    "anomalies": [],
+    "within_limit": true,
+    "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+    "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-023/full-validation/n28223-512x2048-k3x3x3.allocations.json.gz",
+    "trace_sha256": "bf3c26d7df4bd61645d8e62544a4e4341990654658e6010759aaaacb3f449a77"
+  },
+  "timing": {
+    "median_ms": 250.987884006463,
+    "min_ms": 250.4626529989764,
+    "max_ms": 251.06098398100585,
+    "mad_ms": 0.07309997454285622,
+    "samples_ms": [
+      251.06098398100585,
+      250.987884006463,
+      250.4626529989764
+    ]
+  },
+  "input_unchanged": true,
+  "useful_tflops": 3.4661747082325225,
+  "issued_tflops": 25.469444369750498,
+  "protected_files_unchanged": true,
+  "fixture_unchanged": true,
+  "candidate_source_unchanged": true
+}

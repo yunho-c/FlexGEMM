@@ -1,0 +1,13 @@
+{
+  "scope": "Diagnostic profiles collected only after all promotion timing workers terminated",
+  "workers": 5,
+  "selected_csv_segments": 74,
+  "full_operator_profiler_program_support_count": 6000,
+  "limitations": [
+    "Complete largest-case report is 237573268 bytes; supervisor monitor repeatedly parses it and can perturb host scheduling",
+    "Complete operator host wall time and inter-program gaps are not lean timing evidence",
+    "Use device kernel-span unions and separate phases diagnostically; no attainable-speedup or bus-counter claim",
+    "Chunk-level mode comparison against iteration022 is unpaired; original profiler scope caveats still apply"
+  ],
+  "driver_sha256": "2cb74e58d097c6d1f433f216ffbd8e37a3a149fee784bb2562d94e82e75905d4"
+}

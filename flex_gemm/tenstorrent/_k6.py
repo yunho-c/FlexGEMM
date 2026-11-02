@@ -42,10 +42,10 @@ class K6Layer:
         self._dev: Optional[Tuple[Any, Any]] = None
 
     def cb_bytes(self, tg: int, nch: int, nbmax: int, has_res: bool = True, write_y: bool = True,
-                 write_table: bool = True) -> int:
+                 write_table: bool = True, weight_tile_bytes: int = TB32) -> int:
         """Circular-buffer bytes per core of the layer (the descriptor in :meth:`__call__`)."""
         ci, co, K = self.cin_t, self.cout_t, self.K
-        b = 2 * tg * ci * TB16 + tg * ci * co * TB32 + co * TB32 + 4 * 32 + tg * ci * TB16 + 2 * K * 128 + 4 * 32 \
+        b = 2 * tg * ci * TB16 + tg * ci * co * weight_tile_bytes + co * TB32 + 4 * 32 + tg * ci * TB16 + 2 * K * 128 + 4 * 32 \
             + ci * TB16
         b += co * 64 + 2 * co * TB16 if write_table else 0
         b += 2 * co * TB32 if has_res else 0
@@ -79,7 +79,8 @@ class K6Layer:
         ``[1, 1, rows + 1, cout_pad]`` (zero last row). ``dead_skip``: only live blocks' rows are written (else
         all-sentinel blocks are computed as the stock layer does: every row written, deterministic).
         ``write_table=False`` omits the BF16 table and requires ``write_y=True``.
-        Tap planning deliberately retains the original table-output CB bound."""
+        Weights may be BF16 digits or their exact FP32 encoding. Tap planning
+        deliberately retains the original FP32-weight/table-output CB bound."""
         import ttnn
         if not write_table and not write_y:
             raise ValueError("K6 requires at least one output")
@@ -95,6 +96,9 @@ class K6Layer:
         sent = int(table.shape[-2]) - 1
         has_res = identity is not None
         w, b = self._upload(dev)
+        if w.dtype not in (ttnn.bfloat16, ttnn.float32):
+            raise ValueError("K6 weights must be BF16 or FP32")
+        weight_tile_bytes = TB16 if w.dtype == ttnn.bfloat16 else TB32
         tmc = ttnn.L1_MEMORY_CONFIG if table_memory == "l1" else ttnn.DRAM_MEMORY_CONFIG
         out = None
         if write_table:
@@ -127,7 +131,7 @@ class K6Layer:
                 ttnn.CBFormatDescriptor(buffer_index=idx, data_format=dtype, page_size=size)])
 
         cbs = [cb(0, 2 * tg * cin_t, ttnn.bfloat16, TB16),               # gathered tap rows (row-major)
-               cb(1, tg * cin_t * cout_t, ttnn.float32, TB32),           # the chunk's weights
+               cb(1, tg * cin_t * cout_t, w.dtype, weight_tile_bytes),   # the chunk's weights
                cb(2, cout_t, ttnn.float32, TB32),                        # bias tiles
                cb(4, 4, ttnn.float32, 32),                               # meta (compute)
                cb(5, tg * cin_t, ttnn.bfloat16, TB16),                   # tilized taps
@@ -169,7 +173,7 @@ class K6Layer:
         yt = y if write_y else out
         ot = out if write_table else y  # unused accessor when the table writer is compiled out
         rd_ct = [N_RT_READER, K, cin_t, cout_t, nch, tg, nblk, nc, sent, int(has_res), int(bool(dead_skip)),
-                 int(mcast), int(g.x) - 1, int(split)] + acc(table) + acc(index) + acc(w) \
+                 int(mcast), int(g.x) - 1, int(split), weight_tile_bytes] + acc(table) + acc(index) + acc(w) \
             + acc(b) + acc(ident)
         wr_ct = [N_RT, cout_t, nblk, nc, rows, int(bool(write_y)), int(split), K, cin_t, nch, tg, sent,
                  int(bool(dead_skip)), int(bool(write_table))] + acc(ot) + acc(yt) + acc(table) + acc(index)

@@ -1,0 +1,6 @@
+{
+  "bf16_weight_digit_implicit": {
+    "algorithm": "digit_implicit_gemm",
+    "row_chunk": 8192
+  }
+}
