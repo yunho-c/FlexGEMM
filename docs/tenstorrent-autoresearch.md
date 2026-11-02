@@ -439,6 +439,29 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   external comparator measurements remain outstanding; no global or SOTA
   promotion is claimed. All device workers exited normally.
 
+### 008 — reject reduced-product accuracy shortcuts
+
+- Tested two GEMMs by decomposing only weights, two by decomposing only
+  features, and three by omitting the low-digit × low-digit term. The reference,
+  fidelity and tolerances stayed fixed. Ten weight-only and 20 alternative
+  Watcher tests pass, but the mandatory real/regression gates reject all three.
+- Weight-only decomposition passes the 513-row regression at 10.076 ms and the
+  4,490-row wide layer at 74.635 ms. On 388,659 rows at 128→512 it runs in
+  496.154 ms but has three failing elements in feature variant 0, with a maximum
+  absolute error of 8.026. Variant 1 passes. It is not an eligible global winner.
+- Feature-only decomposition passes the regression at 13.572 ms and the wide
+  layer at 94.725 ms, but fails one element in variant 0 of the 388,659-row wide
+  layer (771.463 ms). Preserving either operand alone is insufficient.
+- Three products pass that late wide layer at 857.466 ms, but fail 18/1 elements
+  in the regression's two feature variants and one element in variant 0 of the
+  4,490-row wide layer. The supposedly small omitted term cannot be ignored
+  under this contract.
+- Decision: restore the four-product incumbent. Exact candidate patches,
+  base-commit metadata, tests and successful/failed trial reports are archived
+  under `iteration-008`. None of these screening timings is a promoted speedup.
+  Next: measure the passing implementation's component costs and optimize the
+  expensive operations while preserving all four products.
+
 The additional CPU capture tools are:
 
 ```bash

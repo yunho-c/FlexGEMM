@@ -1,0 +1,65 @@
+{
+  "status": "complete",
+  "trials": [
+    {
+      "case": "n20251-512x2048-k3x3x3",
+      "config": {
+        "algorithm": "weight_digit_gemm",
+        "row_chunk": 2048
+      },
+      "status": "passed",
+      "ms": 112.25935094989836,
+      "failures": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "case": "n388659-128x512-k3x3x3",
+      "config": {
+        "algorithm": "weight_digit_gemm",
+        "row_chunk": 8192
+      },
+      "status": "numerical_or_integrity_failure",
+      "ms": 496.1541710072197,
+      "failures": [
+        3,
+        0,
+        0,
+        3
+      ]
+    },
+    {
+      "case": "n1711800-64x64-k3x3x3",
+      "config": {
+        "algorithm": "weight_digit_gemm",
+        "row_chunk": 16384
+      },
+      "status": "passed",
+      "ms": 1141.427507973276,
+      "failures": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "case": "n4490-1024x4096-k3x3x3",
+      "config": {
+        "algorithm": "weight_digit_gemm",
+        "row_chunk": 1024
+      },
+      "status": "passed",
+      "ms": 74.63526097126305,
+      "failures": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,303 @@
+diff --git a/benchmarks/tenstorrent/common.py b/benchmarks/tenstorrent/common.py
+index 6e1c466..ea1d8e7 100644
+--- a/benchmarks/tenstorrent/common.py
++++ b/benchmarks/tenstorrent/common.py
+@@ -96,9 +96,13 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
+     edges = int((mapping >= 0).sum())
+     useful = 2 * edges * ci * co
+     fused_gather = algorithm == "tiled_gather_gemm"
+-    digit_products = algorithm == "digit_explicit_gemm"
++    weight_only = algorithm == "weight_digit_gemm"
++    feature_only = algorithm == "feature_digit_gemm"
++    three_products = algorithm == "digit_three_gemm"
++    digit_products = algorithm in ("digit_explicit_gemm", "weight_digit_gemm", "feature_digit_gemm", "digit_three_gemm")
++    products = 2 if weight_only or feature_only else 3 if three_products else 4 if digit_products else 1
+     digit_copy = digit_products and digit_output_assembly == "tile_copy"
+-    explicit = algorithm in ("explicit_gemm", "tiled_gather_gemm", "digit_explicit_gemm")
++    explicit = algorithm in ("explicit_gemm", "tiled_gather_gemm") or digit_products
+     if fused_gather and row_chunk < m and row_chunk % 32:
+         raise ValueError("tiled gather chunk must be tile aligned")
+     masked = algorithm.startswith("masked")
+@@ -121,7 +125,7 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
+     if explicit:
+         padded_rows = sum(math.ceil(min(row_chunk, m - start) / 32) * 32
+                           for start in range(0, m, row_chunk))
+-        tile_products = padded_rows // 32 * nt * volume * ct * (4 if digit_products else 1)
++        tile_products = padded_rows // 32 * nt * volume * ct * products
+         if fused_gather:
+             feature_bytes = edges * ct * 64
+             map_reads = padded_rows // 32 * volume
+@@ -148,7 +152,7 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
+     # Payload of S-1 FP32 adds: two inputs and one output per add. Slices/casts
+     # may add traffic, so this is not total reduction traffic or peak workspace.
+     reduction_bytes = (split_k - 1) * mt * 32 * nt * 32 * 12
+-    return {"kind": "modeled", "model": ("digit_explicit_v2" if digit_copy else "digit_explicit_v1") if digit_products else "tiled_gather_v1" if fused_gather else "baseline_v1",
++    return {"kind": "modeled", "model": "weight_digit_v1" if weight_only else "feature_digit_v1" if feature_only else "digit_three_v1" if three_products else ("digit_explicit_v2" if digit_copy else "digit_explicit_v1") if digit_products else "tiled_gather_v1" if fused_gather else "baseline_v1",
+             "valid_interactions": edges, "useful_flops": useful, "issued_flops": issued,
+             "issued_scope": "logical_padded_gemm" if explicit else "custom_kernel_tile_products",
+             "work_efficiency": useful / issued, "dummy_tile_products": dummy,
+@@ -159,7 +163,7 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
+             "gather_output_bytes": padded_rows * volume * ct * 64 if fused_gather else None,
+             "output_assembly_copy_bytes": mt * nt * 1024 * 4 if digit_copy and m > row_chunk and row_chunk % 32 == 0 else 0,
+             "split_partial_bytes": partial_bytes, "reduction_add_payload_bytes": reduction_bytes,
+-            "explicit_expansion_bytes": math.ceil(min(row_chunk, m) / 32) * 32 * volume * ct * 32 * 2 * (2 if digit_products else 1) if explicit else 0,
++            "explicit_expansion_bytes": math.ceil(min(row_chunk, m) / 32) * 32 * volume * ct * 32 * 2 * (2 if digit_products and not weight_only else 1) if explicit else 0,
+             "available_cores": available_cores, "selected_cores": ncores,
+             "core_tile_products": core_work,
+             "core_work_max_over_mean": max(core_work) / statistics.mean(core_work) if core_work else None,
+diff --git a/benchmarks/tenstorrent/evaluate.py b/benchmarks/tenstorrent/evaluate.py
+index e50be41..112a843 100644
+--- a/benchmarks/tenstorrent/evaluate.py
++++ b/benchmarks/tenstorrent/evaluate.py
+@@ -114,9 +114,10 @@ def main():
+         phase("prepare")
+         before = memory(device)
+         start = time.perf_counter()
+-        prepare_weights = (candidate.prepare_sparse_digit_weights if config["algorithm"] == "digit_explicit_gemm"
++        prepare_weights = (candidate.prepare_sparse_digit_weights if config["algorithm"] in ("digit_explicit_gemm", "weight_digit_gemm", "feature_digit_gemm", "digit_three_gemm")
+                            else candidate.prepare_sparse_weights)
+-        weights = prepare_weights(fixture["weight"], bias=fixture["bias"], device=device)
++        extra = {"decompose_weight": False} if config["algorithm"] == "feature_digit_gemm" else {}
++        weights = prepare_weights(fixture["weight"], bias=fixture["bias"], device=device, **extra)
+         topology = candidate.prepare_sparse_topology(fixture["mapping"], len(fixture["features"][0]),
+             device=device, masked=config["algorithm"].startswith("masked"))
+         ttnn.synchronize_device(device)
+diff --git a/flex_gemm/tenstorrent/digits.py b/flex_gemm/tenstorrent/digits.py
+index 64169c5..5b1fa17 100644
+--- a/flex_gemm/tenstorrent/digits.py
++++ b/flex_gemm/tenstorrent/digits.py
+@@ -1,4 +1,4 @@
+-"""Experimental four-product sparse convolution using signed base-256 digits.
++"""Experimental sparse convolution using signed base-256 weight digits.
+ 
+ BF16 operands are approximated with two small-integer digits. The ordinary
+ BF16 reference and tolerances still apply; this is not an FP32-exact mode.
+@@ -26,7 +26,7 @@ class SparseDigitWeights:
+     volume: int
+ 
+ 
+-def prepare_sparse_digit_weights(weight, *, device, bias=None):
++def prepare_sparse_digit_weights(weight, *, device, bias=None, decompose_weight=True):
+     """Prepare immutable integer weights and FP32 power-of-two scales."""
+     import ttnn
+     from .resident import prepare_sparse_weights
+@@ -37,12 +37,16 @@ def prepare_sparse_digit_weights(weight, *, device, bias=None):
+     if bias is not None and (bias.device.type != "cpu" or bias.shape != (weight.shape[0],) or not bias.is_floating_point()):
+         raise ValueError("bias must be a floating-point CPU [Co] tensor")
+     rounded = weight.bfloat16().float()
+-    maximum = rounded.abs().flatten(1).amax(1)
+-    scale = torch.exp2(torch.ceil(torch.log2(maximum.clamp_min(1e-30))) - 7)
+-    residual = rounded / scale.reshape(-1, *([1] * (weight.ndim - 1)))
+-    high = residual.round()
+-    low = ((residual - high) * 256).round()
+-    digits = tuple(prepare_sparse_weights(value.bfloat16(), device=device) for value in (high, low))
++    if decompose_weight:
++        maximum = rounded.abs().flatten(1).amax(1)
++        scale = torch.exp2(torch.ceil(torch.log2(maximum.clamp_min(1e-30))) - 7)
++        residual = rounded / scale.reshape(-1, *([1] * (weight.ndim - 1)))
++        high = residual.round()
++        low = ((residual - high) * 256).round()
++        digits = tuple(prepare_sparse_weights(value.bfloat16(), device=device) for value in (high, low))
++    else:
++        scale = torch.ones(weight.shape[0])
++        digits = (prepare_sparse_weights(rounded.bfloat16(), device=device),)
+     sd = ttnn.from_torch(scale[None], dtype=ttnn.float32, layout=ttnn.TILE_LAYOUT, device=device)
+     bd = None if bias is None else ttnn.from_torch(bias.bfloat16().float()[None],
+         dtype=ttnn.float32, layout=ttnn.TILE_LAYOUT, device=device)
+@@ -130,14 +134,21 @@ def _feature_digits(features, cp):
+     return _concat(high_parts), _concat(low_parts), scale
+ 
+ 
+-def sparse_digit_conv_device(features, weights, topology, *, row_chunk=256, fp32_output=False):
+-    """Fresh device digit extraction, gather, four products, scale and bias."""
++def sparse_digit_conv_device(features, weights, topology, *, row_chunk=256, fp32_output=False,
++                             weight_only=False, feature_only=False, three_products=False):
++    """Fresh feature preparation, gather, two/four products, scale and bias."""
+     import ttnn
+-    if not isinstance(weights, SparseDigitWeights) or topology.masks is not None:
++    if (not isinstance(weights, SparseDigitWeights) or topology.masks is not None
++            or len(weights.digits) != (1 if feature_only else 2)):
+         raise ValueError("digit convolution requires digit weights and unmasked topology")
+     cp = _round32(weights.ci)
+-    high, low, feature_scale = _feature_digits(features, cp)
+-    scale = ttnn.multiply(ttnn.repeat(feature_scale, [1, weights.co]), weights.scale)
++    if weight_only:
++        high = ttnn.to_layout(features, ttnn.ROW_MAJOR_LAYOUT)
++        high = ttnn.pad(high, [(0, 1), (0, cp - weights.ci)], 0)
++        low, scale = None, weights.scale
++    else:
++        high, low, feature_scale = _feature_digits(features, cp)
++        scale = ttnn.multiply(ttnn.repeat(feature_scale, [1, weights.co]), weights.scale)
+     outputs = []
+     m = len(topology.host_indices)
+     output = None
+@@ -160,18 +171,34 @@ def sparse_digit_conv_device(features, weights, topology, *, row_chunk=256, fp32
+             expanded = ttnn.embedding(ids, x, layout=ttnn.ROW_MAJOR_LAYOUT)
+             return ttnn.to_layout(ttnn.reshape(expanded, [end - start, weights.volume * cp]), ttnn.TILE_LAYOUT)
+ 
+-        a, b = gather(high), gather(low)
++        a = gather(high)
++        if not weight_only:
++            b = gather(low)
+ 
+         def product(x, digit):
+             return ttnn.matmul(x, weights.digits[digit].weights, dtype=ttnn.float32, compute_kernel_config=compute)
+ 
+         top = product(a, 0)
+-        cross_a, cross_b = product(a, 1), product(b, 0)
+-        cross = ttnn.add(cross_a, cross_b)
+-        del cross_a, cross_b
+-        bottom = product(b, 1)
+-        result = ttnn.add(ttnn.add(top, ttnn.multiply(cross, 1 / 256)), ttnn.multiply(bottom, 1 / 65536))
+-        del a, b, top, cross, bottom
++        if weight_only:
++            bottom = product(a, 1)
++            result = ttnn.add(top, ttnn.multiply(bottom, 1 / 256))
++            del bottom
++        elif feature_only:
++            bottom = product(b, 0)
++            result = ttnn.add(top, ttnn.multiply(bottom, 1 / 256))
++            del b, bottom
++        else:
++            cross_a, cross_b = product(a, 1), product(b, 0)
++            cross = ttnn.add(cross_a, cross_b)
++            del cross_a, cross_b
++            if three_products:
++                result = ttnn.add(top, ttnn.multiply(cross, 1 / 256))
++            else:
++                bottom = product(b, 1)
++                result = ttnn.add(ttnn.add(top, ttnn.multiply(cross, 1 / 256)), ttnn.multiply(bottom, 1 / 65536))
++                del bottom
++            del b, cross
++        del a, top
+         result = ttnn.slice(result, [0, 0], [end - start, weights.co])
+         result = ttnn.multiply(result, ttnn.repeat(scale, [end - start, 1]))
+         result = _add_bias(result, weights.bias, fp32_output=True)
+diff --git a/flex_gemm/tenstorrent/resident.py b/flex_gemm/tenstorrent/resident.py
+index 4b1ec36..cbecc64 100644
+--- a/flex_gemm/tenstorrent/resident.py
++++ b/flex_gemm/tenstorrent/resident.py
+@@ -100,7 +100,7 @@ def sparse_conv_device(features, weights, topology, *, algorithm="implicit_gemm"
+     each chunk can access every input row, including neighbors outside it.
+     """
+     import ttnn
+-    choices = {"explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
++    choices = {"explicit_gemm", "digit_explicit_gemm", "weight_digit_gemm", "feature_digit_gemm", "digit_three_gemm", "implicit_gemm", "masked_implicit_gemm",
+                "implicit_gemm_splitk", "masked_implicit_gemm_splitk"}
+     if algorithm not in choices:
+         raise ValueError(f"unknown Tenstorrent algorithm: {algorithm}")
+@@ -116,9 +116,11 @@ def sparse_conv_device(features, weights, topology, *, algorithm="implicit_gemm"
+         raise ValueError("masked algorithms require a masked topology")
+     if not masked and topology.masks is not None and algorithm != "explicit_gemm":
+         raise ValueError("unmasked algorithms require an unmasked topology")
+-    if algorithm == "digit_explicit_gemm":
++    if algorithm in ("digit_explicit_gemm", "weight_digit_gemm", "feature_digit_gemm", "digit_three_gemm"):
+         from .digits import sparse_digit_conv_device
+-        return sparse_digit_conv_device(features, weights, topology, row_chunk=row_chunk, fp32_output=fp32_output)
++        return sparse_digit_conv_device(features, weights, topology, row_chunk=row_chunk,
++            fp32_output=fp32_output, weight_only=algorithm == "weight_digit_gemm",
++            feature_only=algorithm == "feature_digit_gemm", three_products=algorithm == "digit_three_gemm")
+     cp = _round32(weights.ci)
+     x = ttnn.to_layout(features, ttnn.ROW_MAJOR_LAYOUT)
+     if cp != weights.ci:
+diff --git a/tests/tenstorrent/test_autoresearch.py b/tests/tenstorrent/test_autoresearch.py
+index 9de532a..7635880 100644
+--- a/tests/tenstorrent/test_autoresearch.py
++++ b/tests/tenstorrent/test_autoresearch.py
+@@ -94,6 +94,11 @@ def test_digit_accounting_charges_all_four_products_and_both_gathers():
+     assert digit["output_assembly_copy_bytes"] == 3 * 2 * 1024 * 4
+     concat = work_accounting(mapping, 17, 35, algorithm="digit_explicit_gemm", row_chunk=32)
+     assert concat["model"] == "digit_explicit_v1" and concat["output_assembly_copy_bytes"] == 0
++    weight_only = work_accounting(mapping, 17, 35, algorithm="weight_digit_gemm", row_chunk=32,
++                                  digit_output_assembly="tile_copy")
++    assert weight_only["issued_flops"] == 2 * base["issued_flops"]
++    assert weight_only["explicit_expansion_bytes"] == base["explicit_expansion_bytes"]
++    assert weight_only["model"] == "weight_digit_v1"
+ 
+ 
+ def test_runner_timeout_and_exit_failure_are_terminal(tmp_path):
+diff --git a/tests/tenstorrent/test_resident.py b/tests/tenstorrent/test_resident.py
+index 07be782..ee2ec5a 100644
+--- a/tests/tenstorrent/test_resident.py
++++ b/tests/tenstorrent/test_resident.py
+@@ -5,9 +5,16 @@ from flex_gemm.tenstorrent import (
+     prepare_sparse_digit_weights,
+ )
+ from test_explicit import device
++from functools import partial
+ 
+ 
+-@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
++def _prepare(algorithm):
++    if algorithm == "feature_digit_gemm":
++        return partial(prepare_sparse_digit_weights, decompose_weight=False)
++    return prepare_sparse_digit_weights if algorithm in ("digit_explicit_gemm", "weight_digit_gemm", "digit_three_gemm") else prepare_sparse_weights
++
++
++@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "weight_digit_gemm", "feature_digit_gemm", "digit_three_gemm", "implicit_gemm", "masked_implicit_gemm",
+                                         "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
+ @pytest.mark.parametrize("ci,co", [(32, 64), (17, 35)])
+ @pytest.mark.parametrize("row_chunk", [17, 32])
+@@ -21,7 +28,7 @@ def test_resident_chain_and_reuse(device, algorithm, ci, co, row_chunk):
+     mapping[0] = -1
+     b = torch.randn(co).bfloat16()
+     top = prepare_sparse_topology(mapping, 37, device=device, masked=algorithm.startswith("masked"))
+-    prepare = prepare_sparse_digit_weights if algorithm == "digit_explicit_gemm" else prepare_sparse_weights
++    prepare = _prepare(algorithm)
+     p1 = prepare(w1, device=device, bias=b)
+     p2 = prepare(w2, device=device)
+     # Keep old operands alive and use changed values on the same cached topology.
+@@ -38,7 +45,7 @@ def test_resident_chain_and_reuse(device, algorithm, ci, co, row_chunk):
+         torch.testing.assert_close(ttnn.to_torch(z).float(), expected2, atol=0.025, rtol=0.025)
+ 
+ 
+-@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
++@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "weight_digit_gemm", "feature_digit_gemm", "digit_three_gemm", "implicit_gemm", "masked_implicit_gemm",
+                                         "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
+ def test_fp32_output_preserves_small_residual(device, algorithm):
+     import ttnn
+@@ -49,7 +56,7 @@ def test_fp32_output_preserves_small_residual(device, algorithm):
+     w = torch.ones(1, 1, 33).bfloat16()
+     top = prepare_sparse_topology(torch.tensor([[0]]), 1, device=device,
+                                    masked=algorithm.startswith("masked"))
+-    prepare = prepare_sparse_digit_weights if algorithm == "digit_explicit_gemm" else prepare_sparse_weights
++    prepare = _prepare(algorithm)
+     weights = prepare(w, device=device)
+     xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+     y = sparse_conv_device(xd, weights, top, algorithm=algorithm, split_k=2, fp32_output=True)
+@@ -57,7 +64,7 @@ def test_fp32_output_preserves_small_residual(device, algorithm):
+     torch.testing.assert_close(ttnn.to_torch(ttnn.subtract(y, 256.)), torch.tensor([[1.125]]), atol=0, rtol=0)
+ 
+ 
+-@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
++@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "weight_digit_gemm", "feature_digit_gemm", "digit_three_gemm", "implicit_gemm", "masked_implicit_gemm",
+                                         "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
+ def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
+     import ttnn
+@@ -67,7 +74,7 @@ def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
+     bias = torch.full((35,), -256., dtype=torch.bfloat16)
+     top = prepare_sparse_topology(torch.arange(37)[:, None], 37, device=device,
+                                    masked=algorithm.startswith("masked"))
+-    prepare = prepare_sparse_digit_weights if algorithm == "digit_explicit_gemm" else prepare_sparse_weights
++    prepare = _prepare(algorithm)
+     weights = prepare(weight, bias=bias, device=device)
+     xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+     result = sparse_conv_device(xd, weights, top, algorithm=algorithm, fp32_output=True)
+@@ -76,7 +83,7 @@ def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
+ 
+ 
+ @pytest.mark.parametrize("fp32_output", [False, True])
+-@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm"])
++@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "weight_digit_gemm", "feature_digit_gemm", "digit_three_gemm"])
+ @pytest.mark.parametrize("co", [35, 512])
+ def test_explicit_many_row_chunks(device, fp32_output, algorithm, co):
+     import ttnn
+@@ -89,7 +96,7 @@ def test_explicit_many_row_chunks(device, fp32_output, algorithm, co):
+     w = torch.randint(-2, 3, (co, 1, 32), generator=generator).bfloat16()
+     mapping = ((torch.arange(1032) + 1) % 1032)[:, None]
+     top = prepare_sparse_topology(mapping, len(x), device=device)
+-    prepare = prepare_sparse_digit_weights if algorithm == "digit_explicit_gemm" else prepare_sparse_weights
++    prepare = _prepare(algorithm)
+     weights = prepare(w, device=device)
+     xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+     actual = sparse_conv_device(xd, weights, top, algorithm=algorithm,

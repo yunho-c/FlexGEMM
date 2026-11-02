@@ -1,0 +1,95 @@
+{
+  "status": "complete",
+  "trials": [
+    {
+      "case": "shape-norm-silu-513-known-failure",
+      "config": {
+        "algorithm": "feature_digit_gemm",
+        "row_chunk": 1024
+      },
+      "status": "passed",
+      "ms": 13.572297990322113,
+      "failures": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "case": "n388659-128x512-k3x3x3",
+      "config": {
+        "algorithm": "feature_digit_gemm",
+        "row_chunk": 8192
+      },
+      "status": "numerical_or_integrity_failure",
+      "ms": 771.4630909613334,
+      "failures": [
+        1,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "case": "n4490-1024x4096-k3x3x3",
+      "config": {
+        "algorithm": "feature_digit_gemm",
+        "row_chunk": 1024
+      },
+      "status": "passed",
+      "ms": 94.72480299882591,
+      "failures": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "case": "shape-norm-silu-513-known-failure",
+      "config": {
+        "algorithm": "digit_three_gemm",
+        "row_chunk": 1024
+      },
+      "status": "numerical_or_integrity_failure",
+      "ms": 17.004830006044358,
+      "failures": [
+        18,
+        1,
+        1,
+        18
+      ]
+    },
+    {
+      "case": "n388659-128x512-k3x3x3",
+      "config": {
+        "algorithm": "digit_three_gemm",
+        "row_chunk": 8192
+      },
+      "status": "passed",
+      "ms": 857.4656880227849,
+      "failures": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "case": "n4490-1024x4096-k3x3x3",
+      "config": {
+        "algorithm": "digit_three_gemm",
+        "row_chunk": 1024
+      },
+      "status": "numerical_or_integrity_failure",
+      "ms": 116.05220899218693,
+      "failures": [
+        1,
+        0,
+        0,
+        1
+      ]
+    }
+  ]
+}

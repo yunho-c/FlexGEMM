@@ -1,0 +1,14 @@
+{
+  "base_commit": "86478055868c6562265312c6d4c7912c2aeafab4",
+  "decision": "Reject all three reduced-product variants. Fixed numerical gates fail on mandatory cases. Active implementation restored to the four-product incumbent.",
+  "patches": [
+    {
+      "file": "weight-only.patch",
+      "sha256": "69a4a2c4f9fe14a3da350221e8f3ad8cfa40070f85bb8a97bb0ec47983a906ba"
+    },
+    {
+      "file": "digit-reduction.patch",
+      "sha256": "5496d8236c69450154f34655b84501f92d63a9b7856a419bedd2648175238721"
+    }
+  ]
+}
