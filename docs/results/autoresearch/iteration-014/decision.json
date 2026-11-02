@@ -1,0 +1,258 @@
+{
+  "iteration": 14,
+  "decision": "reject single-product HiFi4 substitution; retain four-product HiFi3 incumbent",
+  "baseline_commit": "ed9ca8323f34d75185bc00eb6e720c61c891d10c",
+  "source_dependency_commit": "2ed860dd88e1f09e19c775c345620130a210b64c",
+  "contract_unchanged": true,
+  "kernel_sources_unchanged": true,
+  "scope": "separate unscored fidelity and accumulation diagnostic; no timing or SOTA promotion",
+  "reports": [
+    {
+      "report": "regression-fp32weights-hifi4.json",
+      "fidelity": "HiFi4",
+      "checks": [
+        {
+          "variant": 0,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              305,
+              2295
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              344,
+              2508
+            ]
+          ]
+        }
+      ],
+      "status": "numerical_or_integrity_failure",
+      "normal_numerical_failure_exit": true
+    },
+    {
+      "report": "regression-hifi3.json",
+      "fidelity": "HiFi3",
+      "checks": [
+        {
+          "variant": 0,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              305,
+              2295
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "passed": true,
+          "elementwise_failures": 0,
+          "first_failures": []
+        },
+        {
+          "variant": 0,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              305,
+              2295
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "passed": true,
+          "elementwise_failures": 0,
+          "first_failures": []
+        },
+        {
+          "variant": 0,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              305,
+              2295
+            ]
+          ]
+        }
+      ],
+      "status": "numerical_or_integrity_failure",
+      "normal_numerical_failure_exit": true
+    },
+    {
+      "report": "regression-hifi4.json",
+      "fidelity": "HiFi4",
+      "checks": [
+        {
+          "variant": 0,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              305,
+              2295
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              344,
+              2508
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              305,
+              2295
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              344,
+              2508
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              305,
+              2295
+            ]
+          ]
+        }
+      ],
+      "status": "numerical_or_integrity_failure",
+      "normal_numerical_failure_exit": true
+    },
+    {
+      "report": "regression-implicit-hifi4.json",
+      "fidelity": "HiFi4",
+      "checks": [
+        {
+          "variant": 0,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              305,
+              2295
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              344,
+              2508
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              305,
+              2295
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              344,
+              2508
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              305,
+              2295
+            ]
+          ]
+        }
+      ],
+      "status": "numerical_or_integrity_failure",
+      "normal_numerical_failure_exit": true
+    },
+    {
+      "report": "regression-stages-hifi4.json",
+      "fidelity": "HiFi4",
+      "checks": [
+        {
+          "variant": 0,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              305,
+              2295
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "passed": false,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              344,
+              2508
+            ]
+          ]
+        }
+      ],
+      "status": "numerical_or_integrity_failure",
+      "normal_numerical_failure_exit": true
+    }
+  ],
+  "interpretation": [
+    "HiFi4 does not satisfy the original external accuracy thresholds on this regression case",
+    "Both TTNN matmul and an implicit kernel without intermediate destination spill fail at the same coordinates",
+    "Bias addition and BF16 conversion agree exactly with host operations in the stage probe",
+    "BF16-rounded weights stored as FP32 produce the same stage-probe failures",
+    "These controls do not uniquely identify the low-level arithmetic cause",
+    "No full-corpus or workspace sweep: the accuracy prerequisite fails"
+  ]
+}

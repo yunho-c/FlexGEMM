@@ -1,0 +1,24 @@
+{
+  "scope": "diagnostic only; immutable benchmark references unchanged",
+  "fixture_sha256": "ded7b140b3e4b9a777a4f85d53a6363f8d3d99180332c1c8ba3e09095723d4c7",
+  "results": [
+    {
+      "variant": 0,
+      "index": [
+        305,
+        2295
+      ],
+      "float64_sum": -0.29491041123401374,
+      "immutable_float32_golden": -0.2949037551879883
+    },
+    {
+      "variant": 1,
+      "index": [
+        344,
+        2508
+      ],
+      "float64_sum": -4.284660940174945,
+      "immutable_float32_golden": -4.284661293029785
+    }
+  ]
+}

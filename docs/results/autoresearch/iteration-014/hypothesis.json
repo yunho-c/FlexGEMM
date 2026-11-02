@@ -1,0 +1,12 @@
+{
+  "scope": "Separate proposed fidelity study; do not mutate the fixed HiFi3 contract or its results",
+  "motivation": "Four products restore accuracy but multiply issued GEMM work and require feature decomposition, two gathers and reconstruction. Published K6 uses HiFi4. Testing higher fidelity might remove this work while retaining identical external BF16-input numerical gates.",
+  "authorization_context": "User-provided chatgpt-conv-1.md lines276-290 recommends fixed format/fidelity for phase one and later treating precision/fidelity as a separate search dimension under the same external accuracy requirements. This is not permission to weaken the reference or relabel HiFi3 scores.",
+  "primary_source": "/home/user/tt-metal/tech_reports/matrix_engine/matrix_engine.md",
+  "source_revision": "9f9cd4fd590f4b606bd0981a4fe0b6403eb38ec9",
+  "experiment": "Unscored precision probe: ordinary single GEMM with HiFi4, FP32 accumulator/output and equal-shaped FP32 bias then one BF16 cast; compare exact same BF16 operands/goldens/atol/rtol/relativeL2 on regression, wide, latewide and narrow cases first. Preserve every failure. Compare against HiFi3 raw FP32 GEMM to localize remaining errors.",
+  "decision": "If it passes, open a separately versioned higher-fidelity track, keep first-track contract/results immutable and test all36 cases/workspace/paired completed-operator latency. Recompute fidelity-dependent arithmetic ceilings explicitly. No promotion by silently accepting fidelity mismatch.",
+  "prepared_probe": "/tmp/flexgemm_fidelity_probe.py",
+  "probe_status": "syntax checked only; no device run",
+  "probe_scope": "Same BF16 fixtures/tolerances, exact SFPU FP32 bias, single final BF16 cast, fresh direct tiled gather, all layout/output copies timed, HiFi3/HiFi4 explicit separate unscored study"
+}

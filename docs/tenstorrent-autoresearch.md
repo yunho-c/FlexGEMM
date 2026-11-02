@@ -637,6 +637,25 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   Shape-specific regression confirmation and application/external comparisons
   remain required before broader adoption.
 
+### 014 — reject ordinary single-product HiFi4 substitution
+
+- Run a separate unscored fidelity study with the unchanged external BF16
+  operand goldens and accuracy thresholds. The fixed HiFi3 contract and all
+  incumbent kernels remain unchanged. Higher fidelity alone is insufficient.
+- Ordinary HiFi3 fails the known regression at [305,2295] on variant 0. HiFi4
+  fails there and at [344,2508] on variant 1. An implicit kernel that keeps
+  each result tile in DEST without intermediate spill fails at the same
+  coordinates, so intermediate reload alone does not explain the failures.
+- Stage downloads locate the error before bias/conversion; those device
+  operations match host operations exactly in the diagnostic. Storing the
+  identical BF16-rounded weights as FP32 does not fix it. Independent CPU
+  float64 dot products agree with the unchanged final goldens at both positions.
+  The low-level arithmetic cause remains unresolved.
+- Decision: reject this simplification and keep iteration 013's four products.
+  Five normal numerical-failure exits are preserved with scripts, source and
+  fixture digests in iteration-014. No full sweep, workspace, paired timing,
+  application or SOTA claim is made for a candidate that fails accuracy.
+
 The additional CPU capture tools are:
 
 ```bash

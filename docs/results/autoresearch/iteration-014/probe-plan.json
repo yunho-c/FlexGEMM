@@ -1,0 +1,14 @@
+{
+  "baseline": "ed9ca8323f34d75185bc00eb6e720c61c891d10c",
+  "source_dependency_commit": "2ed860dd88e1f09e19c775c345620130a210b64c",
+  "scope": "single-product ordinary matmul fidelity diagnostic, not scored under fixed HiFi3 contract",
+  "initial_cases": [
+    "shape-norm-silu-513-known-failure"
+  ],
+  "fidelities": [
+    "HiFi3",
+    "HiFi4"
+  ],
+  "accuracy_thresholds_unchanged": true,
+  "workspace": "not measured; no promotion"
+}

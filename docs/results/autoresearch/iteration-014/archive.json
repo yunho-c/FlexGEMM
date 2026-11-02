@@ -1,0 +1,69 @@
+{
+  "files": [
+    {
+      "path": "hypothesis.json",
+      "sha256": "8cac1914d4f6cae664be85405dc958bb8b0392cb76104c8c0ee74e161fa9ed7c"
+    },
+    {
+      "path": "probe-plan.json",
+      "sha256": "3380cc0027eebf3dc5de7c0ced3febb646ed2163b35bbec471d085c688bef1ce"
+    },
+    {
+      "path": "regression-fp32weights-hifi4.json",
+      "sha256": "f869746bbb3b1f91bf82be6ef410e5b12ff37a52c29d2a883e9d08e320d4583d"
+    },
+    {
+      "path": "regression-fp32weights-hifi4.runner.json",
+      "sha256": "750251833a4ba0913ffd1e52289f0525e2d34989a3b6a217649748339e5d03e7"
+    },
+    {
+      "path": "regression-hifi3.json",
+      "sha256": "034354f410a061d9d156450e52bbb037c8322191ec7ca8e0b91e1c4f56f96d96"
+    },
+    {
+      "path": "regression-hifi3.runner.json",
+      "sha256": "5a3a585b30c76ad71a02c2f0d3ba74ba0dc235d23362bed727b9cd12becb9731"
+    },
+    {
+      "path": "regression-hifi4.json",
+      "sha256": "f71a12c864e9a5412929c674abf7e33be26c0eab1274086b219cfe6213a41b26"
+    },
+    {
+      "path": "regression-hifi4.runner.json",
+      "sha256": "3b6b244e43b4ee10a9d75bf1240ad90598090bd3bfbfe8b307c7ff4cfd9d56e8"
+    },
+    {
+      "path": "regression-implicit-hifi4.json",
+      "sha256": "7359b81121b6d9300505a34ac767c33113cf4514c173c8dcf7118322b69aa126"
+    },
+    {
+      "path": "regression-implicit-hifi4.runner.json",
+      "sha256": "4ae780d80ccc0373749c9af0fc5bf6729ef8a01a60cbff079a3a1b9fcf76a356"
+    },
+    {
+      "path": "regression-stages-hifi4.json",
+      "sha256": "0a278be5545f7f67c8ef2be85d82433f4724f8bf951e7f13ebe70e4ffdd81a10"
+    },
+    {
+      "path": "regression-stages-hifi4.runner.json",
+      "sha256": "bb45081e38e91fbe326bf4cb38a095b8e4fa4c3cefbfc073824fc7978555e00a"
+    },
+    {
+      "path": "fidelity_probe.py",
+      "sha256": "f11c89d60bd8f4a2679d819e308a893252242f149dd283dbc4a56463a921f27a"
+    },
+    {
+      "path": "fidelity_accumulation_probe.py",
+      "sha256": "671062afbe5773157d65992d3d97acee7612a6a2ba1eeee0bb8089517052e930"
+    },
+    {
+      "path": "fidelity_stage_probe.py",
+      "sha256": "56c3bd7d1435e8ec271555a136f4b728d97079f6dd0db3cc62248850f5a056fe"
+    },
+    {
+      "path": "fidelity_fp32weight_probe.py",
+      "sha256": "0bfc19ccd31d7a2ed918d0f2e777d878932db8e275d0c2d409b09c923e0a84b5"
+    }
+  ],
+  "normal_numerical_failure_exits": 5
+}
