@@ -1,0 +1,232 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contract_sha256": "f49de05e37d42f895008c14caeac408513fad7a3537fbca5d74ad265131f5733",
+  "torch": "2.11.0+cpu",
+  "cases": [
+    {
+      "name": "tune-scattered-35-17x45",
+      "split": "tune",
+      "file": "tune-scattered-35-17x45.pt",
+      "sha256": "3d72acd75e96af23ce395564a583355565de600fa2a49fce13b46becc4b27ac6",
+      "points": 35,
+      "ci": 17,
+      "co": 45,
+      "volume": 27,
+      "valid_interactions": 77,
+      "occurrences": null,
+      "provenance": {
+        "kind": "synthetic",
+        "seed": 20261102,
+        "topology": "scattered"
+      },
+      "prepare_seconds": 0.009726904041599482
+    },
+    {
+      "name": "tune-surface-256-64x64",
+      "split": "tune",
+      "file": "tune-surface-256-64x64.pt",
+      "sha256": "00875abe4cfee45451198f14980e9df55de487f6663fd6c3a42eba855d3369f7",
+      "points": 256,
+      "ci": 64,
+      "co": 64,
+      "volume": 27,
+      "valid_interactions": 2782,
+      "occurrences": null,
+      "provenance": {
+        "kind": "synthetic",
+        "seed": 20261103,
+        "topology": "surface"
+      },
+      "prepare_seconds": 0.021087131986860186
+    },
+    {
+      "name": "tune-clustered-1025-128x128",
+      "split": "tune",
+      "file": "tune-clustered-1025-128x128.pt",
+      "sha256": "e28159f9878c6253ea1da728dcc8261ea72e5d9711d0b1b147443898d845b4e8",
+      "points": 1025,
+      "ci": 128,
+      "co": 128,
+      "volume": 27,
+      "valid_interactions": 15783,
+      "occurrences": null,
+      "provenance": {
+        "kind": "synthetic",
+        "seed": 20261104,
+        "topology": "clustered"
+      },
+      "prepare_seconds": 0.06785808299900964
+    },
+    {
+      "name": "tune-scattered-257-32x256",
+      "split": "tune",
+      "file": "tune-scattered-257-32x256.pt",
+      "sha256": "75c28d4811a56ba00b2f0b98fbb9bb9f9f4bff349187c9c06fa684616528c8ac",
+      "points": 257,
+      "ci": 32,
+      "co": 256,
+      "volume": 27,
+      "valid_interactions": 821,
+      "occurrences": null,
+      "provenance": {
+        "kind": "synthetic",
+        "seed": 20261105,
+        "topology": "scattered"
+      },
+      "prepare_seconds": 0.0201130390050821
+    },
+    {
+      "name": "tune-surface-4096-64x64",
+      "split": "tune",
+      "file": "tune-surface-4096-64x64.pt",
+      "sha256": "bcb18a849a63523504257f1f2a6312bbe14e17a63a8014b4e1f80c188629c69f",
+      "points": 4096,
+      "ci": 64,
+      "co": 64,
+      "volume": 27,
+      "valid_interactions": 64200,
+      "occurrences": null,
+      "provenance": {
+        "kind": "synthetic",
+        "seed": 20261106,
+        "topology": "surface"
+      },
+      "prepare_seconds": 0.22840214398456737
+    },
+    {
+      "name": "validation-scattered-35-17x45",
+      "split": "validation",
+      "file": "validation-scattered-35-17x45.pt",
+      "sha256": "3b351ff329f334c6cafd1cce3ed5e188063abb9813bf9c9cf247ed3e23a4ab06",
+      "points": 35,
+      "ci": 17,
+      "co": 45,
+      "volume": 27,
+      "valid_interactions": 77,
+      "occurrences": null,
+      "provenance": {
+        "kind": "synthetic",
+        "seed": 20261103,
+        "topology": "scattered"
+      },
+      "prepare_seconds": 0.006588463031221181
+    },
+    {
+      "name": "validation-surface-256-64x64",
+      "split": "validation",
+      "file": "validation-surface-256-64x64.pt",
+      "sha256": "277f75b8d4c9e3c1f57404e9636bba854f7bbe0765e91b2b901d446df1fb8e57",
+      "points": 256,
+      "ci": 64,
+      "co": 64,
+      "volume": 27,
+      "valid_interactions": 2834,
+      "occurrences": null,
+      "provenance": {
+        "kind": "synthetic",
+        "seed": 20261104,
+        "topology": "surface"
+      },
+      "prepare_seconds": 0.019307095964904875
+    },
+    {
+      "name": "validation-clustered-1025-128x128",
+      "split": "validation",
+      "file": "validation-clustered-1025-128x128.pt",
+      "sha256": "86adaa6051c087ef88cf931674390150fe1c3d5562badf8e0d94bc371f10a5ef",
+      "points": 1025,
+      "ci": 128,
+      "co": 128,
+      "volume": 27,
+      "valid_interactions": 15857,
+      "occurrences": null,
+      "provenance": {
+        "kind": "synthetic",
+        "seed": 20261105,
+        "topology": "clustered"
+      },
+      "prepare_seconds": 0.06336582702351734
+    },
+    {
+      "name": "validation-scattered-257-32x256",
+      "split": "validation",
+      "file": "validation-scattered-257-32x256.pt",
+      "sha256": "184bf32c981da6f2efe99afd092a7d5b66383212aa6a42bd5668c8d8955cae96",
+      "points": 257,
+      "ci": 32,
+      "co": 256,
+      "volume": 27,
+      "valid_interactions": 845,
+      "occurrences": null,
+      "provenance": {
+        "kind": "synthetic",
+        "seed": 20261106,
+        "topology": "scattered"
+      },
+      "prepare_seconds": 0.01945803704438731
+    },
+    {
+      "name": "validation-surface-4096-64x64",
+      "split": "validation",
+      "file": "validation-surface-4096-64x64.pt",
+      "sha256": "8abe5af2ee0cb20e30bf0c2ac9877d7db45a55e94d5fe66589276b17fd45b2e0",
+      "points": 4096,
+      "ci": 64,
+      "co": 64,
+      "volume": 27,
+      "valid_interactions": 64184,
+      "occurrences": null,
+      "provenance": {
+        "kind": "synthetic",
+        "seed": 20261107,
+        "topology": "surface"
+      },
+      "prepare_seconds": 0.1713794480310753
+    },
+    {
+      "name": "poster-shape-wide-4490",
+      "split": "application",
+      "file": "poster-shape-wide-4490.pt",
+      "sha256": "bfd3687f5db3d571119a2a69e4524e3eb531158d0a6f2ffbde5c9866844ab34b",
+      "points": 4490,
+      "ci": 1024,
+      "co": 4096,
+      "volume": 27,
+      "valid_interactions": 68312,
+      "occurrences": null,
+      "provenance": {
+        "kind": "captured_decoder_layer",
+        "capture": "/home/user/tt-scratchpad/genrecon/sparse-decoder-poster-bounded/shape_wide_input.pt",
+        "capture_sha256": "d9dbec7db2dcdde98ba7e2189dd3b93ecab0e604c2419be412e17c016210e6cc",
+        "checkpoint": "/home/user/models/genrecon/trellis2/ckpts/shape_dec_next_dc_f16c32_fp16.safetensors",
+        "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581",
+        "layer": "blocks.0.4.conv1",
+        "source_scene": "poster",
+        "feature_variant_1": "synthetic perturbation of captured activations"
+      },
+      "prepare_seconds": 5.207897468004376
+    },
+    {
+      "name": "shape-norm-silu-513-known-failure",
+      "split": "regression",
+      "file": "shape-norm-silu-513-known-failure.pt",
+      "sha256": "ded7b140b3e4b9a777a4f85d53a6363f8d3d99180332c1c8ba3e09095723d4c7",
+      "points": 513,
+      "ci": 1024,
+      "co": 4096,
+      "volume": 27,
+      "valid_interactions": 4105,
+      "occurrences": null,
+      "provenance": {
+        "kind": "synthetic_pretrained_activation",
+        "seed": 123,
+        "layer": "blocks.0.4.conv1",
+        "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581",
+        "known_failure": "original feature variant: row 305, channel 2295; retain original tolerances"
+      },
+      "prepare_seconds": 0.9092126099858433
+    }
+  ],
+  "held_out_real_scenes": "unavailable"
+}

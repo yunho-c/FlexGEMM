@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "operation": "forward sparse convolution; submanifold coordinate fixtures",
+  "input_dtype": "bfloat16",
+  "output_dtype": "bfloat16",
+  "input_layout": "TILE_LAYOUT, device DRAM",
+  "output_layout": "TILE_LAYOUT, device DRAM, original output row order",
+  "accumulation": "float32",
+  "wormhole_math_fidelity": "HiFi3",
+  "atol": 0.025,
+  "rtol": 0.025,
+  "max_relative_l2": 0.01,
+  "allow_input_mutation": false,
+  "allow_feature_dependent_preparation": false,
+  "persistent_state": ["weights", "integer topology", "shape-dependent schedules"],
+  "timing": "host wall time including all required device operations and synchronization; excludes compilation, initial input upload, output download and static preparation",
+  "score": "per-case median completed-operator latency; geometric mean for synthetic coverage only; application score requires measured occurrence counts",
+  "workspace_limit_bytes": 1073741824,
+  "workspace_scope": "temporary tensors beyond resident input, output, weights and topology; estimates must be labeled, allocator snapshots are not peaks",
+  "promotion": "all selected correctness gates pass, evaluator/corpus hashes unchanged, and paired timing improvement exceeds measured baseline noise",
+  "known_failure_policy": "report numerical_failure; never convert xfail into a pass or exclude it silently",
+  "device_lock": "/tmp/genrecon-tt-pjrt.lock"
+}
