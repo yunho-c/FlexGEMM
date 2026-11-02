@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "lock": "/tmp/genrecon-tt-pjrt.lock",
+  "case": "shape-norm-silu-513-known-failure",
+  "config": {
+    "algorithm": "digit_explicit_gemm",
+    "row_chunk": 1024
+  },
+  "candidate_root": "/home/user/GitHub/flexgemm-autoresearch",
+  "workload": "convolution",
+  "lock_wait_seconds": 1.3380020391196012e-05,
+  "returncode": 0,
+  "timeout": null,
+  "elapsed_seconds": 10.62974226399092,
+  "device_recovery_required": false
+}

@@ -1,0 +1,1086 @@
+{
+  "status": "complete",
+  "row_chunk_policy": "floor_to_32(1048576 / padded_Ci)",
+  "trials": [
+    {
+      "case": "tune-scattered-35-17x45",
+      "corpus": "corpus-v2",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 32768
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 3.1880330061540008,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 692736,
+        "dram_allocations": 57,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 89874944,
+        "temporary_dram_peak_bytes": 692736,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 3027104,
+          "event_index": 929,
+          "aligned_bytes": 24576,
+          "expected_padded_bytes": 8192,
+          "excluded_bytes": 8192
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 89874944,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/tune-scattered-35-17x45.allocations.json.gz",
+        "trace_sha256": "decf4432c26307816155f4d4cce23853a9e3eecfbdf52cb822dd2fefed7d85c7"
+      }
+    },
+    {
+      "case": "tune-surface-256-64x64",
+      "corpus": "corpus-v2",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 16384
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 2.958142023999244,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 3781632,
+        "dram_allocations": 47,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 92963840,
+        "temporary_dram_peak_bytes": 3781632,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 3048384,
+          "event_index": 780,
+          "aligned_bytes": 49152,
+          "expected_padded_bytes": 32768,
+          "excluded_bytes": 32768
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 92963840,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/tune-surface-256-64x64.allocations.json.gz",
+        "trace_sha256": "10496f8aeda838ec6246c63d0ca4c29988dd42cc67fd16c9ef94e445539e3be6"
+      }
+    },
+    {
+      "case": "tune-clustered-1025-128x128",
+      "corpus": "corpus-v2",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 8192
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 4.046577028930187,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 29494272,
+        "dram_allocations": 54,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 118676480,
+        "temporary_dram_peak_bytes": 29494272,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 3365440,
+          "event_index": 866,
+          "aligned_bytes": 270336,
+          "expected_padded_bytes": 270336,
+          "excluded_bytes": 270336
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 118676480,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/tune-clustered-1025-128x128.allocations.json.gz",
+        "trace_sha256": "ffeb651ab64e7712684eef1d1704de7c40d60e3a484d4130e0597a8d08f66e63"
+      }
+    },
+    {
+      "case": "tune-scattered-257-32x256",
+      "corpus": "corpus-v2",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 32768
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 3.88703600037843,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 2982912,
+        "dram_allocations": 54,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 92165120,
+        "temporary_dram_peak_bytes": 2982912,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 3133824,
+          "event_index": 866,
+          "aligned_bytes": 147456,
+          "expected_padded_bytes": 147456,
+          "excluded_bytes": 147456
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 92165120,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/tune-scattered-257-32x256.allocations.json.gz",
+        "trace_sha256": "d52da263e636461986604c3bfe75b703ed2dcdc64495f1b138cd33bc40ef2145"
+      }
+    },
+    {
+      "case": "tune-surface-4096-64x64",
+      "corpus": "corpus-v2",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 16384
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 6.851246987935156,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 57848832,
+        "dram_allocations": 47,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 147031040,
+        "temporary_dram_peak_bytes": 57848832,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 3711552,
+          "event_index": 780,
+          "aligned_bytes": 540672,
+          "expected_padded_bytes": 524288,
+          "excluded_bytes": 524288
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 147031040,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/tune-surface-4096-64x64.allocations.json.gz",
+        "trace_sha256": "237465f0a64916e49cf2a8d12d63e52f9dac3328c754f289bd63530411e70fa2"
+      }
+    },
+    {
+      "case": "validation-scattered-35-17x45",
+      "corpus": "corpus-v2",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 32768
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 3.2293230178765953,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 692736,
+        "dram_allocations": 57,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 89874944,
+        "temporary_dram_peak_bytes": 692736,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 3027104,
+          "event_index": 929,
+          "aligned_bytes": 24576,
+          "expected_padded_bytes": 8192,
+          "excluded_bytes": 8192
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 89874944,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/validation-scattered-35-17x45.allocations.json.gz",
+        "trace_sha256": "228be2e4bcc45bfd3245d707059cc912bfdc30735b98428b2bda6b84e7895010"
+      }
+    },
+    {
+      "case": "validation-surface-256-64x64",
+      "corpus": "corpus-v2",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 16384
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 2.752611006144434,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 3781632,
+        "dram_allocations": 47,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 92963840,
+        "temporary_dram_peak_bytes": 3781632,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 3048384,
+          "event_index": 780,
+          "aligned_bytes": 49152,
+          "expected_padded_bytes": 32768,
+          "excluded_bytes": 32768
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 92963840,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/validation-surface-256-64x64.allocations.json.gz",
+        "trace_sha256": "cbf9de1e6626212c987dc2805e05e95bb43aeb28a3caaaf56da8039d066f783d"
+      }
+    },
+    {
+      "case": "validation-clustered-1025-128x128",
+      "corpus": "corpus-v2",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 8192
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 4.1826069937087595,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 29494272,
+        "dram_allocations": 54,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 118676480,
+        "temporary_dram_peak_bytes": 29494272,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 3365440,
+          "event_index": 866,
+          "aligned_bytes": 270336,
+          "expected_padded_bytes": 270336,
+          "excluded_bytes": 270336
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 118676480,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/validation-clustered-1025-128x128.allocations.json.gz",
+        "trace_sha256": "5af1890d4582e86147a819d63ea51494736834225c0371c13aa6c46cebb37b89"
+      }
+    },
+    {
+      "case": "validation-scattered-257-32x256",
+      "corpus": "corpus-v2",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 32768
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 3.3716639736667275,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 2982912,
+        "dram_allocations": 54,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 92165120,
+        "temporary_dram_peak_bytes": 2982912,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 3133824,
+          "event_index": 866,
+          "aligned_bytes": 147456,
+          "expected_padded_bytes": 147456,
+          "excluded_bytes": 147456
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 92165120,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/validation-scattered-257-32x256.allocations.json.gz",
+        "trace_sha256": "f57a5ac1e7f9e549593436b4707fffee76cde32f6e55bd624f2f9cd89fd132aa"
+      }
+    },
+    {
+      "case": "validation-surface-4096-64x64",
+      "corpus": "corpus-v2",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 16384
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 6.253785046283156,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 57848832,
+        "dram_allocations": 47,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 147031040,
+        "temporary_dram_peak_bytes": 57848832,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 3711552,
+          "event_index": 780,
+          "aligned_bytes": 540672,
+          "expected_padded_bytes": 524288,
+          "excluded_bytes": 524288
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 147031040,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/validation-surface-4096-64x64.allocations.json.gz",
+        "trace_sha256": "90e8abf0ab191093fc81166be430fd8d0e4a502413cc68dc80ab1d410d9a102e"
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "corpus": "corpus-v2",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 1024
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 131.6745649673976,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 283459584,
+        "dram_allocations": 176,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 372641792,
+        "temporary_dram_peak_bytes": 246497280,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 46853632,
+          "event_index": 1299,
+          "aligned_bytes": 36962304,
+          "expected_padded_bytes": 36962304,
+          "excluded_bytes": 36962304
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 335679488,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/poster-shape-wide-4490.allocations.json.gz",
+        "trace_sha256": "923b18816dcecb3b64a94c976e2cf91da779aa3bf57a1a41f4cc97721bd4f08f"
+      }
+    },
+    {
+      "case": "shape-norm-silu-513-known-failure",
+      "corpus": "corpus-v2",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 1024
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 21.060553030110896,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 120324096,
+        "dram_allocations": 54,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 209506304,
+        "temporary_dram_peak_bytes": 120324096,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 42196544,
+          "event_index": 866,
+          "aligned_bytes": 4472832,
+          "expected_padded_bytes": 4456448,
+          "excluded_bytes": 4456448
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 209506304,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/shape-norm-silu-513-known-failure.allocations.json.gz",
+        "trace_sha256": "4a7cf77847d35951f0634f677bb5562611463185593c96310583581fa5de3d1c"
+      }
+    },
+    {
+      "case": "n4490-1024x1024-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 1024
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 57.944409956689924,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 254951424,
+        "dram_allocations": 176,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 344133632,
+        "temporary_dram_peak_bytes": 245710848,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 14086080,
+          "event_index": 1299,
+          "aligned_bytes": 9240576,
+          "expected_padded_bytes": 9240576,
+          "excluded_bytes": 9240576
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 334893056,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n4490-1024x1024-k3x3x3.allocations.json.gz",
+        "trace_sha256": "35a7b260501f6a07ad933bc83f37fe47b071fa184e74ccc791ee52c46a154743"
+      }
+    },
+    {
+      "case": "n4490-1024x4096-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 1024
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 132.49580498086289,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 283459584,
+        "dram_allocations": 176,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 372641792,
+        "temporary_dram_peak_bytes": 246497280,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 46853632,
+          "event_index": 1299,
+          "aligned_bytes": 36962304,
+          "expected_padded_bytes": 36962304,
+          "excluded_bytes": 36962304
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 335679488,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n4490-1024x4096-k3x3x3.allocations.json.gz",
+        "trace_sha256": "329099a10a1e081738af52c2721d4b62d794ef094cc786e1724d33dfdaae7a7a"
+      }
+    },
+    {
+      "case": "n20251-512x512-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 2048
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 121.8133710208349,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 289075200,
+        "dram_allocations": 323,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 378257408,
+        "temporary_dram_peak_bytes": 268333056,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 14091712,
+          "event_index": 2266,
+          "aligned_bytes": 20742144,
+          "expected_padded_bytes": 20742144,
+          "excluded_bytes": 20742144
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 357515264,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n20251-512x512-k3x3x3.allocations.json.gz",
+        "trace_sha256": "d5dd078d78c4bf3dffae1ce94d99e3aec949637d7d610b9593dcb19b8fd8c1a0"
+      }
+    },
+    {
+      "case": "n20251-512x2048-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 2048
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 191.82250602170825,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 351694848,
+        "dram_allocations": 323,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 440877056,
+        "temporary_dram_peak_bytes": 268726272,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 25513280,
+          "event_index": 2266,
+          "aligned_bytes": 82968576,
+          "expected_padded_bytes": 82968576,
+          "excluded_bytes": 82968576
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 357908480,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n20251-512x2048-k3x3x3.allocations.json.gz",
+        "trace_sha256": "7781b41e55b57aa41d4a5c815a37b24833260878133273cbf2071c9125f70545"
+      }
+    },
+    {
+      "case": "n88524-256x256-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 4096
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 294.67185703106225,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 362754048,
+        "dram_allocations": 681,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 451936256,
+        "temporary_dram_peak_bytes": 317419520,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 12206784,
+          "event_index": 4696,
+          "aligned_bytes": 45342720,
+          "expected_padded_bytes": 45334528,
+          "excluded_bytes": 45334528
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 406601728,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n88524-256x256-k3x3x3.allocations.json.gz",
+        "trace_sha256": "6930e7f91aa0175b41bc2dd1f96e060ed9c92de18c1a4f2ec927eceaaa8b12cb"
+      }
+    },
+    {
+      "case": "n88524-256x1024-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 4096
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 346.077693044208,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 498954240,
+        "dram_allocations": 681,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 588136448,
+        "temporary_dram_peak_bytes": 317616128,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 43025600,
+          "event_index": 4696,
+          "aligned_bytes": 181346304,
+          "expected_padded_bytes": 181338112,
+          "excluded_bytes": 181338112
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 406798336,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n88524-256x1024-k3x3x3.allocations.json.gz",
+        "trace_sha256": "7f33b37621bf93e0c4cb1ea186b005403db0251864f63ad4c408bda9909ad531"
+      }
+    },
+    {
+      "case": "n388659-128x128-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 8192
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 690.0019200402312,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 525173760,
+        "dram_allocations": 1449,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 614355968,
+        "temporary_dram_peak_bytes": 425673728,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 24393536,
+          "event_index": 9800,
+          "aligned_bytes": 99508224,
+          "expected_padded_bytes": 99500032,
+          "excluded_bytes": 99500032
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 514855936,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n388659-128x128-k3x3x3.allocations.json.gz",
+        "trace_sha256": "3740bc4c8be173097b8afe27b3be7bba6b4c76735b167299a38b83c3134107e3"
+      }
+    },
+    {
+      "case": "n388659-128x512-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 8192
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 862.8346540499479,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 823772160,
+        "dram_allocations": 1449,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 912954368,
+        "temporary_dram_peak_bytes": 425772032,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 116728544,
+          "event_index": 9800,
+          "aligned_bytes": 398008320,
+          "expected_padded_bytes": 398000128,
+          "excluded_bytes": 398000128
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 514954240,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n388659-128x512-k3x3x3.allocations.json.gz",
+        "trace_sha256": "e716df4dd8a8e433f68820e7fc9ccf0562b29133356baa776f4fa19025a57641"
+      }
+    },
+    {
+      "case": "n1711800-64x64-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 16384
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 2098.946212034207,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 884011008,
+        "dram_allocations": 3144,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 973193216,
+        "temporary_dram_peak_bytes": 664899584,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 78363328,
+          "event_index": 21227,
+          "aligned_bytes": 219119616,
+          "expected_padded_bytes": 219111424,
+          "excluded_bytes": 219111424
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 754081792,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n1711800-64x64-k3x3x3.allocations.json.gz",
+        "trace_sha256": "d377016a1589676b186efbb58798b07cbf68761bf567c10b6bbb7733c62de33a"
+      }
+    },
+    {
+      "case": "n6181-1024x1024-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 1024
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 80.31383395427838,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 265371648,
+        "dram_allocations": 234,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 354553856,
+        "temporary_dram_peak_bytes": 252657664,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 14692064,
+          "event_index": 1669,
+          "aligned_bytes": 12730368,
+          "expected_padded_bytes": 12713984,
+          "excluded_bytes": 12713984
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 341839872,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n6181-1024x1024-k3x3x3.allocations.json.gz",
+        "trace_sha256": "7716067961c0d7c0a51f70b8df38b7e5c50fa6791d85082b2759e3729dde6e76"
+      }
+    },
+    {
+      "case": "n6181-1024x4096-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 1024
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 171.57850798685104,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 304300032,
+        "dram_allocations": 234,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 393482240,
+        "temporary_dram_peak_bytes": 253444096,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 48627520,
+          "event_index": 1669,
+          "aligned_bytes": 50872320,
+          "expected_padded_bytes": 50855936,
+          "excluded_bytes": 50855936
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 342626304,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n6181-1024x4096-k3x3x3.allocations.json.gz",
+        "trace_sha256": "7722abc9f342d690ea0d8d4f33fb5b1eaf14388f66d6739f064f5c5a2dc77fe6"
+      }
+    },
+    {
+      "case": "n28223-512x512-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 2048
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 171.55045800609514,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 313552896,
+        "dram_allocations": 441,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 402735104,
+        "temporary_dram_peak_bytes": 284651520,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 17912640,
+          "event_index": 3048,
+          "aligned_bytes": 28901376,
+          "expected_padded_bytes": 28901376,
+          "excluded_bytes": 28901376
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 373833728,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n28223-512x512-k3x3x3.allocations.json.gz",
+        "trace_sha256": "dfc319d80f0ce330abbc5bb5a23c968087f08467169f3960830efb1e41e2665c"
+      }
+    },
+    {
+      "case": "n28223-512x2048-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 2048
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 267.8468889789656,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 400650240,
+        "dram_allocations": 441,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 489832448,
+        "temporary_dram_peak_bytes": 285044736,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 30747104,
+          "event_index": 3048,
+          "aligned_bytes": 115605504,
+          "expected_padded_bytes": 115605504,
+          "excluded_bytes": 115605504
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 374226944,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n28223-512x2048-k3x3x3.allocations.json.gz",
+        "trace_sha256": "6a0b245ae821d7eee5b836832b03920fcf66494db7bff6082c36ca37d8e18dc6"
+      }
+    },
+    {
+      "case": "n125219-256x256-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 4096
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 409.805980976671,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 419119104,
+        "dram_allocations": 946,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 508301312,
+        "temporary_dram_peak_bytes": 354992128,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 15780672,
+          "event_index": 6445,
+          "aligned_bytes": 64143360,
+          "expected_padded_bytes": 64126976,
+          "excluded_bytes": 64126976
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 444174336,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n125219-256x256-k3x3x3.allocations.json.gz",
+        "trace_sha256": "aff415a2a63a128d836e7f690103b9e0465d965b8342cec657cf38f23e975af6"
+      }
+    },
+    {
+      "case": "n125219-256x1024-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 4096
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 481.3706330023706,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 611696640,
+        "dram_allocations": 946,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 700878848,
+        "temporary_dram_peak_bytes": 355188736,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 58194752,
+          "event_index": 6445,
+          "aligned_bytes": 256524288,
+          "expected_padded_bytes": 256507904,
+          "excluded_bytes": 256507904
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 444370944,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n125219-256x1024-k3x3x3.allocations.json.gz",
+        "trace_sha256": "a57c980564173bffe34ca84eaa1644f697688eba56a1aa495688cd9c55acd26b"
+      }
+    },
+    {
+      "case": "n551044-128x128-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 8192
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 988.7293700012378,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 649896960,
+        "dram_allocations": 2045,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 739079168,
+        "temporary_dram_peak_bytes": 508822528,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 45036736,
+          "event_index": 13836,
+          "aligned_bytes": 141090816,
+          "expected_padded_bytes": 141074432,
+          "excluded_bytes": 141074432
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 598004736,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n551044-128x128-k3x3x3.allocations.json.gz",
+        "trace_sha256": "5d5dbc2392296ea2c073682bd20e3fb26fd6114e5805dfd2d7671cc43b6c8e14"
+      }
+    },
+    {
+      "case": "n551044-128x512-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 8192
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 1232.937510998454,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 1073218560,
+        "dram_allocations": 2045,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 1162400768,
+        "temporary_dram_peak_bytes": 508920832,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 164427456,
+          "event_index": 13836,
+          "aligned_bytes": 564314112,
+          "expected_padded_bytes": 564297728,
+          "excluded_bytes": 564297728
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 598103040,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n551044-128x512-k3x3x3.allocations.json.gz",
+        "trace_sha256": "ca021bfc0165d9570e962efee80459f6e30e5c903343b6efea9402acd3a0692b"
+      }
+    },
+    {
+      "case": "n2389000-64x64-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 16384
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 2900.486289989203,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 1144052736,
+        "dram_allocations": 4359,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 1233234944,
+        "temporary_dram_peak_bytes": 917908992,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 108159936,
+          "event_index": 29358,
+          "aligned_bytes": 305799168,
+          "expected_padded_bytes": 305795072,
+          "excluded_bytes": 305795072
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 1007091200,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-010/full-validation/n2389000-64x64-k3x3x3.allocations.json.gz",
+        "trace_sha256": "b0fd12f939ba1b8efa50c6371ea8b6c152277544078c15ea630833850e8eadaf"
+      }
+    }
+  ]
+}

@@ -77,7 +77,7 @@ def summarize(samples):
 
 
 def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, available_cores=64,
-                    digit_output_assembly="concat"):
+                    digit_output_assembly="concat", digit_epilogue="expanded"):
     """Model the baseline kernels' issued work/request payloads, not bus traffic.
 
     Model changes must accompany structural kernel changes. Counts include the
@@ -148,7 +148,7 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
     # Payload of S-1 FP32 adds: two inputs and one output per add. Slices/casts
     # may add traffic, so this is not total reduction traffic or peak workspace.
     reduction_bytes = (split_k - 1) * mt * 32 * nt * 32 * 12
-    return {"kind": "modeled", "model": ("digit_explicit_v2" if digit_copy else "digit_explicit_v1") if digit_products else "tiled_gather_v1" if fused_gather else "baseline_v1",
+    return {"kind": "modeled", "model": ("digit_explicit_v3" if digit_epilogue == "tile_broadcast" else "digit_explicit_v2" if digit_copy else "digit_explicit_v1") if digit_products else "tiled_gather_v1" if fused_gather else "baseline_v1",
             "valid_interactions": edges, "useful_flops": useful, "issued_flops": issued,
             "issued_scope": "logical_padded_gemm" if explicit else "custom_kernel_tile_products",
             "work_efficiency": useful / issued, "dummy_tile_products": dummy,

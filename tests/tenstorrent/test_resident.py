@@ -70,7 +70,7 @@ def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
     prepare = prepare_sparse_digit_weights if algorithm == "digit_explicit_gemm" else prepare_sparse_weights
     weights = prepare(weight, bias=bias, device=device)
     xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
-    result = sparse_conv_device(xd, weights, top, algorithm=algorithm, fp32_output=True)
+    result = sparse_conv_device(xd, weights, top, algorithm=algorithm, row_chunk=32, fp32_output=True)
     assert result.dtype == ttnn.float32
     torch.testing.assert_close(ttnn.to_torch(result), torch.full((37, 35), 1.125), atol=0, rtol=0)
 

@@ -94,6 +94,9 @@ def test_digit_accounting_charges_all_four_products_and_both_gathers():
     assert digit["output_assembly_copy_bytes"] == 3 * 2 * 1024 * 4
     concat = work_accounting(mapping, 17, 35, algorithm="digit_explicit_gemm", row_chunk=32)
     assert concat["model"] == "digit_explicit_v1" and concat["output_assembly_copy_bytes"] == 0
+    tiled = work_accounting(mapping, 17, 35, algorithm="digit_explicit_gemm", row_chunk=32,
+                            digit_output_assembly="tile_copy", digit_epilogue="tile_broadcast")
+    assert tiled["model"] == "digit_explicit_v3" and tiled["issued_flops"] == digit["issued_flops"]
 
 
 def test_runner_timeout_and_exit_failure_are_terminal(tmp_path):

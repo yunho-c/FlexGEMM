@@ -1,0 +1,59 @@
+{
+  "iteration": 10,
+  "baseline_commit": "86b21e4c5455819ba84b0b8b7b756e8cfd9af6ba",
+  "decision": "retain: confirmed narrow-layer gain; full contract coverage; wide performance inconclusive",
+  "scope": "BF16 operator track only; no full-decoder or state-of-the-art promotion",
+  "candidate_source_sha256": {
+    "flex_gemm/tenstorrent/__init__.py": "3c46ffc40c3b93e480d8dd830404921675c490ccb1a94f609a7423cdc151bb8c",
+    "flex_gemm/tenstorrent/conv.py": "389903b43e5246a94bfba678070a0b031da45c749de5e5c0484c20ac65c7f6c5",
+    "flex_gemm/tenstorrent/digits.py": "c40d72d3fc9cfc9a8f1b8e710e4c8d6191d3ef66baaabc5e3a2018766a1d769e",
+    "flex_gemm/tenstorrent/implicit.py": "b512b11eff94b770c9131ba3a1f376b7f060bd17206a8ab0c3aae693e0eee688",
+    "flex_gemm/tenstorrent/masking.py": "32c66f47bd2caef0ec94e34c23e0ae09562206a47267cc490db304cf7f0d10b7",
+    "flex_gemm/tenstorrent/ops.py": "c5e99c9032b6f472ee6d276ad196bb6caeaaadc539cb96a6fad25eb17b4a12db",
+    "flex_gemm/tenstorrent/reference.py": "a0dc3709115acfb282ea9d472b63ed470e62421e478ab67d20b2387b8ea0bdd3",
+    "flex_gemm/tenstorrent/resident.py": "011696c79b5b108c29a9d256878e70d44957a1d46f0612411eeb1581e11bdc6c",
+    "flex_gemm/tenstorrent/kernels/compute.cpp": "431780ae171a14f2e4ea9db2b8b7db5fc23b064bde7e12623da60070a4cee075",
+    "flex_gemm/tenstorrent/kernels/copy_output_tiles.cpp": "c1f12ea86cbc2545842495c5c9cf8774e9bf45b1533b3cbb40859834e2e2c642",
+    "flex_gemm/tenstorrent/kernels/reader.cpp": "6ba3b2ef6f4f80f3b354cb40210c181753d593236ffb080ff36825d61ceeddab",
+    "flex_gemm/tenstorrent/kernels/writer.cpp": "494dcd0566cec973a6b792109071a37f40c6579a155ed1d4d6ef3029505d83fc"
+  },
+  "validation_cases": 30,
+  "maximum_workspace_bound_bytes": 1007091200,
+  "confirmation": {
+    "wide": {
+      "cases": {
+        "n4490-1024x4096-k3x3x3": {
+          "complete_and_correct": true,
+          "rounds": 3,
+          "median_speedup": 1.0588874382896507,
+          "minimum_speedup": 1.0563583664267928,
+          "maximum_noise_fraction": 0.05751022006587266,
+          "consistent_screening_win": false
+        }
+      },
+      "all_requested_cases_pass": true,
+      "geomean_speedup": 1.0588874382896507,
+      "promotion": "not_evaluated: requires full contract, workspace and application checks"
+    },
+    "narrow": {
+      "cases": {
+        "n388659-128x128-k3x3x3": {
+          "complete_and_correct": true,
+          "rounds": 3,
+          "median_speedup": 1.0834516059393187,
+          "minimum_speedup": 1.0833259733121,
+          "maximum_noise_fraction": 0.0011354270565684108,
+          "consistent_screening_win": true
+        }
+      },
+      "all_requested_cases_pass": true,
+      "geomean_speedup": 1.0834516059393187,
+      "promotion": "not_evaluated: requires full contract, workspace and application checks"
+    }
+  },
+  "diagnostic": {
+    "repeat_serialized_ms_per_forward": 1.0575540363788605,
+    "unwrapped_median_ms": 689.667543512769,
+    "not_a_promotion_score": true
+  }
+}

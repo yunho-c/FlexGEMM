@@ -1,0 +1,50 @@
+{
+  "status": "complete",
+  "trials": [
+    {
+      "case": "shape-norm-silu-513-known-failure",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 1024
+      },
+      "status": "passed",
+      "ms": 19.92429100209847,
+      "failures": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "case": "n388659-128x128-k3x3x3",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 8192
+      },
+      "status": "passed",
+      "ms": 689.9618890020065,
+      "failures": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "case": "n4490-1024x4096-k3x3x3",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 1024
+      },
+      "status": "passed",
+      "ms": 132.36171001335606,
+      "failures": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

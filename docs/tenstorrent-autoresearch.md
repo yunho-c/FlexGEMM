@@ -485,6 +485,45 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   subsequent changes still require the ordinary full-operator evaluator and
   paired measurements.
 
+### 010 — broadcast FP32 scale/bias tiles without full expansion
+
+- Iteration 009 attributed 86.975 ms of serialized narrow-layer time to repeat
+  operations. Prepare one immutable 32-row scale/bias tile with the weights;
+  reshape aligned result chunks into batches of tiles and broadcast across the
+  batch dimension. Equal H/W dimensions preserve the FP32 SFPU path. Ragged
+  chunks retain explicit expansion. Feature normalization also broadcasts its
+  power-of-two scale directly: its BF16 values are exactly representable in
+  the FPU input format. All four integer products and numerical gates remain.
+- All 30 corpus cases pass both feature variants, input/source integrity,
+  repeatability, output format and allocator-traced workspace checks. Maximum
+  temporary bound remains 1,007,091,200 bytes. Ten Watcher tests and 12 CPU
+  evaluator tests pass; the FP32 cancellation test exercises an aligned chunk
+  and a ragged tail. The accounting label is `digit_explicit_v3`; useful and
+  issued arithmetic counts are unchanged.
+- Three A/B/A rounds with eleven repetitions confirm the 388,659-row 128→128
+  improvement against iteration 009 with the same row_chunk=8192. Candidate
+  medians are 689.891, 689.900 and 689.849 ms versus approximately 747.5 ms.
+  Speedups are 1.083326×, 1.083646× and 1.083452×; maximum noise is 0.1136%
+  and maximum baseline drift is 0.0240%. All nine trials pass.
+- The 4,490-row 1024→4096 comparison is inconclusive under the preset noise
+  rule. All three rounds are faster (1.058887×, 1.065016× and 1.056358×), but
+  the minimum 5.6358% gain is below the campaign's 5.7510% noise estimate.
+  All nine trials pass numerically; retain the failed performance decision
+  rather than interpreting these runs as a confirmed wide-layer win.
+- Full-corpus three-repetition screening gives occurrence-weighted proxies of
+  12.037 s and 16.924 s for the two poster topologies. These are unpaired sums
+  of representative layers, not decoder timings or independent scenes.
+- A separate post-change narrow-layer component diagnostic passes: repeat
+  time falls to 1.058 ms per serialized forward, while matmul (218.134 ms) and
+  embedding (216.197 ms) remain similar. Unwrapped median is 689.668 ms.
+  The diagnostic changes overlap and synchronization, so its operation times
+  are evidence for the mechanism, not additive savings in the lean score.
+- Decision: retain the optimization on the confirmed narrow-layer gain and
+  full contract coverage. The wide gain, application benefit and SOTA status
+  remain unconfirmed. Reports are unchanged in `iteration-010`; its compact
+  allocation-event bundle reproduces all 30 original workspace bounds and
+  records the full-trace hashes. Every worker exited normally.
+
 The additional CPU capture tools are:
 
 ```bash

@@ -13,6 +13,7 @@ from .implicit import _round32
 from .ops import _add_bias, _compute_config
 
 OUTPUT_ASSEMBLY = "tile_copy"
+EPILOGUE = "tile_broadcast"
 
 
 @dataclass
@@ -24,6 +25,8 @@ class SparseDigitWeights:
     ci: int
     co: int
     volume: int
+    scale_tile: object
+    bias_tile: object
 
 
 def prepare_sparse_digit_weights(weight, *, device, bias=None):
@@ -46,8 +49,12 @@ def prepare_sparse_digit_weights(weight, *, device, bias=None):
     sd = ttnn.from_torch(scale[None], dtype=ttnn.float32, layout=ttnn.TILE_LAYOUT, device=device)
     bd = None if bias is None else ttnn.from_torch(bias.bfloat16().float()[None],
         dtype=ttnn.float32, layout=ttnn.TILE_LAYOUT, device=device)
+    st = ttnn.from_torch(scale[None].expand(32, -1).contiguous(),
+        dtype=ttnn.float32, layout=ttnn.TILE_LAYOUT, device=device)
+    bt = None if bias is None else ttnn.from_torch(bias.bfloat16().float()[None].expand(32, -1).contiguous(),
+        dtype=ttnn.float32, layout=ttnn.TILE_LAYOUT, device=device)
     first = digits[0]
-    return SparseDigitWeights(digits, sd, bd, device, first.ci, first.co, first.volume)
+    return SparseDigitWeights(digits, sd, bd, device, first.ci, first.co, first.volume, st, bt)
 
 
 def _concat(chunks):
@@ -115,7 +122,9 @@ def _feature_digits(features, cp):
     for start in range(0, rows, chunk):
         end = min(start + chunk, rows)
         part = ttnn.typecast(ttnn.slice(features, [start, 0], [end, ci]), ttnn.float32)
-        residual = ttnn.multiply(part, ttnn.repeat(inverse, [end - start, ci]))
+        # BF16 values and a power-of-two multiplier are exactly representable
+        # through the FPU broadcast path; no expanded FP32 constant is needed.
+        residual = ttnn.multiply(part, inverse)
         high = ttnn.round(residual)
         low = ttnn.round(ttnn.multiply(ttnn.subtract(residual, high), 256.))
         for value, parts in ((high, high_parts), (low, low_parts)):
@@ -130,6 +139,22 @@ def _feature_digits(features, cp):
     return _concat(high_parts), _concat(low_parts), scale
 
 
+def _scale_and_bias(result, weights, scale, scale_tile):
+    """Broadcast complete FP32 tiles across batches, keeping H/W equal."""
+    import ttnn
+    rows, co = result.shape
+    if rows % 32:
+        result = ttnn.multiply(result, ttnn.repeat(scale, [rows, 1]))
+        return _add_bias(result, weights.bias, fp32_output=True)
+    # Batch broadcasting retains the SFPU elementwise path. H/W broadcast
+    # would instead truncate FP32 operands through the FPU input registers.
+    result = ttnn.reshape(result, [rows // 32, 32, co])
+    result = ttnn.multiply(result, ttnn.reshape(scale_tile, [1, 32, co]))
+    if weights.bias_tile is not None:
+        result = ttnn.add(result, ttnn.reshape(weights.bias_tile, [1, 32, co]))
+    return ttnn.reshape(result, [rows, co])
+
+
 def sparse_digit_conv_device(features, weights, topology, *, row_chunk=256, fp32_output=False):
     """Fresh device digit extraction, gather, four products, scale and bias."""
     import ttnn
@@ -138,6 +163,8 @@ def sparse_digit_conv_device(features, weights, topology, *, row_chunk=256, fp32
     cp = _round32(weights.ci)
     high, low, feature_scale = _feature_digits(features, cp)
     scale = ttnn.multiply(ttnn.repeat(feature_scale, [1, weights.co]), weights.scale)
+    # Both operands contain only powers of two, so this broadcast is exact.
+    scale_tile = ttnn.multiply(weights.scale_tile, feature_scale)
     outputs = []
     m = len(topology.host_indices)
     output = None
@@ -173,8 +200,7 @@ def sparse_digit_conv_device(features, weights, topology, *, row_chunk=256, fp32
         result = ttnn.add(ttnn.add(top, ttnn.multiply(cross, 1 / 256)), ttnn.multiply(bottom, 1 / 65536))
         del a, b, top, cross, bottom
         result = ttnn.slice(result, [0, 0], [end - start, weights.co])
-        result = ttnn.multiply(result, ttnn.repeat(scale, [end - start, 1]))
-        result = _add_bias(result, weights.bias, fp32_output=True)
+        result = _scale_and_bias(result, weights, scale, scale_tile)
         if not fp32_output:
             result = ttnn.typecast(result, ttnn.bfloat16)
         if output is None:

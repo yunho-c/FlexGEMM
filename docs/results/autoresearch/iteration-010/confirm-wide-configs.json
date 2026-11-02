@@ -1,0 +1,6 @@
+{
+  "tile_broadcast": {
+    "algorithm": "digit_explicit_gemm",
+    "row_chunk": 1024
+  }
+}
