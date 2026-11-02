@@ -1,0 +1,940 @@
+{
+  "status": "complete",
+  "scene_input": "/home/user/tt-scratchpad/genrecon/scene-pipeline-poster/decode/decoder_input.npz",
+  "scene_input_sha256": "6f62d5a77923330962996c0782cc1be2c105971fd5acd4654c9880f892596cc0",
+  "checkpoint": "/home/user/models/genrecon/trellis2/ckpts/shape_dec_next_dc_f16c32_fp16.safetensors",
+  "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581",
+  "torch": "2.11.0+cpu",
+  "genrecon_commit": "8d07db88360bf14858318fabbf51bb11e91c982e",
+  "sources": {
+    "/home/user/GitHub/GenRecon/genrecon/modules/sparse/conv/conv_reference.py": "d08086879d00f5da539c428d672b1399bc6340d28c5b9a676b0ba79767be3a2c",
+    "/home/user/GitHub/GenRecon/genrecon/models/sc_vaes/sparse_unet_vae.py": "22d7f4f48ab9d58012d20aa0aad849d1ee97c0f06e961756987cde7cc5946f8c"
+  },
+  "captures": [
+    {
+      "layer": "blocks.0.0.conv",
+      "signature": "n6181-1024x1024-k3x3x3",
+      "points": 6181,
+      "ci": 1024,
+      "co": 1024,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ],
+      "file": "n6181-1024x1024-k3x3x3.pt",
+      "sha256": "b52c69a5a0119623bfb0e131950cbe85028c0b0f7274684cd0cb2b278520630a",
+      "feature_dtype": "torch.float32",
+      "spatial_shape": [
+        32,
+        32,
+        32
+      ],
+      "occurrences": 4
+    },
+    {
+      "layer": "blocks.0.4.conv1",
+      "signature": "n6181-1024x4096-k3x3x3",
+      "points": 6181,
+      "ci": 1024,
+      "co": 4096,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ],
+      "file": "n6181-1024x4096-k3x3x3.pt",
+      "sha256": "a2cfebd8a0c795ad6bd330c6ff366b6e3fb194a5e6c9d58982e91bc1c0bd9f67",
+      "feature_dtype": "torch.float32",
+      "spatial_shape": [
+        32,
+        32,
+        32
+      ],
+      "occurrences": 1
+    },
+    {
+      "layer": "blocks.0.4.conv2",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ],
+      "file": "n28223-512x512-k3x3x3.pt",
+      "sha256": "c5115cfaba6f3157582c7199f2f14652771a9c7bc25a62fba8880f11b4cd9cfd",
+      "feature_dtype": "torch.float32",
+      "spatial_shape": [
+        64,
+        64,
+        64
+      ],
+      "occurrences": 17
+    },
+    {
+      "layer": "blocks.1.16.conv1",
+      "signature": "n28223-512x2048-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 2048,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ],
+      "file": "n28223-512x2048-k3x3x3.pt",
+      "sha256": "c831f3312e0107f4b499f07ceacd57eac8b805b66cb66d582eecb000ca833f0f",
+      "feature_dtype": "torch.float32",
+      "spatial_shape": [
+        64,
+        64,
+        64
+      ],
+      "occurrences": 1
+    },
+    {
+      "layer": "blocks.1.16.conv2",
+      "signature": "n125219-256x256-k3x3x3",
+      "points": 125219,
+      "ci": 256,
+      "co": 256,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ],
+      "file": "n125219-256x256-k3x3x3.pt",
+      "sha256": "06c159c420488b954b0d180953ddcd14fd2bd7b420c682ab04e0cfb502b57ff9",
+      "feature_dtype": "torch.float32",
+      "spatial_shape": [
+        128,
+        128,
+        128
+      ],
+      "occurrences": 9
+    },
+    {
+      "layer": "blocks.2.8.conv1",
+      "signature": "n125219-256x1024-k3x3x3",
+      "points": 125219,
+      "ci": 256,
+      "co": 1024,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ],
+      "file": "n125219-256x1024-k3x3x3.pt",
+      "sha256": "09957025b1cfce4d3a3ef15b816a9bf9fe3ebff4a5662cb32b42a046d06f8a26",
+      "feature_dtype": "torch.float32",
+      "spatial_shape": [
+        128,
+        128,
+        128
+      ],
+      "occurrences": 1
+    },
+    {
+      "layer": "blocks.2.8.conv2",
+      "signature": "n551044-128x128-k3x3x3",
+      "points": 551044,
+      "ci": 128,
+      "co": 128,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ],
+      "file": "n551044-128x128-k3x3x3.pt",
+      "sha256": "80cae0db6daae8af440ef3cca451bb6121e09d377241bc3aafa7c25998ac56aa",
+      "feature_dtype": "torch.float32",
+      "spatial_shape": [
+        256,
+        256,
+        256
+      ],
+      "occurrences": 5
+    },
+    {
+      "layer": "blocks.3.4.conv1",
+      "signature": "n551044-128x512-k3x3x3",
+      "points": 551044,
+      "ci": 128,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ],
+      "file": "n551044-128x512-k3x3x3.pt",
+      "sha256": "c0e639fdf049e10a42abc463d72d6d35130873c5c44e6ab26269c43d08af1ef7",
+      "feature_dtype": "torch.float32",
+      "spatial_shape": [
+        256,
+        256,
+        256
+      ],
+      "occurrences": 1
+    },
+    {
+      "layer": "blocks.3.4.conv2",
+      "signature": "n2389000-64x64-k3x3x3",
+      "points": 2389000,
+      "ci": 64,
+      "co": 64,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ],
+      "file": "n2389000-64x64-k3x3x3.pt",
+      "sha256": "86f0b81a4d8710bd19dc887ebbff757909b904b7fc162fbafc279fa1647f03bc",
+      "feature_dtype": "torch.float32",
+      "spatial_shape": [
+        512,
+        512,
+        511
+      ],
+      "occurrences": 1
+    }
+  ],
+  "invocations": [
+    {
+      "layer": "blocks.0.0.conv",
+      "signature": "n6181-1024x1024-k3x3x3",
+      "points": 6181,
+      "ci": 1024,
+      "co": 1024,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.0.1.conv",
+      "signature": "n6181-1024x1024-k3x3x3",
+      "points": 6181,
+      "ci": 1024,
+      "co": 1024,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.0.2.conv",
+      "signature": "n6181-1024x1024-k3x3x3",
+      "points": 6181,
+      "ci": 1024,
+      "co": 1024,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.0.3.conv",
+      "signature": "n6181-1024x1024-k3x3x3",
+      "points": 6181,
+      "ci": 1024,
+      "co": 1024,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.0.4.conv1",
+      "signature": "n6181-1024x4096-k3x3x3",
+      "points": 6181,
+      "ci": 1024,
+      "co": 4096,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.0.4.conv2",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.0.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.1.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.2.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.3.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.4.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.5.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.6.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.7.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.8.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.9.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.10.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.11.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.12.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.13.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.14.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.15.conv",
+      "signature": "n28223-512x512-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.16.conv1",
+      "signature": "n28223-512x2048-k3x3x3",
+      "points": 28223,
+      "ci": 512,
+      "co": 2048,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.1.16.conv2",
+      "signature": "n125219-256x256-k3x3x3",
+      "points": 125219,
+      "ci": 256,
+      "co": 256,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.2.0.conv",
+      "signature": "n125219-256x256-k3x3x3",
+      "points": 125219,
+      "ci": 256,
+      "co": 256,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.2.1.conv",
+      "signature": "n125219-256x256-k3x3x3",
+      "points": 125219,
+      "ci": 256,
+      "co": 256,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.2.2.conv",
+      "signature": "n125219-256x256-k3x3x3",
+      "points": 125219,
+      "ci": 256,
+      "co": 256,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.2.3.conv",
+      "signature": "n125219-256x256-k3x3x3",
+      "points": 125219,
+      "ci": 256,
+      "co": 256,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.2.4.conv",
+      "signature": "n125219-256x256-k3x3x3",
+      "points": 125219,
+      "ci": 256,
+      "co": 256,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.2.5.conv",
+      "signature": "n125219-256x256-k3x3x3",
+      "points": 125219,
+      "ci": 256,
+      "co": 256,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.2.6.conv",
+      "signature": "n125219-256x256-k3x3x3",
+      "points": 125219,
+      "ci": 256,
+      "co": 256,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.2.7.conv",
+      "signature": "n125219-256x256-k3x3x3",
+      "points": 125219,
+      "ci": 256,
+      "co": 256,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.2.8.conv1",
+      "signature": "n125219-256x1024-k3x3x3",
+      "points": 125219,
+      "ci": 256,
+      "co": 1024,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.2.8.conv2",
+      "signature": "n551044-128x128-k3x3x3",
+      "points": 551044,
+      "ci": 128,
+      "co": 128,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.3.0.conv",
+      "signature": "n551044-128x128-k3x3x3",
+      "points": 551044,
+      "ci": 128,
+      "co": 128,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.3.1.conv",
+      "signature": "n551044-128x128-k3x3x3",
+      "points": 551044,
+      "ci": 128,
+      "co": 128,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.3.2.conv",
+      "signature": "n551044-128x128-k3x3x3",
+      "points": 551044,
+      "ci": 128,
+      "co": 128,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.3.3.conv",
+      "signature": "n551044-128x128-k3x3x3",
+      "points": 551044,
+      "ci": 128,
+      "co": 128,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.3.4.conv1",
+      "signature": "n551044-128x512-k3x3x3",
+      "points": 551044,
+      "ci": 128,
+      "co": 512,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "layer": "blocks.3.4.conv2",
+      "signature": "n2389000-64x64-k3x3x3",
+      "points": 2389000,
+      "ci": 64,
+      "co": 64,
+      "kernel": [
+        3,
+        3,
+        3
+      ],
+      "dilation": [
+        1,
+        1,
+        1
+      ]
+    }
+  ],
+  "seconds": 132.5412207019981,
+  "output_points": 2389000,
+  "stage_points": [
+    6181,
+    28223,
+    125219,
+    551044
+  ],
+  "source_unchanged": true
+}

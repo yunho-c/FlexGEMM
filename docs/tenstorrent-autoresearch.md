@@ -345,6 +345,30 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   and external paths. Next: remove the ragged-concat memory overhead, then
   optimize the valid path and test the new full-sampler topology.
 
+### 006 — avoid the ragged tiled-concat fallback
+
+- Pad only the final row chunk to a tile boundary when every earlier chunk is
+  aligned, concatenate in tiled layout, then trim the logical result. Interior
+  unaligned chunks retain the original path so no rows are inserted between
+  chunks. Ragged channel counts and FP32 output remain supported.
+- Eight Watcher tests pass. The prior 388,659-row 128→512 failure now passes
+  numerical, mutation, integrity and workspace gates. The inclusive conservative
+  bound falls from 1,681,338,368 to 889,204,736 bytes. Median latency is
+  1,209.721 ms over seven repetitions; no paired performance claim is made.
+- Added a second full CPU decoder capture from the completed sampler's
+  6,181-row latent. It contains nine signatures and 40 layer invocations,
+  reaching 2,389,000 CPU-decoder output rows. Both feature variants have fixed
+  BF16-input reference outputs and sampled independent topology checks. The
+  input is from the same poster scene, not an independent held-out scene.
+  CPU-generated topology is not asserted equal to the BF16 device pipeline.
+- The new 551,044-row 128→512 case passes all numerical checks but still fails
+  the conservative workspace bound at 1,223,438,336 bytes. Its screening median
+  is 1,728.331 ms. The evidence remains failed and the cap is unchanged.
+- Decision: retain this local memory fix. Larger outputs need bounded output
+  assembly rather than repeated full-output concatenation. Full-suite reruns,
+  paired performance confirmation and application integration remain required
+  before promotion; the default algorithm is unchanged.
+
 The additional CPU capture tools are:
 
 ```bash

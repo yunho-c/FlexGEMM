@@ -76,7 +76,8 @@ def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
 
 @pytest.mark.parametrize("fp32_output", [False, True])
 @pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm"])
-def test_explicit_many_row_chunks(device, fp32_output, algorithm):
+@pytest.mark.parametrize("co", [35, 512])
+def test_explicit_many_row_chunks(device, fp32_output, algorithm, co):
     import ttnn
     # Seventeen chunks, including a ragged final chunk, reproduced a stalled
     # SDK concat reader in the complete decoder. Bounded integer inputs keep
@@ -84,7 +85,7 @@ def test_explicit_many_row_chunks(device, fp32_output, algorithm):
     # while neighbors cross chunk boundaries.
     generator = torch.Generator().manual_seed(96)
     x = torch.randint(-2, 3, (1032, 32), generator=generator).bfloat16()
-    w = torch.randint(-2, 3, (512, 1, 32), generator=generator).bfloat16()
+    w = torch.randint(-2, 3, (co, 1, 32), generator=generator).bfloat16()
     mapping = ((torch.arange(1032) + 1) % 1032)[:, None]
     top = prepare_sparse_topology(mapping, len(x), device=device)
     prepare = prepare_sparse_digit_weights if algorithm == "digit_explicit_gemm" else prepare_sparse_weights

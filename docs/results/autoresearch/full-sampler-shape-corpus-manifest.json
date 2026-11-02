@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contract_sha256": "f49de05e37d42f895008c14caeac408513fad7a3537fbca5d74ad265131f5733",
+  "capture_manifest_sha256": "a3bd455080e00735a35f689b85830602b2189c9592911f94a7dda1a049e51ffc",
+  "builder_sha256": "a0dc3709115acfb282ea9d472b63ed470e62421e478ab67d20b2387b8ea0bdd3",
+  "torch": "2.11.0+cpu",
+  "cases": [
+    {
+      "name": "n6181-1024x1024-k3x3x3",
+      "split": "application",
+      "file": "n6181-1024x1024-k3x3x3.pt",
+      "sha256": "94ec97fcfc8fe6c7b8adaaa5f45c1e77b8072bd9f09d54238a758245115ca4f0",
+      "points": 6181,
+      "ci": 1024,
+      "co": 1024,
+      "volume": 27,
+      "occurrences": 4,
+      "valid_interactions": 85777,
+      "topology_oracle_rows": 1024,
+      "prepare_seconds": 1.7100511019816622,
+      "provenance": {
+        "kind": "captured_decoder_layer",
+        "layer": "blocks.0.0.conv",
+        "capture_sha256": "b52c69a5a0119623bfb0e131950cbe85028c0b0f7274684cd0cb2b278520630a",
+        "scene_input_sha256": "6f62d5a77923330962996c0782cc1be2c105971fd5acd4654c9880f892596cc0",
+        "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581"
+      }
+    },
+    {
+      "name": "n6181-1024x4096-k3x3x3",
+      "split": "application",
+      "file": "n6181-1024x4096-k3x3x3.pt",
+      "sha256": "e7996c01ce78c8c030df5a6ce0accce2b2426bbb0704393dd4b33a32258065a5",
+      "points": 6181,
+      "ci": 1024,
+      "co": 4096,
+      "volume": 27,
+      "occurrences": 1,
+      "valid_interactions": 85777,
+      "topology_oracle_rows": 1024,
+      "prepare_seconds": 6.242641792981885,
+      "provenance": {
+        "kind": "captured_decoder_layer",
+        "layer": "blocks.0.4.conv1",
+        "capture_sha256": "a2cfebd8a0c795ad6bd330c6ff366b6e3fb194a5e6c9d58982e91bc1c0bd9f67",
+        "scene_input_sha256": "6f62d5a77923330962996c0782cc1be2c105971fd5acd4654c9880f892596cc0",
+        "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581"
+      }
+    },
+    {
+      "name": "n28223-512x512-k3x3x3",
+      "split": "application",
+      "file": "n28223-512x512-k3x3x3.pt",
+      "sha256": "c3892fae0e7fcf42f0ef84f98be7834184ea28fb27be74b377123d41cdcb4a09",
+      "points": 28223,
+      "ci": 512,
+      "co": 512,
+      "volume": 27,
+      "occurrences": 17,
+      "valid_interactions": 414833,
+      "topology_oracle_rows": 1024,
+      "prepare_seconds": 3.0466649979935028,
+      "provenance": {
+        "kind": "captured_decoder_layer",
+        "layer": "blocks.0.4.conv2",
+        "capture_sha256": "c5115cfaba6f3157582c7199f2f14652771a9c7bc25a62fba8880f11b4cd9cfd",
+        "scene_input_sha256": "6f62d5a77923330962996c0782cc1be2c105971fd5acd4654c9880f892596cc0",
+        "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581"
+      }
+    },
+    {
+      "name": "n28223-512x2048-k3x3x3",
+      "split": "application",
+      "file": "n28223-512x2048-k3x3x3.pt",
+      "sha256": "c21fc7bbfd06ba2505558d577d47dba588ec14548e11b73649c26f26170e739d",
+      "points": 28223,
+      "ci": 512,
+      "co": 2048,
+      "volume": 27,
+      "occurrences": 1,
+      "valid_interactions": 414833,
+      "topology_oracle_rows": 1024,
+      "prepare_seconds": 12.00828750000801,
+      "provenance": {
+        "kind": "captured_decoder_layer",
+        "layer": "blocks.1.16.conv1",
+        "capture_sha256": "c831f3312e0107f4b499f07ceacd57eac8b805b66cb66d582eecb000ca833f0f",
+        "scene_input_sha256": "6f62d5a77923330962996c0782cc1be2c105971fd5acd4654c9880f892596cc0",
+        "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581"
+      }
+    },
+    {
+      "name": "n125219-256x256-k3x3x3",
+      "split": "application",
+      "file": "n125219-256x256-k3x3x3.pt",
+      "sha256": "145ea54551f28bce64f40a4410efe696a3a8fa373def4086c7a53640075efa36",
+      "points": 125219,
+      "ci": 256,
+      "co": 256,
+      "volume": 27,
+      "occurrences": 9,
+      "valid_interactions": 1838819,
+      "topology_oracle_rows": 1024,
+      "prepare_seconds": 6.69986981904367,
+      "provenance": {
+        "kind": "captured_decoder_layer",
+        "layer": "blocks.1.16.conv2",
+        "capture_sha256": "06c159c420488b954b0d180953ddcd14fd2bd7b420c682ab04e0cfb502b57ff9",
+        "scene_input_sha256": "6f62d5a77923330962996c0782cc1be2c105971fd5acd4654c9880f892596cc0",
+        "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581"
+      }
+    },
+    {
+      "name": "n125219-256x1024-k3x3x3",
+      "split": "application",
+      "file": "n125219-256x1024-k3x3x3.pt",
+      "sha256": "05c0ec208ee544b30a0b480441924af26929ad669056f7f2c1f08cbb11078e39",
+      "points": 125219,
+      "ci": 256,
+      "co": 1024,
+      "volume": 27,
+      "occurrences": 1,
+      "valid_interactions": 1838819,
+      "topology_oracle_rows": 1024,
+      "prepare_seconds": 22.08976480300771,
+      "provenance": {
+        "kind": "captured_decoder_layer",
+        "layer": "blocks.2.8.conv1",
+        "capture_sha256": "09957025b1cfce4d3a3ef15b816a9bf9fe3ebff4a5662cb32b42a046d06f8a26",
+        "scene_input_sha256": "6f62d5a77923330962996c0782cc1be2c105971fd5acd4654c9880f892596cc0",
+        "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581"
+      }
+    },
+    {
+      "name": "n551044-128x128-k3x3x3",
+      "split": "application",
+      "file": "n551044-128x128-k3x3x3.pt",
+      "sha256": "b40979e7cf62f33140cfc68f150215f86eb339e7b1731fedb2a4353af72b9590",
+      "points": 551044,
+      "ci": 128,
+      "co": 128,
+      "volume": 27,
+      "occurrences": 5,
+      "valid_interactions": 7750622,
+      "topology_oracle_rows": 1024,
+      "prepare_seconds": 14.26426614500815,
+      "provenance": {
+        "kind": "captured_decoder_layer",
+        "layer": "blocks.2.8.conv2",
+        "capture_sha256": "80cae0db6daae8af440ef3cca451bb6121e09d377241bc3aafa7c25998ac56aa",
+        "scene_input_sha256": "6f62d5a77923330962996c0782cc1be2c105971fd5acd4654c9880f892596cc0",
+        "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581"
+      }
+    },
+    {
+      "name": "n551044-128x512-k3x3x3",
+      "split": "application",
+      "file": "n551044-128x512-k3x3x3.pt",
+      "sha256": "0633f2c78c05958d1b21939503c4e51aaa2f7dfbb923af963b14162dedc95468",
+      "points": 551044,
+      "ci": 128,
+      "co": 512,
+      "volume": 27,
+      "occurrences": 1,
+      "valid_interactions": 7750622,
+      "topology_oracle_rows": 1024,
+      "prepare_seconds": 36.88157952699112,
+      "provenance": {
+        "kind": "captured_decoder_layer",
+        "layer": "blocks.3.4.conv1",
+        "capture_sha256": "c0e639fdf049e10a42abc463d72d6d35130873c5c44e6ab26269c43d08af1ef7",
+        "scene_input_sha256": "6f62d5a77923330962996c0782cc1be2c105971fd5acd4654c9880f892596cc0",
+        "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581"
+      }
+    },
+    {
+      "name": "n2389000-64x64-k3x3x3",
+      "split": "application",
+      "file": "n2389000-64x64-k3x3x3.pt",
+      "sha256": "78fec0e93a7a41b640950616d73646441391142cd7439247908b8163ee752417",
+      "points": 2389000,
+      "ci": 64,
+      "co": 64,
+      "volume": 27,
+      "occurrences": 1,
+      "valid_interactions": 32657280,
+      "topology_oracle_rows": 1024,
+      "prepare_seconds": 35.43766324099852,
+      "provenance": {
+        "kind": "captured_decoder_layer",
+        "layer": "blocks.3.4.conv2",
+        "capture_sha256": "86f0b81a4d8710bd19dc887ebbff757909b904b7fc162fbafc279fa1647f03bc",
+        "scene_input_sha256": "6f62d5a77923330962996c0782cc1be2c105971fd5acd4654c9880f892596cc0",
+        "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581"
+      }
+    }
+  ],
+  "held_out_real_scenes": "unavailable",
+  "application_score_scope": "occurrence-weighted representative shapes from one decoder; layer values/weights vary across occurrences, so this is a latency proxy"
+}

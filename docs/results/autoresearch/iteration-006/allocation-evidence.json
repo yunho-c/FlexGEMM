@@ -1,0 +1,19 @@
+{
+  "scope": "Exact DRAM allocation/deallocation events; full graph traces remain at source paths. Both archives reproduce original bounds.",
+  "traces": [
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-006/concat-memory.allocations.json.gz",
+      "source_sha256": "9a3ce298fc520ff798392ee868b0c1248b792d84cf7551df212ac70246816b1c",
+      "archived_events": "concat-memory.allocation-events.json.gz",
+      "archived_sha256": "bfdc644a31074503b59df5164471aa7d2cf234f6d55198a8a3bae11f2726156e",
+      "events": 20793
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-006/full-sampler-memory.allocations.json.gz",
+      "source_sha256": "845f5c612eda0870a1b498b29c344b22362bba5e565b9d82a8da0425b2206f00",
+      "archived_events": "full-sampler-memory.allocation-events.json.gz",
+      "archived_sha256": "a7016c48c4a829a7322e1ee2f4b8334ee92bfa4573137c2ad04249bd86ca8113",
+      "events": 29481
+    }
+  ]
+}

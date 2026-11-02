@@ -58,6 +58,21 @@ def _concat(chunks):
     return chunks[0]
 
 
+def _concat_outputs(chunks):
+    """Keep tiled concat out of its four-copy ragged-row fallback."""
+    import ttnn
+    rows = sum(part.shape[0] for part in chunks)
+    co = chunks[0].shape[1]
+    aligned_prefix = all(part.shape[0] % 32 == 0 for part in chunks[:-1])
+    if len(chunks) > 1 and aligned_prefix and chunks[-1].shape[0] % 32:
+        last = chunks[-1]
+        chunks[-1] = ttnn.pad(last, [(0, _round32(last.shape[0]) - last.shape[0]), (0, 0)], 0)
+        del last
+        return ttnn.slice(_concat(chunks), [0, 0], [rows, co])
+    # Non-tile-aligned interior chunks cannot be padded without inserting rows.
+    return _concat(chunks)
+
+
 def _feature_digits(features, cp):
     """Recompute digits each call, with bounded FP32 conversion scratch."""
     import ttnn
@@ -129,4 +144,4 @@ def sparse_digit_conv_device(features, weights, topology, *, row_chunk=256, fp32
         outputs.append(result if fp32_output else ttnn.typecast(result, ttnn.bfloat16))
         del result
     del high, low
-    return _concat(outputs)
+    return _concat_outputs(outputs)
