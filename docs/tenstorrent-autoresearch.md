@@ -736,6 +736,30 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   validation, then complete decoder tests. Evidence, source snapshots, work
   model and verifier are in iteration-017. Application benefit and SOTA pending.
 
+### 018 — integrate four-product implicit convolution with fallback
+
+- Add opt-in `digit_implicit_gemm`, explicit static preparation and per-topology
+  plan/index caches. Feature values are recomputed every forward. Preserve HiFi3,
+  reconstruction and FP32 epilogue; support BF16/FP32 outputs. Package the trimmed
+  Apache-2.0 K6 implementation and its notices.
+- All 36 fixtures pass: 24 K6 and 12 explicit fallbacks, including the known 513-row
+  regression. Non-Wormhole, volume>32, unaligned chunks and oversized per-core
+  CB plans fall back explicitly. Default dispatch remains unchanged.
+- Three A/B/A rounds confirm narrow:172.081 / 171.639 / 171.648ms,
+  speedups 2.900530 / 2.909645 / 2.908647, maximum noise 0.8494%.
+  Largest:458.533 / 462.537 / 459.105ms, speedups
+  3.407418 / 3.378234 / 3.403709, maximum noise 3.0839%.
+  Wide fallback ratios:0.997758 / 0.992303 / 0.999134, noise 2.4281%;
+  this control is not a new kernel speedup. All trials use eleven repetitions.
+- Maximum workspace 726,282,240 bytes; 36 committed allocator replays match.
+  Fifteen Watcher tests, 13 CPU evaluator tests and runtime/header/license wheel
+  checks pass. All 64 device workers exit normally without timeout or recovery.
+- Extend source integrity to included headers and add the new algorithm's work
+  model while retaining existing baseline models and numerical/timing gates.
+  Small shapes and some wide outputs remain slower; all screening data retained.
+- Decision: retain opt-in integration. Matched complete-decoder testing is next;
+  application benefit and SOTA are unproven. Evidence is in iteration-018.
+
 The additional CPU capture tools are:
 
 ```bash

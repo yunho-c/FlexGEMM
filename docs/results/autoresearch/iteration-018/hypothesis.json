@@ -1,0 +1,19 @@
+{
+  "iteration": 18,
+  "baseline_commit": "f4ae6a7bfd0ab9cd0842cc34d06cf42926075d36",
+  "hypothesis": "Integrate validated four-product K6 prototype as an opt-in path with unchanged numerical gates, explicit fallback and full36 coverage. Preserve its confirmed narrow/large gains while reporting regressions.",
+  "algorithm": "digit_implicit_gemm",
+  "fallbacks": [
+    "non-Wormhole",
+    "kernel volume >32",
+    "unaligned row chunk",
+    "per-core CB budget >900KiB"
+  ],
+  "gates": [
+    "CPU evaluator and package tests",
+    "Watcher reuse/FP32/fallback tests",
+    "all36 numerical/residency/integrity/workspace",
+    "three A/B/A rounds narrow/largest and wide fallback control"
+  ],
+  "promotion_scope": "opt-in operator integration; full decoder and SOTA remain pending"
+}

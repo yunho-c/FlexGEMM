@@ -196,3 +196,27 @@ def test_workspace_excludes_only_final_output_lifetime_at_reused_address():
     ambiguous = workspace_bound(trace, dram_banks=2, l1_capacity_bytes=50, limit_bytes=1000,
                                 output_address=10, expected_output_bytes=96)
     assert not ambiguous["trace_valid"] and not ambiguous["within_limit"]
+
+
+def test_implicit_digit_accounting_empty_taps_chunks_and_fallback():
+    mapping = torch.full((65, 3), -1, dtype=torch.long)
+    mapping[32:, 0] = 0
+    policy = {'path': 'digit_implicit_gemm', 'grid': [2, 2], 'multicast': True,
+              'chunks': [{'start': 0, 'end': 64, 'tap_chunks': 2},
+                         {'start': 64, 'end': 65, 'tap_chunks': 2}]}
+    r = work_accounting(mapping, 17, 35, algorithm='digit_implicit_gemm', row_chunk=64,
+                        available_cores=4, digit_implicit_policy=policy)
+    assert r['issued_flops'] == 16 * 2 * 32**3
+    assert r['dummy_tile_products'] == r['explicit_expansion_bytes'] == r['gather_output_bytes'] == 0
+    assert r['requested_feature_bytes'] == 4 * 33 * 64
+    assert r['requested_map_bytes'] == 4 * 2 * 3 * 3 * 128 * 2
+    assert r['requested_weight_bytes'] == 4 * 2 * 2 * 3 * 1 * 2 * 4096
+    assert sum(r['core_tile_products']) == 16
+    empty = work_accounting(torch.full_like(mapping, -1), 17, 35, algorithm='digit_implicit_gemm',
+        row_chunk=64, available_cores=4, digit_implicit_policy=policy)
+    assert empty['issued_flops'] == empty['useful_flops'] == 0 and empty['work_efficiency'] is None
+    fallback = work_accounting(mapping, 17, 35, algorithm='digit_implicit_gemm', row_chunk=17,
+        digit_implicit_policy={'path': 'digit_explicit_gemm', 'reason': 'row_chunk_not_tile_aligned'})
+    baseline = work_accounting(mapping, 17, 35, algorithm='digit_explicit_gemm', row_chunk=17)
+    assert fallback.pop('dispatch_fallback') == 'row_chunk_not_tile_aligned'
+    assert fallback == baseline

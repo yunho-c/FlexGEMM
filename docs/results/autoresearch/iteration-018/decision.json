@@ -1,0 +1,78 @@
+{
+  "iteration": 18,
+  "decision": "retain opt-in digit_implicit_gemm with explicit fallback; default unchanged",
+  "baseline_commit": "f4ae6a7bfd0ab9cd0842cc34d06cf42926075d36",
+  "paired_baseline_source_commit": "8c1c896b19892e9abcd340de9f8f8942f13c0728",
+  "fixed_contract_unchanged": true,
+  "evaluator_changes": "header source hashes, new algorithm preparation/reporting and additive independent work model; existing correctness/timing gates and baseline models unchanged",
+  "full_cases_passed": 36,
+  "implicit_cases": 24,
+  "fallback_cases": 12,
+  "watcher_tests_passed": 15,
+  "cpu_tests_passed": 13,
+  "package_check": "all8 new runtime/license files match built wheel",
+  "paired_results": {
+    "narrow": {
+      "integrated_digit_implicit": {
+        "cases": {
+          "n388659-128x128-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 2.9086474373666653,
+            "minimum_speedup": 2.9005295942969784,
+            "maximum_noise_fraction": 0.008494229479522806,
+            "consistent_screening_win": true
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 2.9086474373666653,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    },
+    "largest": {
+      "integrated_digit_implicit": {
+        "cases": {
+          "n2389000-64x64-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 3.4037091325991464,
+            "minimum_speedup": 3.3782341615087286,
+            "maximum_noise_fraction": 0.03083884027293764,
+            "consistent_screening_win": true
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 3.4037091325991464,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    },
+    "fallback": {
+      "integrated_digit_implicit": {
+        "cases": {
+          "n4490-1024x4096-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 0.9977581557775758,
+            "minimum_speedup": 0.9923031067259306,
+            "maximum_noise_fraction": 0.02428128962950078,
+            "consistent_screening_win": false
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 0.9977581557775758,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    }
+  },
+  "maximum_workspace_bytes": 726282240,
+  "memory_replays": 36,
+  "normal_device_worker_exits": 64,
+  "timeouts": 0,
+  "device_recovery_required": false,
+  "limitations": [
+    "small cases and 128x512 can regress; no universal dispatch gain",
+    "wide shapes use validated explicit fallback rather than native K6 channel partitioning",
+    "complete decoder comparison is CPU-prepared but not yet run",
+    "no SOTA claim"
+  ]
+}

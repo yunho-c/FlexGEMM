@@ -6,8 +6,10 @@ from .implicit import implicit_gemm, masked_implicit_gemm, prepare_implicit, spl
 from .conv import sparse_submanifold_conv3d
 from .resident import prepare_sparse_weights, prepare_sparse_topology, sparse_conv_device
 from .digits import prepare_sparse_digit_weights
+from .digit_implicit import prepare_sparse_digit_implicit
 
 __all__ = ["build_subm_neighbor_map", "sparse_conv_reference", "explicit_gemm",
            "implicit_gemm", "masked_implicit_gemm", "prepare_implicit", "split_k_gemm",
            "prepare_explicit", "sparse_submanifold_conv3d", "prepare_sparse_weights",
-           "prepare_sparse_topology", "sparse_conv_device", "prepare_sparse_digit_weights"]
+           "prepare_sparse_topology", "sparse_conv_device", "prepare_sparse_digit_weights",
+           "prepare_sparse_digit_implicit"]

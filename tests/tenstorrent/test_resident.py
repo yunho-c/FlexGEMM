@@ -2,7 +2,7 @@ import pytest
 import torch
 from flex_gemm.tenstorrent import (
     prepare_sparse_weights, prepare_sparse_topology, sparse_conv_device, sparse_conv_reference,
-    prepare_sparse_digit_weights,
+    prepare_sparse_digit_weights, prepare_sparse_digit_implicit,
 )
 from test_explicit import device
 
@@ -77,7 +77,7 @@ def test_digit_blocked_matmul_ragged_core_boundary_and_reuse(device):
         torch.testing.assert_close(ttnn.to_torch(result).float(), expected, atol=.025, rtol=.025)
 
 
-@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "digit_implicit_gemm", "implicit_gemm", "masked_implicit_gemm",
                                         "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
 @pytest.mark.parametrize("ci,co", [(32, 64), (17, 35)])
 @pytest.mark.parametrize("row_chunk", [17, 32])
@@ -91,7 +91,7 @@ def test_resident_chain_and_reuse(device, algorithm, ci, co, row_chunk):
     mapping[0] = -1
     b = torch.randn(co).bfloat16()
     top = prepare_sparse_topology(mapping, 37, device=device, masked=algorithm.startswith("masked"))
-    prepare = prepare_sparse_digit_weights if algorithm == "digit_explicit_gemm" else prepare_sparse_weights
+    prepare = prepare_sparse_digit_weights if algorithm in ("digit_explicit_gemm", "digit_implicit_gemm") else prepare_sparse_weights
     p1 = prepare(w1, device=device, bias=b)
     p2 = prepare(w2, device=device)
     # Keep old operands alive and use changed values on the same cached topology.
@@ -108,7 +108,7 @@ def test_resident_chain_and_reuse(device, algorithm, ci, co, row_chunk):
         torch.testing.assert_close(ttnn.to_torch(z).float(), expected2, atol=0.025, rtol=0.025)
 
 
-@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "digit_implicit_gemm", "implicit_gemm", "masked_implicit_gemm",
                                         "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
 def test_fp32_output_preserves_small_residual(device, algorithm):
     import ttnn
@@ -119,7 +119,7 @@ def test_fp32_output_preserves_small_residual(device, algorithm):
     w = torch.ones(1, 1, 33).bfloat16()
     top = prepare_sparse_topology(torch.tensor([[0]]), 1, device=device,
                                    masked=algorithm.startswith("masked"))
-    prepare = prepare_sparse_digit_weights if algorithm == "digit_explicit_gemm" else prepare_sparse_weights
+    prepare = prepare_sparse_digit_weights if algorithm in ("digit_explicit_gemm", "digit_implicit_gemm") else prepare_sparse_weights
     weights = prepare(w, device=device)
     xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
     y = sparse_conv_device(xd, weights, top, algorithm=algorithm, split_k=2, fp32_output=True)
@@ -127,7 +127,7 @@ def test_fp32_output_preserves_small_residual(device, algorithm):
     torch.testing.assert_close(ttnn.to_torch(ttnn.subtract(y, 256.)), torch.tensor([[1.125]]), atol=0, rtol=0)
 
 
-@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "digit_implicit_gemm", "implicit_gemm", "masked_implicit_gemm",
                                         "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
 def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
     import ttnn
@@ -137,7 +137,7 @@ def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
     bias = torch.full((35,), -256., dtype=torch.bfloat16)
     top = prepare_sparse_topology(torch.arange(37)[:, None], 37, device=device,
                                    masked=algorithm.startswith("masked"))
-    prepare = prepare_sparse_digit_weights if algorithm == "digit_explicit_gemm" else prepare_sparse_weights
+    prepare = prepare_sparse_digit_weights if algorithm in ("digit_explicit_gemm", "digit_implicit_gemm") else prepare_sparse_weights
     weights = prepare(weight, bias=bias, device=device)
     xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
     result = sparse_conv_device(xd, weights, top, algorithm=algorithm, row_chunk=32, fp32_output=True)
@@ -146,7 +146,7 @@ def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
 
 
 @pytest.mark.parametrize("fp32_output", [False, True])
-@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm"])
+@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "digit_implicit_gemm"])
 @pytest.mark.parametrize("co", [35, 512])
 def test_explicit_many_row_chunks(device, fp32_output, algorithm, co):
     import ttnn
@@ -159,7 +159,7 @@ def test_explicit_many_row_chunks(device, fp32_output, algorithm, co):
     w = torch.randint(-2, 3, (co, 1, 32), generator=generator).bfloat16()
     mapping = ((torch.arange(1032) + 1) % 1032)[:, None]
     top = prepare_sparse_topology(mapping, len(x), device=device)
-    prepare = prepare_sparse_digit_weights if algorithm == "digit_explicit_gemm" else prepare_sparse_weights
+    prepare = prepare_sparse_digit_weights if algorithm in ("digit_explicit_gemm", "digit_implicit_gemm") else prepare_sparse_weights
     weights = prepare(w, device=device)
     xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
     actual = sparse_conv_device(xd, weights, top, algorithm=algorithm,
@@ -168,3 +168,52 @@ def test_explicit_many_row_chunks(device, fp32_output, algorithm, co):
     if not fp32_output:
         expected = expected.bfloat16().float()
     torch.testing.assert_close(ttnn.to_torch(actual).float(), expected, atol=0, rtol=0)
+
+
+@pytest.mark.parametrize('rows,inputs,ci,co,volume,chunk', [(65, 83, 17, 35, 3, 32), (257, 321, 128, 128, 27, 256)])
+@pytest.mark.parametrize('fp32_output', [False, True])
+def test_digit_implicit_topology_weight_and_feature_reuse(device, rows, inputs, ci, co, volume, chunk, fp32_output):
+    import ttnn
+    g = torch.Generator().manual_seed(181)
+    x = torch.randn(inputs, ci, generator=g).bfloat16()
+    ws = [(torch.randn(co, volume, ci, generator=g) / (volume * ci)**.5).bfloat16() for _ in range(2)]
+    bias = torch.randn(co, generator=g).bfloat16()
+    mapping = torch.randint(-1, inputs, (rows, volume), generator=g)
+    mapping[:32] = -1
+    mapping[32] = inputs - 1
+    mapping[-1] = -1
+    other = torch.where(mapping < 0, -1, inputs - 1 - mapping)
+    topologies = [prepare_sparse_topology(m, inputs, device=device) for m in (mapping, other)]
+    prepared = [prepare_sparse_digit_weights(w, device=device, bias=bias) for w in ws]
+    plans = [prepare_sparse_digit_implicit(prepared[0], t, row_chunk=chunk) for t in topologies]
+    assert all(p.info['path'] == 'digit_implicit_gemm' for p in plans)
+    assert plans[0] is not plans[1]
+    assert plans[0].chunks[0][2].buffer_address() != plans[1].chunks[0][2].buffer_address()
+    assert prepare_sparse_digit_implicit(prepared[0], topologies[0], row_chunk=chunk) is plans[0]
+    assert prepare_sparse_digit_implicit(prepared[1], topologies[0], row_chunk=chunk) is plans[0]
+    if volume == 27:
+        assert plans[0].info['chunks'][0]['tap_chunks'] > 1
+    for values in (x, (x.float() * .5 + .03125).bfloat16()):
+        resident = ttnn.from_torch(values, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+        for weights, host_weights in zip(prepared, ws):
+            for topology, host_map in zip(topologies, (mapping, other)):
+                result = sparse_conv_device(resident, weights, topology, algorithm='digit_implicit_gemm',
+                    row_chunk=chunk, fp32_output=fp32_output)
+                assert result.dtype == (ttnn.float32 if fp32_output else ttnn.bfloat16)
+                expected = sparse_conv_reference(values, host_weights, host_map, bias)
+                torch.testing.assert_close(ttnn.to_torch(result).float(), expected, atol=.025, rtol=.025)
+        torch.testing.assert_close(ttnn.to_torch(resident), values, atol=0, rtol=0)
+
+
+def test_digit_implicit_volume_fallback_is_explicit(device):
+    import ttnn
+    features = torch.arange(3, dtype=torch.bfloat16).reshape(3, 1)
+    weights = prepare_sparse_digit_weights(torch.ones(1, 33, 1), device=device)
+    topology = prepare_sparse_topology(torch.zeros(3, 33, dtype=torch.long), 3, device=device)
+    plan = prepare_sparse_digit_implicit(weights, topology, row_chunk=32)
+    assert plan.info['path'] == 'digit_explicit_gemm' and plan.info['reason'] == 'kernel_volume_exceeds_32'
+    assert not weights.implicit_layers and not plan.chunks
+    resident = ttnn.from_torch(features, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+    a = sparse_conv_device(resident, weights, topology, algorithm='digit_implicit_gemm', row_chunk=32)
+    b = sparse_conv_device(resident, weights, topology, algorithm='digit_explicit_gemm', row_chunk=32)
+    torch.testing.assert_close(ttnn.to_torch(a), ttnn.to_torch(b), atol=0, rtol=0)

@@ -1,0 +1,1649 @@
+diff --git a/benchmarks/tenstorrent/common.py b/benchmarks/tenstorrent/common.py
+index 9ffa482..29d80fe 100644
+--- a/benchmarks/tenstorrent/common.py
++++ b/benchmarks/tenstorrent/common.py
+@@ -77,7 +77,8 @@ def summarize(samples):
+ 
+ 
+ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, available_cores=64,
+-                    digit_output_assembly="concat", digit_epilogue="expanded", digit_gather="embedding"):
++                    digit_output_assembly="concat", digit_epilogue="expanded", digit_gather="embedding",
++                    digit_implicit_policy=None):
+     """Model the baseline kernels' issued work/request payloads, not bus traffic.
+ 
+     Model changes must accompany structural kernel changes. Counts include the
+@@ -85,6 +86,17 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
+     TTNN dense matmul physical scheduling is unavailable: its count is a logical
+     padded GEMM estimate. Requested payloads exclude protocol/alignment overhead.
+     """
++    if algorithm == "digit_implicit_gemm":
++        if digit_implicit_policy is None:
++            raise ValueError("implicit digit accounting requires the prepared dispatch policy")
++        if digit_implicit_policy["path"] == "digit_explicit_gemm":
++            result = work_accounting(mapping, ci, co, algorithm="digit_explicit_gemm",
++                row_chunk=row_chunk, available_cores=available_cores,
++                digit_output_assembly=digit_output_assembly, digit_epilogue=digit_epilogue,
++                digit_gather=digit_gather)
++            result["dispatch_fallback"] = digit_implicit_policy["reason"]
++            return result
++        return _digit_implicit_accounting(mapping, ci, co, row_chunk, available_cores, digit_implicit_policy)
+     mapping = mapping.to(torch.int64).clone()
+     mapping[mapping == 0xffffffff] = -1
+     m, volume = mapping.shape
+@@ -165,3 +177,52 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
+             "core_tile_products": core_work,
+             "core_work_max_over_mean": max(core_work) / statistics.mean(core_work) if core_work else None,
+             "dram_bus_bytes": None, "noc_bus_bytes": None, "peak_workspace_bytes": None}
++
++
++def _digit_implicit_accounting(mapping, ci, co, row_chunk, cores, policy):
++    """Count four K6 calls and active taps; requested payloads are not bus traffic."""
++    mapping = mapping.to(torch.int64).clone()
++    mapping[mapping == 0xffffffff] = -1
++    m, volume = mapping.shape
++    if min(m, volume, ci, co, row_chunk, cores) <= 0 or row_chunk % 32:
++        raise ValueError("implicit digit dimensions must be positive and row chunks tile aligned")
++    if policy["path"] != "digit_implicit_gemm" or math.prod(policy["grid"]) != cores:
++        raise ValueError("implicit digit policy does not match the device grid")
++    ct, nt, mt = (ci + 31) // 32, (co + 31) // 32, (m + 31) // 32
++    padded = torch.full((mt * 32, volume), -1, dtype=torch.int64)
++    padded[:m] = mapping
++    active = (padded.reshape(mt, 32, volume) >= 0).any(1)
++    edges = int((mapping >= 0).sum())
++    tile_products = 4 * int(active.sum()) * ct * nt
++    useful, issued = 2 * edges * ci * co, tile_products * 2 * 32**3
++    work = [0] * cores
++    index_bytes = unused_output = 0
++    expected = [(start, min(start + row_chunk, m)) for start in range(0, m, row_chunk)]
++    if [(p["start"], p["end"]) for p in policy["chunks"]] != expected:
++        raise ValueError("implicit digit chunk plan does not cover the fixture exactly")
++    for plan in policy["chunks"]:
++        start, end = plan["start"], plan["end"]
++        blocks = (end - start + 31) // 32
++        for local in range(blocks):
++            work[local % cores] += 4 * int(active[start // 32 + local].sum()) * ct * nt
++        # Both data-movement RISCs read a full index page for every tap chunk.
++        index_bytes += 4 * 2 * blocks * volume * 128 * plan["tap_chunks"]
++        unused_output += 4 * (blocks * 32 + 1) * nt * 32 * 2
++    senders = policy["grid"][1] if policy["multicast"] else cores
++    return {"kind": "modeled", "model": "digit_implicit_k6_v1",
++        "valid_interactions": edges, "useful_flops": useful, "issued_flops": issued,
++        "issued_scope": "four_custom_kernel_products_with_empty_tap_skips",
++        "work_efficiency": useful / issued if issued else None, "dummy_tile_products": 0,
++        "active_block_offsets": int(active.sum()), "dense_block_offsets": mt * volume,
++        "requested_feature_bytes": 4 * edges * ct * 64,
++        "requested_weight_bytes": 4 * len(expected) * senders * volume * ct * nt * 4096,
++        "requested_map_bytes": index_bytes, "gather_output_bytes": 0,
++        "fp32_product_write_bytes": 4 * mt * nt * 32 * 32 * 4,
++        "unused_bf16_table_write_bytes": unused_output,
++        "output_assembly_copy_bytes": mt * nt * 32 * 32 * 4,
++        "split_partial_bytes": 0, "reduction_add_payload_bytes": 0,
++        "explicit_expansion_bytes": 0, "available_cores": cores, "selected_cores": cores,
++        "core_tile_products": work,
++        "core_work_max_over_mean": max(work) / statistics.mean(work) if issued else None,
++        "dram_bus_bytes": None, "noc_bus_bytes": None, "peak_workspace_bytes": None,
++        "payload_scope": "requested payloads excluding feature-preparation/reconstruction traffic and on-chip movement"}
+diff --git a/benchmarks/tenstorrent/evaluate.py b/benchmarks/tenstorrent/evaluate.py
+index 35ba0a5..2a0cea1 100644
+--- a/benchmarks/tenstorrent/evaluate.py
++++ b/benchmarks/tenstorrent/evaluate.py
+@@ -18,8 +18,8 @@ from .common import correctness, sha256, summarize, work_accounting, write_json
+ 
+ 
+ def source_state(root):
+-    paths = sorted((root / "flex_gemm" / "tenstorrent").rglob("*.py"))
+-    paths += sorted((root / "flex_gemm" / "tenstorrent").rglob("*.cpp"))
++    paths = sorted(p for p in (root / "flex_gemm" / "tenstorrent").rglob("*")
++                   if p.suffix in (".py", ".cpp", ".hpp", ".h"))
+     return {"root": str(root), "commit": subprocess.check_output(
+         ["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip(),
+         "dirty": bool(subprocess.check_output(["git", "-C", str(root), "status", "--porcelain"], text=True)),
+@@ -119,14 +119,17 @@ def main():
+         report["math_fidelity"] = str(_matmul_fidelity(device))
+         if device.arch() == ttnn.Arch.WORMHOLE_B0 and _matmul_fidelity(device) != ttnn.MathFidelity.HiFi3:
+             raise ValueError("candidate changed the fixed Wormhole fidelity")
+-        report["work"] = work_accounting(fixture["mapping"], entry["ci"], entry["co"],
+-            algorithm=config["algorithm"], split_k=config.get("split_k", 1),
+-            row_chunk=config.get("row_chunk", 256), available_cores=grid.x * grid.y,
+-            digit_output_assembly=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "OUTPUT_ASSEMBLY", "concat"),
+-            digit_epilogue=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "EPILOGUE", "expanded"),
+-            digit_gather=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "GATHER", "embedding"))
++        def account(policy=None):
++            return work_accounting(fixture["mapping"], entry["ci"], entry["co"],
++                algorithm=config["algorithm"], split_k=config.get("split_k", 1),
++                row_chunk=config.get("row_chunk", 256), available_cores=grid.x * grid.y,
++                digit_output_assembly=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "OUTPUT_ASSEMBLY", "concat"),
++                digit_epilogue=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "EPILOGUE", "expanded"),
++                digit_gather=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "GATHER", "embedding"),
++                digit_implicit_policy=policy)
++        report["work"] = None if config["algorithm"] == "digit_implicit_gemm" else account()
+         digit_module = sys.modules.get("flex_gemm.tenstorrent.digits")
+-        if config["algorithm"] == "digit_explicit_gemm":
++        if config["algorithm"] in ("digit_explicit_gemm", "digit_implicit_gemm"):
+             report["feature_digit_preparation"] = getattr(digit_module, "FEATURE_PREPARATION", "unfused")
+         if (config["algorithm"] == "digit_explicit_gemm" and hasattr(digit_module, "matmul_plan")
+                 and device.arch() == ttnn.Arch.WORMHOLE_B0):
+@@ -141,19 +144,27 @@ def main():
+                     "plan": digit_module.matmul_plan(count, entry["volume"] * ((entry["ci"] + 31) // 32 * 32),
+                                                     entry["co"], (grid.x, grid.y))}
+                     for count, occurrences in counts.items()]}
+-        mandatory = report["work"]["split_partial_bytes"] + report["work"]["explicit_expansion_bytes"]
++        mandatory = (report["work"]["split_partial_bytes"] + report["work"]["explicit_expansion_bytes"]
++                     if report["work"] is not None else 0)
+         if mandatory > contract["workspace_limit_bytes"]:
+             raise ValueError("mandatory intermediate storage exceeds workspace cap")
+         phase("prepare")
+         before = memory(device)
+         start = time.perf_counter()
+-        prepare_weights = (candidate.prepare_sparse_digit_weights if config["algorithm"] == "digit_explicit_gemm"
++        prepare_weights = (candidate.prepare_sparse_digit_weights if config["algorithm"] in ("digit_explicit_gemm", "digit_implicit_gemm")
+                            else candidate.prepare_sparse_weights)
+         weights = prepare_weights(fixture["weight"], bias=fixture["bias"], device=device)
+         topology = candidate.prepare_sparse_topology(fixture["mapping"], len(fixture["features"][0]),
+             device=device, masked=config["algorithm"].startswith("masked"))
++        if config["algorithm"] == "digit_implicit_gemm":
++            plan = candidate.prepare_sparse_digit_implicit(weights, topology, row_chunk=config.get("row_chunk", 256))
++            report["digit_implicit_policy"] = plan.info
+         ttnn.synchronize_device(device)
+         report["static_prepare_ms"] = (time.perf_counter() - start) * 1000
++        if config["algorithm"] == "digit_implicit_gemm":
++            report["work"] = account(report["digit_implicit_policy"])
++            if report["work"]["explicit_expansion_bytes"] > contract["workspace_limit_bytes"]:
++                raise ValueError("fallback expansion exceeds workspace cap")
+         features = [ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT,
+                                     device=device) for x in fixture["features"]]
+         ttnn.synchronize_device(device)
+diff --git a/flex_gemm/tenstorrent/K6-LICENSE b/flex_gemm/tenstorrent/K6-LICENSE
+new file mode 100644
+index 0000000..d645695
+--- /dev/null
++++ b/flex_gemm/tenstorrent/K6-LICENSE
+@@ -0,0 +1,202 @@
++
++                                 Apache License
++                           Version 2.0, January 2004
++                        http://www.apache.org/licenses/
++
++   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
++
++   1. Definitions.
++
++      "License" shall mean the terms and conditions for use, reproduction,
++      and distribution as defined by Sections 1 through 9 of this document.
++
++      "Licensor" shall mean the copyright owner or entity authorized by
++      the copyright owner that is granting the License.
++
++      "Legal Entity" shall mean the union of the acting entity and all
++      other entities that control, are controlled by, or are under common
++      control with that entity. For the purposes of this definition,
++      "control" means (i) the power, direct or indirect, to cause the
++      direction or management of such entity, whether by contract or
++      otherwise, or (ii) ownership of fifty percent (50%) or more of the
++      outstanding shares, or (iii) beneficial ownership of such entity.
++
++      "You" (or "Your") shall mean an individual or Legal Entity
++      exercising permissions granted by this License.
++
++      "Source" form shall mean the preferred form for making modifications,
++      including but not limited to software source code, documentation
++      source, and configuration files.
++
++      "Object" form shall mean any form resulting from mechanical
++      transformation or translation of a Source form, including but
++      not limited to compiled object code, generated documentation,
++      and conversions to other media types.
++
++      "Work" shall mean the work of authorship, whether in Source or
++      Object form, made available under the License, as indicated by a
++      copyright notice that is included in or attached to the work
++      (an example is provided in the Appendix below).
++
++      "Derivative Works" shall mean any work, whether in Source or Object
++      form, that is based on (or derived from) the Work and for which the
++      editorial revisions, annotations, elaborations, or other modifications
++      represent, as a whole, an original work of authorship. For the purposes
++      of this License, Derivative Works shall not include works that remain
++      separable from, or merely link (or bind by name) to the interfaces of,
++      the Work and Derivative Works thereof.
++
++      "Contribution" shall mean any work of authorship, including
++      the original version of the Work and any modifications or additions
++      to that Work or Derivative Works thereof, that is intentionally
++      submitted to Licensor for inclusion in the Work by the copyright owner
++      or by an individual or Legal Entity authorized to submit on behalf of
++      the copyright owner. For the purposes of this definition, "submitted"
++      means any form of electronic, verbal, or written communication sent
++      to the Licensor or its representatives, including but not limited to
++      communication on electronic mailing lists, source code control systems,
++      and issue tracking systems that are managed by, or on behalf of, the
++      Licensor for the purpose of discussing and improving the Work, but
++      excluding communication that is conspicuously marked or otherwise
++      designated in writing by the copyright owner as "Not a Contribution."
++
++      "Contributor" shall mean Licensor and any individual or Legal Entity
++      on behalf of whom a Contribution has been received by Licensor and
++      subsequently incorporated within the Work.
++
++   2. Grant of Copyright License. Subject to the terms and conditions of
++      this License, each Contributor hereby grants to You a perpetual,
++      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
++      copyright license to reproduce, prepare Derivative Works of,
++      publicly display, publicly perform, sublicense, and distribute the
++      Work and such Derivative Works in Source or Object form.
++
++   3. Grant of Patent License. Subject to the terms and conditions of
++      this License, each Contributor hereby grants to You a perpetual,
++      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
++      (except as stated in this section) patent license to make, have made,
++      use, offer to sell, sell, import, and otherwise transfer the Work,
++      where such license applies only to those patent claims licensable
++      by such Contributor that are necessarily infringed by their
++      Contribution(s) alone or by combination of their Contribution(s)
++      with the Work to which such Contribution(s) was submitted. If You
++      institute patent litigation against any entity (including a
++      cross-claim or counterclaim in a lawsuit) alleging that the Work
++      or a Contribution incorporated within the Work constitutes direct
++      or contributory patent infringement, then any patent licenses
++      granted to You under this License for that Work shall terminate
++      as of the date such litigation is filed.
++
++   4. Redistribution. You may reproduce and distribute copies of the
++      Work or Derivative Works thereof in any medium, with or without
++      modifications, and in Source or Object form, provided that You
++      meet the following conditions:
++
++      (a) You must give any other recipients of the Work or
++          Derivative Works a copy of this License; and
++
++      (b) You must cause any modified files to carry prominent notices
++          stating that You changed the files; and
++
++      (c) You must retain, in the Source form of any Derivative Works
++          that You distribute, all copyright, patent, trademark, and
++          attribution notices from the Source form of the Work,
++          excluding those notices that do not pertain to any part of
++          the Derivative Works; and
++
++      (d) If the Work includes a "NOTICE" text file as part of its
++          distribution, then any Derivative Works that You distribute must
++          include a readable copy of the attribution notices contained
++          within such NOTICE file, excluding those notices that do not
++          pertain to any part of the Derivative Works, in at least one
++          of the following places: within a NOTICE text file distributed
++          as part of the Derivative Works; within the Source form or
++          documentation, if provided along with the Derivative Works; or,
++          within a display generated by the Derivative Works, if and
++          wherever such third-party notices normally appear. The contents
++          of the NOTICE file are for informational purposes only and
++          do not modify the License. You may add Your own attribution
++          notices within Derivative Works that You distribute, alongside
++          or as an addendum to the NOTICE text from the Work, provided
++          that such additional attribution notices cannot be construed
++          as modifying the License.
++
++      You may add Your own copyright statement to Your modifications and
++      may provide additional or different license terms and conditions
++      for use, reproduction, or distribution of Your modifications, or
++      for any such Derivative Works as a whole, provided Your use,
++      reproduction, and distribution of the Work otherwise complies with
++      the conditions stated in this License.
++
++   5. Submission of Contributions. Unless You explicitly state otherwise,
++      any Contribution intentionally submitted for inclusion in the Work
++      by You to the Licensor shall be under the terms and conditions of
++      this License, without any additional terms or conditions.
++      Notwithstanding the above, nothing herein shall supersede or modify
++      the terms of any separate license agreement you may have executed
++      with Licensor regarding such Contributions.
++
++   6. Trademarks. This License does not grant permission to use the trade
++      names, trademarks, service marks, or product names of the Licensor,
++      except as required for reasonable and customary use in describing the
++      origin of the Work and reproducing the content of the NOTICE file.
++
++   7. Disclaimer of Warranty. Unless required by applicable law or
++      agreed to in writing, Licensor provides the Work (and each
++      Contributor provides its Contributions) on an "AS IS" BASIS,
++      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
++      implied, including, without limitation, any warranties or conditions
++      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
++      PARTICULAR PURPOSE. You are solely responsible for determining the
++      appropriateness of using or redistributing the Work and assume any
++      risks associated with Your exercise of permissions under this License.
++
++   8. Limitation of Liability. In no event and under no legal theory,
++      whether in tort (including negligence), contract, or otherwise,
++      unless required by applicable law (such as deliberate and grossly
++      negligent acts) or agreed to in writing, shall any Contributor be
++      liable to You for damages, including any direct, indirect, special,
++      incidental, or consequential damages of any character arising as a
++      result of this License or out of the use or inability to use the
++      Work (including but not limited to damages for loss of goodwill,
++      work stoppage, computer failure or malfunction, or any and all
++      other commercial damages or losses), even if such Contributor
++      has been advised of the possibility of such damages.
++
++   9. Accepting Warranty or Additional Liability. While redistributing
++      the Work or Derivative Works thereof, You may choose to offer,
++      and charge a fee for, acceptance of support, warranty, indemnity,
++      or other liability obligations and/or rights consistent with this
++      License. However, in accepting such obligations, You may act only
++      on Your own behalf and on Your sole responsibility, not on behalf
++      of any other Contributor, and only if You agree to indemnify,
++      defend, and hold each Contributor harmless for any liability
++      incurred by, or claims asserted against, such Contributor by reason
++      of your accepting any such warranty or additional liability.
++
++   END OF TERMS AND CONDITIONS
++
++   APPENDIX: How to apply the Apache License to your work.
++
++      To apply the Apache License to your work, attach the following
++      boilerplate notice, with the fields enclosed by brackets "[]"
++      replaced with your own identifying information. (Don't include
++      the brackets!)  The text should be enclosed in the appropriate
++      comment syntax for the file format. We also recommend that a
++      file or class name and description of purpose be included on the
++      same "printed page" as the copyright notice for easier
++      identification within third-party archives.
++
++   Copyright [yyyy] [name of copyright owner]
++
++   Licensed under the Apache License, Version 2.0 (the "License");
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an "AS IS" BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
+diff --git a/flex_gemm/tenstorrent/K6-NOTICE b/flex_gemm/tenstorrent/K6-NOTICE
+new file mode 100644
+index 0000000..5176ade
+--- /dev/null
++++ b/flex_gemm/tenstorrent/K6-NOTICE
+@@ -0,0 +1,10 @@
++K6 source derives from changh95/bevfusion-p150, Apache-2.0.
++https://huggingface.co/changh95/bevfusion-p150/tree/300095a42e61075a3d5c9916620344c1067200b8
++
++The four kernel files retain original SPDX notices. Local kernel changes:
++copy_init renamed to copy_tile_init for the pinned TT-Metal SDK. The Python
++layer is trimmed to the required program builder, fixed to HiFi3 and explicit
++prepared weights, with environment-controlled debug paths removed. FlexGEMM's
++wrapper guards physical multicast coordinates and CB feasibility, runs four
++integer products and provides an explicit-GEMM fallback. No original author
++endorsement is implied. See K6-LICENSE and the iteration-016/017 source archives.
+diff --git a/flex_gemm/tenstorrent/__init__.py b/flex_gemm/tenstorrent/__init__.py
+index 2d1a89b..8116fd0 100644
+--- a/flex_gemm/tenstorrent/__init__.py
++++ b/flex_gemm/tenstorrent/__init__.py
+@@ -6,8 +6,10 @@ from .implicit import implicit_gemm, masked_implicit_gemm, prepare_implicit, spl
+ from .conv import sparse_submanifold_conv3d
+ from .resident import prepare_sparse_weights, prepare_sparse_topology, sparse_conv_device
+ from .digits import prepare_sparse_digit_weights
++from .digit_implicit import prepare_sparse_digit_implicit
+ 
+ __all__ = ["build_subm_neighbor_map", "sparse_conv_reference", "explicit_gemm",
+            "implicit_gemm", "masked_implicit_gemm", "prepare_implicit", "split_k_gemm",
+            "prepare_explicit", "sparse_submanifold_conv3d", "prepare_sparse_weights",
+-           "prepare_sparse_topology", "sparse_conv_device", "prepare_sparse_digit_weights"]
++           "prepare_sparse_topology", "sparse_conv_device", "prepare_sparse_digit_weights",
++           "prepare_sparse_digit_implicit"]
+diff --git a/flex_gemm/tenstorrent/_k6.py b/flex_gemm/tenstorrent/_k6.py
+new file mode 100644
+index 0000000..18596de
+--- /dev/null
++++ b/flex_gemm/tenstorrent/_k6.py
+@@ -0,0 +1,188 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Pinned Apache-2.0 K6 layer adapted for FlexGEMM digit products.
++
++See K6-NOTICE. The integer weights and zero bias are supplied by digit_implicit;
++there is no model loader, encoder or feature cache here. Only HiFi3 is enabled.
++"""
++from __future__ import annotations
++
++import os
++from typing import Any, Dict, List, Optional, Tuple
++
++
++__all__ = ["K6Layer", "CB_BUDGET"]
++
++_KDIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "kernels", "k6")
++TB32, TB16 = 4096, 2048
++N_RT = 1
++N_RT_READER = 8
++# fp32 weight tiles resident per chunk (112 x 4 KB = 448 KB): l1-l3 and conv_out in one chunk, down3 in 2, l4 in 4
++WEIGHT_BUDGET_TILES = 112
++# total circular-buffer bytes per core a layer may use (the L1 tables of K6_TABLES=l1 sit above the CB region): taps
++# per chunk shrink until the layer's CBs fit
++CB_BUDGET = 900 * 1024
++
++
++class K6Layer:
++    """One sparse conv layer of a :class:`ttaw.models.sparse_encoder.SparseConvSpec` as the K6 ``generic_op``."""
++
++    def __init__(self, spec: Any, *, budget_tiles: int = WEIGHT_BUDGET_TILES):
++        self.spec = spec
++        self.fidelity = "HiFi3"
++        self.name = spec.name
++        self.K = spec.kernel_volume
++        self.cin_t = spec.cin_pad // 32
++        self.cout_t = spec.cout_pad // 32
++        self.budget_tiles = int(budget_tiles)
++        # weights read once per grid row and multicast along it
++        self.mcast = True
++        # both data-movement RISCs gather (the writer the odd-rank present taps)
++        self.split = True
++        self.tg, self.nch = self.plan(0)
++        self._dev: Optional[Tuple[Any, Any]] = None
++
++    def cb_bytes(self, tg: int, nch: int, nbmax: int, has_res: bool = True, write_y: bool = True) -> int:
++        """Circular-buffer bytes per core of the layer (the descriptor in :meth:`__call__`)."""
++        ci, co, K = self.cin_t, self.cout_t, self.K
++        b = 2 * tg * ci * TB16 + tg * ci * co * TB32 + co * TB32 + 4 * 32 + tg * ci * TB16 + 2 * K * 128 + 4 * 32 \
++            + co * 64 + ci * TB16 + 2 * co * TB16
++        b += 2 * co * TB32 if has_res else 0
++        b += nbmax * co * TB32 if nch > 1 else 0
++        b += 2 * co * TB32 if write_y else 0
++        b += 2 * tg * ci * TB16 + 2 * K * 128 + ci * TB16 if self.split else 0
++        return b
++
++    def plan(self, nbmax: int) -> Tuple[int, int]:
++        """(taps per chunk, chunks): the fewest chunks whose weights fit ``budget_tiles`` and whose CBs fit
++        :data:`CB_BUDGET` with ``nbmax`` blocks per core."""
++        per_tap = self.cin_t * self.cout_t
++        nch = max(1, -(-self.K * per_tap // self.budget_tiles))
++        while True:
++            tg = -(-self.K // nch)
++            n = -(-self.K // tg)
++            if tg == 1 or self.cb_bytes(tg, n, nbmax) <= CB_BUDGET:
++                return tg, n
++            nch += 1
++
++    def _upload(self, device: Any) -> Tuple[Any, Any]:
++        if self._dev is None:
++            raise ValueError("digit weights must be prepared before K6 execution")
++        return self._dev
++
++    def __call__(self, table: Any, index: Any, identity: Any = None, write_y: bool = False, dead_skip: bool = True,
++                 table_memory: str = "dram"):
++        """``table`` bf16 ROW_MAJOR ``[1, 1, V + 1, cin_pad]`` (row V zero), ``index`` uint32 ROW_MAJOR
++        ``[rows / 32, K * 32]`` (C13 tile order), ``identity`` fp32 TILE ``[1, 1, rows, cout_pad]`` or None ->
++        ``(y, table_out)``: y the fp32 TILE output (``write_y``; else None) and the next bf16 ROW_MAJOR table
++        ``[1, 1, rows + 1, cout_pad]`` (zero last row). ``dead_skip``: only live blocks' rows are written (else
++        all-sentinel blocks are computed as the stock layer does: every row written, deterministic)."""
++        import ttnn
++
++        spec = self.spec
++        dev = table.device()
++        if int(table.shape[-1]) != spec.cin_pad:
++            raise ValueError(f"{self.name}: table width {int(table.shape[-1])} != {spec.cin_pad}")
++        if int(index.shape[-1]) != self.K * 32:
++            raise ValueError(f"{self.name}: index has {int(index.shape[-1])} columns, expected {self.K * 32}")
++        nblk = int(index.shape[0])
++        rows = nblk * 32
++        sent = int(table.shape[-2]) - 1
++        has_res = identity is not None
++        w, b = self._upload(dev)
++        tmc = ttnn.L1_MEMORY_CONFIG if table_memory == "l1" else ttnn.DRAM_MEMORY_CONFIG
++        out = ttnn.allocate_tensor_on_device(ttnn.Shape([1, 1, rows + 1, spec.cout_pad]), ttnn.bfloat16,
++                                             ttnn.ROW_MAJOR_LAYOUT, dev, tmc)
++        y = None
++        if write_y:
++            y = ttnn.allocate_tensor_on_device(ttnn.Shape([1, 1, rows, spec.cout_pad]), ttnn.float32,
++                                               ttnn.TILE_LAYOUT, dev, ttnn.DRAM_MEMORY_CONFIG)
++        g = dev.compute_with_storage_grid_size()
++        nc = int(g.x) * int(g.y)
++        crs = ttnn.CoreRangeSet({ttnn.CoreRange(ttnn.CoreCoord(0, 0), ttnn.CoreCoord(g.x - 1, g.y - 1))})
++        mcast = self.mcast and int(g.x) > 1
++        rd, wr, cp = ttnn.RuntimeArgs(), ttnn.RuntimeArgs(), ttnn.RuntimeArgs()
++        for i in range(nc):
++            cx, cy = i % g.x, i // g.x
++            s_ = dev.worker_core_from_logical_core(ttnn.CoreCoord(0, cy))
++            a_ = dev.worker_core_from_logical_core(ttnn.CoreCoord(1 if g.x > 1 else 0, cy))
++            b_ = dev.worker_core_from_logical_core(ttnn.CoreCoord(g.x - 1, cy))
++            rd[cx][cy] = [i, int(cx == 0), s_.x, s_.y, a_.x, a_.y, b_.x, b_.y]
++            wr[cx][cy] = [i]
++            cp[cx][cy] = [i]
++        nbmax = -(-nblk // nc)
++        tg, nch = self.plan(nbmax)
++        self.tg, self.nch = tg, nch
++        K, cin_t, cout_t = self.K, self.cin_t, self.cout_t
++
++        def cb(idx, pages, dtype, size):
++            return ttnn.CBDescriptor(total_size=pages * size, core_ranges=crs, format_descriptors=[
++                ttnn.CBFormatDescriptor(buffer_index=idx, data_format=dtype, page_size=size)])
++
++        cbs = [cb(0, 2 * tg * cin_t, ttnn.bfloat16, TB16),               # gathered tap rows (row-major)
++               cb(1, tg * cin_t * cout_t, ttnn.float32, TB32),           # the chunk's weights
++               cb(2, cout_t, ttnn.float32, TB32),                        # bias tiles
++               cb(4, 4, ttnn.float32, 32),                               # meta (compute)
++               cb(5, tg * cin_t, ttnn.bfloat16, TB16),                   # tilized taps
++               cb(7, 2, ttnn.float32, K * 128),                          # reader's index rows (double buffer)
++               cb(8, 4, ttnn.float32, 32),                               # meta (writer)
++               cb(9, 1, ttnn.bfloat16, cout_t * 64),                     # the zero row (core 0)
++               cb(10, 1, ttnn.bfloat16, cin_t * TB16),                   # reader's zero tap region
++               cb(16, 2 * cout_t, ttnn.bfloat16, TB16)]                  # untilized output rows
++        if has_res:
++            cbs.append(cb(3, 2 * cout_t, ttnn.float32, TB32))
++        if nch > 1:
++            cbs.append(cb(6, nbmax * cout_t, ttnn.float32, TB32))       # fp32 partials between chunks
++        if write_y:
++            cbs.append(cb(17, 2 * cout_t, ttnn.float32, TB32))
++        split = self.split
++        if split:
++            cbs += [cb(11, 2 * tg * cin_t, ttnn.bfloat16, TB16),            # the writer's gathered tap rows
++                    cb(12, 2, ttnn.float32, K * 128),                      # the writer's index rows
++                    cb(13, 1, ttnn.bfloat16, cin_t * TB16)]                # the writer's zero tap region
++        um = [ttnn.UnpackToDestMode.Default] * 64
++        for i in (2, 3, 6):
++            um[i] = ttnn.UnpackToDestMode.UnpackToDestFp32
++        ccfg = ttnn.ComputeConfigDescriptor(math_fidelity=getattr(ttnn.MathFidelity, self.fidelity), fp32_dest_acc_en=True,
++                                            math_approx_mode=False)
++        ccfg.unpack_to_dest_mode = um
++        SRC = ttnn.KernelDescriptor.SourceType.FILE_PATH
++
++        def acc(t):
++            return list(ttnn.TensorAccessorArgs(t).get_compile_time_args())
++
++
++        def kd(name, ct, rt, common, config):
++            return ttnn.KernelDescriptor(kernel_source=os.path.join(_KDIR, name), source_type=SRC, core_ranges=crs,
++                                         compile_time_args=ct, defines=[], runtime_args=rt,
++                                         common_runtime_args=common, config=config)
++
++        ident = identity if has_res else w
++        yt = y if write_y else out
++        rd_ct = [N_RT_READER, K, cin_t, cout_t, nch, tg, nblk, nc, sent, int(has_res), int(bool(dead_skip)),
++                 int(mcast), int(g.x) - 1, int(split)] + acc(table) + acc(index) + acc(w) \
++            + acc(b) + acc(ident)
++        wr_ct = [N_RT, cout_t, nblk, nc, rows, int(bool(write_y)), int(split), K, cin_t, nch, tg, sent,
++                 int(bool(dead_skip))] + acc(out) + acc(yt) + acc(table) + acc(index)
++        cp_ct = [N_RT, K, cin_t, cout_t, nch, tg, nblk, nc, int(has_res), int(bool(write_y)), int(bool(spec.relu)),
++                 int(split)]
++        ks = [kd("k6_reader.cpp", rd_ct, rd, [table.buffer_address(), index.buffer_address(), w.buffer_address(),
++                                              b.buffer_address(), ident.buffer_address()],
++                 ttnn.ReaderConfigDescriptor()),
++              kd("k6_writer.cpp", wr_ct, wr, [out.buffer_address(), yt.buffer_address(), table.buffer_address(),
++                                              index.buffer_address()],
++                 ttnn.WriterConfigDescriptor()),
++              kd("k6_compute.cpp", cp_ct, cp, [], ccfg)]
++        ios: List[Any] = [table, index, w, b]
++        if has_res:
++            ios.append(identity)
++        if write_y:
++            ios.append(y)
++        ios.append(out)
++        sems = [ttnn.SemaphoreDescriptor(id=0, core_ranges=crs, initial_value=0),
++                ttnn.SemaphoreDescriptor(id=1, core_ranges=crs, initial_value=0)]
++        ttnn.generic_op(ios, ttnn.ProgramDescriptor(kernels=ks, semaphores=sems, cbs=cbs))
++        return y, out
++
++    def describe(self) -> Dict[str, Any]:
++        return {"name": self.name, "kernel": "k6", "K": self.K, "cin_t": self.cin_t, "cout_t": self.cout_t,
++                "taps_per_chunk": self.tg, "chunks": self.nch}
+diff --git a/flex_gemm/tenstorrent/digit_implicit.py b/flex_gemm/tenstorrent/digit_implicit.py
+new file mode 100644
+index 0000000..4d402d7
+--- /dev/null
++++ b/flex_gemm/tenstorrent/digit_implicit.py
+@@ -0,0 +1,153 @@
++"""Opt-in four-product implicit convolution with a bounded explicit fallback."""
++
++from dataclasses import dataclass
++from types import SimpleNamespace
++
++import torch
++
++from .digits import SparseDigitWeights, _copy_output_rows, _feature_digits, _scale_and_bias
++from .implicit import _round32
++
++
++@dataclass
++class DigitImplicitPlan:
++    info: dict
++    chunks: tuple = ()
++
++
++def index_rows(mapping, input_rows):
++    """K6 page order: output-row tile, kernel tap, row within tile."""
++    rows, volume = mapping.shape
++    padded = torch.full((_round32(rows), volume), input_rows, dtype=torch.int64)
++    padded[:rows] = torch.where(mapping < 0, input_rows, mapping)
++    return padded.reshape(-1, 32, volume).permute(0, 2, 1).reshape(-1, volume * 32).to(torch.uint32)
++
++
++def prepare_sparse_digit_implicit(weights, topology, *, row_chunk=256):
++    """Prepare only immutable weights, integer indices and shape-dependent plans.
++
++    A topology owns its index/plan cache; different same-shaped topologies never
++    share it. Weights own their two K6 layers. Calling this ahead of a forward
++    separates static preparation from hot execution. Unsupported shapes retain
++    the exact explicit digit implementation and expose the fallback reason.
++    """
++    import ttnn
++    from ._k6 import CB_BUDGET, K6Layer
++    if not isinstance(weights, SparseDigitWeights) or topology.masks is not None:
++        raise ValueError("implicit digits require digit weights and unmasked topology")
++    if (topology.device != weights.device or topology.host_indices.shape[1] != weights.volume):
++        raise ValueError("weights and topology must share a device and kernel volume")
++    if not isinstance(row_chunk, int) or isinstance(row_chunk, bool) or row_chunk < 1:
++        raise ValueError("row_chunk must be a positive integer")
++    key = (weights.ci, weights.co, weights.volume, row_chunk)
++    if key in topology.digit_plans:
++        plan = topology.digit_plans[key]
++        if plan.info["path"] == "digit_implicit_gemm" and not weights.implicit_layers:
++            _prepare_layers(weights, plan.info["multicast"])
++        return plan
++    device = weights.device
++    grid = device.compute_with_storage_grid_size()
++    info = {"path": "digit_implicit_gemm", "reason": None, "row_chunk": row_chunk,
++            "grid": [grid.x, grid.y], "cb_budget_bytes": CB_BUDGET, "chunks": [],
++            "product_calls": 4, "weight_storage": "FP32 encoding of BF16 integer digits",
++            "unused_bf16_output_included": True}
++
++    def fallback(reason):
++        info.update(path="digit_explicit_gemm", reason=reason)
++        plan = DigitImplicitPlan(info)
++        topology.digit_plans[key] = plan
++        return plan
++
++    if device.arch() != ttnn.Arch.WORMHOLE_B0:
++        return fallback("architecture")
++    if weights.volume > 32:
++        return fallback("kernel_volume_exceeds_32")
++    if row_chunk % 32:
++        return fallback("row_chunk_not_tile_aligned")
++    layer = K6Layer(_spec(weights))
++    rows = len(topology.host_indices)
++    for start in range(0, rows, row_chunk):
++        end = min(start + row_chunk, rows)
++        nbmax = (_round32(end - start) // 32 + grid.x * grid.y - 1) // (grid.x * grid.y)
++        tg, nch = layer.plan(nbmax)
++        cb_bytes = layer.cb_bytes(tg, nch, nbmax, has_res=False, write_y=True)
++        info["chunks"].append({"start": start, "end": end, "tap_chunk": tg,
++                               "tap_chunks": nch, "cb_bytes": cb_bytes})
++        if cb_bytes > CB_BUDGET:
++            return fallback("per_core_cb_budget")
++    physical = [[device.worker_core_from_logical_core(ttnn.CoreCoord(x, y))
++                 for x in range(grid.x)] for y in range(grid.y)]
++    multicast = all(all(row[x].x == row[0].x + x and row[x].y == row[0].y
++                        for x in range(grid.x)) for row in physical)
++    info.update(multicast=multicast, split_gather=True,
++                physical_core_rows=[[[c.x, c.y] for c in row] for row in physical])
++    _prepare_layers(weights, multicast)
++    chunks = []
++    for chunk in info["chunks"]:
++        start, end = chunk["start"], chunk["end"]
++        ids = index_rows(topology.host_indices[start:end], topology.input_points)
++        index = ttnn.from_torch(ids, dtype=ttnn.uint32, layout=ttnn.ROW_MAJOR_LAYOUT,
++                               device=device, memory_config=ttnn.DRAM_MEMORY_CONFIG)
++        chunks.append((start, end, index))
++    plan = DigitImplicitPlan(info, tuple(chunks))
++    topology.digit_plans[key] = plan
++    return plan
++
++
++def _spec(weights):
++    return SimpleNamespace(name="flexgemm_integer_product", cin=weights.ci, cout=weights.co,
++        cin_pad=_round32(weights.ci), cout_pad=_round32(weights.co),
++        kernel_volume=weights.volume, relu=False, out_terms=1)
++
++
++def _prepare_layers(weights, multicast):
++    import ttnn
++    from ._k6 import K6Layer
++    if weights.implicit_layers:
++        return
++    spec = _spec(weights)
++    zero_bias = ttnn.zeros([32, spec.cout_pad], dtype=ttnn.float32, layout=ttnn.TILE_LAYOUT,
++                           device=weights.device, memory_config=ttnn.DRAM_MEMORY_CONFIG)
++    layers = []
++    for digit in weights.digits:
++        layer = K6Layer(spec)
++        layer.mcast = multicast
++        layer._dev = (ttnn.typecast(digit.weights, ttnn.float32), zero_bias)
++        layers.append(layer)
++    weights.implicit_layers = tuple(layers)
++
++
++def sparse_digit_implicit_conv_device(features, weights, topology, *, row_chunk=256, fp32_output=False):
++    import ttnn
++    plan = prepare_sparse_digit_implicit(weights, topology, row_chunk=row_chunk)
++    if plan.info["path"] == "digit_explicit_gemm":
++        from .digits import sparse_digit_conv_device
++        return sparse_digit_conv_device(features, weights, topology,
++                                         row_chunk=row_chunk, fp32_output=fp32_output)
++    high, low, feature_scale = _feature_digits(features, _round32(weights.ci))
++    scale = ttnn.multiply(ttnn.repeat(feature_scale, [1, weights.co]), weights.scale)
++    scale_tile = ttnn.multiply(weights.scale_tile, feature_scale)
++    output = ttnn.allocate_tensor_on_device(ttnn.Shape([len(topology.host_indices), weights.co]),
++        ttnn.float32 if fp32_output else ttnn.bfloat16, ttnn.TILE_LAYOUT,
++        weights.device, ttnn.DRAM_MEMORY_CONFIG)
++    for start, end, index in plan.chunks:
++        def product(table, digit):
++            y, unused = weights.implicit_layers[digit](table, index, identity=None,
++                write_y=True, dead_skip=False, table_memory="dram")
++            del unused
++            return ttnn.reshape(y, [index.shape[0] * 32, _round32(weights.co)])
++
++        top = product(high, 0)
++        cross_a, cross_b = product(high, 1), product(low, 0)
++        cross = ttnn.add(cross_a, cross_b)
++        del cross_a, cross_b
++        bottom = product(low, 1)
++        result = ttnn.add(ttnn.add(top, ttnn.multiply(cross, 1 / 256)), ttnn.multiply(bottom, 1 / 65536))
++        del top, cross, bottom
++        result = ttnn.slice(result, [0, 0], [end - start, weights.co])
++        result = _scale_and_bias(result, weights, scale, scale_tile)
++        if not fp32_output:
++            result = ttnn.typecast(result, ttnn.bfloat16)
++        _copy_output_rows(result, output, start)
++        del result
++    return output
+diff --git a/flex_gemm/tenstorrent/digits.py b/flex_gemm/tenstorrent/digits.py
+index ead609c..65ca028 100644
+--- a/flex_gemm/tenstorrent/digits.py
++++ b/flex_gemm/tenstorrent/digits.py
+@@ -57,6 +57,7 @@ class SparseDigitWeights:
+     volume: int
+     scale_tile: object
+     bias_tile: object
++    implicit_layers: tuple = ()
+ 
+ 
+ def prepare_sparse_digit_weights(weight, *, device, bias=None):
+diff --git a/flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp b/flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp
+new file mode 100644
+index 0000000..cc24122
+--- /dev/null
++++ b/flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp
+@@ -0,0 +1,190 @@
++// SPDX-License-Identifier: Apache-2.0
++// K6 implicit-GEMM sparse conv (tt/sparse_k6.py, OPT_PLAN K6), compute.
++//
++// Per (chunk, live block of this core): tilize the present taps' gathered rows (CB_GATH, row-major [32, CIN_T * 32]
++// per tap) into CB_TL at slot p * CIN_T (CB_TL always takes TG * CIN_T pages per block: fixed increments), then for
++// each output tile n: DEST[0] (+)= sum over present taps p, input tiles c of TL[p, c] x W[p, c, n] (fp32 weights,
++// HiFi4, fp32 DEST, tap-major / channel order = the stock im2col matmul's K order). Between chunks the fp32 partial
++// goes through CB_ACC (UnpackToDestFp32 reload: exact). Last chunk, the epilogue in the order of the stock programs:
++//   y = acc + bias                       add_binary_tile<NearestEven> (binary_ng's fp32 SFPU add)
++//   y = y + identity     (HAS_RES)       add_binary_tile<NearestEven>
++//   y = relu(y)          (RELU)          relu_tile
++//   CB_Y <- y            (WRITE_Y)       fp32 tile (the residual source / tap)
++//   out = bf16(y)                        typecast_tile<Float32, Float16_b> (ttnn.typecast), packed untilized into
++//                                        CB_OUT (32 rows x COUT_T * 32 bf16, row-major: the next table's rows)
++// CT args: [0] per-core RT-arg count (P3) [1] K [2] CIN_T [3] COUT_T [4] NCH [5] TG [6] NBLK [7] NC [8] HAS_RES
++//          [9] WRITE_Y [10] RELU [11] SPLIT (odd-rank present taps come from CB_GATH2, the writer's gathers). Per-core RT args: [me].
++#include <cstdint>
++
++#include "api/compute/common.h"
++#include "api/compute/compute_kernel_api.h"
++#include "api/compute/compute_kernel_hw_startup.h"
++#include "api/compute/copy_dest_values.h"
++#include "api/compute/eltwise_binary_sfpu.h"
++#include "api/compute/eltwise_unary/eltwise_unary.h"
++#include "api/compute/eltwise_unary/fill.h"
++#include "api/compute/eltwise_unary/relu.h"
++#include "api/compute/eltwise_unary/typecast.h"
++#include "api/compute/matmul.h"
++#include "api/compute/pack_untilize.h"
++#include "api/compute/reconfig_data_format.h"
++#include "api/compute/tile_move_copy.h"
++#include "api/compute/tilize.h"
++
++using namespace ckernel;
++
++constexpr uint32_t K = get_compile_time_arg_val(1);
++constexpr uint32_t CIN_T = get_compile_time_arg_val(2);
++constexpr uint32_t COUT_T = get_compile_time_arg_val(3);
++constexpr uint32_t NCH = get_compile_time_arg_val(4);
++constexpr uint32_t TG = get_compile_time_arg_val(5);
++constexpr uint32_t NBLK = get_compile_time_arg_val(6);
++constexpr uint32_t NC = get_compile_time_arg_val(7);
++constexpr uint32_t HAS_RES = get_compile_time_arg_val(8);
++constexpr uint32_t WRITE_Y = get_compile_time_arg_val(9);
++constexpr uint32_t RELU = get_compile_time_arg_val(10);
++constexpr uint32_t SPLIT = get_compile_time_arg_val(11);
++
++constexpr uint32_t CB_GATH = 0, CB_W = 1, CB_BIAS = 2, CB_IDENT = 3, CB_META = 4, CB_TL = 5, CB_ACC = 6;
++constexpr uint32_t CB_GATH2 = 11, CB_OUT = 16, CB_Y = 17;
++constexpr uint32_t WCH = TG * CIN_T * COUT_T;
++constexpr uint32_t TLN = TG * CIN_T;
++
++void kernel_main() {
++    const uint32_t me = get_arg_val<uint32_t>(0);
++    compute_kernel_hw_startup<SrcOrder::Reverse>(CB_TL, CB_W, CB_OUT);
++    // BH: the DEST remap of pack-untilize is a MATH-thread setting; arm it once here, outside any DEST section (as
++    // the stock matmul's untilize_out path leaves it armed for its later matmuls)
++    pack_untilize_dest_init<1, COUT_T>(CB_OUT);
++    pack_untilize_uninit(CB_OUT);
++    cb_wait_front(CB_BIAS, COUT_T);
++
++    for (uint32_t ch = 0; ch < NCH; ++ch) {
++        const uint32_t t0 = ch * TG;
++        const uint32_t nt = (K - t0) < TG ? (K - t0) : TG;
++        const bool last = ch == NCH - 1;
++        cb_wait_front(CB_W, WCH);
++        for (uint32_t b = me; b < NBLK; b += NC) {
++            cb_wait_front(CB_META, 1);
++            UNPACK(asm volatile("fence"));
++            const uint32_t mask = read_tile_value(CB_META, 0, 0);
++            const uint32_t live = read_tile_value(CB_META, 0, 1);
++            cb_pop_front(CB_META, 1);
++            if (!live) {
++                continue;
++            }
++            // ---- tilize the present taps
++            cb_reserve_back(CB_TL, TLN);
++            if (mask) {
++                reconfig_data_format_srca(CB_GATH);
++                pack_reconfig_data_format(CB_TL);
++                tilize_init(CB_GATH, CIN_T, CB_TL);
++                uint32_t k = 0;
++                for (uint32_t p = 0; p < nt; ++p) {
++                    if (mask & (1u << p)) {
++                        const uint32_t cb = (SPLIT && (k & 1)) ? CB_GATH2 : CB_GATH;
++                        ++k;
++                        cb_wait_front(cb, CIN_T);
++#ifndef K6_NOTILIZE
++                        tilize_block(cb, CIN_T, CB_TL, 0, p * CIN_T);
++#endif
++                        cb_pop_front(cb, CIN_T);
++                    }
++                }
++                tilize_uninit(CB_GATH, CB_TL);
++            }
++            cb_push_back(CB_TL, TLN);
++            cb_wait_front(CB_TL, TLN);
++            if (last) {
++                cb_reserve_back(CB_OUT, COUT_T);
++                if constexpr (HAS_RES) {
++                    cb_wait_front(CB_IDENT, COUT_T);
++                }
++            }
++            for (uint32_t n = 0; n < COUT_T; ++n) {
++                tile_regs_acquire();
++                if (ch > 0) {
++                    reconfig_data_format_srca(CB_ACC);
++                    copy_tile_init(CB_ACC);
++                    cb_wait_front(CB_ACC, 1);
++                    copy_tile(CB_ACC, 0, 0);
++                    cb_pop_front(CB_ACC, 1);
++                } else {
++                    // DEST is not guaranteed zero here (pack-untilize does not clear it): start from +0
++                    fill_tile_init();
++                    fill_tile(0, 0.0f);
++                }
++                reconfig_data_format_srca(CB_W);
++                reconfig_data_format_srcb(CB_TL);
++                matmul_init(CB_TL, CB_W);
++                for (uint32_t p = 0; p < nt; ++p) {
++                    if (mask & (1u << p)) {
++#ifndef K6_NOMM
++                        for (uint32_t c = 0; c < CIN_T; ++c) {
++                            matmul_tiles(CB_TL, CB_W, p * CIN_T + c, (p * CIN_T + c) * COUT_T + n, 0);
++                        }
++#endif
++                    }
++                }
++                if (!last) {
++                    tile_regs_commit();
++                    cb_reserve_back(CB_ACC, 1);
++                    tile_regs_wait();
++                    pack_reconfig_data_format(CB_ACC);
++                    pack_tile(0, CB_ACC);
++                    tile_regs_release();
++                    cb_push_back(CB_ACC, 1);
++                    continue;
++                }
++                reconfig_data_format_srca(CB_BIAS);
++                copy_tile_init(CB_BIAS);
++                copy_tile(CB_BIAS, n, 1);
++                add_binary_tile_init();
++                add_binary_tile<ckernel::DstRoundingMode::NearestEven>(0, 1, 0);
++                if constexpr (HAS_RES) {
++                    reconfig_data_format_srca(CB_IDENT);
++                    copy_tile_init(CB_IDENT);
++                    copy_tile(CB_IDENT, n, 1);
++                    add_binary_tile_init();
++                    add_binary_tile<ckernel::DstRoundingMode::NearestEven>(0, 1, 0);
++                }
++                if constexpr (RELU) {
++                    relu_tile_init();
++                    relu_tile(0);
++                }
++                if constexpr (WRITE_Y) {
++                    copy_dest_values_init();
++                    copy_dest_values<DataFormat::Float32>(0, 2);
++                }
++                typecast_tile_init<(uint32_t)DataFormat::Float32, (uint32_t)DataFormat::Float16_b>();
++                typecast_tile<(uint32_t)DataFormat::Float32, (uint32_t)DataFormat::Float16_b>(0);
++                tile_regs_commit();
++                if constexpr (WRITE_Y) {
++                    cb_reserve_back(CB_Y, 1);
++                }
++                tile_regs_wait();
++                if constexpr (WRITE_Y) {
++                    pack_reconfig_data_format(CB_Y);
++                    pack_tile(2, CB_Y);
++                }
++                pack_reconfig_data_format(CB_OUT);
++                pack_untilize_dest_init<1, COUT_T, false, TILE_C_DIM, false, false>(CB_OUT);
++                pack_untilize_dest<1, COUT_T>(CB_OUT, 1, n);
++                pack_untilize_uninit(CB_OUT);
++                tile_regs_release();
++                if constexpr (WRITE_Y) {
++                    cb_push_back(CB_Y, 1);
++                }
++            }
++            if (last) {
++                cb_push_back(CB_OUT, COUT_T);
++                if constexpr (HAS_RES) {
++                    cb_pop_front(CB_IDENT, COUT_T);
++                }
++            }
++            cb_pop_front(CB_TL, TLN);
++        }
++        cb_pop_front(CB_W, WCH);
++    }
++    cb_pop_front(CB_BIAS, COUT_T);
++}
+diff --git a/flex_gemm/tenstorrent/kernels/k6/k6_gather.hpp b/flex_gemm/tenstorrent/kernels/k6/k6_gather.hpp
+new file mode 100644
+index 0000000..6e0761d
+--- /dev/null
++++ b/flex_gemm/tenstorrent/kernels/k6/k6_gather.hpp
+@@ -0,0 +1,99 @@
++// SPDX-License-Identifier: Apache-2.0
++// K6 implicit-GEMM sparse conv (tt/sparse_k6.py): the gather steps shared by the reader (RISCV_1) and, with
++// SPLIT, the writer (RISCV_0), so both data-movement RISCs issue row reads (each on its own NoC).
++#pragma once
++#include <cstdint>
++
++#include "api/dataflow/dataflow_api.h"
++
++// live (any index of the block != SENT; always 1 without DEAD_SKIP) and the mask of the chunk's taps [t0, t0 + nt)
++// with any index != SENT. ip: the block's index row (K x 32, tap-major).
++template <uint32_t K, uint32_t SENT, uint32_t DEAD_SKIP>
++inline void k6_scan(const uint32_t* ip, uint32_t t0, uint32_t nt, uint32_t& live, uint32_t& mask) {
++    live = 1;
++    if constexpr (DEAD_SKIP) {
++        live = 0;
++        for (uint32_t i = 0; i < K * 32; ++i) {
++            if (ip[i] != SENT) {
++                live = 1;
++                break;
++            }
++        }
++    }
++    mask = 0;
++    if (live) {
++        for (uint32_t p = 0; p < nt; ++p) {
++            const uint32_t* q = ip + (t0 + p) * 32;
++            for (uint32_t v = 0; v < 32; ++v) {
++                if (q[v] != SENT) {
++                    mask |= (1u << p);
++                    break;
++                }
++            }
++        }
++    }
++}
++
++// The present taps of `mask` whose rank (order among the present taps) is = PART mod NPARTS: each tap's 32 rows of
++// CIN_T * 64 B into one CIN_T-page region of `cb` (the CB holds 2 TG CIN_T pages and every push is CIN_T pages, so
++// a region is contiguous; regions wrap at the CB end). (1) every region zeroed by one local NoC copy from `zero_noc`
++// (sentinel rows stay zero), barrier, (2) the rows' reads, `before_barrier()` (the index prefetch), barrier, pushes.
++template <uint32_t CIN_T, uint32_t ROWB, uint32_t SENT, uint32_t PART, uint32_t NPARTS, typename Acc, typename F>
++inline void k6_gather(const uint32_t* ip, uint32_t t0, uint32_t nt, uint32_t mask, uint32_t cb, uint64_t zero_noc,
++                      const Acc& tab, F&& before_barrier) {
++    uint32_t mine = 0;
++    {
++        uint32_t k = 0;
++        for (uint32_t p = 0; p < nt; ++p) {
++            if (mask & (1u << p)) {
++                if (k % NPARTS == PART) {
++                    mine |= (1u << p);
++                }
++                ++k;
++            }
++        }
++    }
++    const uint32_t np = __builtin_popcount(mine);
++    if (!np) {
++        before_barrier();
++        return;
++    }
++    cb_reserve_back(cb, np * CIN_T);
++    uint32_t wp = get_write_ptr(cb);
++    const uint32_t lim = get_local_cb_interface(cb).fifo_limit;
++    const uint32_t sz = get_local_cb_interface(cb).fifo_size;
++    uint32_t zp = wp;
++    for (uint32_t p = 0; p < np; ++p) {
++        noc_async_read(zero_noc, zp, CIN_T * 2048);
++        zp += CIN_T * 2048;
++        if (zp >= lim) {
++            zp -= sz;
++        }
++    }
++    noc_async_read_barrier();
++    for (uint32_t p = 0; p < nt; ++p) {
++        if (!(mine & (1u << p))) {
++            continue;
++        }
++        const uint32_t* q = ip + (t0 + p) * 32;
++        uint32_t rp = wp;
++        for (uint32_t v = 0; v < 32; ++v) {
++            const uint32_t r = q[v];
++            if (r != SENT) {
++#ifndef K6_NOREAD
++                noc_async_read(tab.get_noc_addr(r), rp, ROWB);
++#endif
++            }
++            rp += ROWB;
++        }
++        wp += CIN_T * 2048;
++        if (wp >= lim) {
++            wp -= sz;
++        }
++    }
++    before_barrier();
++    noc_async_read_barrier();
++    for (uint32_t p = 0; p < np; ++p) {
++        cb_push_back(cb, CIN_T);
++    }
++}
+diff --git a/flex_gemm/tenstorrent/kernels/k6/k6_reader.cpp b/flex_gemm/tenstorrent/kernels/k6/k6_reader.cpp
+new file mode 100644
+index 0000000..355ab2c
+--- /dev/null
++++ b/flex_gemm/tenstorrent/kernels/k6/k6_reader.cpp
+@@ -0,0 +1,202 @@
++// SPDX-License-Identifier: Apache-2.0
++// K6 implicit-GEMM sparse conv (tt/sparse_k6.py, OPT_PLAN K6), reader (RISCV_0 / NCRISC).
++//
++// One layer y[o] = sum_k W_k^T x[nmap[o, k]] (+ bias, + identity, ReLU) over 32-row output blocks. Block b of this
++// core: b = me, me + NC, me + 2 NC, ... (strided, so the live blocks, a prefix of the level, spread over all cores).
++// Taps are processed in NCH chunks of TG taps (the chunk's fp32 weights resident in L1).
++//
++// Per chunk:  the chunk's weight tiles -> CB_W (always TG * CIN_T * COUT_T pages; the tail chunk part filled).
++// Per block:  the block's index row (K * 32 uint32, tile order: entry k * 32 + v = row of output 32 b + v at tap k)
++//             -> scratch; live = any entry != SENT (rows past the level count are all-sentinel: skipped whole);
++//             mask = taps of the chunk with any entry != SENT (all-sentinel taps contribute exact zeros: skipped).
++//             meta page {mask, live} -> CB_META (compute); in the last chunk {live} -> CB_WMETA (writer).
++//             For each tap in mask: CIN_T row-major pages = 32 table rows (CIN_T * 64 B each; sentinel rows zero)
++//             -> CB_GATH (one read barrier per block).
++//             Last chunk, HAS_RES: the COUT_T fp32 identity tiles of the block -> CB_IDENT.
++// Once:       the COUT_T fp32 bias tiles (rows replicated) -> CB_BIAS.
++//
++// CT args: [0] per-core RT-arg count (P3) [1] K [2] CIN_T [3] COUT_T [4] NCH [5] TG [6] NBLK [7] NC [8] SENT
++//          [9] HAS_RES [10] DEAD_SKIP (0: all-sentinel blocks are computed like the stock layer, relu(bias)
++//          (+ identity), so every output row is written and deterministic) [11] MCAST [12] NRECV
++//          [13] SPLIT (the writer gathers the odd-rank present taps into CB_GATH2; no CB_WMETA), then the TensorAccessorArgs of table, index, weight, bias, identity.
++// Common RT args: [table, index, weight, bias, identity]. Per-core RT args: [me, is_sender, sender x, y (virtual),
++// the receivers' rectangle x0, y0, x1, y1 (virtual, NOC 0 order)].
++// MCAST: the chunk's weights are read from DRAM once per grid row, by the row's first core, and multicast to the
++// NRECV other cores of the row (the stock 1D-matmul handshake: each receiver frees its CB_W, sets its 'valid'
++// semaphore to 0 and increments the sender's 'ready' semaphore; the sender waits for NRECV, multicasts the data,
++// flushes, then multicasts valid = 1). The rectangle never contains the sender.
++#include <cstdint>
++
++#include "api/dataflow/dataflow_api.h"
++#include "k6_gather.hpp"
++
++constexpr uint32_t K = get_compile_time_arg_val(1);
++constexpr uint32_t CIN_T = get_compile_time_arg_val(2);
++constexpr uint32_t COUT_T = get_compile_time_arg_val(3);
++constexpr uint32_t NCH = get_compile_time_arg_val(4);
++constexpr uint32_t TG = get_compile_time_arg_val(5);
++constexpr uint32_t NBLK = get_compile_time_arg_val(6);
++constexpr uint32_t NC = get_compile_time_arg_val(7);
++constexpr uint32_t SENT = get_compile_time_arg_val(8);
++constexpr uint32_t HAS_RES = get_compile_time_arg_val(9);
++constexpr uint32_t DEAD_SKIP = get_compile_time_arg_val(10);
++constexpr uint32_t MCAST = get_compile_time_arg_val(11);
++constexpr uint32_t NRECV = get_compile_time_arg_val(12);
++constexpr uint32_t SPLIT = get_compile_time_arg_val(13);
++constexpr uint32_t NPARTS = SPLIT ? 2 : 1;
++constexpr auto t_args = TensorAccessorArgs<14>();
++constexpr auto i_args = TensorAccessorArgs<t_args.next_compile_time_args_offset()>();
++constexpr auto w_args = TensorAccessorArgs<i_args.next_compile_time_args_offset()>();
++constexpr auto b_args = TensorAccessorArgs<w_args.next_compile_time_args_offset()>();
++constexpr auto r_args = TensorAccessorArgs<b_args.next_compile_time_args_offset()>();
++
++constexpr uint32_t CB_GATH = 0, CB_W = 1, CB_BIAS = 2, CB_IDENT = 3, CB_META = 4, CB_IDX = 7, CB_WMETA = 8, CB_ZBUF = 10;
++constexpr uint32_t ROWB = CIN_T * 64;      // table row bytes (bf16)
++constexpr uint32_t IDXB = K * 32 * 4;      // index row bytes
++constexpr uint32_t TB32 = 4096;
++constexpr uint32_t WCH = TG * CIN_T * COUT_T;
++
++void kernel_main() {
++    const uint32_t me = get_arg_val<uint32_t>(0);
++    const uint32_t is_sender = get_arg_val<uint32_t>(1);
++    const uint32_t snx = get_arg_val<uint32_t>(2), sny = get_arg_val<uint32_t>(3);
++    // NOC 1 runs its coordinates the other way: the rectangle's start is the far corner there (as ttnn's matmuls)
++    const bool n1 = noc_index == 1;
++    const uint32_t mx0 = get_arg_val<uint32_t>(n1 ? 6 : 4), my0 = get_arg_val<uint32_t>(n1 ? 7 : 5);
++    const uint32_t mx1 = get_arg_val<uint32_t>(n1 ? 4 : 6), my1 = get_arg_val<uint32_t>(n1 ? 5 : 7);
++    const uint32_t ready_addr = get_semaphore(0);
++    const uint32_t valid_addr = get_semaphore(1);
++    volatile tt_l1_ptr uint32_t* ready_ptr = reinterpret_cast<volatile tt_l1_ptr uint32_t*>(ready_addr);
++    volatile tt_l1_ptr uint32_t* valid_ptr = reinterpret_cast<volatile tt_l1_ptr uint32_t*>(valid_addr);
++    const auto tab = TensorAccessor(t_args, get_common_arg_val<uint32_t>(0), ROWB);
++    const auto idx = TensorAccessor(i_args, get_common_arg_val<uint32_t>(1), IDXB);
++    const auto wt = TensorAccessor(w_args, get_common_arg_val<uint32_t>(2), TB32);
++    const auto bs = TensorAccessor(b_args, get_common_arg_val<uint32_t>(3), TB32);
++    const auto rs = TensorAccessor(r_args, get_common_arg_val<uint32_t>(4), TB32);
++
++    // bias once
++    cb_reserve_back(CB_BIAS, COUT_T);
++    {
++        uint32_t wp = get_write_ptr(CB_BIAS);
++        for (uint32_t n = 0; n < COUT_T; ++n) {
++            noc_async_read(bs.get_noc_addr(n), wp + n * TB32, TB32);
++        }
++        noc_async_read_barrier();
++    }
++    cb_push_back(CB_BIAS, COUT_T);
++
++    // a zeroed region of one tap (32 rows x CIN_T * 64 B): the source of the per-tap zero fills
++    cb_reserve_back(CB_ZBUF, 1);
++    const uint32_t zero_l1 = get_write_ptr(CB_ZBUF);
++    {
++        volatile tt_l1_ptr uint32_t* z = reinterpret_cast<volatile tt_l1_ptr uint32_t*>(zero_l1);
++        for (uint32_t j = 0; j < CIN_T * 512; ++j) {
++            z[j] = 0;
++        }
++    }
++    const uint64_t zero_noc = get_noc_addr(zero_l1);
++
++    // two index-row buffers: the next (chunk, block)'s row is prefetched while this block gathers
++    cb_reserve_back(CB_IDX, 2);
++    const uint32_t idx_buf[2] = {get_write_ptr(CB_IDX), get_write_ptr(CB_IDX) + IDXB};
++    uint32_t cur = 0;
++    if (me < NBLK) {
++        noc_async_read(idx.get_noc_addr(me), idx_buf[0], IDXB);
++    }
++
++    for (uint32_t ch = 0; ch < NCH; ++ch) {
++        const uint32_t t0 = ch * TG;
++        const uint32_t nt = (K - t0) < TG ? (K - t0) : TG;
++        const bool last = ch == NCH - 1;
++        // weights of the chunk: tiles [t0 * CIN_T * COUT_T, (t0 + nt) * CIN_T * COUT_T)
++        cb_reserve_back(CB_W, WCH);
++        {
++            const uint32_t wp = get_write_ptr(CB_W);
++            const uint32_t first = t0 * CIN_T * COUT_T;
++            const uint32_t cnt = nt * CIN_T * COUT_T;
++            if (!MCAST || is_sender) {
++                for (uint32_t i = 0; i < cnt; ++i) {
++                    noc_async_read(wt.get_noc_addr(first + i), wp + i * TB32, TB32);
++                }
++                noc_async_read_barrier();
++            }
++            if constexpr (MCAST) {
++                if (is_sender) {
++                    noc_semaphore_wait(ready_ptr, NRECV);
++                    noc_semaphore_set(ready_ptr, 0);
++                    noc_async_write_multicast(wp, get_noc_multicast_addr(mx0, my0, mx1, my1, wp), cnt * TB32, NRECV,
++                                              true);
++                    noc_async_writes_flushed();
++                    *valid_ptr = 1;
++                    noc_semaphore_set_multicast(valid_addr, get_noc_multicast_addr(mx0, my0, mx1, my1, valid_addr),
++                                                NRECV);
++                    noc_async_write_barrier();
++                } else {
++                    noc_semaphore_set(valid_ptr, 0);
++                    noc_semaphore_inc(get_noc_addr(snx, sny, ready_addr), 1);
++                    noc_semaphore_wait(valid_ptr, 1);
++                }
++            }
++        }
++        cb_push_back(CB_W, WCH);
++
++        for (uint32_t b = me; b < NBLK; b += NC) {
++            noc_async_read_barrier();
++            invalidate_l1_cache();
++            asm volatile("" ::: "memory");
++            const uint32_t* ip = reinterpret_cast<const uint32_t*>(idx_buf[cur]);
++            bool prefetched = false;
++            auto prefetch = [&]() {
++                uint32_t nb = b + NC, nch = ch;
++                if (nb >= NBLK) {
++                    nb = me;
++                    ++nch;
++                }
++                if (nch < NCH) {
++                    noc_async_read(idx.get_noc_addr(nb), idx_buf[cur ^ 1], IDXB);
++                }
++                prefetched = true;
++            };
++            uint32_t live, mask;
++            k6_scan<K, SENT, DEAD_SKIP>(ip, t0, nt, live, mask);
++            cb_reserve_back(CB_META, 1);
++            {
++                volatile tt_l1_ptr uint32_t* mp = reinterpret_cast<volatile tt_l1_ptr uint32_t*>(get_write_ptr(CB_META));
++                mp[0] = mask;
++                mp[1] = live;
++            }
++            cb_push_back(CB_META, 1);
++            if (last && !SPLIT) {
++                cb_reserve_back(CB_WMETA, 1);
++                volatile tt_l1_ptr uint32_t* mp = reinterpret_cast<volatile tt_l1_ptr uint32_t*>(get_write_ptr(CB_WMETA));
++                mp[0] = live;
++                cb_push_back(CB_WMETA, 1);
++            }
++            if (!live) {
++                prefetch();
++                cur ^= 1;
++                continue;
++            }
++            // the present taps of rank 0 mod NPARTS (all of them without SPLIT; the writer gathers the others)
++            k6_gather<CIN_T, ROWB, SENT, 0, NPARTS>(ip, t0, nt, mask, CB_GATH, zero_noc, tab, prefetch);
++            if (!prefetched) {
++                prefetch();
++            }
++            if constexpr (HAS_RES) {
++                if (last) {
++                    // (the identity reads complete under the next block's barrier at the latest; push after ours)
++                    cb_reserve_back(CB_IDENT, COUT_T);
++                    uint32_t wp = get_write_ptr(CB_IDENT);
++                    for (uint32_t n = 0; n < COUT_T; ++n) {
++                        noc_async_read(rs.get_noc_addr(b * COUT_T + n), wp + n * TB32, TB32);
++                    }
++                    noc_async_read_barrier();
++                    cb_push_back(CB_IDENT, COUT_T);
++                }
++            }
++            cur ^= 1;
++        }
++    }
++    cb_push_back(CB_IDX, 2);
++    cb_push_back(CB_ZBUF, 1);
++}
+diff --git a/flex_gemm/tenstorrent/kernels/k6/k6_writer.cpp b/flex_gemm/tenstorrent/kernels/k6/k6_writer.cpp
+new file mode 100644
+index 0000000..ef64819
+--- /dev/null
++++ b/flex_gemm/tenstorrent/kernels/k6/k6_writer.cpp
+@@ -0,0 +1,148 @@
++// SPDX-License-Identifier: Apache-2.0
++// K6 implicit-GEMM sparse conv (tt/sparse_k6.py, OPT_PLAN K6), writer (RISCV_0 / BRISC).
++// Core 0 first writes the zero sentinel row (page ROWS) of the output table. Then, for each block of this core (the
++// reader's order), a live block's COUT_T fp32 tiles (WRITE_Y) go to y (tile b * COUT_T + n) and its 32 untilized
++// bf16 rows (CB_OUT) to the output table (pages 32 b .. 32 b + 31). Dead blocks write nothing.
++// Without SPLIT the live flags come from the reader (CB_WMETA, last chunk). With SPLIT this kernel also walks every
++// (chunk, block), reads the index rows itself (prefetched, double-buffered), and gathers the present taps of odd rank
++// into CB_GATH2 (k6_gather.hpp); a block's outputs are written one block later, after the next block's gathers, so
++// the compute never waits for this RISC's writes.
++// CT args: [0] per-core RT-arg count (P3) [1] COUT_T [2] NBLK [3] NC [4] ROWS [5] WRITE_Y [6] SPLIT [7] K [8] CIN_T
++// [9] NCH [10] TG [11] SENT [12] DEAD_SKIP, then the TensorAccessorArgs of the output table, y, the input table and
++// the index. Common RT args: [table_out, y, table_in, index]. Per-core RT args: [me].
++#include <cstdint>
++
++#include "api/dataflow/dataflow_api.h"
++#include "k6_gather.hpp"
++
++constexpr uint32_t COUT_T = get_compile_time_arg_val(1);
++constexpr uint32_t NBLK = get_compile_time_arg_val(2);
++constexpr uint32_t NC = get_compile_time_arg_val(3);
++constexpr uint32_t ROWS = get_compile_time_arg_val(4);
++constexpr uint32_t WRITE_Y = get_compile_time_arg_val(5);
++constexpr uint32_t SPLIT = get_compile_time_arg_val(6);
++constexpr uint32_t K = get_compile_time_arg_val(7);
++constexpr uint32_t CIN_T = get_compile_time_arg_val(8);
++constexpr uint32_t NCH = get_compile_time_arg_val(9);
++constexpr uint32_t TG = get_compile_time_arg_val(10);
++constexpr uint32_t SENT = get_compile_time_arg_val(11);
++constexpr uint32_t DEAD_SKIP = get_compile_time_arg_val(12);
++constexpr auto o_args = TensorAccessorArgs<13>();
++constexpr auto y_args = TensorAccessorArgs<o_args.next_compile_time_args_offset()>();
++constexpr auto t_args = TensorAccessorArgs<y_args.next_compile_time_args_offset()>();
++constexpr auto i_args = TensorAccessorArgs<t_args.next_compile_time_args_offset()>();
++
++constexpr uint32_t CB_WMETA = 8, CB_ZERO = 9, CB_GATH2 = 11, CB_IDX2 = 12, CB_ZBUF2 = 13, CB_OUT = 16, CB_Y = 17;
++constexpr uint32_t ROWB = COUT_T * 64;
++constexpr uint32_t ROWB_IN = CIN_T * 64;
++constexpr uint32_t IDXB = K * 32 * 4;
++constexpr uint32_t TB32 = 4096;
++
++template <typename OA, typename YA>
++inline void write_block(uint32_t b, const OA& out, const YA& yy) {
++    if constexpr (WRITE_Y) {
++        for (uint32_t n = 0; n < COUT_T; ++n) {
++            cb_wait_front(CB_Y, 1);
++            noc_async_write(get_read_ptr(CB_Y), yy.get_noc_addr(b * COUT_T + n), TB32);
++            noc_async_writes_flushed();
++            cb_pop_front(CB_Y, 1);
++        }
++    }
++    cb_wait_front(CB_OUT, COUT_T);
++    uint32_t rp = get_read_ptr(CB_OUT);
++    for (uint32_t v = 0; v < 32; ++v) {
++        noc_async_write(rp, out.get_noc_addr(b * 32 + v), ROWB);
++        rp += ROWB;
++    }
++    noc_async_writes_flushed();
++    cb_pop_front(CB_OUT, COUT_T);
++}
++
++void kernel_main() {
++    const uint32_t me = get_arg_val<uint32_t>(0);
++    const auto out = TensorAccessor(o_args, get_common_arg_val<uint32_t>(0), ROWB);
++    const auto yy = TensorAccessor(y_args, get_common_arg_val<uint32_t>(1), TB32);
++    if (me == 0) {
++        cb_reserve_back(CB_ZERO, 1);
++        const uint32_t zp = get_write_ptr(CB_ZERO);
++        volatile tt_l1_ptr uint32_t* z = reinterpret_cast<volatile tt_l1_ptr uint32_t*>(zp);
++        for (uint32_t j = 0; j < ROWB / 4; ++j) {
++            z[j] = 0;
++        }
++        noc_async_write(zp, out.get_noc_addr(ROWS), ROWB);
++        noc_async_write_barrier();
++        cb_push_back(CB_ZERO, 1);
++    }
++    if constexpr (!SPLIT) {
++        for (uint32_t b = me; b < NBLK; b += NC) {
++            cb_wait_front(CB_WMETA, 1);
++            invalidate_l1_cache();
++            const uint32_t live = reinterpret_cast<volatile tt_l1_ptr uint32_t*>(get_read_ptr(CB_WMETA))[0];
++            cb_pop_front(CB_WMETA, 1);
++            if (live) {
++                write_block(b, out, yy);
++            }
++        }
++    } else {
++        const auto tab = TensorAccessor(t_args, get_common_arg_val<uint32_t>(2), ROWB_IN);
++        const auto idx = TensorAccessor(i_args, get_common_arg_val<uint32_t>(3), IDXB);
++        cb_reserve_back(CB_ZBUF2, 1);
++        const uint32_t zero_l1 = get_write_ptr(CB_ZBUF2);
++        {
++            volatile tt_l1_ptr uint32_t* z = reinterpret_cast<volatile tt_l1_ptr uint32_t*>(zero_l1);
++            for (uint32_t j = 0; j < CIN_T * 512; ++j) {
++                z[j] = 0;
++            }
++        }
++        const uint64_t zero_noc = get_noc_addr(zero_l1);
++        cb_reserve_back(CB_IDX2, 2);
++        const uint32_t idx_buf[2] = {get_write_ptr(CB_IDX2), get_write_ptr(CB_IDX2) + IDXB};
++        uint32_t cur = 0;
++        if (me < NBLK) {
++            noc_async_read(idx.get_noc_addr(me), idx_buf[0], IDXB);
++        }
++        uint32_t pending = NBLK;            // a live block of the last chunk whose outputs are still to be written
++        for (uint32_t ch = 0; ch < NCH; ++ch) {
++            const uint32_t t0 = ch * TG;
++            const uint32_t nt = (K - t0) < TG ? (K - t0) : TG;
++            const bool last = ch == NCH - 1;
++            for (uint32_t b = me; b < NBLK; b += NC) {
++                noc_async_read_barrier();
++                invalidate_l1_cache();
++                asm volatile("" ::: "memory");
++                const uint32_t* ip = reinterpret_cast<const uint32_t*>(idx_buf[cur]);
++                auto prefetch = [&]() {
++                    uint32_t nb = b + NC, nch = ch;
++                    if (nb >= NBLK) {
++                        nb = me;
++                        ++nch;
++                    }
++                    if (nch < NCH) {
++                        noc_async_read(idx.get_noc_addr(nb), idx_buf[cur ^ 1], IDXB);
++                    }
++                };
++                uint32_t live, mask;
++                k6_scan<K, SENT, DEAD_SKIP>(ip, t0, nt, live, mask);
++                if (live) {
++                    k6_gather<CIN_T, ROWB_IN, SENT, 1, 2>(ip, t0, nt, mask, CB_GATH2, zero_noc, tab, prefetch);
++                } else {
++                    prefetch();
++                }
++                cur ^= 1;
++                if (last && live) {
++                    if (pending != NBLK) {
++                        write_block(pending, out, yy);
++                    }
++                    pending = b;
++                }
++            }
++        }
++        if (pending != NBLK) {
++            write_block(pending, out, yy);
++        }
++        noc_async_read_barrier();
++        cb_push_back(CB_IDX2, 2);
++        cb_push_back(CB_ZBUF2, 1);
++    }
++    noc_async_write_barrier();
++}
+diff --git a/flex_gemm/tenstorrent/resident.py b/flex_gemm/tenstorrent/resident.py
+index 4b1ec36..45b1e2e 100644
+--- a/flex_gemm/tenstorrent/resident.py
++++ b/flex_gemm/tenstorrent/resident.py
+@@ -31,6 +31,7 @@ class SparseTopology:
+     permutation: object = None
+     schedule: object = None
+     gathers: dict = field(default_factory=dict)
++    digit_plans: dict = field(default_factory=dict)
+ 
+ 
+ def prepare_sparse_weights(weight, *, device, bias=None):
+@@ -100,7 +101,7 @@ def sparse_conv_device(features, weights, topology, *, algorithm="implicit_gemm"
+     each chunk can access every input row, including neighbors outside it.
+     """
+     import ttnn
+-    choices = {"explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
++    choices = {"explicit_gemm", "digit_explicit_gemm", "digit_implicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+                "implicit_gemm_splitk", "masked_implicit_gemm_splitk"}
+     if algorithm not in choices:
+         raise ValueError(f"unknown Tenstorrent algorithm: {algorithm}")
+@@ -119,6 +120,10 @@ def sparse_conv_device(features, weights, topology, *, algorithm="implicit_gemm"
+     if algorithm == "digit_explicit_gemm":
+         from .digits import sparse_digit_conv_device
+         return sparse_digit_conv_device(features, weights, topology, row_chunk=row_chunk, fp32_output=fp32_output)
++    if algorithm == "digit_implicit_gemm":
++        from .digit_implicit import sparse_digit_implicit_conv_device
++        return sparse_digit_implicit_conv_device(features, weights, topology,
++            row_chunk=row_chunk, fp32_output=fp32_output)
+     cp = _round32(weights.ci)
+     x = ttnn.to_layout(features, ttnn.ROW_MAJOR_LAYOUT)
+     if cp != weights.ci:
+diff --git a/setup.py b/setup.py
+index 79c9d51..87c89d1 100644
+--- a/setup.py
++++ b/setup.py
+@@ -14,7 +14,8 @@ if BUILD_TARGET == "tenstorrent":
+     from setuptools import find_packages
+     setup(
+         packages=find_packages(),
+-        package_data={"flex_gemm.tenstorrent": ["kernels/*.cpp"]},
++        package_data={"flex_gemm.tenstorrent": ["kernels/*.cpp", "kernels/k6/*.cpp",
++                                               "kernels/k6/*.hpp", "K6-LICENSE", "K6-NOTICE"]},
+     )
+     raise SystemExit(0)
+ 
+@@ -62,7 +63,8 @@ setup(
+         "flex_gemm.kernels.triton.grid_sample",
+         "flex_gemm.tenstorrent",
+     ],
+-    package_data={"flex_gemm.tenstorrent": ["kernels/*.cpp"]},
++    package_data={"flex_gemm.tenstorrent": ["kernels/*.cpp", "kernels/k6/*.cpp",
++                                           "kernels/k6/*.hpp", "K6-LICENSE", "K6-NOTICE"]},
+     ext_modules=[
+         CUDAExtension(
+             name="flex_gemm.kernels.cuda",
+diff --git a/tests/tenstorrent/test_autoresearch.py b/tests/tenstorrent/test_autoresearch.py
+index 5062758..8225a3b 100644
+--- a/tests/tenstorrent/test_autoresearch.py
++++ b/tests/tenstorrent/test_autoresearch.py
+@@ -196,3 +196,27 @@ def test_workspace_excludes_only_final_output_lifetime_at_reused_address():
+     ambiguous = workspace_bound(trace, dram_banks=2, l1_capacity_bytes=50, limit_bytes=1000,
+                                 output_address=10, expected_output_bytes=96)
+     assert not ambiguous["trace_valid"] and not ambiguous["within_limit"]
++
++
++def test_implicit_digit_accounting_empty_taps_chunks_and_fallback():
++    mapping = torch.full((65, 3), -1, dtype=torch.long)
++    mapping[32:, 0] = 0
++    policy = {'path': 'digit_implicit_gemm', 'grid': [2, 2], 'multicast': True,
++              'chunks': [{'start': 0, 'end': 64, 'tap_chunks': 2},
++                         {'start': 64, 'end': 65, 'tap_chunks': 2}]}
++    r = work_accounting(mapping, 17, 35, algorithm='digit_implicit_gemm', row_chunk=64,
++                        available_cores=4, digit_implicit_policy=policy)
++    assert r['issued_flops'] == 16 * 2 * 32**3
++    assert r['dummy_tile_products'] == r['explicit_expansion_bytes'] == r['gather_output_bytes'] == 0
++    assert r['requested_feature_bytes'] == 4 * 33 * 64
++    assert r['requested_map_bytes'] == 4 * 2 * 3 * 3 * 128 * 2
++    assert r['requested_weight_bytes'] == 4 * 2 * 2 * 3 * 1 * 2 * 4096
++    assert sum(r['core_tile_products']) == 16
++    empty = work_accounting(torch.full_like(mapping, -1), 17, 35, algorithm='digit_implicit_gemm',
++        row_chunk=64, available_cores=4, digit_implicit_policy=policy)
++    assert empty['issued_flops'] == empty['useful_flops'] == 0 and empty['work_efficiency'] is None
++    fallback = work_accounting(mapping, 17, 35, algorithm='digit_implicit_gemm', row_chunk=17,
++        digit_implicit_policy={'path': 'digit_explicit_gemm', 'reason': 'row_chunk_not_tile_aligned'})
++    baseline = work_accounting(mapping, 17, 35, algorithm='digit_explicit_gemm', row_chunk=17)
++    assert fallback.pop('dispatch_fallback') == 'row_chunk_not_tile_aligned'
++    assert fallback == baseline
+diff --git a/tests/tenstorrent/test_resident.py b/tests/tenstorrent/test_resident.py
+index bcaee63..7c80d61 100644
+--- a/tests/tenstorrent/test_resident.py
++++ b/tests/tenstorrent/test_resident.py
+@@ -2,7 +2,7 @@ import pytest
+ import torch
+ from flex_gemm.tenstorrent import (
+     prepare_sparse_weights, prepare_sparse_topology, sparse_conv_device, sparse_conv_reference,
+-    prepare_sparse_digit_weights,
++    prepare_sparse_digit_weights, prepare_sparse_digit_implicit,
+ )
+ from test_explicit import device
+ 
+@@ -77,7 +77,7 @@ def test_digit_blocked_matmul_ragged_core_boundary_and_reuse(device):
+         torch.testing.assert_close(ttnn.to_torch(result).float(), expected, atol=.025, rtol=.025)
+ 
+ 
+-@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
++@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "digit_implicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+                                         "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
+ @pytest.mark.parametrize("ci,co", [(32, 64), (17, 35)])
+ @pytest.mark.parametrize("row_chunk", [17, 32])
+@@ -91,7 +91,7 @@ def test_resident_chain_and_reuse(device, algorithm, ci, co, row_chunk):
+     mapping[0] = -1
+     b = torch.randn(co).bfloat16()
+     top = prepare_sparse_topology(mapping, 37, device=device, masked=algorithm.startswith("masked"))
+-    prepare = prepare_sparse_digit_weights if algorithm == "digit_explicit_gemm" else prepare_sparse_weights
++    prepare = prepare_sparse_digit_weights if algorithm in ("digit_explicit_gemm", "digit_implicit_gemm") else prepare_sparse_weights
+     p1 = prepare(w1, device=device, bias=b)
+     p2 = prepare(w2, device=device)
+     # Keep old operands alive and use changed values on the same cached topology.
+@@ -108,7 +108,7 @@ def test_resident_chain_and_reuse(device, algorithm, ci, co, row_chunk):
+         torch.testing.assert_close(ttnn.to_torch(z).float(), expected2, atol=0.025, rtol=0.025)
+ 
+ 
+-@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
++@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "digit_implicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+                                         "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
+ def test_fp32_output_preserves_small_residual(device, algorithm):
+     import ttnn
+@@ -119,7 +119,7 @@ def test_fp32_output_preserves_small_residual(device, algorithm):
+     w = torch.ones(1, 1, 33).bfloat16()
+     top = prepare_sparse_topology(torch.tensor([[0]]), 1, device=device,
+                                    masked=algorithm.startswith("masked"))
+-    prepare = prepare_sparse_digit_weights if algorithm == "digit_explicit_gemm" else prepare_sparse_weights
++    prepare = prepare_sparse_digit_weights if algorithm in ("digit_explicit_gemm", "digit_implicit_gemm") else prepare_sparse_weights
+     weights = prepare(w, device=device)
+     xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+     y = sparse_conv_device(xd, weights, top, algorithm=algorithm, split_k=2, fp32_output=True)
+@@ -127,7 +127,7 @@ def test_fp32_output_preserves_small_residual(device, algorithm):
+     torch.testing.assert_close(ttnn.to_torch(ttnn.subtract(y, 256.)), torch.tensor([[1.125]]), atol=0, rtol=0)
+ 
+ 
+-@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
++@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "digit_implicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+                                         "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
+ def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
+     import ttnn
+@@ -137,7 +137,7 @@ def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
+     bias = torch.full((35,), -256., dtype=torch.bfloat16)
+     top = prepare_sparse_topology(torch.arange(37)[:, None], 37, device=device,
+                                    masked=algorithm.startswith("masked"))
+-    prepare = prepare_sparse_digit_weights if algorithm == "digit_explicit_gemm" else prepare_sparse_weights
++    prepare = prepare_sparse_digit_weights if algorithm in ("digit_explicit_gemm", "digit_implicit_gemm") else prepare_sparse_weights
+     weights = prepare(weight, bias=bias, device=device)
+     xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+     result = sparse_conv_device(xd, weights, top, algorithm=algorithm, row_chunk=32, fp32_output=True)
+@@ -146,7 +146,7 @@ def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
+ 
+ 
+ @pytest.mark.parametrize("fp32_output", [False, True])
+-@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm"])
++@pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "digit_implicit_gemm"])
+ @pytest.mark.parametrize("co", [35, 512])
+ def test_explicit_many_row_chunks(device, fp32_output, algorithm, co):
+     import ttnn
+@@ -159,7 +159,7 @@ def test_explicit_many_row_chunks(device, fp32_output, algorithm, co):
+     w = torch.randint(-2, 3, (co, 1, 32), generator=generator).bfloat16()
+     mapping = ((torch.arange(1032) + 1) % 1032)[:, None]
+     top = prepare_sparse_topology(mapping, len(x), device=device)
+-    prepare = prepare_sparse_digit_weights if algorithm == "digit_explicit_gemm" else prepare_sparse_weights
++    prepare = prepare_sparse_digit_weights if algorithm in ("digit_explicit_gemm", "digit_implicit_gemm") else prepare_sparse_weights
+     weights = prepare(w, device=device)
+     xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+     actual = sparse_conv_device(xd, weights, top, algorithm=algorithm,
+@@ -168,3 +168,52 @@ def test_explicit_many_row_chunks(device, fp32_output, algorithm, co):
+     if not fp32_output:
+         expected = expected.bfloat16().float()
+     torch.testing.assert_close(ttnn.to_torch(actual).float(), expected, atol=0, rtol=0)
++
++
++@pytest.mark.parametrize('rows,inputs,ci,co,volume,chunk', [(65, 83, 17, 35, 3, 32), (257, 321, 128, 128, 27, 256)])
++@pytest.mark.parametrize('fp32_output', [False, True])
++def test_digit_implicit_topology_weight_and_feature_reuse(device, rows, inputs, ci, co, volume, chunk, fp32_output):
++    import ttnn
++    g = torch.Generator().manual_seed(181)
++    x = torch.randn(inputs, ci, generator=g).bfloat16()
++    ws = [(torch.randn(co, volume, ci, generator=g) / (volume * ci)**.5).bfloat16() for _ in range(2)]
++    bias = torch.randn(co, generator=g).bfloat16()
++    mapping = torch.randint(-1, inputs, (rows, volume), generator=g)
++    mapping[:32] = -1
++    mapping[32] = inputs - 1
++    mapping[-1] = -1
++    other = torch.where(mapping < 0, -1, inputs - 1 - mapping)
++    topologies = [prepare_sparse_topology(m, inputs, device=device) for m in (mapping, other)]
++    prepared = [prepare_sparse_digit_weights(w, device=device, bias=bias) for w in ws]
++    plans = [prepare_sparse_digit_implicit(prepared[0], t, row_chunk=chunk) for t in topologies]
++    assert all(p.info['path'] == 'digit_implicit_gemm' for p in plans)
++    assert plans[0] is not plans[1]
++    assert plans[0].chunks[0][2].buffer_address() != plans[1].chunks[0][2].buffer_address()
++    assert prepare_sparse_digit_implicit(prepared[0], topologies[0], row_chunk=chunk) is plans[0]
++    assert prepare_sparse_digit_implicit(prepared[1], topologies[0], row_chunk=chunk) is plans[0]
++    if volume == 27:
++        assert plans[0].info['chunks'][0]['tap_chunks'] > 1
++    for values in (x, (x.float() * .5 + .03125).bfloat16()):
++        resident = ttnn.from_torch(values, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
++        for weights, host_weights in zip(prepared, ws):
++            for topology, host_map in zip(topologies, (mapping, other)):
++                result = sparse_conv_device(resident, weights, topology, algorithm='digit_implicit_gemm',
++                    row_chunk=chunk, fp32_output=fp32_output)
++                assert result.dtype == (ttnn.float32 if fp32_output else ttnn.bfloat16)
++                expected = sparse_conv_reference(values, host_weights, host_map, bias)
++                torch.testing.assert_close(ttnn.to_torch(result).float(), expected, atol=.025, rtol=.025)
++        torch.testing.assert_close(ttnn.to_torch(resident), values, atol=0, rtol=0)
++
++
++def test_digit_implicit_volume_fallback_is_explicit(device):
++    import ttnn
++    features = torch.arange(3, dtype=torch.bfloat16).reshape(3, 1)
++    weights = prepare_sparse_digit_weights(torch.ones(1, 33, 1), device=device)
++    topology = prepare_sparse_topology(torch.zeros(3, 33, dtype=torch.long), 3, device=device)
++    plan = prepare_sparse_digit_implicit(weights, topology, row_chunk=32)
++    assert plan.info['path'] == 'digit_explicit_gemm' and plan.info['reason'] == 'kernel_volume_exceeds_32'
++    assert not weights.implicit_layers and not plan.chunks
++    resident = ttnn.from_torch(features, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
++    a = sparse_conv_device(resident, weights, topology, algorithm='digit_implicit_gemm', row_chunk=32)
++    b = sparse_conv_device(resident, weights, topology, algorithm='digit_explicit_gemm', row_chunk=32)
++    torch.testing.assert_close(ttnn.to_torch(a), ttnn.to_torch(b), atol=0, rtol=0)

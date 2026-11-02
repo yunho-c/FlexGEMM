@@ -1,0 +1,15 @@
+{
+  "status": "design only; no trace timing or implementation",
+  "priority": "After full decoder integration, measure device-only K6 time versus completed host-wall operator time before selecting this optimization.",
+  "hypothesis": "Four K6 generic_op calls per row chunk rebuild runtime descriptors for64cores and dispatch many small operations. A combined quad kernel or reusable TTNN trace may reduce host gaps as well as repeated DRAM work.",
+  "trace_conditions": [
+    "Both candidate and strong baseline need matched traced deployment mode.",
+    "Persistent graph/layout/weight/topology state allowed; no cached feature values.",
+    "Copy changed input values into fixed trace input slots inside timed scope, recompute feature scale/digits on every replay, and return fresh valid output semantics.",
+    "First compilation/capture timing reported separately; no hidden per-input work moved into preparation.",
+    "Same fixed corpus, goldens, BF16 I/O, HiFi3 and workspace bound including persistent trace work buffers.",
+    "Different same-shaped topology must rebuild/invalidate schedule.",
+    "Synchronize and check repeated changed inputs; do not infer trace benefit from removed Python code alone."
+  ],
+  "alternative": "Single four-product kernel shares high/low gathers, removes unused BF16 tables and lowers descriptor/launch count without trace state."
+}

@@ -31,6 +31,7 @@ class SparseTopology:
     permutation: object = None
     schedule: object = None
     gathers: dict = field(default_factory=dict)
+    digit_plans: dict = field(default_factory=dict)
 
 
 def prepare_sparse_weights(weight, *, device, bias=None):
@@ -100,7 +101,7 @@ def sparse_conv_device(features, weights, topology, *, algorithm="implicit_gemm"
     each chunk can access every input row, including neighbors outside it.
     """
     import ttnn
-    choices = {"explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+    choices = {"explicit_gemm", "digit_explicit_gemm", "digit_implicit_gemm", "implicit_gemm", "masked_implicit_gemm",
                "implicit_gemm_splitk", "masked_implicit_gemm_splitk"}
     if algorithm not in choices:
         raise ValueError(f"unknown Tenstorrent algorithm: {algorithm}")
@@ -119,6 +120,10 @@ def sparse_conv_device(features, weights, topology, *, algorithm="implicit_gemm"
     if algorithm == "digit_explicit_gemm":
         from .digits import sparse_digit_conv_device
         return sparse_digit_conv_device(features, weights, topology, row_chunk=row_chunk, fp32_output=fp32_output)
+    if algorithm == "digit_implicit_gemm":
+        from .digit_implicit import sparse_digit_implicit_conv_device
+        return sparse_digit_implicit_conv_device(features, weights, topology,
+            row_chunk=row_chunk, fp32_output=fp32_output)
     cp = _round32(weights.ci)
     x = ttnn.to_layout(features, ttnn.ROW_MAJOR_LAYOUT)
     if cp != weights.ci:

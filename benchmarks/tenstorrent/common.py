@@ -77,7 +77,8 @@ def summarize(samples):
 
 
 def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, available_cores=64,
-                    digit_output_assembly="concat", digit_epilogue="expanded", digit_gather="embedding"):
+                    digit_output_assembly="concat", digit_epilogue="expanded", digit_gather="embedding",
+                    digit_implicit_policy=None):
     """Model the baseline kernels' issued work/request payloads, not bus traffic.
 
     Model changes must accompany structural kernel changes. Counts include the
@@ -85,6 +86,17 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
     TTNN dense matmul physical scheduling is unavailable: its count is a logical
     padded GEMM estimate. Requested payloads exclude protocol/alignment overhead.
     """
+    if algorithm == "digit_implicit_gemm":
+        if digit_implicit_policy is None:
+            raise ValueError("implicit digit accounting requires the prepared dispatch policy")
+        if digit_implicit_policy["path"] == "digit_explicit_gemm":
+            result = work_accounting(mapping, ci, co, algorithm="digit_explicit_gemm",
+                row_chunk=row_chunk, available_cores=available_cores,
+                digit_output_assembly=digit_output_assembly, digit_epilogue=digit_epilogue,
+                digit_gather=digit_gather)
+            result["dispatch_fallback"] = digit_implicit_policy["reason"]
+            return result
+        return _digit_implicit_accounting(mapping, ci, co, row_chunk, available_cores, digit_implicit_policy)
     mapping = mapping.to(torch.int64).clone()
     mapping[mapping == 0xffffffff] = -1
     m, volume = mapping.shape
@@ -165,3 +177,52 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
             "core_tile_products": core_work,
             "core_work_max_over_mean": max(core_work) / statistics.mean(core_work) if core_work else None,
             "dram_bus_bytes": None, "noc_bus_bytes": None, "peak_workspace_bytes": None}
+
+
+def _digit_implicit_accounting(mapping, ci, co, row_chunk, cores, policy):
+    """Count four K6 calls and active taps; requested payloads are not bus traffic."""
+    mapping = mapping.to(torch.int64).clone()
+    mapping[mapping == 0xffffffff] = -1
+    m, volume = mapping.shape
+    if min(m, volume, ci, co, row_chunk, cores) <= 0 or row_chunk % 32:
+        raise ValueError("implicit digit dimensions must be positive and row chunks tile aligned")
+    if policy["path"] != "digit_implicit_gemm" or math.prod(policy["grid"]) != cores:
+        raise ValueError("implicit digit policy does not match the device grid")
+    ct, nt, mt = (ci + 31) // 32, (co + 31) // 32, (m + 31) // 32
+    padded = torch.full((mt * 32, volume), -1, dtype=torch.int64)
+    padded[:m] = mapping
+    active = (padded.reshape(mt, 32, volume) >= 0).any(1)
+    edges = int((mapping >= 0).sum())
+    tile_products = 4 * int(active.sum()) * ct * nt
+    useful, issued = 2 * edges * ci * co, tile_products * 2 * 32**3
+    work = [0] * cores
+    index_bytes = unused_output = 0
+    expected = [(start, min(start + row_chunk, m)) for start in range(0, m, row_chunk)]
+    if [(p["start"], p["end"]) for p in policy["chunks"]] != expected:
+        raise ValueError("implicit digit chunk plan does not cover the fixture exactly")
+    for plan in policy["chunks"]:
+        start, end = plan["start"], plan["end"]
+        blocks = (end - start + 31) // 32
+        for local in range(blocks):
+            work[local % cores] += 4 * int(active[start // 32 + local].sum()) * ct * nt
+        # Both data-movement RISCs read a full index page for every tap chunk.
+        index_bytes += 4 * 2 * blocks * volume * 128 * plan["tap_chunks"]
+        unused_output += 4 * (blocks * 32 + 1) * nt * 32 * 2
+    senders = policy["grid"][1] if policy["multicast"] else cores
+    return {"kind": "modeled", "model": "digit_implicit_k6_v1",
+        "valid_interactions": edges, "useful_flops": useful, "issued_flops": issued,
+        "issued_scope": "four_custom_kernel_products_with_empty_tap_skips",
+        "work_efficiency": useful / issued if issued else None, "dummy_tile_products": 0,
+        "active_block_offsets": int(active.sum()), "dense_block_offsets": mt * volume,
+        "requested_feature_bytes": 4 * edges * ct * 64,
+        "requested_weight_bytes": 4 * len(expected) * senders * volume * ct * nt * 4096,
+        "requested_map_bytes": index_bytes, "gather_output_bytes": 0,
+        "fp32_product_write_bytes": 4 * mt * nt * 32 * 32 * 4,
+        "unused_bf16_table_write_bytes": unused_output,
+        "output_assembly_copy_bytes": mt * nt * 32 * 32 * 4,
+        "split_partial_bytes": 0, "reduction_add_payload_bytes": 0,
+        "explicit_expansion_bytes": 0, "available_cores": cores, "selected_cores": cores,
+        "core_tile_products": work,
+        "core_work_max_over_mean": max(work) / statistics.mean(work) if issued else None,
+        "dram_bus_bytes": None, "noc_bus_bytes": None, "peak_workspace_bytes": None,
+        "payload_scope": "requested payloads excluding feature-preparation/reconstruction traffic and on-chip movement"}

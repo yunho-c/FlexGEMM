@@ -57,6 +57,7 @@ class SparseDigitWeights:
     volume: int
     scale_tile: object
     bias_tile: object
+    implicit_layers: tuple = ()
 
 
 def prepare_sparse_digit_weights(weight, *, device, bias=None):

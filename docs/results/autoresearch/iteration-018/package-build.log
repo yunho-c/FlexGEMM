@@ -1,0 +1,396 @@
+/home/user/tt-metal/python_env/lib/python3.10/site-packages/setuptools/config/_apply_pyprojecttoml.py:82: SetuptoolsDeprecationWarning: `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  corresp(dist, value, root_dir)
+running build
+running build_py
+creating /tmp/flexgemm-build018/lib/benchmarks
+copying benchmarks/__init__.py -> /tmp/flexgemm-build018/lib/benchmarks
+creating /tmp/flexgemm-build018/lib/flex_gemm
+copying flex_gemm/__init__.py -> /tmp/flexgemm-build018/lib/flex_gemm
+creating /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/precision_probe.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/prepare_captures.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/run.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/calibrate.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/capture_genrecon.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/common.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/evaluate.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/__init__.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/prepare_lidar.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/profile.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/memory.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/sweep.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/sol.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/digit_study.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/components.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+copying benchmarks/tenstorrent/prepare.py -> /tmp/flexgemm-build018/lib/benchmarks/tenstorrent
+creating /tmp/flexgemm-build018/lib/flex_gemm/utils
+copying flex_gemm/utils/__init__.py -> /tmp/flexgemm-build018/lib/flex_gemm/utils
+copying flex_gemm/utils/autotuner.py -> /tmp/flexgemm-build018/lib/flex_gemm/utils
+creating /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent
+copying flex_gemm/tenstorrent/digit_implicit.py -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent
+copying flex_gemm/tenstorrent/masking.py -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent
+copying flex_gemm/tenstorrent/digits.py -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent
+copying flex_gemm/tenstorrent/feature_digits.py -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent
+copying flex_gemm/tenstorrent/conv.py -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent
+copying flex_gemm/tenstorrent/__init__.py -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent
+copying flex_gemm/tenstorrent/resident.py -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent
+copying flex_gemm/tenstorrent/implicit.py -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent
+copying flex_gemm/tenstorrent/_k6.py -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent
+copying flex_gemm/tenstorrent/reference.py -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent
+copying flex_gemm/tenstorrent/gather.py -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent
+copying flex_gemm/tenstorrent/ops.py -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent
+creating /tmp/flexgemm-build018/lib/flex_gemm/kernels
+copying flex_gemm/kernels/__init__.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels
+creating /tmp/flexgemm-build018/lib/flex_gemm/ops
+copying flex_gemm/ops/__init__.py -> /tmp/flexgemm-build018/lib/flex_gemm/ops
+copying flex_gemm/ops/utils.py -> /tmp/flexgemm-build018/lib/flex_gemm/ops
+copying flex_gemm/ops/serialize.py -> /tmp/flexgemm-build018/lib/flex_gemm/ops
+creating /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton
+copying flex_gemm/kernels/triton/__init__.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton
+copying flex_gemm/kernels/triton/utils.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton
+creating /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv
+copying flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_bwd_masked_implicit_gemm_splitk.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv
+copying flex_gemm/kernels/triton/spconv/sparse_conv_masked_implicit_gemm_splitk.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv
+copying flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_fwd_implicit_gemm_splitk.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv
+copying flex_gemm/kernels/triton/spconv/sparse_conv_masked_implicit_gemm.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv
+copying flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_bwd_implicit_gemm.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv
+copying flex_gemm/kernels/triton/spconv/__init__.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv
+copying flex_gemm/kernels/triton/spconv/config.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv
+copying flex_gemm/kernels/triton/spconv/sparse_conv_implicit_gemm.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv
+copying flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_fwd_masked_implicit_gemm.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv
+copying flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_bwd_implicit_gemm_splitk.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv
+copying flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_fwd_masked_implicit_gemm_splitk.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv
+copying flex_gemm/kernels/triton/spconv/sparse_conv_implicit_gemm_splitk.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv
+copying flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_bwd_masked_implicit_gemm.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv
+copying flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_fwd_implicit_gemm.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv
+creating /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/grid_sample
+copying flex_gemm/kernels/triton/grid_sample/__init__.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/grid_sample
+copying flex_gemm/kernels/triton/grid_sample/config.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/grid_sample
+copying flex_gemm/kernels/triton/grid_sample/indice_weighed_sum_bwd.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/grid_sample
+copying flex_gemm/kernels/triton/grid_sample/indice_weighed_sum_fwd.py -> /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/grid_sample
+creating /tmp/flexgemm-build018/lib/flex_gemm/ops/spconv
+copying flex_gemm/ops/spconv/__init__.py -> /tmp/flexgemm-build018/lib/flex_gemm/ops/spconv
+copying flex_gemm/ops/spconv/submanifold_conv3d.py -> /tmp/flexgemm-build018/lib/flex_gemm/ops/spconv
+copying flex_gemm/ops/spconv/sparse_conv3d.py -> /tmp/flexgemm-build018/lib/flex_gemm/ops/spconv
+creating /tmp/flexgemm-build018/lib/flex_gemm/ops/grid_sample
+copying flex_gemm/ops/grid_sample/__init__.py -> /tmp/flexgemm-build018/lib/flex_gemm/ops/grid_sample
+copying flex_gemm/ops/grid_sample/grid_sample.py -> /tmp/flexgemm-build018/lib/flex_gemm/ops/grid_sample
+copying flex_gemm/ops/grid_sample/grid_sample_torch.py -> /tmp/flexgemm-build018/lib/flex_gemm/ops/grid_sample
+running egg_info
+creating flex_gemm.egg-info
+writing flex_gemm.egg-info/PKG-INFO
+writing dependency_links to flex_gemm.egg-info/dependency_links.txt
+writing requirements to flex_gemm.egg-info/requires.txt
+writing top-level names to flex_gemm.egg-info/top_level.txt
+writing manifest file 'flex_gemm.egg-info/SOURCES.txt'
+reading manifest file 'flex_gemm.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'flex_gemm.egg-info/SOURCES.txt'
+/home/user/tt-metal/python_env/lib/python3.10/site-packages/setuptools/command/build_py.py:215: _Warning: Package 'flex_gemm.tenstorrent.kernels' is absent from the `packages` configuration.
+!!
+
+        ********************************************************************************
+        ############################
+        # Package would be ignored #
+        ############################
+        Python recognizes 'flex_gemm.tenstorrent.kernels' as an importable package[^1],
+        but it is absent from setuptools' `packages` configuration.
+
+        This leads to an ambiguous overall configuration. If you want to distribute this
+        package, please make sure that 'flex_gemm.tenstorrent.kernels' is explicitly added
+        to the `packages` configuration field.
+
+        Alternatively, you can also rely on setuptools' discovery methods
+        (for example by using `find_namespace_packages(...)`/`find_namespace:`
+        instead of `find_packages(...)`/`find:`).
+
+        You can read more about "package discovery" on setuptools documentation page:
+
+        - https://setuptools.pypa.io/en/latest/userguide/package_discovery.html
+
+        If you don't want 'flex_gemm.tenstorrent.kernels' to be distributed and are
+        already explicitly excluding 'flex_gemm.tenstorrent.kernels' via
+        `find_namespace_packages(...)/find_namespace` or `find_packages(...)/find`,
+        you can try to use `exclude_package_data`, or `include-package-data=False` in
+        combination with a more fine grained `package-data` configuration.
+
+        You can read more about "package data files" on setuptools documentation page:
+
+        - https://setuptools.pypa.io/en/latest/userguide/datafiles.html
+
+
+        [^1]: For Python, any directory (with suitable naming) can be imported,
+              even if it does not contain any `.py` files.
+              On the other hand, currently there is no concept of package data
+              directory, all directories are treated like packages.
+        ********************************************************************************
+
+!!
+  check.warn(importable)
+/home/user/tt-metal/python_env/lib/python3.10/site-packages/setuptools/command/build_py.py:215: _Warning: Package 'flex_gemm.tenstorrent.kernels.k6' is absent from the `packages` configuration.
+!!
+
+        ********************************************************************************
+        ############################
+        # Package would be ignored #
+        ############################
+        Python recognizes 'flex_gemm.tenstorrent.kernels.k6' as an importable package[^1],
+        but it is absent from setuptools' `packages` configuration.
+
+        This leads to an ambiguous overall configuration. If you want to distribute this
+        package, please make sure that 'flex_gemm.tenstorrent.kernels.k6' is explicitly added
+        to the `packages` configuration field.
+
+        Alternatively, you can also rely on setuptools' discovery methods
+        (for example by using `find_namespace_packages(...)`/`find_namespace:`
+        instead of `find_packages(...)`/`find:`).
+
+        You can read more about "package discovery" on setuptools documentation page:
+
+        - https://setuptools.pypa.io/en/latest/userguide/package_discovery.html
+
+        If you don't want 'flex_gemm.tenstorrent.kernels.k6' to be distributed and are
+        already explicitly excluding 'flex_gemm.tenstorrent.kernels.k6' via
+        `find_namespace_packages(...)/find_namespace` or `find_packages(...)/find`,
+        you can try to use `exclude_package_data`, or `include-package-data=False` in
+        combination with a more fine grained `package-data` configuration.
+
+        You can read more about "package data files" on setuptools documentation page:
+
+        - https://setuptools.pypa.io/en/latest/userguide/datafiles.html
+
+
+        [^1]: For Python, any directory (with suitable naming) can be imported,
+              even if it does not contain any `.py` files.
+              On the other hand, currently there is no concept of package data
+              directory, all directories are treated like packages.
+        ********************************************************************************
+
+!!
+  check.warn(importable)
+copying flex_gemm/tenstorrent/K6-LICENSE -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent
+copying flex_gemm/tenstorrent/K6-NOTICE -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent
+creating /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels
+copying flex_gemm/tenstorrent/kernels/compute.cpp -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels
+copying flex_gemm/tenstorrent/kernels/copy_output_tiles.cpp -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels
+copying flex_gemm/tenstorrent/kernels/feature_digits_compute.cpp -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels
+copying flex_gemm/tenstorrent/kernels/feature_digits_reader.cpp -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels
+copying flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels
+copying flex_gemm/tenstorrent/kernels/gather.cpp -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels
+copying flex_gemm/tenstorrent/kernels/reader.cpp -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels
+copying flex_gemm/tenstorrent/kernels/writer.cpp -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels
+creating /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/k6
+copying flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/k6
+copying flex_gemm/tenstorrent/kernels/k6/k6_gather.hpp -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/k6
+copying flex_gemm/tenstorrent/kernels/k6/k6_reader.cpp -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/k6
+copying flex_gemm/tenstorrent/kernels/k6/k6_writer.cpp -> /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/k6
+running bdist_wheel
+/home/user/tt-metal/python_env/lib/python3.10/site-packages/setuptools/_distutils/cmd.py:90: SetuptoolsDeprecationWarning: setup.py install is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` directly.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        This deprecation is overdue, please update your project and remove deprecated
+        calls to avoid build errors in the future.
+
+        See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+        ********************************************************************************
+
+!!
+  self.initialize_options()
+installing to /tmp/flexgemm-bdist018
+running install
+running install_lib
+creating /tmp/flexgemm-bdist018
+creating /tmp/flexgemm-bdist018/benchmarks
+copying /tmp/flexgemm-build018/lib/benchmarks/__init__.py -> /tmp/flexgemm-bdist018/./benchmarks
+creating /tmp/flexgemm-bdist018/benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/precision_probe.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/prepare_captures.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/run.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/calibrate.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/capture_genrecon.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/common.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/evaluate.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/__init__.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/prepare_lidar.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/profile.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/memory.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/sweep.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/sol.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/digit_study.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/components.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+copying /tmp/flexgemm-build018/lib/benchmarks/tenstorrent/prepare.py -> /tmp/flexgemm-bdist018/./benchmarks/tenstorrent
+creating /tmp/flexgemm-bdist018/flex_gemm
+copying /tmp/flexgemm-build018/lib/flex_gemm/__init__.py -> /tmp/flexgemm-bdist018/./flex_gemm
+creating /tmp/flexgemm-bdist018/flex_gemm/utils
+copying /tmp/flexgemm-build018/lib/flex_gemm/utils/__init__.py -> /tmp/flexgemm-bdist018/./flex_gemm/utils
+copying /tmp/flexgemm-build018/lib/flex_gemm/utils/autotuner.py -> /tmp/flexgemm-bdist018/./flex_gemm/utils
+creating /tmp/flexgemm-bdist018/flex_gemm/tenstorrent
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/digit_implicit.py -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/masking.py -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/digits.py -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/K6-LICENSE -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/feature_digits.py -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/conv.py -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/__init__.py -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/resident.py -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent
+creating /tmp/flexgemm-bdist018/flex_gemm/tenstorrent/kernels
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/compute.cpp -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent/kernels
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/reader.cpp -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent/kernels
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/feature_digits_reader.cpp -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent/kernels
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/writer.cpp -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent/kernels
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent/kernels
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/copy_output_tiles.cpp -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent/kernels
+creating /tmp/flexgemm-bdist018/flex_gemm/tenstorrent/kernels/k6
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent/kernels/k6
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/k6/k6_reader.cpp -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent/kernels/k6
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/k6/k6_writer.cpp -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent/kernels/k6
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/k6/k6_gather.hpp -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent/kernels/k6
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/gather.cpp -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent/kernels
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/kernels/feature_digits_compute.cpp -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent/kernels
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/implicit.py -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/K6-NOTICE -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/_k6.py -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/reference.py -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/gather.py -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent
+copying /tmp/flexgemm-build018/lib/flex_gemm/tenstorrent/ops.py -> /tmp/flexgemm-bdist018/./flex_gemm/tenstorrent
+creating /tmp/flexgemm-bdist018/flex_gemm/kernels
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/__init__.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels
+creating /tmp/flexgemm-bdist018/flex_gemm/kernels/triton
+creating /tmp/flexgemm-bdist018/flex_gemm/kernels/triton/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_bwd_masked_implicit_gemm_splitk.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv/sparse_conv_masked_implicit_gemm_splitk.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_fwd_implicit_gemm_splitk.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv/sparse_conv_masked_implicit_gemm.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_bwd_implicit_gemm.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv/__init__.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv/config.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv/sparse_conv_implicit_gemm.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_fwd_masked_implicit_gemm.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_bwd_implicit_gemm_splitk.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_fwd_masked_implicit_gemm_splitk.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv/sparse_conv_implicit_gemm_splitk.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_bwd_masked_implicit_gemm.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_fwd_implicit_gemm.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/__init__.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/utils.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton
+creating /tmp/flexgemm-bdist018/flex_gemm/kernels/triton/grid_sample
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/grid_sample/__init__.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/grid_sample
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/grid_sample/config.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/grid_sample
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/grid_sample/indice_weighed_sum_bwd.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/grid_sample
+copying /tmp/flexgemm-build018/lib/flex_gemm/kernels/triton/grid_sample/indice_weighed_sum_fwd.py -> /tmp/flexgemm-bdist018/./flex_gemm/kernels/triton/grid_sample
+creating /tmp/flexgemm-bdist018/flex_gemm/ops
+creating /tmp/flexgemm-bdist018/flex_gemm/ops/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/ops/spconv/__init__.py -> /tmp/flexgemm-bdist018/./flex_gemm/ops/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/ops/spconv/submanifold_conv3d.py -> /tmp/flexgemm-bdist018/./flex_gemm/ops/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/ops/spconv/sparse_conv3d.py -> /tmp/flexgemm-bdist018/./flex_gemm/ops/spconv
+copying /tmp/flexgemm-build018/lib/flex_gemm/ops/__init__.py -> /tmp/flexgemm-bdist018/./flex_gemm/ops
+copying /tmp/flexgemm-build018/lib/flex_gemm/ops/utils.py -> /tmp/flexgemm-bdist018/./flex_gemm/ops
+creating /tmp/flexgemm-bdist018/flex_gemm/ops/grid_sample
+copying /tmp/flexgemm-build018/lib/flex_gemm/ops/grid_sample/__init__.py -> /tmp/flexgemm-bdist018/./flex_gemm/ops/grid_sample
+copying /tmp/flexgemm-build018/lib/flex_gemm/ops/grid_sample/grid_sample.py -> /tmp/flexgemm-bdist018/./flex_gemm/ops/grid_sample
+copying /tmp/flexgemm-build018/lib/flex_gemm/ops/grid_sample/grid_sample_torch.py -> /tmp/flexgemm-bdist018/./flex_gemm/ops/grid_sample
+copying /tmp/flexgemm-build018/lib/flex_gemm/ops/serialize.py -> /tmp/flexgemm-bdist018/./flex_gemm/ops
+running install_egg_info
+Copying flex_gemm.egg-info to /tmp/flexgemm-bdist018/./flex_gemm-1.0.0-py3.10.egg-info
+running install_scripts
+creating /tmp/flexgemm-bdist018/flex_gemm-1.0.0.dist-info/WHEEL
+creating '/tmp/flexgemm-wheel018/flex_gemm-1.0.0-py3-none-any.whl' and adding '/tmp/flexgemm-bdist018' to it
+adding 'benchmarks/__init__.py'
+adding 'benchmarks/tenstorrent/__init__.py'
+adding 'benchmarks/tenstorrent/calibrate.py'
+adding 'benchmarks/tenstorrent/capture_genrecon.py'
+adding 'benchmarks/tenstorrent/common.py'
+adding 'benchmarks/tenstorrent/components.py'
+adding 'benchmarks/tenstorrent/digit_study.py'
+adding 'benchmarks/tenstorrent/evaluate.py'
+adding 'benchmarks/tenstorrent/memory.py'
+adding 'benchmarks/tenstorrent/precision_probe.py'
+adding 'benchmarks/tenstorrent/prepare.py'
+adding 'benchmarks/tenstorrent/prepare_captures.py'
+adding 'benchmarks/tenstorrent/prepare_lidar.py'
+adding 'benchmarks/tenstorrent/profile.py'
+adding 'benchmarks/tenstorrent/run.py'
+adding 'benchmarks/tenstorrent/sol.py'
+adding 'benchmarks/tenstorrent/sweep.py'
+adding 'flex_gemm/__init__.py'
+adding 'flex_gemm/kernels/__init__.py'
+adding 'flex_gemm/kernels/triton/__init__.py'
+adding 'flex_gemm/kernels/triton/utils.py'
+adding 'flex_gemm/kernels/triton/grid_sample/__init__.py'
+adding 'flex_gemm/kernels/triton/grid_sample/config.py'
+adding 'flex_gemm/kernels/triton/grid_sample/indice_weighed_sum_bwd.py'
+adding 'flex_gemm/kernels/triton/grid_sample/indice_weighed_sum_fwd.py'
+adding 'flex_gemm/kernels/triton/spconv/__init__.py'
+adding 'flex_gemm/kernels/triton/spconv/config.py'
+adding 'flex_gemm/kernels/triton/spconv/sparse_conv_implicit_gemm.py'
+adding 'flex_gemm/kernels/triton/spconv/sparse_conv_implicit_gemm_splitk.py'
+adding 'flex_gemm/kernels/triton/spconv/sparse_conv_masked_implicit_gemm.py'
+adding 'flex_gemm/kernels/triton/spconv/sparse_conv_masked_implicit_gemm_splitk.py'
+adding 'flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_bwd_implicit_gemm.py'
+adding 'flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_bwd_implicit_gemm_splitk.py'
+adding 'flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_bwd_masked_implicit_gemm.py'
+adding 'flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_bwd_masked_implicit_gemm_splitk.py'
+adding 'flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_fwd_implicit_gemm.py'
+adding 'flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_fwd_implicit_gemm_splitk.py'
+adding 'flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_fwd_masked_implicit_gemm.py'
+adding 'flex_gemm/kernels/triton/spconv/sparse_submanifold_conv_fwd_masked_implicit_gemm_splitk.py'
+adding 'flex_gemm/ops/__init__.py'
+adding 'flex_gemm/ops/serialize.py'
+adding 'flex_gemm/ops/utils.py'
+adding 'flex_gemm/ops/grid_sample/__init__.py'
+adding 'flex_gemm/ops/grid_sample/grid_sample.py'
+adding 'flex_gemm/ops/grid_sample/grid_sample_torch.py'
+adding 'flex_gemm/ops/spconv/__init__.py'
+adding 'flex_gemm/ops/spconv/sparse_conv3d.py'
+adding 'flex_gemm/ops/spconv/submanifold_conv3d.py'
+adding 'flex_gemm/tenstorrent/K6-LICENSE'
+adding 'flex_gemm/tenstorrent/K6-NOTICE'
+adding 'flex_gemm/tenstorrent/__init__.py'
+adding 'flex_gemm/tenstorrent/_k6.py'
+adding 'flex_gemm/tenstorrent/conv.py'
+adding 'flex_gemm/tenstorrent/digit_implicit.py'
+adding 'flex_gemm/tenstorrent/digits.py'
+adding 'flex_gemm/tenstorrent/feature_digits.py'
+adding 'flex_gemm/tenstorrent/gather.py'
+adding 'flex_gemm/tenstorrent/implicit.py'
+adding 'flex_gemm/tenstorrent/masking.py'
+adding 'flex_gemm/tenstorrent/ops.py'
+adding 'flex_gemm/tenstorrent/reference.py'
+adding 'flex_gemm/tenstorrent/resident.py'
+adding 'flex_gemm/tenstorrent/kernels/compute.cpp'
+adding 'flex_gemm/tenstorrent/kernels/copy_output_tiles.cpp'
+adding 'flex_gemm/tenstorrent/kernels/feature_digits_compute.cpp'
+adding 'flex_gemm/tenstorrent/kernels/feature_digits_reader.cpp'
+adding 'flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp'
+adding 'flex_gemm/tenstorrent/kernels/gather.cpp'
+adding 'flex_gemm/tenstorrent/kernels/reader.cpp'
+adding 'flex_gemm/tenstorrent/kernels/writer.cpp'
+adding 'flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp'
+adding 'flex_gemm/tenstorrent/kernels/k6/k6_gather.hpp'
+adding 'flex_gemm/tenstorrent/kernels/k6/k6_reader.cpp'
+adding 'flex_gemm/tenstorrent/kernels/k6/k6_writer.cpp'
+adding 'flex_gemm/utils/__init__.py'
+adding 'flex_gemm/utils/autotuner.py'
+adding 'flex_gemm-1.0.0.dist-info/licenses/LICENSE'
+adding 'flex_gemm-1.0.0.dist-info/METADATA'
+adding 'flex_gemm-1.0.0.dist-info/WHEEL'
+adding 'flex_gemm-1.0.0.dist-info/top_level.txt'
+adding 'flex_gemm-1.0.0.dist-info/RECORD'
+removing /tmp/flexgemm-bdist018

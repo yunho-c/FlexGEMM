@@ -14,7 +14,8 @@ if BUILD_TARGET == "tenstorrent":
     from setuptools import find_packages
     setup(
         packages=find_packages(),
-        package_data={"flex_gemm.tenstorrent": ["kernels/*.cpp"]},
+        package_data={"flex_gemm.tenstorrent": ["kernels/*.cpp", "kernels/k6/*.cpp",
+                                               "kernels/k6/*.hpp", "K6-LICENSE", "K6-NOTICE"]},
     )
     raise SystemExit(0)
 
@@ -62,7 +63,8 @@ setup(
         "flex_gemm.kernels.triton.grid_sample",
         "flex_gemm.tenstorrent",
     ],
-    package_data={"flex_gemm.tenstorrent": ["kernels/*.cpp"]},
+    package_data={"flex_gemm.tenstorrent": ["kernels/*.cpp", "kernels/k6/*.cpp",
+                                           "kernels/k6/*.hpp", "K6-LICENSE", "K6-NOTICE"]},
     ext_modules=[
         CUDAExtension(
             name="flex_gemm.kernels.cuda",

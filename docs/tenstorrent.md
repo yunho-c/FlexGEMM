@@ -198,6 +198,51 @@ without issuing a device convolution. Fifteen hardware tests cover chaining,
 changed input values with cached maps/weights, ragged channels, row chunks that
 cross tile boundaries, and FP32 cancellation across reduction tiles.
 
+### Opt-in four-product implicit convolution
+
+`digit_implicit_gemm` uses the validated integer-digit decomposition with four
+fused gather/matmul calls on Wormhole. It avoids materializing the two expanded
+activation matrices in DRAM. The existing explicit digit path remains available
+as `digit_explicit_gemm`; neither changes the default algorithm.
+
+```python
+from flex_gemm.tenstorrent import (
+    prepare_sparse_digit_weights, prepare_sparse_topology,
+    prepare_sparse_digit_implicit, sparse_conv_device,
+)
+
+weights = prepare_sparse_digit_weights(weight, bias=bias, device=device)
+topology = prepare_sparse_topology(mapping, input_points, device=device)
+cp = (weight.shape[-1] + 31) // 32 * 32
+chunk = max(32, 1048576 // cp // 32 * 32)
+plan = prepare_sparse_digit_implicit(weights, topology, row_chunk=chunk)
+print(plan.info["path"], plan.info["reason"])
+output = sparse_conv_device(features_device, weights, topology,
+    algorithm="digit_implicit_gemm", row_chunk=chunk)
+```
+
+Preparation retains only weights, integer topology and shape-dependent plans.
+Feature scale and both digit tables are recomputed for every forward. A topology
+object owns its cached plans, so distinct same-shaped coordinate layouts do not
+share indices. Reuse requires immutable weights and the actual same topology.
+Calling the preparation function explicitly separates its cost from warm execution;
+the forward also prepares lazily when needed.
+
+Unsupported architectures, kernel volumes above 32, non-tile-aligned row chunks,
+and plans exceeding the 900 KiB per-core circular-buffer budget fall back to
+`digit_explicit_gemm`. The returned policy reports the selected path and reason.
+Both paths support BF16 or `fp32_output=True` results, with original row order.
+Small shapes and some wide outputs can be slower on the implicit path; this is
+an opt-in algorithm, not a universal performance dispatch policy.
+
+The K6 program builder and kernels derive from Apache-2.0 code at
+`changh95/bevfusion-p150`, revision `300095a42e61075a3d5c9916620344c1067200b8`.
+The package includes `K6-LICENSE` and `K6-NOTICE`. See the
+[autoresearch ledger](tenstorrent-autoresearch.md) for fixed numerical gates,
+workspace measurements, matched timing evidence and remaining application work.
+
+### Progression benchmark
+
 ```bash
 python examples/tenstorrent_progression.py \
     --points 256 --ci 64 --co 64 --split-k 4 --repeat 5 \

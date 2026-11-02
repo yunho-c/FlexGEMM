@@ -18,8 +18,8 @@ from .common import correctness, sha256, summarize, work_accounting, write_json
 
 
 def source_state(root):
-    paths = sorted((root / "flex_gemm" / "tenstorrent").rglob("*.py"))
-    paths += sorted((root / "flex_gemm" / "tenstorrent").rglob("*.cpp"))
+    paths = sorted(p for p in (root / "flex_gemm" / "tenstorrent").rglob("*")
+                   if p.suffix in (".py", ".cpp", ".hpp", ".h"))
     return {"root": str(root), "commit": subprocess.check_output(
         ["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip(),
         "dirty": bool(subprocess.check_output(["git", "-C", str(root), "status", "--porcelain"], text=True)),
@@ -119,14 +119,17 @@ def main():
         report["math_fidelity"] = str(_matmul_fidelity(device))
         if device.arch() == ttnn.Arch.WORMHOLE_B0 and _matmul_fidelity(device) != ttnn.MathFidelity.HiFi3:
             raise ValueError("candidate changed the fixed Wormhole fidelity")
-        report["work"] = work_accounting(fixture["mapping"], entry["ci"], entry["co"],
-            algorithm=config["algorithm"], split_k=config.get("split_k", 1),
-            row_chunk=config.get("row_chunk", 256), available_cores=grid.x * grid.y,
-            digit_output_assembly=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "OUTPUT_ASSEMBLY", "concat"),
-            digit_epilogue=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "EPILOGUE", "expanded"),
-            digit_gather=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "GATHER", "embedding"))
+        def account(policy=None):
+            return work_accounting(fixture["mapping"], entry["ci"], entry["co"],
+                algorithm=config["algorithm"], split_k=config.get("split_k", 1),
+                row_chunk=config.get("row_chunk", 256), available_cores=grid.x * grid.y,
+                digit_output_assembly=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "OUTPUT_ASSEMBLY", "concat"),
+                digit_epilogue=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "EPILOGUE", "expanded"),
+                digit_gather=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "GATHER", "embedding"),
+                digit_implicit_policy=policy)
+        report["work"] = None if config["algorithm"] == "digit_implicit_gemm" else account()
         digit_module = sys.modules.get("flex_gemm.tenstorrent.digits")
-        if config["algorithm"] == "digit_explicit_gemm":
+        if config["algorithm"] in ("digit_explicit_gemm", "digit_implicit_gemm"):
             report["feature_digit_preparation"] = getattr(digit_module, "FEATURE_PREPARATION", "unfused")
         if (config["algorithm"] == "digit_explicit_gemm" and hasattr(digit_module, "matmul_plan")
                 and device.arch() == ttnn.Arch.WORMHOLE_B0):
@@ -141,19 +144,27 @@ def main():
                     "plan": digit_module.matmul_plan(count, entry["volume"] * ((entry["ci"] + 31) // 32 * 32),
                                                     entry["co"], (grid.x, grid.y))}
                     for count, occurrences in counts.items()]}
-        mandatory = report["work"]["split_partial_bytes"] + report["work"]["explicit_expansion_bytes"]
+        mandatory = (report["work"]["split_partial_bytes"] + report["work"]["explicit_expansion_bytes"]
+                     if report["work"] is not None else 0)
         if mandatory > contract["workspace_limit_bytes"]:
             raise ValueError("mandatory intermediate storage exceeds workspace cap")
         phase("prepare")
         before = memory(device)
         start = time.perf_counter()
-        prepare_weights = (candidate.prepare_sparse_digit_weights if config["algorithm"] == "digit_explicit_gemm"
+        prepare_weights = (candidate.prepare_sparse_digit_weights if config["algorithm"] in ("digit_explicit_gemm", "digit_implicit_gemm")
                            else candidate.prepare_sparse_weights)
         weights = prepare_weights(fixture["weight"], bias=fixture["bias"], device=device)
         topology = candidate.prepare_sparse_topology(fixture["mapping"], len(fixture["features"][0]),
             device=device, masked=config["algorithm"].startswith("masked"))
+        if config["algorithm"] == "digit_implicit_gemm":
+            plan = candidate.prepare_sparse_digit_implicit(weights, topology, row_chunk=config.get("row_chunk", 256))
+            report["digit_implicit_policy"] = plan.info
         ttnn.synchronize_device(device)
         report["static_prepare_ms"] = (time.perf_counter() - start) * 1000
+        if config["algorithm"] == "digit_implicit_gemm":
+            report["work"] = account(report["digit_implicit_policy"])
+            if report["work"]["explicit_expansion_bytes"] > contract["workspace_limit_bytes"]:
+                raise ValueError("fallback expansion exceeds workspace cap")
         features = [ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT,
                                     device=device) for x in fixture["features"]]
         ttnn.synchronize_device(device)

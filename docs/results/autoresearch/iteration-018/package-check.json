@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "wheel": "/tmp/flexgemm-wheel018/flex_gemm-1.0.0-py3-none-any.whl",
+  "wheel_sha256": "4172da9e874300e7738a1d26e2cc4719995f47d902c0e01cc1877b4802b0912f",
+  "verified_files": [
+    "flex_gemm/tenstorrent/digit_implicit.py",
+    "flex_gemm/tenstorrent/_k6.py",
+    "flex_gemm/tenstorrent/K6-LICENSE",
+    "flex_gemm/tenstorrent/K6-NOTICE",
+    "flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp",
+    "flex_gemm/tenstorrent/kernels/k6/k6_reader.cpp",
+    "flex_gemm/tenstorrent/kernels/k6/k6_writer.cpp",
+    "flex_gemm/tenstorrent/kernels/k6/k6_gather.hpp"
+  ]
+}
