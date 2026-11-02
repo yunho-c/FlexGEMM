@@ -1,0 +1,13 @@
+{
+  "status": "failed",
+  "lock": "/tmp/genrecon-tt-pjrt.lock",
+  "case": "poster-shape-wide-4490",
+  "config": {},
+  "candidate_root": "/home/user/GitHub/flexgemm-autoresearch",
+  "workload": "calibration",
+  "lock_wait_seconds": 1.0390009265393019e-05,
+  "returncode": 1,
+  "timeout": null,
+  "elapsed_seconds": 7.016616425011307,
+  "device_recovery_required": false
+}

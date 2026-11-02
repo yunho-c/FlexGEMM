@@ -2,6 +2,7 @@
 
 import argparse
 import gc
+import gzip
 import json
 import os
 from pathlib import Path
@@ -44,7 +45,7 @@ def main():
     p.add_argument("--repeat", type=int, default=11)
     p.add_argument("--device", type=int, default=0)
     p.add_argument("--threads", type=int, default=8)
-    p.add_argument("--mode", choices=("timing", "correctness", "profile"), default="timing")
+    p.add_argument("--mode", choices=("timing", "correctness", "profile", "memory"), default="timing")
     args = p.parse_args()
     if not os.environ.get("FLEX_GEMM_EVALUATOR_LOCKED"):
         p.error("run through benchmarks.tenstorrent.run to serialize device access")
@@ -147,6 +148,25 @@ def main():
         for index in range(len(features)):
             output = execute(index)
             output = None
+        if args.mode == "memory":
+            from .memory import workspace_bound
+            phase("capture_memory")
+            ttnn.graph.begin_graph_capture(ttnn.graph.RunMode.NORMAL)
+            try:
+                output = execute(0)
+            finally:
+                allocation_trace = ttnn.graph.end_graph_capture()
+            trace_path = args.output.with_suffix(".allocations.json.gz")
+            with gzip.open(trace_path, "wt") as stream:
+                json.dump(allocation_trace, stream)
+            dram = ttnn.get_memory_view(device, ttnn.BufferType.DRAM)
+            l1 = ttnn.get_memory_view(device, ttnn.BufferType.L1)
+            report["workspace"] = workspace_bound(allocation_trace, dram_banks=dram.num_banks,
+                l1_capacity_bytes=l1.num_banks * l1.total_bytes_per_bank,
+                limit_bytes=contract["workspace_limit_bytes"])
+            report["workspace"].update(trace_path=str(trace_path), trace_sha256=sha256(trace_path))
+            check(output, 0, "memory_capture")
+            output = None
         phase("measure")
         for iteration in range(args.repeat):
             index = iteration % len(features)
@@ -170,6 +190,8 @@ def main():
         report["candidate_source_unchanged"] = source_state(candidate_root)["sha256"] == report["candidate"]["sha256"]
         passed = all(c["passed"] for c in report["checks"]) and all(report[k] for k in (
             "input_unchanged", "protected_files_unchanged", "fixture_unchanged", "candidate_source_unchanged"))
+        if args.mode == "memory":
+            passed &= report["workspace"]["within_limit"]
         report["status"] = "passed" if passed else "numerical_or_integrity_failure"
     except Exception as error:
         report.update(status="execution_failure", error=f"{type(error).__name__}: {error}",

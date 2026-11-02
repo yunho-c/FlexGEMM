@@ -93,11 +93,69 @@ snapshots are not peaks. The runner rejects mandatory buffers above the 1 GiB
 workspace limit, but complete peak-workspace verification is still pending;
 passing this lower-bound check does not prove compliance with the full cap.
 
+The new `--mode memory` run captures actual allocator events across a warmed
+forward. Its conservative bound counts all new aligned DRAM allocations,
+including the final output, and adds the entire device L1 capacity. Resident
+inputs, weights and topology predate capture. The smoke capture passed on
+hardware in iteration 002; each promoted candidate/case still requires its own
+capture. The compressed allocation trace is saved beside the report.
+
 The accounting model is tagged `baseline_v1`. Structural kernel changes require
 an updated model; do not continue reporting obsolete traffic counts. Missing
-measurements are null. Fixed workload SoL bounds, calibrated dense/gather
-reference rates, device wait timing and hardware-counter capture are the next
-measurement tasks. No numerical SoL utilization is claimed before calibration.
+measurements are null. Iteration 002 establishes initial dense/gather empirical
+references and device wait timing. Hardware counters and a complete memory/
+communication lower bound remain outstanding.
+
+`sol.py` now provides the separate arithmetic-only capacity reference. The
+[pinned SDK's GEMM report](https://github.com/tenstorrent/tt-metal/blob/9f9cd4fd590f4b606bd0981a4fe0b6403eb38ec9/tech_reports/GEMM_FLOPS/GEMM_FLOPS.md)
+specifies 48 ideal cycles per 32×32×32 HiFi3 tile product. At the captured
+1 GHz clock with the available 8×8 grid, this gives 87.381 TFLOP/s and a
+6.558 ms useful-arithmetic bound for the 4,490-row wide layer. This excludes
+indexing, communication and launch overhead; it is not an attainable latency
+prediction. Memory bounds and measured empirical rates remain separate.
+
+## Screening, confirmation and diagnostics
+
+`sweep.py --screen` runs one baseline and the configured candidates per case.
+Without `--screen`, it brackets each candidate with baseline trials, shuffles
+candidate order reproducibly, and repeats the brackets. The supplied parameter
+set includes an unchanged baseline control. Failed or missing cases remain in
+the summary and invalidate aggregate scores. A consistent screening win needs
+at least three rounds and an improvement beyond both the observed variation
+and a prespecified 2% margin. This is a screening heuristic, not a statistical
+confidence interval or automatic promotion decision.
+
+```bash
+python -m benchmarks.tenstorrent.sweep \
+  --corpus /home/user/tt-scratchpad/flexgemm-autoresearch/corpus-v2 \
+  --cases poster-shape-wide-4490 \
+  --candidates benchmarks/tenstorrent/configs/row_chunks.json \
+  --output /tmp/flexgemm-chunk-screen --screen --repeat 7
+
+python -m benchmarks.tenstorrent.run \
+  --corpus /home/user/tt-scratchpad/flexgemm-autoresearch/corpus-v2 \
+  --case poster-shape-wide-4490 --workload calibration --config '{}' \
+  --output /tmp/flexgemm-calibration.json
+
+python -m benchmarks.tenstorrent.run \
+  --corpus /home/user/tt-scratchpad/flexgemm-autoresearch/corpus-v2 \
+  --case shape-norm-silu-513-known-failure --workload precision \
+  --config '{"algorithm":"explicit_gemm","row_chunk":256}' \
+  --output /tmp/flexgemm-precision.json
+```
+
+Calibration uses resident dense matmul, DRAM clone, tilize/untilize, and the
+captured embedding gather. Logical payload rates are not bus counters or hard
+ceilings. The validated dense reference uses BF16 small-integer inputs and
+FP32 output; its output format differs from the BF16 operator track. The
+precision diagnostic separately checks the raw GEMM, device bias
+addition, host FP32 bias addition after download, and one final BF16 conversion.
+It is unscored: successful execution means only that the diagnostic completed.
+
+Custom profiler regions identify implicit reader/compute/writer spans and
+accumulate reader buffer-wait and gather-plus-weight time. The SDK's existing
+compute CB wait counters retain their two accumulation slots. These instrumented
+runs are separate from lean latency measurements.
 
 ## Iteration ledger
 
@@ -152,6 +210,41 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   error. The expanded corpus prevents optimizing only tiny synthetic cases.
   No kernel/configuration has been promoted yet. Next: explicit row-chunk
   screening, paired confirmations, wait profiling and resource calibration.
+
+### 002 — wait attribution, calibration and workspace capture
+
+- Evidence: baseline profiling had no operation identity or accumulated waits;
+  live allocation snapshots could not verify temporary workspace.
+- Work: named reader/compute/writer regions, reader wait/gather accumulation,
+  serialized configuration screening and bracketed comparisons, arithmetic
+  capacity references, allocator-event capture and unscored precision probes.
+  Vectorized the arithmetic model; all nine real shape models now run without
+  per-block Python loops (the largest takes about 1.75 s on this CPU).
+- Validation: 10 CPU evaluator tests pass. Hardware memory capture on the
+  surface-256 explicit case records seven DRAM allocations, a 1,830,912-byte
+  peak of new aligned DRAM allocations, and a 91,013,120-byte conservative
+  workspace bound after adding all device L1 capacity. This verifies only that
+  case/configuration; larger and changed candidates still require capture.
+- Profile: all seven custom implicit programs were identified, with zero
+  unmatched events. The last two spans are 262.4–262.8 us. Reader gather-plus-
+  weight time is about 238 us median per core, reader buffer wait about 3 us,
+  and compute input-buffer wait about 251 us. These overlapping intervals
+  support a data-supply hypothesis; they must not be added together.
+- Calibration: an initial BF16-output small-integer dense test failed exact
+  equality and is retained as rejected calibration evidence. Repeating with
+  FP32 output passes exact equality: 27.899 TFLOP/s for 1024×4096×2048 and
+  23.970 TFLOP/s for 256×27648×4096. These are host-completed operator rates,
+  not hardware maxima, and their output format differs from the BF16 track.
+  Exact-copy tests pass at 131.0 GB/s logical DRAM-clone payload, 138.3 GB/s
+  tilize and 124.0 GB/s untilize. Captured gathers measure 61.3 and 78.3 GB/s
+  logical payload for 256 and 2048 output rows. None are bus counter readings.
+- Precision: the known failure survives FP32 GEMM output plus host FP32 bias
+  addition, so postponing output rounding alone does not fix it. Raw-output
+  tolerance checks pass because their reference has a different magnitude;
+  the original bias-inclusive acceptance gate still fails. No threshold changed.
+- Interpretation: measurement paths now work on hardware. No performance
+  candidate has been promoted. Next: the chunk/gather screen, paired repeats,
+  full correctness coverage and per-candidate memory capture.
 
 The additional CPU capture tools are:
 

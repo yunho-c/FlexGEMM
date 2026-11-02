@@ -1,0 +1,107 @@
+{
+  "manifest_sha256": "c5c08d454f75c8b0a78f6b3909d3c700c999ef188264c000bac0cc8c68e6ed67",
+  "cases": {
+    "n4490-1024x1024-k3x3x3": {
+      "kind": "theoretical_matrix_capacity",
+      "useful_flops": 143260647424,
+      "clock_mhz": 1000.0,
+      "available_cores": 64,
+      "fidelity_phases": 3,
+      "capacity_tflops": 87.38133333333333,
+      "arithmetic_lower_bound_ms": 1.639488,
+      "memory_lower_bound_ms": null,
+      "scope": "optimistic arithmetic-only bound; excludes sparse indexing, communication, dependencies and launch overhead"
+    },
+    "n4490-1024x4096-k3x3x3": {
+      "kind": "theoretical_matrix_capacity",
+      "useful_flops": 573042589696,
+      "clock_mhz": 1000.0,
+      "available_cores": 64,
+      "fidelity_phases": 3,
+      "capacity_tflops": 87.38133333333333,
+      "arithmetic_lower_bound_ms": 6.557952,
+      "memory_lower_bound_ms": null,
+      "scope": "optimistic arithmetic-only bound; excludes sparse indexing, communication, dependencies and launch overhead"
+    },
+    "n20251-512x512-k3x3x3": {
+      "kind": "theoretical_matrix_capacity",
+      "useful_flops": 164709793792,
+      "clock_mhz": 1000.0,
+      "available_cores": 64,
+      "fidelity_phases": 3,
+      "capacity_tflops": 87.38133333333333,
+      "arithmetic_lower_bound_ms": 1.884954,
+      "memory_lower_bound_ms": null,
+      "scope": "optimistic arithmetic-only bound; excludes sparse indexing, communication, dependencies and launch overhead"
+    },
+    "n20251-512x2048-k3x3x3": {
+      "kind": "theoretical_matrix_capacity",
+      "useful_flops": 658839175168,
+      "clock_mhz": 1000.0,
+      "available_cores": 64,
+      "fidelity_phases": 3,
+      "capacity_tflops": 87.38133333333333,
+      "arithmetic_lower_bound_ms": 7.539816,
+      "memory_lower_bound_ms": null,
+      "scope": "optimistic arithmetic-only bound; excludes sparse indexing, communication, dependencies and launch overhead"
+    },
+    "n88524-256x256-k3x3x3": {
+      "kind": "theoretical_matrix_capacity",
+      "useful_flops": 166276366336,
+      "clock_mhz": 1000.0,
+      "available_cores": 64,
+      "fidelity_phases": 3,
+      "capacity_tflops": 87.38133333333333,
+      "arithmetic_lower_bound_ms": 1.9028820000000002,
+      "memory_lower_bound_ms": null,
+      "scope": "optimistic arithmetic-only bound; excludes sparse indexing, communication, dependencies and launch overhead"
+    },
+    "n88524-256x1024-k3x3x3": {
+      "kind": "theoretical_matrix_capacity",
+      "useful_flops": 665105465344,
+      "clock_mhz": 1000.0,
+      "available_cores": 64,
+      "fidelity_phases": 3,
+      "capacity_tflops": 87.38133333333333,
+      "arithmetic_lower_bound_ms": 7.611528000000001,
+      "memory_lower_bound_ms": null,
+      "scope": "optimistic arithmetic-only bound; excludes sparse indexing, communication, dependencies and launch overhead"
+    },
+    "n388659-128x128-k3x3x3": {
+      "kind": "theoretical_matrix_capacity",
+      "useful_flops": 181985378304,
+      "clock_mhz": 1000.0,
+      "available_cores": 64,
+      "fidelity_phases": 3,
+      "capacity_tflops": 87.38133333333333,
+      "arithmetic_lower_bound_ms": 2.082657375,
+      "memory_lower_bound_ms": null,
+      "scope": "optimistic arithmetic-only bound; excludes sparse indexing, communication, dependencies and launch overhead"
+    },
+    "n388659-128x512-k3x3x3": {
+      "kind": "theoretical_matrix_capacity",
+      "useful_flops": 727941513216,
+      "clock_mhz": 1000.0,
+      "available_cores": 64,
+      "fidelity_phases": 3,
+      "capacity_tflops": 87.38133333333333,
+      "arithmetic_lower_bound_ms": 8.3306295,
+      "memory_lower_bound_ms": null,
+      "scope": "optimistic arithmetic-only bound; excludes sparse indexing, communication, dependencies and launch overhead"
+    },
+    "n1711800-64x64-k3x3x3": {
+      "kind": "theoretical_matrix_capacity",
+      "useful_flops": 199432388608,
+      "clock_mhz": 1000.0,
+      "available_cores": 64,
+      "fidelity_phases": 3,
+      "capacity_tflops": 87.38133333333333,
+      "arithmetic_lower_bound_ms": 2.2823225625,
+      "memory_lower_bound_ms": null,
+      "scope": "optimistic arithmetic-only bound; excludes sparse indexing, communication, dependencies and launch overhead"
+    }
+  },
+  "source": "https://github.com/tenstorrent/tt-metal/blob/9f9cd4fd590f4b606bd0981a4fe0b6403eb38ec9/tech_reports/GEMM_FLOPS/GEMM_FLOPS.md",
+  "precision_contract": "BF16 operands, HiFi3, FP32 destination accumulation",
+  "note": "A low percentage does not establish a realizable reciprocal speedup. Measured calibration is separate."
+}

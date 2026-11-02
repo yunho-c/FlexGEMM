@@ -1,0 +1,230 @@
+{
+  "status": "passed",
+  "kind": "empirical_reference",
+  "config": {},
+  "case": {
+    "name": "poster-shape-wide-4490",
+    "split": "application",
+    "file": "poster-shape-wide-4490.pt",
+    "sha256": "bfd3687f5db3d571119a2a69e4524e3eb531158d0a6f2ffbde5c9866844ab34b",
+    "points": 4490,
+    "ci": 1024,
+    "co": 4096,
+    "volume": 27,
+    "valid_interactions": 68312,
+    "occurrences": null,
+    "provenance": {
+      "kind": "captured_decoder_layer",
+      "capture": "/home/user/tt-scratchpad/genrecon/sparse-decoder-poster-bounded/shape_wide_input.pt",
+      "capture_sha256": "d9dbec7db2dcdde98ba7e2189dd3b93ecab0e604c2419be412e17c016210e6cc",
+      "checkpoint": "/home/user/models/genrecon/trellis2/ckpts/shape_dec_next_dc_f16c32_fp16.safetensors",
+      "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581",
+      "layer": "blocks.0.4.conv1",
+      "source_scene": "poster",
+      "feature_variant_1": "synthetic perturbation of captured activations"
+    },
+    "prepare_seconds": 5.207897468004376
+  },
+  "mode": "timing",
+  "operations": [
+    {
+      "name": "dense_1024x4096x2048",
+      "timing": {
+        "median_ms": 0.6157830357551575,
+        "min_ms": 0.5428119911812246,
+        "max_ms": 0.6368429749272764,
+        "mad_ms": 0.021059939172118902,
+        "samples_ms": [
+          0.6368429749272764,
+          0.6162820500321686,
+          0.6192330038174987,
+          0.6157830357551575,
+          0.5922320415265858,
+          0.5428119911812246,
+          0.5925630102865398
+        ]
+      },
+      "exact_reference_match": true,
+      "flops": 17179869184,
+      "shape": [
+        1024,
+        4096,
+        2048
+      ],
+      "input_distribution": "integers -2 through 2",
+      "output_dtype": "float32 (separate from the BF16-output operator contract)",
+      "max_abs_error": 0.0,
+      "tflops": 27.899224542507397
+    },
+    {
+      "name": "dense_256x27648x4096",
+      "timing": {
+        "median_ms": 2.4189800024032593,
+        "min_ms": 2.4118800065480173,
+        "max_ms": 2.456250018440187,
+        "mad_ms": 0.006541027687489986,
+        "samples_ms": [
+          2.4405999574810266,
+          2.4189800024032593,
+          2.4124389747157693,
+          2.415510010905564,
+          2.4206300149671733,
+          2.4118800065480173,
+          2.456250018440187
+        ]
+      },
+      "exact_reference_match": true,
+      "flops": 57982058496,
+      "shape": [
+        256,
+        27648,
+        4096
+      ],
+      "input_distribution": "integers -2 through 2",
+      "output_dtype": "float32 (separate from the BF16-output operator contract)",
+      "max_abs_error": 0.0,
+      "tflops": 23.969631182727746
+    },
+    {
+      "name": "dram_clone",
+      "timing": {
+        "median_ms": 0.5122129805386066,
+        "min_ms": 0.4986720159649849,
+        "max_ms": 0.5383819807320833,
+        "mad_ms": 0.01354096457362175,
+        "samples_ms": [
+          0.5383819807320833,
+          0.5122129805386066,
+          0.504351977724582,
+          0.5092619685456157,
+          0.4986720159649849,
+          0.5334420129656792,
+          0.5371329607442021
+        ]
+      },
+      "exact_reference_match": true,
+      "logical_bytes": 67108864,
+      "shape": [
+        65536,
+        256
+      ],
+      "max_abs_error": 0.0,
+      "logical_gbps": 131.01749965304103
+    },
+    {
+      "name": "tilize",
+      "timing": {
+        "median_ms": 0.48533198423683643,
+        "min_ms": 0.4795319982804358,
+        "max_ms": 0.549832999240607,
+        "mad_ms": 0.005799985956400633,
+        "samples_ms": [
+          0.549832999240607,
+          0.5366120021790266,
+          0.5059920367784798,
+          0.48533198423683643,
+          0.4795319982804358,
+          0.48315199092030525,
+          0.48337201587855816
+        ]
+      },
+      "exact_reference_match": true,
+      "logical_bytes": 67108864,
+      "shape": [
+        65536,
+        256
+      ],
+      "max_abs_error": 0.0,
+      "logical_gbps": 138.27414260678862
+    },
+    {
+      "name": "untilize",
+      "timing": {
+        "median_ms": 0.541121989954263,
+        "min_ms": 0.46745099825784564,
+        "max_ms": 0.5515020457096398,
+        "mad_ms": 0.010380055755376816,
+        "samples_ms": [
+          0.5515020457096398,
+          0.505932024680078,
+          0.46745099825784564,
+          0.4952730378136039,
+          0.5440019886009395,
+          0.541121989954263,
+          0.549652031622827
+        ]
+      },
+      "exact_reference_match": true,
+      "logical_bytes": 67108864,
+      "shape": [
+        65536,
+        256
+      ],
+      "max_abs_error": 0.0,
+      "logical_gbps": 124.01799454809111
+    },
+    {
+      "name": "embedding_256",
+      "timing": {
+        "median_ms": 0.462281983345747,
+        "min_ms": 0.45763200614601374,
+        "max_ms": 0.4834919818677008,
+        "mad_ms": 0.0002300366759300232,
+        "samples_ms": [
+          0.4834919818677008,
+          0.462281983345747,
+          0.4625020083039999,
+          0.45763200614601374,
+          0.462512020021677,
+          0.4622620181180537,
+          0.45991200022399426
+        ]
+      },
+      "exact_reference_match": true,
+      "logical_bytes": 28339200,
+      "rows": 256,
+      "channels": 1024,
+      "volume": 27,
+      "max_abs_error": 0.0,
+      "logical_gbps": 61.30284333145799
+    },
+    {
+      "name": "embedding_2048",
+      "timing": {
+        "median_ms": 2.8954820008948445,
+        "min_ms": 2.888861985411495,
+        "max_ms": 2.9255319968797266,
+        "mad_ms": 0.006620015483349562,
+        "samples_ms": [
+          2.9255319968797266,
+          2.8931020060554147,
+          2.892591990530491,
+          2.888861985411495,
+          2.9038810171186924,
+          2.9053810285404325,
+          2.8954820008948445
+        ]
+      },
+      "exact_reference_match": true,
+      "logical_bytes": 226713600,
+      "rows": 2048,
+      "channels": 1024,
+      "volume": 27,
+      "max_abs_error": 0.0,
+      "logical_gbps": 78.29908800328737
+    }
+  ],
+  "hardware_counters": null,
+  "timing_scope": "resident operator, host wall time with device synchronization; upload/download excluded",
+  "byte_scope": "logical payload, not measured DRAM or NoC bus traffic",
+  "source_sha256": "0d5ccfa1374ed9ec8385d9cb5019e92310746c0260c2960ad67f1b5bcce7038b",
+  "torch": "2.11.0+cpu",
+  "tt_metal_commit": "9f9cd4fd590f4b606bd0981a4fe0b6403eb38ec9",
+  "phase": "complete",
+  "arch": "Arch.WORMHOLE_B0",
+  "available_grid": [
+    8,
+    8
+  ],
+  "math_fidelity": "MathFidelity.HiFi3"
+}

@@ -56,18 +56,22 @@ def main():
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--repeat", type=int, default=11)
     p.add_argument("--device", type=int, default=0)
-    p.add_argument("--mode", choices=("timing", "correctness", "profile"), default="timing")
+    p.add_argument("--mode", choices=("timing", "correctness", "profile", "memory"), default="timing")
+    p.add_argument("--workload", choices=("convolution", "calibration", "precision"), default="convolution")
     p.add_argument("--compile-timeout", type=float, default=240)
     p.add_argument("--execution-timeout", type=float, default=180)
     p.add_argument("--lock-timeout", type=float, default=30)
     args = p.parse_args()
+    if args.mode == "memory" and args.workload != "convolution":
+        p.error("memory capture is supported for convolution trials")
     if args.output.exists():
         p.error("output path must be fresh")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     contract = json.loads((args.corpus / "contract.json").read_text())
     lock_path = contract["device_lock"]
     record = {"status": "waiting_for_device", "lock": lock_path, "case": args.case,
-              "config": json.loads(args.config), "candidate_root": str(args.candidate_root)}
+              "config": json.loads(args.config), "candidate_root": str(args.candidate_root),
+              "workload": args.workload}
     runner_path = args.output.with_suffix(".runner.json")
     write_json(runner_path, record)
     with open(lock_path, "a") as lock:
@@ -84,7 +88,8 @@ def main():
                 time.sleep(.2)
         record.update(status="running", lock_wait_seconds=time.monotonic() - start)
         write_json(runner_path, record)
-        command = [sys.executable, "-m", "benchmarks.tenstorrent.evaluate", "--corpus", str(args.corpus),
+        worker = {"convolution": "evaluate", "calibration": "calibrate", "precision": "precision_probe"}[args.workload]
+        command = [sys.executable, "-m", "benchmarks.tenstorrent." + worker, "--corpus", str(args.corpus),
             "--case", args.case, "--candidate-root", str(args.candidate_root), "--config", args.config,
             "--output", str(args.output), "--repeat", str(args.repeat), "--device", str(args.device),
             "--mode", args.mode]

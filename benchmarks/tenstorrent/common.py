@@ -94,7 +94,10 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
         raise ValueError("invalid split_k")
     edges = int((mapping >= 0).sum())
     useful = 2 * edges * ci * co
-    explicit = algorithm == "explicit_gemm"
+    fused_gather = algorithm == "tiled_gather_gemm"
+    explicit = algorithm in ("explicit_gemm", "tiled_gather_gemm")
+    if fused_gather and row_chunk < m and row_chunk % 32:
+        raise ValueError("tiled gather chunk must be tile aligned")
     masked = algorithm.startswith("masked")
     split_k = split_k if algorithm.endswith("splitk") else 1
     if masked:
@@ -116,22 +119,24 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
         padded_rows = sum(math.ceil(min(row_chunk, m - start) / 32) * 32
                           for start in range(0, m, row_chunk))
         tile_products = padded_rows // 32 * nt * volume * ct
+        if fused_gather:
+            feature_bytes = edges * ct * 64
+            map_reads = padded_rows // 32 * volume
     else:
         for split in range(split_k):
             begin, end = volume * ct * split // split_k, volume * ct * (split + 1) // split_k
-            for block in range(mt):
-                count = 0
-                for offset in range(volume):
-                    channels = max(0, min(end, (offset + 1) * ct) - max(begin, offset * ct))
-                    if not channels or (masked and not active[block, offset]):
-                        continue
-                    count += channels
-                    map_reads += nt
-                    feature_bytes += nt * int(valid[block, offset]) * channels * 64
-                    weight_bytes += nt * channels * 2048
-                dummy += nt if count == 0 else 0
-                tile_products += nt * max(1, count)
-                task_work.extend([max(1, count)] * nt)
+            channels = torch.tensor([max(0, min(end, (offset + 1) * ct) - max(begin, offset * ct))
+                                     for offset in range(volume)])
+            issued_channels = channels.unsqueeze(0).expand(mt, volume)
+            if masked:
+                issued_channels = issued_channels * active
+            counts = issued_channels.sum(1)
+            map_reads += nt * int((issued_channels > 0).sum())
+            feature_bytes += nt * int((valid * issued_channels).sum()) * 64
+            weight_bytes += nt * int(counts.sum()) * 2048
+            dummy += nt * int((counts == 0).sum())
+            tile_products += nt * int(counts.clamp_min(1).sum())
+            task_work.extend(counts.clamp_min(1).repeat_interleave(nt).tolist())
     issued = tile_products * 2 * 32**3
     ncores = min(len(task_work), available_cores) if task_work else None
     core_work = [sum(task_work[len(task_work) * i // ncores:len(task_work) * (i + 1) // ncores])
@@ -140,16 +145,17 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
     # Payload of S-1 FP32 adds: two inputs and one output per add. Slices/casts
     # may add traffic, so this is not total reduction traffic or peak workspace.
     reduction_bytes = (split_k - 1) * mt * 32 * nt * 32 * 12
-    return {"kind": "modeled", "model": "baseline_v1",
+    return {"kind": "modeled", "model": "tiled_gather_v1" if fused_gather else "baseline_v1",
             "valid_interactions": edges, "useful_flops": useful, "issued_flops": issued,
             "issued_scope": "logical_padded_gemm" if explicit else "custom_kernel_tile_products",
             "work_efficiency": useful / issued, "dummy_tile_products": dummy,
             "active_block_offsets": int(active.sum()), "dense_block_offsets": mt * volume,
-            "requested_feature_bytes": None if explicit else feature_bytes,
+            "requested_feature_bytes": feature_bytes if fused_gather or not explicit else None,
             "requested_weight_bytes": None if explicit else weight_bytes,
-            "requested_map_bytes": None if explicit else map_reads * 128,
+            "requested_map_bytes": map_reads * 128 if fused_gather or not explicit else None,
+            "gather_output_bytes": padded_rows * volume * ct * 64 if fused_gather else None,
             "split_partial_bytes": partial_bytes, "reduction_add_payload_bytes": reduction_bytes,
-            "explicit_expansion_bytes": min(row_chunk, m) * volume * ct * 32 * 2 if explicit else 0,
+            "explicit_expansion_bytes": math.ceil(min(row_chunk, m) / 32) * 32 * volume * ct * 32 * 2 if explicit else 0,
             "available_cores": available_cores, "selected_cores": ncores,
             "core_tile_products": core_work,
             "core_work_max_over_mean": max(core_work) / statistics.mean(core_work) if core_work else None,

@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 #include "api/dataflow/dataflow_api.h"
+#include "tools/profiler/kernel_profiler.hpp"
 
 void kernel_main() {
+    DeviceZoneScopedN("FG_IMPLICIT_WRITER");
     const uint32_t addr = get_arg_val<uint32_t>(0);
     const uint32_t start = get_arg_val<uint32_t>(1);
     const uint32_t count = get_arg_val<uint32_t>(2);

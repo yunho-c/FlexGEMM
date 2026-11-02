@@ -2,8 +2,10 @@
 #include "api/compute/tile_move_copy.h"
 #include "api/compute/matmul.h"
 #include "api/compute/compute_kernel_hw_startup.h"
+#include "tools/profiler/kernel_profiler.hpp"
 
 void kernel_main() {
+    DeviceZoneScopedN("FG_IMPLICIT_COMPUTE");
     const uint32_t count = get_arg_val<uint32_t>(0);
     constexpr uint32_t KT = get_compile_time_arg_val(0);
     compute_kernel_hw_startup<SrcOrder::Reverse>(0, 1, 16);

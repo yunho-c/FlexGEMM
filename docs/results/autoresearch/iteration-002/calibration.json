@@ -1,0 +1,73 @@
+{
+  "status": "execution_failure",
+  "kind": "empirical_reference",
+  "config": {},
+  "case": {
+    "name": "poster-shape-wide-4490",
+    "split": "application",
+    "file": "poster-shape-wide-4490.pt",
+    "sha256": "bfd3687f5db3d571119a2a69e4524e3eb531158d0a6f2ffbde5c9866844ab34b",
+    "points": 4490,
+    "ci": 1024,
+    "co": 4096,
+    "volume": 27,
+    "valid_interactions": 68312,
+    "occurrences": null,
+    "provenance": {
+      "kind": "captured_decoder_layer",
+      "capture": "/home/user/tt-scratchpad/genrecon/sparse-decoder-poster-bounded/shape_wide_input.pt",
+      "capture_sha256": "d9dbec7db2dcdde98ba7e2189dd3b93ecab0e604c2419be412e17c016210e6cc",
+      "checkpoint": "/home/user/models/genrecon/trellis2/ckpts/shape_dec_next_dc_f16c32_fp16.safetensors",
+      "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581",
+      "layer": "blocks.0.4.conv1",
+      "source_scene": "poster",
+      "feature_variant_1": "synthetic perturbation of captured activations"
+    },
+    "prepare_seconds": 5.207897468004376
+  },
+  "mode": "timing",
+  "operations": [
+    {
+      "name": "dense_1024x4096x2048",
+      "timing": {
+        "median_ms": 0.4705520113930106,
+        "min_ms": 0.4447620012797415,
+        "max_ms": 0.48601196613162756,
+        "mad_ms": 0.009600014891475439,
+        "samples_ms": [
+          0.474692031275481,
+          0.44820201583206654,
+          0.4447620012797415,
+          0.4609519965015352,
+          0.4705520113930106,
+          0.4799820017069578,
+          0.48601196613162756
+        ]
+      },
+      "exact_reference_match": false,
+      "flops": 17179869184,
+      "shape": [
+        1024,
+        4096,
+        2048
+      ],
+      "input_distribution": "integers -2 through 2",
+      "tflops": 36.51003240458188
+    }
+  ],
+  "hardware_counters": null,
+  "timing_scope": "resident operator, host wall time with device synchronization; upload/download excluded",
+  "byte_scope": "logical payload, not measured DRAM or NoC bus traffic",
+  "source_sha256": "08f612f3ec3b70eca5ce9ef65a881b633150b628e746fec44eb6489413e2e108",
+  "torch": "2.11.0+cpu",
+  "tt_metal_commit": "9f9cd4fd590f4b606bd0981a4fe0b6403eb38ec9",
+  "phase": "complete",
+  "arch": "Arch.WORMHOLE_B0",
+  "available_grid": [
+    8,
+    8
+  ],
+  "math_fidelity": "MathFidelity.HiFi3",
+  "error": "ValueError: calibration reference mismatch: dense_1024x4096x2048",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/calibrate.py\", line 115, in main\n    measure(f\"dense_{m}x{k}x{n}\", lambda: ttnn.matmul(da, db,\n  File \"/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/calibrate.py\", line 104, in measure\n    raise ValueError(f\"calibration reference mismatch: {name}\")\nValueError: calibration reference mismatch: dense_1024x4096x2048\n"
+}

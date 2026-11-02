@@ -1,0 +1,10 @@
+{
+  "baseline-control": {"algorithm": "explicit_gemm", "row_chunk": 256},
+  "chunk-512": {"algorithm": "explicit_gemm", "row_chunk": 512},
+  "chunk-1024": {"algorithm": "explicit_gemm", "row_chunk": 1024},
+  "chunk-2048": {"algorithm": "explicit_gemm", "row_chunk": 2048},
+  "chunk-8192": {"algorithm": "explicit_gemm", "row_chunk": 8192},
+  "implicit": {"algorithm": "implicit_gemm"},
+  "masked": {"algorithm": "masked_implicit_gemm"},
+  "masked-split-4": {"algorithm": "masked_implicit_gemm_splitk", "split_k": 4}
+}

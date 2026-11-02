@@ -65,7 +65,9 @@ def parse_device_csv(path):
             "core_max_over_median": max(durations) / statistics.median(durations),
             "by_risc": by_risc, "accumulated_zones": totals[key],
             "custom_zones": [s for s in spans if s["zone"].startswith("FG_")],
-            "operator_identity": None})
+            "operator_identity": ("flexgemm_implicit" if any(
+                s["zone"] == "FG_IMPLICIT_COMPUTE" for s in spans) else
+                "flexgemm_tiled_gather" if any(s["zone"] == "FG_EXPLICIT_GATHER" for s in spans) else None)})
     return {"kind": "measured", "source": str(path), "source_sha256": sha256(path),
             "header": header, "clock_mhz": mhz, "rows": len(rows),
             "unmatched_starts": sum(map(len, starts.values())), "unmatched_ends": unmatched_ends,

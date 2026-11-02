@@ -9,6 +9,8 @@ import torch
 from benchmarks.tenstorrent.common import correctness, neighbor_oracle, reference, work_accounting
 from benchmarks.tenstorrent.run import monitor
 from benchmarks.tenstorrent.profile import parse_device_csv
+from benchmarks.tenstorrent.sweep import comparison, summarize_comparisons
+from benchmarks.tenstorrent.memory import workspace_bound
 
 
 CONTRACT = json.loads((Path(__file__).resolve().parents[2] /
@@ -69,6 +71,17 @@ def test_explicit_accounting_includes_chunk_padding():
     assert r["dram_bus_bytes"] is None
 
 
+def test_tiled_gather_accounts_for_one_feature_read_per_edge():
+    mapping = torch.tensor([[0, -1, 1]] * 65)
+    implicit = work_accounting(mapping, 33, 65, algorithm="implicit_gemm")
+    fused = work_accounting(mapping, 33, 65, algorithm="tiled_gather_gemm", row_chunk=64)
+    assert fused["requested_feature_bytes"] * 3 == implicit["requested_feature_bytes"]
+    assert fused["requested_map_bytes"] == 3 * 3 * 128
+    assert fused["gather_output_bytes"] == 96 * 3 * 64 * 2
+    assert fused["requested_weight_bytes"] is None  # TTNN matmul scheduling is unknown.
+    assert fused["model"] == "tiled_gather_v1"
+
+
 def test_runner_timeout_and_exit_failure_are_terminal(tmp_path):
     with (tmp_path / "child.log").open("w") as log:
         timeout = monitor([sys.executable, "-c", "import time; time.sleep(30)"],
@@ -100,3 +113,33 @@ def test_profile_uses_critical_path_and_reports_missing_events(tmp_path):
     assert report["unmatched_ends"] == 1
     assert report["runs"][0]["accumulated_zones"][0]["total_us"] == 1.5
     assert report["hardware_counters"] is None
+
+
+def test_paired_summary_rejects_missing_failed_and_drifting_cases():
+    def measured(ms, status="passed"):
+        return {"status": status, "timing": {"median_ms": ms, "mad_ms": .01}}
+    win = comparison(measured(10), measured(5), measured(10.1))
+    assert win["eligible"] and win["speedup"] > 2
+    failed = comparison(measured(10), measured(5, "numerical_or_integrity_failure"), measured(10))
+    assert not failed["eligible"]
+    rows = [{"candidate": "fast", "case": "a", "comparison": win} for _ in range(3)]
+    report = summarize_comparisons(rows, ["a", "missing"], 3)["fast"]
+    assert not report["all_requested_cases_pass"] and report["geomean_speedup"] is None
+    assert report["cases"]["a"]["consistent_screening_win"]
+    drift = comparison(measured(10), measured(9), measured(14))
+    report = summarize_comparisons([{"candidate": "unstable", "case": "a", "comparison": drift}] * 3, ["a"], 3)
+    assert not report["unstable"]["cases"]["a"]["consistent_screening_win"]
+
+
+def test_workspace_trace_counts_overlapping_allocations_and_reused_addresses():
+    def event(kind, address, per_bank=10):
+        return {"node_type": kind, "params": {"type": "DRAM", "device_id": "0",
+            "address": str(address), "max_size_per_bank": str(per_bank), "size": str(per_bank * 2)}}
+    trace = [event("buffer_deallocate", 999), event("buffer_allocate", 10),
+        event("buffer_allocate", 20, 30), event("buffer_deallocate", 10),
+        event("buffer_allocate", 10, 15)]
+    report = workspace_bound(trace, dram_banks=2, l1_capacity_bytes=50, limit_bytes=140)
+    assert report["new_dram_peak_bytes"] == 90 and report["within_limit"]
+    assert report["workspace_upper_bound_bytes"] == 140
+    trace.append(event("buffer_allocate", 10))
+    assert not workspace_bound(trace, dram_banks=2, l1_capacity_bytes=50, limit_bytes=140)["trace_valid"]

@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: MIT
 #include "api/dataflow/dataflow_api.h"
+#include "tools/profiler/kernel_profiler.hpp"
 
 // Gather directly from row-major features into the four faces of a BF16 tile.
 // DRAM contains features, weights, and indices, but never an expanded im2col.
 void kernel_main() {
+    DeviceZoneScopedN("FG_IMPLICIT_READER");
     const uint32_t x_addr = get_arg_val<uint32_t>(0);
     const uint32_t w_addr = get_arg_val<uint32_t>(1);
     const uint32_t map_addr = get_arg_val<uint32_t>(2);
@@ -65,8 +67,13 @@ void kernel_main() {
             const volatile uint32_t* ids = reinterpret_cast<volatile uint32_t*>(scratch);
             for (uint32_t kt = 0; kt < CT; ++kt) {
                 if (v * CT + kt < begin || v * CT + kt >= end) continue;
+                {
+                DeviceZoneScopedSumN1("FG_READER_BUFFER_WAIT");
                 cb_reserve_back(0, 1);
                 cb_reserve_back(1, 1);
+                }
+                {
+                DeviceZoneScopedSumN2("FG_READER_GATHER_AND_WEIGHT");
                 const uint32_t a = get_write_ptr(0), b = get_write_ptr(1);
                 volatile uint32_t* words = reinterpret_cast<volatile uint32_t*>(a);
                 for (uint32_t i = 0; i < 512; ++i) words[i] = 0;
@@ -80,6 +87,7 @@ void kernel_main() {
                 }
                 noc_async_read_page((v * CT + kt) * NT + nt, w, b);
                 noc_async_read_barrier();
+                }
                 cb_push_back(0, 1);
                 cb_push_back(1, 1);
             }
