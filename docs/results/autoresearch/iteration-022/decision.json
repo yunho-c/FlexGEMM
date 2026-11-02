@@ -1,0 +1,20 @@
+{
+  "decision": "retain_diagnostic_harness_and_prioritize_compact_weight_transfers",
+  "production_kernel_change": false,
+  "performance_promotion": false,
+  "sota_claim": false,
+  "next": "BF16 storage/transfer of exact BF16 digit weights, preserving tap grouping first",
+  "validation": {
+    "passing_workers": 16,
+    "retained_failed_workers": 1,
+    "checks": 456,
+    "csv_segments": 272,
+    "cpu_tests": 15
+  },
+  "limits": [
+    "instrumented timings only",
+    "selected layer and chunk coverage",
+    "no hardware bus or utilization counters",
+    "original strict FP32 decoder parity remains unresolved"
+  ]
+}

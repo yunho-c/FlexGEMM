@@ -1,0 +1,22 @@
+{
+  "status": "design_only_not_measured",
+  "basis": "iteration-022 diagnostic narrow weight waits about 53% of UNPACK wall time; raw measured scopes still being collected across wider/larger cases",
+  "proposal": "Keep tap planning and arithmetic order fixed; store and transfer already-BF16 integer weights in BF16 instead of FP32 encoding",
+  "required_changes": [
+    "K6 weight CB dtype/page size and input TensorAccessor page size",
+    "Reader weight byte strides, multicast bytes, and matching CB accounting",
+    "Reuse existing prepared digit weights instead of converting to FP32",
+    "Preserve original tap grouping for first controlled comparison; tune it separately later"
+  ],
+  "required_gates": [
+    "Bitwise individual products against current FP32-encoded weight path on both feature variants, ragged channels, missing/repeated neighbors, multi-chunk partials",
+    "All 36 immutable BF16 CPU fixtures and allocation replay",
+    "Three A/B/A rounds with fixed 11-repetition noise-aware promotion rule",
+    "Full-decoder bitwise controls; original strict FP32 failures remain visible"
+  ],
+  "caveats": [
+    "HiFi3 format-dependent behavior is not assumed equal",
+    "Lower requested bytes are not physical bus measurements",
+    "A larger quad-product fusion remains a separate subsequent experiment"
+  ]
+}

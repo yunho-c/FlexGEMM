@@ -1,0 +1,32 @@
+{
+  "device_lock": "/tmp/genrecon-tt-pjrt.lock",
+  "tt_metal_commit": "9f9cd4fd590f4b606bd0981a4fe0b6403eb38ec9",
+  "sdk_profiler_sources": {
+    "tt_metal/tools/profiler/kernel_profiler.hpp": "f20d8950e86b16afa50ffe35a31d845c1690eb81c89c48d11d93a57177bbbf5a",
+    "tt_metal/hw/ckernels/wormhole_b0/metal/llk_io/llk_io_unpack.h": "8fcd7636136b63897dc90136fae360a09813b0a4d1b1281c828c9b6022a8d76c",
+    "tt_metal/hw/ckernels/wormhole_b0/metal/llk_io/llk_io_pack.h": "5add5dad6d24d8187db31a2b059c8e2e620da1f1e52e49c6d92bba5e9f5cb0ca",
+    "tt_metal/impl/profiler/tt_metal_profiler.cpp": "8bdf186284aabd05a8b1ec993582cbc8e636a972dc1a79b7d4cc193ae55ceb27"
+  },
+  "sum_slot_ownership": {
+    "TRISC_0": {
+      "slot1": "SDK CB-COMPUTE-WAIT-FRONT",
+      "slot2": "selected weight OR gather wait, separate workers"
+    },
+    "TRISC_1": {
+      "slot1": "matmul issuing region",
+      "slot2": "DEST acquire wait"
+    },
+    "TRISC_2": {
+      "slot2": "SDK CB-COMPUTE-RESERVE-BACK"
+    },
+    "BRISC/NCRISC": "two gather scopes OR two weight scopes, separate workers"
+  },
+  "limitations": [
+    "Instrumented profile timings cannot promote a performance change",
+    "Slot totals are inclusive RISC wall time, not tensor-engine activity or bus counters",
+    "Built-in aggregate CB waits include selected wait scopes; never add them",
+    "Gather read barriers include local zero copies and index prefetches",
+    "One brief CPU postprocessing pass overlapped this diagnostic-only campaign; wall time is not a lean benchmark",
+    "Initial failed probe retained; no reset or timeout"
+  ]
+}

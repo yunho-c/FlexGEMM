@@ -831,6 +831,28 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   output-path change; next profile wait regions and dispatch gaps before a larger
   four-product dataflow rewrite. SOTA remains unproven.
 
+### 022 — measure K6 waits and complete-operator device coverage
+
+- Add an isolated profiling harness; production kernels remain at iteration021.
+  Measure first/middle/final chunks, two feature variants and three product samples
+  for narrow, wide-feasible and largest layers. All 16 completed workers pass 456
+  checks; 272 raw CSV segments and 15 passing CPU tests are archived.
+- Median per-core UNPACK weight waits are 52.53% / 47.04% / 28.14% for narrow,
+  wide and largest respectively. Gather waits are 5.80% / 2.37% / 31.99%.
+  Separate probes avoid SDK accumulator collisions; totals are not bus counters,
+  Tensor Engine utilization or an attainable speedup ceiling.
+- Two complete narrow-operator captures each contain 650 programs / 192 K6
+  products. Device kernel-span unions cover about 165 ms of 169 ms host calls;
+  inter-program gaps total about 0.4 ms. Device work is the next priority here.
+- Retain the initial collection failure and original harness. Correct the required
+  mid-run CSV dump setting and reserve the SDK's UNPACK/PACK accumulator slots.
+  All 17 workers terminate normally without a timeout/reset. Instrumented timings
+  are diagnostic and do not enter promotion scores.
+- Next test compact BF16 transfers of the already-BF16 integer weights, preserving
+  tap grouping and arithmetic order before considering broader product fusion.
+  Keep full operator/workspace and decoder gates; SOTA remains unproven.
+  See [iteration-022](results/autoresearch/iteration-022/README.md).
+
 The additional CPU capture tools are:
 
 ```bash

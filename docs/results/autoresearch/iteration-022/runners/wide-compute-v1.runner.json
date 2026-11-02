@@ -1,0 +1,25 @@
+{
+  "returncode": 0,
+  "timeout": null,
+  "elapsed_seconds": 21.637874506996013,
+  "device_recovery_required": false,
+  "command": [
+    "/home/user/tt-metal/python_env/bin/python",
+    "-m",
+    "benchmarks.tenstorrent.k6_profile",
+    "--corpus",
+    "/home/user/tt-scratchpad/flexgemm-autoresearch/poster-shape-corpus-v1",
+    "--case",
+    "n388659-128x512-k3x3x3",
+    "--row-chunk",
+    "8192",
+    "--mode",
+    "compute",
+    "--scope",
+    "chunks",
+    "--output",
+    "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-022/wide-compute-v1.json"
+  ],
+  "lock": "/tmp/genrecon-tt-pjrt.lock",
+  "lock_wait_seconds": 0.00015818001702427864
+}
