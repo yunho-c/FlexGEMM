@@ -462,6 +462,29 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   Next: measure the passing implementation's component costs and optimize the
   expensive operations while preserving all four products.
 
+### 009 — attribute costs in the passing implementation
+
+- Added `run --workload components` to instrument the actual candidate's
+  top-level TTNN calls with synchronization. Nested calls are not double-counted;
+  the separate feature-preparation stage overlaps operation timings. Reports
+  include unwrapped forwards before/after instrumentation, both feature values,
+  numerical checks, input/source integrity, raw call samples and environment.
+  This is a serialized diagnostic, not a promotion score or device-only timing.
+- For 388,659 rows at 128→128, unwrapped median is 747.279 ms and serialized
+  median is 1,156.604 ms. Mean accumulated operation time per forward is
+  218.777 ms matmul, 217.051 ms embedding, 86.975 ms repeat, and 81.086 ms layout
+  conversion. Feature-digit preparation spans 151.208/164.437 ms; these stage
+  numbers overlap the operation numbers. The global maximum itself is 6.905 ms.
+- For 4,490 rows at 1024→4096, unwrapped median is 145.374 ms and serialized
+  median is 176.164 ms. Matmul accounts for 91.312 ms, embedding 15.445 ms,
+  repeat 12.032 ms and layout conversion 8.382 ms. Both diagnostic runs pass
+  all numerical and integrity checks and exit normally.
+- Decision: do not optimize the global reduction first. Preserve all four
+  products and target repeated scale/bias expansion, gather/layout overhead,
+  and shape-specific matmul configuration. Serialized costs guide hypotheses;
+  subsequent changes still require the ordinary full-operator evaluator and
+  paired measurements.
+
 The additional CPU capture tools are:
 
 ```bash

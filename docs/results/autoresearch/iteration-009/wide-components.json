@@ -1,0 +1,4117 @@
+{
+  "status": "passed",
+  "kind": "serialized_component_diagnostic_not_score",
+  "case": {
+    "name": "n4490-1024x4096-k3x3x3",
+    "split": "application",
+    "file": "n4490-1024x4096-k3x3x3.pt",
+    "sha256": "a6d18be12f70199ebb82f3bc6354a974cb32dcf3179003c8ecb5278f69c59bb5",
+    "points": 4490,
+    "ci": 1024,
+    "co": 4096,
+    "volume": 27,
+    "occurrences": 1,
+    "valid_interactions": 68312,
+    "topology_oracle_rows": 1024,
+    "prepare_seconds": 6.10639541700948,
+    "provenance": {
+      "kind": "captured_decoder_layer",
+      "layer": "blocks.0.4.conv1",
+      "capture_sha256": "d6cae412cd7218449b9b548ed406c9e06f033d7f6b442b66c36c5b2ac6f1f341",
+      "scene_input_sha256": "593adfea32242c0e7f664dfe08a7d6c6528ec06291101763157c912b0f00639e",
+      "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581"
+    }
+  },
+  "config": {
+    "algorithm": "digit_explicit_gemm",
+    "row_chunk": 1024
+  },
+  "candidate": {
+    "root": "/home/user/GitHub/flexgemm-autoresearch",
+    "commit": "5a9d25833c4d9b7a3f8d08b9c79721c7ea25cdd8",
+    "dirty": true,
+    "sha256": {
+      "flex_gemm/tenstorrent/__init__.py": "3c46ffc40c3b93e480d8dd830404921675c490ccb1a94f609a7423cdc151bb8c",
+      "flex_gemm/tenstorrent/conv.py": "389903b43e5246a94bfba678070a0b031da45c749de5e5c0484c20ac65c7f6c5",
+      "flex_gemm/tenstorrent/digits.py": "ca18aff6a4c31f9726c6861b3bdd6fb096f492e6afcc9b5ec760d24e6aeff4c4",
+      "flex_gemm/tenstorrent/implicit.py": "b512b11eff94b770c9131ba3a1f376b7f060bd17206a8ab0c3aae693e0eee688",
+      "flex_gemm/tenstorrent/masking.py": "32c66f47bd2caef0ec94e34c23e0ae09562206a47267cc490db304cf7f0d10b7",
+      "flex_gemm/tenstorrent/ops.py": "c5e99c9032b6f472ee6d276ad196bb6caeaaadc539cb96a6fad25eb17b4a12db",
+      "flex_gemm/tenstorrent/reference.py": "a0dc3709115acfb282ea9d472b63ed470e62421e478ab67d20b2387b8ea0bdd3",
+      "flex_gemm/tenstorrent/resident.py": "011696c79b5b108c29a9d256878e70d44957a1d46f0612411eeb1581e11bdc6c",
+      "flex_gemm/tenstorrent/kernels/compute.cpp": "431780ae171a14f2e4ea9db2b8b7db5fc23b064bde7e12623da60070a4cee075",
+      "flex_gemm/tenstorrent/kernels/copy_output_tiles.cpp": "c1f12ea86cbc2545842495c5c9cf8774e9bf45b1533b3cbb40859834e2e2c642",
+      "flex_gemm/tenstorrent/kernels/reader.cpp": "6ba3b2ef6f4f80f3b354cb40210c181753d593236ffb080ff36825d61ceeddab",
+      "flex_gemm/tenstorrent/kernels/writer.cpp": "494dcd0566cec973a6b792109071a37f40c6579a155ed1d4d6ef3029505d83fc"
+    }
+  },
+  "torch": "2.11.0+cpu",
+  "evaluator_sha256": {
+    "/home/user/tt-scratchpad/flexgemm-autoresearch/poster-shape-corpus-v1/manifest.json": "c5c08d454f75c8b0a78f6b3909d3c700c999ef188264c000bac0cc8c68e6ed67",
+    "/home/user/tt-scratchpad/flexgemm-autoresearch/poster-shape-corpus-v1/contract.json": "f49de05e37d42f895008c14caeac408513fad7a3537fbca5d74ad265131f5733",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/__init__.py": "d530c6c7c2ea23e5361ce345bf5e48dcdc62ea4c81a5bf695e4f33b72fa2ca85",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/calibrate.py": "0d5ccfa1374ed9ec8385d9cb5019e92310746c0260c2960ad67f1b5bcce7038b",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/capture_genrecon.py": "a6f42d5fb7f501a8011b980ea05af7b49c4d71164850fa50f6212fd612a1bf59",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/common.py": "9b6b6b56dc2fcd33ee6868eea14af0118d550d5e6deafe75ec1b1d032a18f9e8",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/components.py": "e32d9bf566cee1827da4c6423e33acee2f138da178e5a4eb371cb3f4fc9f99cc",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/digit_study.py": "dc49489ad55a5fd986d94047cc77a8d6f6acbdbf930470eb92a02e89067f64ae",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/evaluate.py": "231efbc37b5ce9318f572f002a9ffa1422ec07491758a6d4b6cd8c2333eec4e9",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/memory.py": "b6a8a3630beb6e5610c01003a09ff22d5b5c5688ca91d657291f262d58a6de86",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/precision_probe.py": "73948a4f3c8d72aad3d33b7c5674b9459555c66cfb23f6c6a76414777559a5e2",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/prepare.py": "04596d045e5bcf018513ea70da93a5c6b3e533082c49651daec832309bc662d1",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/prepare_captures.py": "85db26d0fb7378e314192b667b755bd30c271300029ec700ed332fb28c1a3ca4",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/profile.py": "389702bc16bd2f9a368c17034210fe3b359dcc07878448bd9839760e09b9183e",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/run.py": "a0c4fd16c74b486030f4dd8de854a5fe953db3c7cd52ae96677bee1933c4b14b",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/sol.py": "11763b2f1580dd6d60748cc1c2384b6f6865db22f09ac0899ab90a49722385e8",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/sweep.py": "0913455c05513ed17ed3eb1b16842f08d4294fe6bed853c1b606eb2c835c0536"
+  },
+  "contract": {
+    "version": 1,
+    "operation": "forward sparse convolution; submanifold coordinate fixtures",
+    "input_dtype": "bfloat16",
+    "output_dtype": "bfloat16",
+    "input_layout": "TILE_LAYOUT, device DRAM",
+    "output_layout": "TILE_LAYOUT, device DRAM, original output row order",
+    "accumulation": "float32",
+    "wormhole_math_fidelity": "HiFi3",
+    "atol": 0.025,
+    "rtol": 0.025,
+    "max_relative_l2": 0.01,
+    "allow_input_mutation": false,
+    "allow_feature_dependent_preparation": false,
+    "persistent_state": [
+      "weights",
+      "integer topology",
+      "shape-dependent schedules"
+    ],
+    "timing": "host wall time including all required device operations and synchronization; excludes compilation, initial input upload, output download and static preparation",
+    "score": "per-case median completed-operator latency; geometric mean for synthetic coverage only; application score requires measured occurrence counts",
+    "workspace_limit_bytes": 1073741824,
+    "workspace_scope": "temporary tensors beyond resident input, output, weights and topology; estimates must be labeled, allocator snapshots are not peaks",
+    "promotion": "all selected correctness gates pass, evaluator/corpus hashes unchanged, and paired timing improvement exceeds measured baseline noise",
+    "known_failure_policy": "report numerical_failure; never convert xfail into a pass or exclude it silently",
+    "device_lock": "/tmp/genrecon-tt-pjrt.lock"
+  },
+  "checks": [
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016687063483223868,
+      "max_abs_error": 3.5560302734375,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.15484080982226142,
+      "first_failures": [],
+      "variant": 0,
+      "dtype_valid": true,
+      "layout_valid": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016698498401332318,
+      "max_abs_error": 1.929443359375,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.15444505018707114,
+      "first_failures": [],
+      "variant": 1,
+      "dtype_valid": true,
+      "layout_valid": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016687063483223868,
+      "max_abs_error": 3.5560302734375,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.15484080982226142,
+      "first_failures": [],
+      "variant": 0,
+      "dtype_valid": true,
+      "layout_valid": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016698498401332318,
+      "max_abs_error": 1.929443359375,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.15444505018707114,
+      "first_failures": [],
+      "variant": 1,
+      "dtype_valid": true,
+      "layout_valid": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016687063483223868,
+      "max_abs_error": 3.5560302734375,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.15484080982226142,
+      "first_failures": [],
+      "variant": 0,
+      "dtype_valid": true,
+      "layout_valid": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016698498401332318,
+      "max_abs_error": 1.929443359375,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.15444505018707114,
+      "first_failures": [],
+      "variant": 1,
+      "dtype_valid": true,
+      "layout_valid": true
+    }
+  ],
+  "unwrapped_ms": [
+    145.20783396437764,
+    139.9389950092882,
+    145.54096502251923,
+    148.7965860287659
+  ],
+  "instrumented_ms": [
+    172.61799203697592,
+    179.71090599894524
+  ],
+  "operation_calls": [
+    {
+      "name": "abs",
+      "variant": 0,
+      "ms": 0.2697210293263197,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    },
+    {
+      "name": "max",
+      "variant": 0,
+      "ms": 0.2946509630419314,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.08604105096310377,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "maximum",
+      "variant": 0,
+      "ms": 0.09730999590829015,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "log2",
+      "variant": 0,
+      "ms": 0.09003101149573922,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "ceil",
+      "variant": 0,
+      "ms": 0.083099992480129,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "subtract",
+      "variant": 0,
+      "ms": 0.1353209954686463,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "exp2",
+      "variant": 0,
+      "ms": 0.09176001185551286,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "neg",
+      "variant": 0,
+      "ms": 0.08739100303500891,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "exp2",
+      "variant": 0,
+      "ms": 0.07626996375620365,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 0,
+      "ms": 0.09442999726161361,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.10633998317644,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 0.4040419589728117,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.18018000992015004,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 0,
+      "ms": 0.12836098903790116,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "subtract",
+      "variant": 0,
+      "ms": 0.17688097432255745,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.1496000331826508,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 0,
+      "ms": 0.12526102364063263,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.09820004925131798,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.09024003520607948,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.09216996841132641,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.08158100536093116,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 0,
+      "ms": 0.09002996375784278,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.09481096640229225,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 0.3487209905870259,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.1680610002949834,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 0,
+      "ms": 0.11768995318561792,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "subtract",
+      "variant": 0,
+      "ms": 0.16306102043017745,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.13763102469965816,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 0,
+      "ms": 0.12119999155402184,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.09257096098735929,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.08105003507807851,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.09078095899894834,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.08076999802142382,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 0,
+      "ms": 0.09228999260812998,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.09579997276887298,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 0.3507109940983355,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.16599101945757866,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 0,
+      "ms": 0.11652999091893435,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "subtract",
+      "variant": 0,
+      "ms": 0.16369001241400838,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.13544101966544986,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 0,
+      "ms": 0.11660996824502945,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.09282096289098263,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.08223002078011632,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.09159097680822015,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.07895001908764243,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 0,
+      "ms": 0.08471001638099551,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.09335100185126066,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 0.34644099650904536,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.1669810153543949,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 0,
+      "ms": 0.11773000005632639,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "subtract",
+      "variant": 0,
+      "ms": 0.2768309786915779,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.1377600128762424,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 0,
+      "ms": 0.1140609965659678,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.09246997069567442,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.08626998169347644,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.09325094288215041,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.079809979069978,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 0,
+      "ms": 0.08284096838906407,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.09099999442696571,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 0.3283409751020372,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.12284098193049431,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 0,
+      "ms": 0.08535000961273909,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "subtract",
+      "variant": 0,
+      "ms": 0.12055097613483667,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.10737002594396472,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 0,
+      "ms": 0.08337997132912278,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.08114002412185073,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.1077710185199976,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.07670000195503235,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.26568101020529866,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "zeros",
+      "variant": 0,
+      "ms": 0.06852101068943739,
+      "input_shape": null
+    },
+    {
+      "name": "concat",
+      "variant": 0,
+      "ms": 0.17200998263433576,
+      "input_shape": null
+    },
+    {
+      "name": "concat",
+      "variant": 0,
+      "ms": 0.08410104783251882,
+      "input_shape": null
+    },
+    {
+      "name": "concat",
+      "variant": 0,
+      "ms": 0.15731999883428216,
+      "input_shape": null
+    },
+    {
+      "name": "concat",
+      "variant": 0,
+      "ms": 0.15621999045833945,
+      "input_shape": null
+    },
+    {
+      "name": "concat",
+      "variant": 0,
+      "ms": 0.07582094985991716,
+      "input_shape": null
+    },
+    {
+      "name": "concat",
+      "variant": 0,
+      "ms": 0.1529700239188969,
+      "input_shape": null
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 0.20390097051858902,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.10875100269913673,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "allocate_tensor_on_device",
+      "variant": 0,
+      "ms": 0.03688997821882367,
+      "input_shape": null
+    },
+    {
+      "name": "embedding",
+      "variant": 0,
+      "ms": 1.5772960032336414,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.793603016063571,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "embedding",
+      "variant": 0,
+      "ms": 1.5636160387657583,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.7735129911452532,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.4494160101749,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.455215996131301,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.70053602475673,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.37228199653327465,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.69634699402377,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.2853810437954962,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.3406210453249514,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.28250098694115877,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.3409810015000403,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 0,
+      "ms": 0.03411003854125738,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 1.038534042891115,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.3788220346905291,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.11272996198385954,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 1.0547729907557368,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.37230196176096797,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.21488103084266186,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "generic_op",
+      "variant": 0,
+      "ms": 0.33057102700695395,
+      "input_shape": null
+    },
+    {
+      "name": "embedding",
+      "variant": 0,
+      "ms": 1.4270750107243657,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.8002730319276452,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "embedding",
+      "variant": 0,
+      "ms": 1.4191349619068205,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.8341330103576183,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.526995995547622,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.562106973025948,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.8163169994950294,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.42680196929723024,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.76532697211951,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.3783919964917004,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.41872099973261356,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.3614510060288012,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.4143010010011494,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 0,
+      "ms": 0.0533499987795949,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 1.1171139776706696,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.4282119916751981,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.14302099589258432,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 1.112144032958895,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.4221019917167723,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.2296009915880859,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "generic_op",
+      "variant": 0,
+      "ms": 0.328850990626961,
+      "input_shape": null
+    },
+    {
+      "name": "embedding",
+      "variant": 0,
+      "ms": 1.627046032808721,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.8294329745694995,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "embedding",
+      "variant": 0,
+      "ms": 1.6140950028784573,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.8270930266007781,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.488295991905034,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.840957990381867,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.786396981216967,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.42676099110394716,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.659975995309651,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.36229100078344345,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.43149199336767197,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.3487209905870259,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.4353219992481172,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 0,
+      "ms": 0.05579099524766207,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 1.125744020100683,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.41873095324262977,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.13901997590437531,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 1.105424016714096,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.43418200220912695,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.23215101100504398,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "generic_op",
+      "variant": 0,
+      "ms": 0.329231028445065,
+      "input_shape": null
+    },
+    {
+      "name": "embedding",
+      "variant": 0,
+      "ms": 2.119078009855002,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.832393008749932,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "embedding",
+      "variant": 0,
+      "ms": 2.100637007970363,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.8376130135729909,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.451735992915928,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.575775994453579,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.58519603125751,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.4234309890307486,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.5861960388720036,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.41673099622130394,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.42782200034707785,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.36624097265303135,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.41577103547751904,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 0,
+      "ms": 0.05202001193538308,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 1.117444015108049,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.4312220262363553,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.15503098256886005,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 1.1194139951840043,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.4327909555286169,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.23455097107216716,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "generic_op",
+      "variant": 0,
+      "ms": 0.33568101935088634,
+      "input_shape": null
+    },
+    {
+      "name": "embedding",
+      "variant": 0,
+      "ms": 1.0020029731094837,
+      "input_shape": [
+        1,
+        10638
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.4622020060196519,
+      "input_shape": [
+        394,
+        27648
+      ]
+    },
+    {
+      "name": "embedding",
+      "variant": 0,
+      "ms": 0.9849640191532671,
+      "input_shape": [
+        1,
+        10638
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 0,
+      "ms": 0.4398620221763849,
+      "input_shape": [
+        394,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.428714979439974,
+      "input_shape": [
+        394,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.400635021738708,
+      "input_shape": [
+        394,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.412615031469613,
+      "input_shape": [
+        394,
+        27648
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.2937110257335007,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 0,
+      "ms": 4.405676038004458,
+      "input_shape": [
+        394,
+        27648
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.2569509670138359,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.2694210270419717,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.24592096451669931,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.2665710053406656,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 0,
+      "ms": 0.050870003178715706,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 0.6168319960124791,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 0,
+      "ms": 0.2912819618359208,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.14918000670149922,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 0,
+      "ms": 0.6075020064599812,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 0,
+      "ms": 0.26986096054315567,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 0,
+      "ms": 0.1538110082037747,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "generic_op",
+      "variant": 0,
+      "ms": 0.21984096383675933,
+      "input_shape": null
+    },
+    {
+      "name": "abs",
+      "variant": 1,
+      "ms": 0.2662109909579158,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    },
+    {
+      "name": "max",
+      "variant": 1,
+      "ms": 0.2984610036946833,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.08450000314041972,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "maximum",
+      "variant": 1,
+      "ms": 0.09933102410286665,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "log2",
+      "variant": 1,
+      "ms": 0.09519996820017695,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "ceil",
+      "variant": 1,
+      "ms": 0.08792098378762603,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "subtract",
+      "variant": 1,
+      "ms": 0.16277999384328723,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "exp2",
+      "variant": 1,
+      "ms": 0.09701098315417767,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "neg",
+      "variant": 1,
+      "ms": 0.09337003575637937,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "exp2",
+      "variant": 1,
+      "ms": 0.07923098746687174,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 1,
+      "ms": 0.09878003038465977,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.11057098163291812,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 0.40138099575415254,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.18894101958721876,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 1,
+      "ms": 0.12910005170851946,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "subtract",
+      "variant": 1,
+      "ms": 0.19165995763614774,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.1575509668327868,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 1,
+      "ms": 0.12659997446462512,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.10016997111961246,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.09096000576391816,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.09276001947000623,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.08288997923955321,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 1,
+      "ms": 0.09110104292631149,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.09709002915769815,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 0.34875195706263185,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.16637996304780245,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 1,
+      "ms": 0.11856103083118796,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "subtract",
+      "variant": 1,
+      "ms": 0.16522000078111887,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.16068003606051207,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 1,
+      "ms": 0.11967099271714687,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.09359000250697136,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.0814009690657258,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.0916499993763864,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.08515099762007594,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 1,
+      "ms": 0.08957000682130456,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.09808101458474994,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 0.36040099803358316,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.16915099695324898,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 1,
+      "ms": 0.11798000195994973,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "subtract",
+      "variant": 1,
+      "ms": 0.1674810191616416,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.13517099432647228,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 1,
+      "ms": 0.11794001329690218,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.09288103319704533,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.08226995123550296,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.09301095269620419,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.0786400050856173,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 1,
+      "ms": 0.08583004819229245,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.0963900238275528,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 0.35864097299054265,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.16816100105643272,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 1,
+      "ms": 0.11580099817365408,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "subtract",
+      "variant": 1,
+      "ms": 0.16881001647561789,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.15237100888043642,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 1,
+      "ms": 0.11955102672800422,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.0931799877434969,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.08235999848693609,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.09225000394508243,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.07964001270011067,
+      "input_shape": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 1,
+      "ms": 0.0960809993557632,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.08045998401939869,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 0.32734102569520473,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.12501003220677376,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 1,
+      "ms": 0.08548999903723598,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "subtract",
+      "variant": 1,
+      "ms": 0.21263002417981625,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.3196410252712667,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "round",
+      "variant": 1,
+      "ms": 0.21117099095135927,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.16710098134353757,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.12340000830590725,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.08005101699382067,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.11175998952239752,
+      "input_shape": [
+        394,
+        1024
+      ]
+    },
+    {
+      "name": "zeros",
+      "variant": 1,
+      "ms": 0.08780002826824784,
+      "input_shape": null
+    },
+    {
+      "name": "concat",
+      "variant": 1,
+      "ms": 0.1962109818123281,
+      "input_shape": null
+    },
+    {
+      "name": "concat",
+      "variant": 1,
+      "ms": 0.1317000132985413,
+      "input_shape": null
+    },
+    {
+      "name": "concat",
+      "variant": 1,
+      "ms": 0.16739103011786938,
+      "input_shape": null
+    },
+    {
+      "name": "concat",
+      "variant": 1,
+      "ms": 0.16136100748553872,
+      "input_shape": null
+    },
+    {
+      "name": "concat",
+      "variant": 1,
+      "ms": 0.08193001849576831,
+      "input_shape": null
+    },
+    {
+      "name": "concat",
+      "variant": 1,
+      "ms": 0.15429098857566714,
+      "input_shape": null
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 0.22584100952371955,
+      "input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 6.360872997902334,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "allocate_tensor_on_device",
+      "variant": 1,
+      "ms": 0.04228000761941075,
+      "input_shape": null
+    },
+    {
+      "name": "embedding",
+      "variant": 1,
+      "ms": 1.5781149850226939,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.7891219574958086,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "embedding",
+      "variant": 1,
+      "ms": 1.5586260124109685,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.7828329689800739,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.480095987673849,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.670746973715723,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.544766037724912,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.36447099409997463,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.571975965518504,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.2924010041169822,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.348842004314065,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.31443103216588497,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.3775719669647515,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 1,
+      "ms": 0.044020009227097034,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 1.077394001185894,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.3795719821937382,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.11531001655384898,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 1.0592839680612087,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.3768620081245899,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.20840094657614827,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "generic_op",
+      "variant": 1,
+      "ms": 0.32851099967956543,
+      "input_shape": null
+    },
+    {
+      "name": "embedding",
+      "variant": 1,
+      "ms": 1.4277449809014797,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.7974430336616933,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "embedding",
+      "variant": 1,
+      "ms": 1.4154750388115644,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.7989230216480792,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.439575946889818,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.582656023558229,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.5795559999533,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.43946102960035205,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.713485948741436,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.36337203346192837,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.4190210020169616,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.514672021381557,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.4063910455442965,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 1,
+      "ms": 0.05078996764495969,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 1.1135239619761705,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.4255120293237269,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.15202100621536374,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 1.1141440481878817,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.42081205174326897,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.22707099560648203,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "generic_op",
+      "variant": 1,
+      "ms": 0.329970964230597,
+      "input_shape": null
+    },
+    {
+      "name": "embedding",
+      "variant": 1,
+      "ms": 1.6562060336582363,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.835083017591387,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "embedding",
+      "variant": 1,
+      "ms": 1.6133259632624686,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.8326930110342801,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.498825001064688,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.614905978087336,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.840317007619888,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.4362909821793437,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.8119069542735815,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.3719810047186911,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.41438202606514096,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.35565102007240057,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.4235910018905997,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 1,
+      "ms": 0.056131044402718544,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 1.1144040036015213,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.4229519981890917,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.14135002857074142,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 1.105943985749036,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.4546819836832583,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.2298310282640159,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "generic_op",
+      "variant": 1,
+      "ms": 0.33718202030286193,
+      "input_shape": null
+    },
+    {
+      "name": "embedding",
+      "variant": 1,
+      "ms": 2.1178280003368855,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.8425930282101035,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "embedding",
+      "variant": 1,
+      "ms": 2.1006379975005984,
+      "input_shape": [
+        1,
+        27648
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.8353930315934122,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.4809760292992,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.477246024180204,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.565195995382965,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.4279519780538976,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.51373599935323,
+      "input_shape": [
+        1024,
+        27648
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.3642109804786742,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.4232620121911168,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.35873096203431487,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.42269204277545214,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 1,
+      "ms": 0.05446001887321472,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 1.1156740365549922,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.42396102799102664,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.16423995839431882,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 1.106123032514006,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.4261209978722036,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.23320101900026202,
+      "input_shape": [
+        1024,
+        4096
+      ]
+    },
+    {
+      "name": "generic_op",
+      "variant": 1,
+      "ms": 0.32866100082173944,
+      "input_shape": null
+    },
+    {
+      "name": "embedding",
+      "variant": 1,
+      "ms": 1.005123951472342,
+      "input_shape": [
+        1,
+        10638
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.45337097253650427,
+      "input_shape": [
+        394,
+        27648
+      ]
+    },
+    {
+      "name": "embedding",
+      "variant": 1,
+      "ms": 0.9812039788812399,
+      "input_shape": [
+        1,
+        10638
+      ]
+    },
+    {
+      "name": "to_layout",
+      "variant": 1,
+      "ms": 0.43375103268772364,
+      "input_shape": [
+        394,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.420575045514852,
+      "input_shape": [
+        394,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.402625956572592,
+      "input_shape": [
+        394,
+        27648
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.429655964486301,
+      "input_shape": [
+        394,
+        27648
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.26933103799819946,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "matmul",
+      "variant": 1,
+      "ms": 4.391056019812822,
+      "input_shape": [
+        394,
+        27648
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.2577509731054306,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.26931101456284523,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.2584609901532531,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.269221025519073,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "slice",
+      "variant": 1,
+      "ms": 0.04983996041119099,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 0.6338320090435445,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "multiply",
+      "variant": 1,
+      "ms": 0.2737609902396798,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.15127001097425818,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "repeat",
+      "variant": 1,
+      "ms": 0.6044720066711307,
+      "input_shape": [
+        1,
+        4096
+      ]
+    },
+    {
+      "name": "add",
+      "variant": 1,
+      "ms": 0.27219101320952177,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "typecast",
+      "variant": 1,
+      "ms": 0.15114102279767394,
+      "input_shape": [
+        394,
+        4096
+      ]
+    },
+    {
+      "name": "generic_op",
+      "variant": 1,
+      "ms": 0.21345005370676517,
+      "input_shape": null
+    }
+  ],
+  "stage_calls": [
+    {
+      "name": "feature_digits",
+      "variant": 0,
+      "ms": 13.065316015854478,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    },
+    {
+      "name": "feature_digits",
+      "variant": 1,
+      "ms": 14.107909984886646,
+      "input_shape": [
+        4490,
+        1024
+      ]
+    }
+  ],
+  "scope": "host wall time with synchronization around each top-level TTNN call; overlap is changed; stage times overlap operation times; not device-only timing or a promotion score",
+  "phase": "complete",
+  "arch": "Arch.WORMHOLE_B0",
+  "available_grid": [
+    8,
+    8
+  ],
+  "tt_metal_commit": "9f9cd4fd590f4b606bd0981a4fe0b6403eb38ec9",
+  "operations": {
+    "abs": {
+      "calls": 2,
+      "sum_ms_per_forward": 0.26796601014211774,
+      "per_call": {
+        "median_ms": 0.26796601014211774,
+        "min_ms": 0.2662109909579158,
+        "max_ms": 0.2697210293263197,
+        "mad_ms": 0.0017550191842019558,
+        "samples_ms": [
+          0.2697210293263197,
+          0.2662109909579158
+        ]
+      }
+    },
+    "max": {
+      "calls": 2,
+      "sum_ms_per_forward": 0.29655598336830735,
+      "per_call": {
+        "median_ms": 0.29655598336830735,
+        "min_ms": 0.2946509630419314,
+        "max_ms": 0.2984610036946833,
+        "mad_ms": 0.0019050203263759613,
+        "samples_ms": [
+          0.2946509630419314,
+          0.2984610036946833
+        ]
+      }
+    },
+    "typecast": {
+      "calls": 52,
+      "sum_ms_per_forward": 3.285293380031362,
+      "per_call": {
+        "median_ms": 0.09758552187122405,
+        "min_ms": 0.07670000195503235,
+        "max_ms": 0.23455097107216716,
+        "mad_ms": 0.013035489246249199,
+        "samples_ms": [
+          0.08604105096310377,
+          0.10633998317644,
+          0.09820004925131798,
+          0.09216996841132641,
+          0.09481096640229225,
+          0.09257096098735929,
+          0.09078095899894834,
+          0.09579997276887298,
+          0.09282096289098263,
+          0.09159097680822015,
+          0.09335100185126066,
+          0.09246997069567442,
+          0.09325094288215041,
+          0.09099999442696571,
+          0.08114002412185073,
+          0.07670000195503235,
+          0.11272996198385954,
+          0.21488103084266186,
+          0.14302099589258432,
+          0.2296009915880859,
+          0.13901997590437531,
+          0.23215101100504398,
+          0.15503098256886005,
+          0.23455097107216716,
+          0.14918000670149922,
+          0.1538110082037747,
+          0.08450000314041972,
+          0.11057098163291812,
+          0.10016997111961246,
+          0.09276001947000623,
+          0.09709002915769815,
+          0.09359000250697136,
+          0.0916499993763864,
+          0.09808101458474994,
+          0.09288103319704533,
+          0.09301095269620419,
+          0.0963900238275528,
+          0.0931799877434969,
+          0.09225000394508243,
+          0.08045998401939869,
+          0.16710098134353757,
+          0.08005101699382067,
+          0.11531001655384898,
+          0.20840094657614827,
+          0.15202100621536374,
+          0.22707099560648203,
+          0.14135002857074142,
+          0.2298310282640159,
+          0.16423995839431882,
+          0.23320101900026202,
+          0.15127001097425818,
+          0.15114102279767394
+        ]
+      }
+    },
+    "maximum": {
+      "calls": 2,
+      "sum_ms_per_forward": 0.0983205100055784,
+      "per_call": {
+        "median_ms": 0.0983205100055784,
+        "min_ms": 0.09730999590829015,
+        "max_ms": 0.09933102410286665,
+        "mad_ms": 0.001010514097288251,
+        "samples_ms": [
+          0.09730999590829015,
+          0.09933102410286665
+        ]
+      }
+    },
+    "log2": {
+      "calls": 2,
+      "sum_ms_per_forward": 0.09261548984795809,
+      "per_call": {
+        "median_ms": 0.09261548984795809,
+        "min_ms": 0.09003101149573922,
+        "max_ms": 0.09519996820017695,
+        "mad_ms": 0.0025844783522188663,
+        "samples_ms": [
+          0.09003101149573922,
+          0.09519996820017695
+        ]
+      }
+    },
+    "ceil": {
+      "calls": 2,
+      "sum_ms_per_forward": 0.08551048813387752,
+      "per_call": {
+        "median_ms": 0.08551048813387752,
+        "min_ms": 0.083099992480129,
+        "max_ms": 0.08792098378762603,
+        "mad_ms": 0.0024104956537485123,
+        "samples_ms": [
+          0.083099992480129,
+          0.08792098378762603
+        ]
+      }
+    },
+    "subtract": {
+      "calls": 12,
+      "sum_ms_per_forward": 1.0524579847697169,
+      "per_call": {
+        "median_ms": 0.16635050997138023,
+        "min_ms": 0.12055097613483667,
+        "max_ms": 0.2768309786915779,
+        "mad_ms": 0.00705049023963511,
+        "samples_ms": [
+          0.1353209954686463,
+          0.17688097432255745,
+          0.16306102043017745,
+          0.16369001241400838,
+          0.2768309786915779,
+          0.12055097613483667,
+          0.16277999384328723,
+          0.19165995763614774,
+          0.16522000078111887,
+          0.1674810191616416,
+          0.16881001647561789,
+          0.21263002417981625
+        ]
+      }
+    },
+    "exp2": {
+      "calls": 4,
+      "sum_ms_per_forward": 0.17213597311638296,
+      "per_call": {
+        "median_ms": 0.0854954996611923,
+        "min_ms": 0.07626996375620365,
+        "max_ms": 0.09701098315417767,
+        "mad_ms": 0.007745024049654603,
+        "samples_ms": [
+          0.09176001185551286,
+          0.07626996375620365,
+          0.09701098315417767,
+          0.07923098746687174
+        ]
+      }
+    },
+    "neg": {
+      "calls": 2,
+      "sum_ms_per_forward": 0.09038051939569414,
+      "per_call": {
+        "median_ms": 0.09038051939569414,
+        "min_ms": 0.08739100303500891,
+        "max_ms": 0.09337003575637937,
+        "mad_ms": 0.0029895163606852293,
+        "samples_ms": [
+          0.08739100303500891,
+          0.09337003575637937
+        ]
+      }
+    },
+    "slice": {
+      "calls": 20,
+      "sum_ms_per_forward": 0.7035225571598858,
+      "per_call": {
+        "median_ms": 0.06948600639589131,
+        "min_ms": 0.03411003854125738,
+        "max_ms": 0.09878003038465977,
+        "mad_ms": 0.01917104236781597,
+        "samples_ms": [
+          0.09442999726161361,
+          0.09002996375784278,
+          0.09228999260812998,
+          0.08471001638099551,
+          0.08284096838906407,
+          0.03411003854125738,
+          0.0533499987795949,
+          0.05579099524766207,
+          0.05202001193538308,
+          0.050870003178715706,
+          0.09878003038465977,
+          0.09110104292631149,
+          0.08957000682130456,
+          0.08583004819229245,
+          0.0960809993557632,
+          0.044020009227097034,
+          0.05078996764495969,
+          0.056131044402718544,
+          0.05446001887321472,
+          0.04983996041119099
+        ]
+      }
+    },
+    "repeat": {
+      "calls": 32,
+      "sum_ms_per_forward": 12.032116996124387,
+      "per_call": {
+        "median_ms": 0.8361830259673297,
+        "min_ms": 0.20390097051858902,
+        "max_ms": 1.125744020100683,
+        "mad_ms": 0.28021098114550114,
+        "samples_ms": [
+          0.4040419589728117,
+          0.3487209905870259,
+          0.3507109940983355,
+          0.34644099650904536,
+          0.3283409751020372,
+          0.20390097051858902,
+          1.038534042891115,
+          1.0547729907557368,
+          1.1171139776706696,
+          1.112144032958895,
+          1.125744020100683,
+          1.105424016714096,
+          1.117444015108049,
+          1.1194139951840043,
+          0.6168319960124791,
+          0.6075020064599812,
+          0.40138099575415254,
+          0.34875195706263185,
+          0.36040099803358316,
+          0.35864097299054265,
+          0.32734102569520473,
+          0.22584100952371955,
+          1.077394001185894,
+          1.0592839680612087,
+          1.1135239619761705,
+          1.1141440481878817,
+          1.1144040036015213,
+          1.105943985749036,
+          1.1156740365549922,
+          1.106123032514006,
+          0.6338320090435445,
+          0.6044720066711307
+        ]
+      }
+    },
+    "multiply": {
+      "calls": 52,
+      "sum_ms_per_forward": 10.15740356524475,
+      "per_call": {
+        "median_ms": 0.2839410153683275,
+        "min_ms": 0.10737002594396472,
+        "max_ms": 6.360872997902334,
+        "mad_ms": 0.11528501636348665,
+        "samples_ms": [
+          0.18018000992015004,
+          0.1496000331826508,
+          0.1680610002949834,
+          0.13763102469965816,
+          0.16599101945757866,
+          0.13544101966544986,
+          0.1669810153543949,
+          0.1377600128762424,
+          0.12284098193049431,
+          0.10737002594396472,
+          0.10875100269913673,
+          0.2853810437954962,
+          0.28250098694115877,
+          0.3788220346905291,
+          0.3783919964917004,
+          0.3614510060288012,
+          0.4282119916751981,
+          0.36229100078344345,
+          0.3487209905870259,
+          0.41873095324262977,
+          0.41673099622130394,
+          0.36624097265303135,
+          0.4312220262363553,
+          0.2569509670138359,
+          0.24592096451669931,
+          0.2912819618359208,
+          0.18894101958721876,
+          0.1575509668327868,
+          0.16637996304780245,
+          0.16068003606051207,
+          0.16915099695324898,
+          0.13517099432647228,
+          0.16816100105643272,
+          0.15237100888043642,
+          0.12501003220677376,
+          0.3196410252712667,
+          6.360872997902334,
+          0.2924010041169822,
+          0.31443103216588497,
+          0.3795719821937382,
+          0.36337203346192837,
+          0.514672021381557,
+          0.4255120293237269,
+          0.3719810047186911,
+          0.35565102007240057,
+          0.4229519981890917,
+          0.3642109804786742,
+          0.35873096203431487,
+          0.42396102799102664,
+          0.2577509731054306,
+          0.2584609901532531,
+          0.2737609902396798
+        ]
+      }
+    },
+    "round": {
+      "calls": 20,
+      "sum_ms_per_forward": 1.1940189870074391,
+      "per_call": {
+        "median_ms": 0.11796000762842596,
+        "min_ms": 0.08337997132912278,
+        "max_ms": 0.21117099095135927,
+        "mad_ms": 0.002699496690183878,
+        "samples_ms": [
+          0.12836098903790116,
+          0.12526102364063263,
+          0.11768995318561792,
+          0.12119999155402184,
+          0.11652999091893435,
+          0.11660996824502945,
+          0.11773000005632639,
+          0.1140609965659678,
+          0.08535000961273909,
+          0.08337997132912278,
+          0.12910005170851946,
+          0.12659997446462512,
+          0.11856103083118796,
+          0.11967099271714687,
+          0.11798000195994973,
+          0.11794001329690218,
+          0.11580099817365408,
+          0.11955102672800422,
+          0.08548999903723598,
+          0.21117099095135927
+        ]
+      }
+    },
+    "to_layout": {
+      "calls": 40,
+      "sum_ms_per_forward": 8.382074098335579,
+      "per_call": {
+        "median_ms": 0.34971602144651115,
+        "min_ms": 0.0786400050856173,
+        "max_ms": 0.8425930282101035,
+        "mad_ms": 0.26942603290081024,
+        "samples_ms": [
+          0.09024003520607948,
+          0.08158100536093116,
+          0.08105003507807851,
+          0.08076999802142382,
+          0.08223002078011632,
+          0.07895001908764243,
+          0.08626998169347644,
+          0.079809979069978,
+          0.1077710185199976,
+          0.26568101020529866,
+          0.793603016063571,
+          0.7735129911452532,
+          0.8002730319276452,
+          0.8341330103576183,
+          0.8294329745694995,
+          0.8270930266007781,
+          0.832393008749932,
+          0.8376130135729909,
+          0.4622020060196519,
+          0.4398620221763849,
+          0.09096000576391816,
+          0.08288997923955321,
+          0.0814009690657258,
+          0.08515099762007594,
+          0.08226995123550296,
+          0.0786400050856173,
+          0.08235999848693609,
+          0.07964001270011067,
+          0.12340000830590725,
+          0.11175998952239752,
+          0.7891219574958086,
+          0.7828329689800739,
+          0.7974430336616933,
+          0.7989230216480792,
+          0.835083017591387,
+          0.8326930110342801,
+          0.8425930282101035,
+          0.8353930315934122,
+          0.45337097253650427,
+          0.43375103268772364
+        ]
+      }
+    },
+    "zeros": {
+      "calls": 2,
+      "sum_ms_per_forward": 0.07816051947884262,
+      "per_call": {
+        "median_ms": 0.07816051947884262,
+        "min_ms": 0.06852101068943739,
+        "max_ms": 0.08780002826824784,
+        "mad_ms": 0.009639508789405227,
+        "samples_ms": [
+          0.06852101068943739,
+          0.08780002826824784
+        ]
+      }
+    },
+    "concat": {
+      "calls": 12,
+      "sum_ms_per_forward": 0.8456630166620016,
+      "per_call": {
+        "median_ms": 0.1552554895170033,
+        "min_ms": 0.07582094985991716,
+        "max_ms": 0.1962109818123281,
+        "mad_ms": 0.014445016859099269,
+        "samples_ms": [
+          0.17200998263433576,
+          0.08410104783251882,
+          0.15731999883428216,
+          0.15621999045833945,
+          0.07582094985991716,
+          0.1529700239188969,
+          0.1962109818123281,
+          0.1317000132985413,
+          0.16739103011786938,
+          0.16136100748553872,
+          0.08193001849576831,
+          0.15429098857566714
+        ]
+      }
+    },
+    "allocate_tensor_on_device": {
+      "calls": 2,
+      "sum_ms_per_forward": 0.03958499291911721,
+      "per_call": {
+        "median_ms": 0.03958499291911721,
+        "min_ms": 0.03688997821882367,
+        "max_ms": 0.04228000761941075,
+        "mad_ms": 0.002695014700293541,
+        "samples_ms": [
+          0.03688997821882367,
+          0.04228000761941075
+        ]
+      }
+    },
+    "embedding": {
+      "calls": 20,
+      "sum_ms_per_forward": 15.444616001332179,
+      "per_call": {
+        "median_ms": 1.5704560209996998,
+        "min_ms": 0.9812039788812399,
+        "max_ms": 2.119078009855002,
+        "mad_ms": 0.1473510346841067,
+        "samples_ms": [
+          1.5772960032336414,
+          1.5636160387657583,
+          1.4270750107243657,
+          1.4191349619068205,
+          1.627046032808721,
+          1.6140950028784573,
+          2.119078009855002,
+          2.100637007970363,
+          1.0020029731094837,
+          0.9849640191532671,
+          1.5781149850226939,
+          1.5586260124109685,
+          1.4277449809014797,
+          1.4154750388115644,
+          1.6562060336582363,
+          1.6133259632624686,
+          2.1178280003368855,
+          2.1006379975005984,
+          1.005123951472342,
+          0.9812039788812399
+        ]
+      }
+    },
+    "matmul": {
+      "calls": 40,
+      "sum_ms_per_forward": 91.31215745583177,
+      "per_call": {
+        "median_ms": 4.55343650537543,
+        "min_ms": 4.391056019812822,
+        "max_ms": 4.840957990381867,
+        "mad_ms": 0.1052799925673753,
+        "samples_ms": [
+          4.4494160101749,
+          4.455215996131301,
+          4.70053602475673,
+          4.69634699402377,
+          4.526995995547622,
+          4.562106973025948,
+          4.8163169994950294,
+          4.76532697211951,
+          4.488295991905034,
+          4.840957990381867,
+          4.786396981216967,
+          4.659975995309651,
+          4.451735992915928,
+          4.575775994453579,
+          4.58519603125751,
+          4.5861960388720036,
+          4.428714979439974,
+          4.400635021738708,
+          4.412615031469613,
+          4.405676038004458,
+          4.480095987673849,
+          4.670746973715723,
+          4.544766037724912,
+          4.571975965518504,
+          4.439575946889818,
+          4.582656023558229,
+          4.5795559999533,
+          4.713485948741436,
+          4.498825001064688,
+          4.614905978087336,
+          4.840317007619888,
+          4.8119069542735815,
+          4.4809760292992,
+          4.477246024180204,
+          4.565195995382965,
+          4.51373599935323,
+          4.420575045514852,
+          4.402625956572592,
+          4.429655964486301,
+          4.391056019812822
+        ]
+      }
+    },
+    "add": {
+      "calls": 40,
+      "sum_ms_per_forward": 7.648853585124016,
+      "per_call": {
+        "median_ms": 0.4172460176050663,
+        "min_ms": 0.2665710053406656,
+        "max_ms": 0.4546819836832583,
+        "mad_ms": 0.01750598312355578,
+        "samples_ms": [
+          0.37228199653327465,
+          0.3406210453249514,
+          0.3409810015000403,
+          0.37230196176096797,
+          0.42680196929723024,
+          0.41872099973261356,
+          0.4143010010011494,
+          0.4221019917167723,
+          0.42676099110394716,
+          0.43149199336767197,
+          0.4353219992481172,
+          0.43418200220912695,
+          0.4234309890307486,
+          0.42782200034707785,
+          0.41577103547751904,
+          0.4327909555286169,
+          0.2937110257335007,
+          0.2694210270419717,
+          0.2665710053406656,
+          0.26986096054315567,
+          0.36447099409997463,
+          0.348842004314065,
+          0.3775719669647515,
+          0.3768620081245899,
+          0.43946102960035205,
+          0.4190210020169616,
+          0.4063910455442965,
+          0.42081205174326897,
+          0.4362909821793437,
+          0.41438202606514096,
+          0.4235910018905997,
+          0.4546819836832583,
+          0.4279519780538976,
+          0.4232620121911168,
+          0.42269204277545214,
+          0.4261209978722036,
+          0.26933103799819946,
+          0.26931101456284523,
+          0.269221025519073,
+          0.27219101320952177
+        ]
+      }
+    },
+    "generic_op": {
+      "calls": 10,
+      "sum_ms_per_forward": 1.5409750340040773,
+      "per_call": {
+        "median_ms": 0.329041009536013,
+        "min_ms": 0.21345005370676517,
+        "max_ms": 0.33718202030286193,
+        "mad_ms": 0.0012299860827624798,
+        "samples_ms": [
+          0.33057102700695395,
+          0.328850990626961,
+          0.329231028445065,
+          0.33568101935088634,
+          0.21984096383675933,
+          0.32851099967956543,
+          0.329970964230597,
+          0.33718202030286193,
+          0.32866100082173944,
+          0.21345005370676517
+        ]
+      }
+    }
+  },
+  "unwrapped": {
+    "median_ms": 145.37439949344844,
+    "min_ms": 139.9389950092882,
+    "max_ms": 148.7965860287659,
+    "mad_ms": 1.7943760321941227,
+    "samples_ms": [
+      145.20783396437764,
+      139.9389950092882,
+      145.54096502251923,
+      148.7965860287659
+    ]
+  },
+  "instrumented": {
+    "median_ms": 176.16444901796058,
+    "min_ms": 172.61799203697592,
+    "max_ms": 179.71090599894524,
+    "mad_ms": 3.546456980984658,
+    "samples_ms": [
+      172.61799203697592,
+      179.71090599894524
+    ]
+  },
+  "input_unchanged": true,
+  "fixture_unchanged": true,
+  "source_unchanged": true,
+  "protected_unchanged": true
+}
