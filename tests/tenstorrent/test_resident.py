@@ -53,6 +53,23 @@ def test_fp32_output_preserves_small_residual(device, algorithm):
     torch.testing.assert_close(ttnn.to_torch(ttnn.subtract(y, 256.)), torch.tensor([[1.125]]), atol=0, rtol=0)
 
 
+@pytest.mark.parametrize("algorithm", ["explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+                                        "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
+def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
+    import ttnn
+    x = torch.zeros(37, 33, dtype=torch.bfloat16)
+    x[:, 0], x[:, 1], x[:, 32] = 256., 1., .125
+    weight = torch.ones(35, 1, 33, dtype=torch.bfloat16)
+    bias = torch.full((35,), -256., dtype=torch.bfloat16)
+    top = prepare_sparse_topology(torch.arange(37)[:, None], 37, device=device,
+                                   masked=algorithm.startswith("masked"))
+    weights = prepare_sparse_weights(weight, bias=bias, device=device)
+    xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+    result = sparse_conv_device(xd, weights, top, algorithm=algorithm, fp32_output=True)
+    assert result.dtype == ttnn.float32
+    torch.testing.assert_close(ttnn.to_torch(result), torch.full((37, 35), 1.125), atol=0, rtol=0)
+
+
 @pytest.mark.parametrize("fp32_output", [False, True])
 def test_explicit_many_row_chunks(device, fp32_output):
     import ttnn

@@ -8,7 +8,7 @@ expands bounded output-row chunks on device, retaining all input neighbors.
 from dataclasses import dataclass, field
 import torch
 from .implicit import PreparedSparseConv, _round32
-from .ops import _compute_config, _upload
+from .ops import _compute_config, _upload, _add_bias
 
 
 @dataclass
@@ -150,7 +150,7 @@ def sparse_conv_device(features, weights, topology, *, algorithm="implicit_gemm"
                        else outputs[i] for i in range(0, len(outputs), 4)]
         result = outputs[0]
         result = ttnn.slice(result, [0, 0], [m, weights.co])
-        return result if weights.bias is None else ttnn.add(result, weights.bias)
+        return _add_bias(result, weights.bias, fp32_output=fp32_output)
     p = PreparedSparseConv(x, weights.weights, topology.indices, weights.bias,
                            weights.device, m, weights.ci, weights.co, weights.volume,
                            topology.masks, topology.permutation, topology.schedule)

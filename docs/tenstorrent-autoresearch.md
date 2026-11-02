@@ -288,6 +288,31 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   or state-of-the-art claim is promoted. Device workers exited normally and the
   shared board was released by 07:10 UTC.
 
+### 004 — preserve FP32 bias residuals and screen a cheaper accuracy path
+
+- Evidence: the precision probe confirms that the known error originates in
+  the floating-point GEMM, before bias. It also exposes a separate loss in the
+  SDK's row-broadcast bias addition, even when the result storage is FP32.
+- Reproduction: a 37×33 BF16 input with values 256, 1 and 0.125, unit weights,
+  and exactly representable BF16 bias -256 should produce 1.125. All five
+  algorithms instead produce 1.0 with FP32 output. The corrected reproduction
+  fails for all five before the change; its raw report is retained.
+- Change: for requested FP32 output, convert the bias to FP32 and explicitly
+  expand it to the result shape, selecting the equal-shaped SFPU addition
+  path. All 22 resident tests pass with Watcher enabled, including all five
+  new cancellation tests and the existing BF16, reuse, chaining and split-K
+  checks. This currently adds an output-sized temporary bias tensor; fusion or
+  bounded expansion remains a performance/memory improvement opportunity.
+- The original BF16 wide-layer regression remains unresolved by this fix.
+  Changing to FP32 GEMM output or row_chunk=1024 does not remove its one failure.
+- CPU-only approximation screen: two signed base-256 digits, a global feature
+  power-of-two scale and per-output weight scales pass the unchanged BF16
+  tolerances for both feature variants across all nine full decoder shapes.
+  This is evidence to try four integer products on the device, not proof of
+  device correctness, full-decoder numerical equivalence, or runtime improvement.
+  `python -m benchmarks.tenstorrent.digit_study --corpus ... --base 256
+  --digits 2 --output ...` reproduces the study with source/fixture digests.
+
 The additional CPU capture tools are:
 
 ```bash

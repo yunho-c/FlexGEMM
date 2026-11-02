@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="5" time="4.346" timestamp="2026-11-02T07:20:58.813090+00:00" hostname="app-093cae80-deployment-f4f4bf4b7-kdfc9"><testcase classname="tests.tenstorrent.test_resident" name="test_fp32_bias_preserves_residual_after_cancellation[explicit_gemm]" time="2.581"><failure message="AssertionError: Tensor-likes are not equal!&#10;&#10;Mismatched elements: 1295 / 1295 (100.0%)&#10;Greatest absolute difference: 0.125 at index (0, 0)&#10;Greatest relative difference: 0.1111111119389534 at index (0, 0)">device = MeshDevice(1x1 grid, 1 devices), algorithm = 'explicit_gemm'
+
+    @pytest.mark.parametrize("algorithm", ["explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+                                            "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
+    def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
+        import ttnn
+        x = torch.zeros(37, 33, dtype=torch.bfloat16)
+        x[:, 0], x[:, 1], x[:, 32] = 256., 1., .125
+        weight = torch.ones(35, 1, 33, dtype=torch.bfloat16)
+        bias = torch.full((35,), -256., dtype=torch.bfloat16)
+        top = prepare_sparse_topology(torch.arange(37)[:, None], 37, device=device,
+                                       masked=algorithm.startswith("masked"))
+        weights = prepare_sparse_weights(weight, bias=bias, device=device)
+        xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+        result = sparse_conv_device(xd, weights, top, algorithm=algorithm, fp32_output=True)
+        assert result.dtype == ttnn.float32
+&gt;       torch.testing.assert_close(ttnn.to_torch(result), torch.full((37, 35), 1.125), atol=0, rtol=0)
+E       AssertionError: Tensor-likes are not equal!
+E       
+E       Mismatched elements: 1295 / 1295 (100.0%)
+E       Greatest absolute difference: 0.125 at index (0, 0)
+E       Greatest relative difference: 0.1111111119389534 at index (0, 0)
+
+tests/tenstorrent/test_resident.py:70: AssertionError</failure></testcase><testcase classname="tests.tenstorrent.test_resident" name="test_fp32_bias_preserves_residual_after_cancellation[implicit_gemm]" time="0.016"><failure message="AssertionError: Tensor-likes are not equal!&#10;&#10;Mismatched elements: 1295 / 1295 (100.0%)&#10;Greatest absolute difference: 0.125 at index (0, 0)&#10;Greatest relative difference: 0.1111111119389534 at index (0, 0)">device = MeshDevice(1x1 grid, 1 devices), algorithm = 'implicit_gemm'
+
+    @pytest.mark.parametrize("algorithm", ["explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+                                            "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
+    def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
+        import ttnn
+        x = torch.zeros(37, 33, dtype=torch.bfloat16)
+        x[:, 0], x[:, 1], x[:, 32] = 256., 1., .125
+        weight = torch.ones(35, 1, 33, dtype=torch.bfloat16)
+        bias = torch.full((35,), -256., dtype=torch.bfloat16)
+        top = prepare_sparse_topology(torch.arange(37)[:, None], 37, device=device,
+                                       masked=algorithm.startswith("masked"))
+        weights = prepare_sparse_weights(weight, bias=bias, device=device)
+        xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+        result = sparse_conv_device(xd, weights, top, algorithm=algorithm, fp32_output=True)
+        assert result.dtype == ttnn.float32
+&gt;       torch.testing.assert_close(ttnn.to_torch(result), torch.full((37, 35), 1.125), atol=0, rtol=0)
+E       AssertionError: Tensor-likes are not equal!
+E       
+E       Mismatched elements: 1295 / 1295 (100.0%)
+E       Greatest absolute difference: 0.125 at index (0, 0)
+E       Greatest relative difference: 0.1111111119389534 at index (0, 0)
+
+tests/tenstorrent/test_resident.py:70: AssertionError</failure></testcase><testcase classname="tests.tenstorrent.test_resident" name="test_fp32_bias_preserves_residual_after_cancellation[masked_implicit_gemm]" time="0.027"><failure message="AssertionError: Tensor-likes are not equal!&#10;&#10;Mismatched elements: 1295 / 1295 (100.0%)&#10;Greatest absolute difference: 0.125 at index (0, 0)&#10;Greatest relative difference: 0.1111111119389534 at index (0, 0)">device = MeshDevice(1x1 grid, 1 devices), algorithm = 'masked_implicit_gemm'
+
+    @pytest.mark.parametrize("algorithm", ["explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+                                            "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
+    def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
+        import ttnn
+        x = torch.zeros(37, 33, dtype=torch.bfloat16)
+        x[:, 0], x[:, 1], x[:, 32] = 256., 1., .125
+        weight = torch.ones(35, 1, 33, dtype=torch.bfloat16)
+        bias = torch.full((35,), -256., dtype=torch.bfloat16)
+        top = prepare_sparse_topology(torch.arange(37)[:, None], 37, device=device,
+                                       masked=algorithm.startswith("masked"))
+        weights = prepare_sparse_weights(weight, bias=bias, device=device)
+        xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+        result = sparse_conv_device(xd, weights, top, algorithm=algorithm, fp32_output=True)
+        assert result.dtype == ttnn.float32
+&gt;       torch.testing.assert_close(ttnn.to_torch(result), torch.full((37, 35), 1.125), atol=0, rtol=0)
+E       AssertionError: Tensor-likes are not equal!
+E       
+E       Mismatched elements: 1295 / 1295 (100.0%)
+E       Greatest absolute difference: 0.125 at index (0, 0)
+E       Greatest relative difference: 0.1111111119389534 at index (0, 0)
+
+tests/tenstorrent/test_resident.py:70: AssertionError</failure></testcase><testcase classname="tests.tenstorrent.test_resident" name="test_fp32_bias_preserves_residual_after_cancellation[implicit_gemm_splitk]" time="0.035"><failure message="AssertionError: Tensor-likes are not equal!&#10;&#10;Mismatched elements: 1295 / 1295 (100.0%)&#10;Greatest absolute difference: 0.125 at index (0, 0)&#10;Greatest relative difference: 0.1111111119389534 at index (0, 0)">device = MeshDevice(1x1 grid, 1 devices), algorithm = 'implicit_gemm_splitk'
+
+    @pytest.mark.parametrize("algorithm", ["explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+                                            "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
+    def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
+        import ttnn
+        x = torch.zeros(37, 33, dtype=torch.bfloat16)
+        x[:, 0], x[:, 1], x[:, 32] = 256., 1., .125
+        weight = torch.ones(35, 1, 33, dtype=torch.bfloat16)
+        bias = torch.full((35,), -256., dtype=torch.bfloat16)
+        top = prepare_sparse_topology(torch.arange(37)[:, None], 37, device=device,
+                                       masked=algorithm.startswith("masked"))
+        weights = prepare_sparse_weights(weight, bias=bias, device=device)
+        xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+        result = sparse_conv_device(xd, weights, top, algorithm=algorithm, fp32_output=True)
+        assert result.dtype == ttnn.float32
+&gt;       torch.testing.assert_close(ttnn.to_torch(result), torch.full((37, 35), 1.125), atol=0, rtol=0)
+E       AssertionError: Tensor-likes are not equal!
+E       
+E       Mismatched elements: 1295 / 1295 (100.0%)
+E       Greatest absolute difference: 0.125 at index (0, 0)
+E       Greatest relative difference: 0.1111111119389534 at index (0, 0)
+
+tests/tenstorrent/test_resident.py:70: AssertionError</failure></testcase><testcase classname="tests.tenstorrent.test_resident" name="test_fp32_bias_preserves_residual_after_cancellation[masked_implicit_gemm_splitk]" time="0.142"><failure message="AssertionError: Tensor-likes are not equal!&#10;&#10;Mismatched elements: 1295 / 1295 (100.0%)&#10;Greatest absolute difference: 0.125 at index (0, 0)&#10;Greatest relative difference: 0.1111111119389534 at index (0, 0)">device = MeshDevice(1x1 grid, 1 devices)
+algorithm = 'masked_implicit_gemm_splitk'
+
+    @pytest.mark.parametrize("algorithm", ["explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+                                            "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
+    def test_fp32_bias_preserves_residual_after_cancellation(device, algorithm):
+        import ttnn
+        x = torch.zeros(37, 33, dtype=torch.bfloat16)
+        x[:, 0], x[:, 1], x[:, 32] = 256., 1., .125
+        weight = torch.ones(35, 1, 33, dtype=torch.bfloat16)
+        bias = torch.full((35,), -256., dtype=torch.bfloat16)
+        top = prepare_sparse_topology(torch.arange(37)[:, None], 37, device=device,
+                                       masked=algorithm.startswith("masked"))
+        weights = prepare_sparse_weights(weight, bias=bias, device=device)
+        xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+        result = sparse_conv_device(xd, weights, top, algorithm=algorithm, fp32_output=True)
+        assert result.dtype == ttnn.float32
+&gt;       torch.testing.assert_close(ttnn.to_torch(result), torch.full((37, 35), 1.125), atol=0, rtol=0)
+E       AssertionError: Tensor-likes are not equal!
+E       
+E       Mismatched elements: 1295 / 1295 (100.0%)
+E       Greatest absolute difference: 0.125 at index (0, 0)
+E       Greatest relative difference: 0.1111111119389534 at index (0, 0)
+
+tests/tenstorrent/test_resident.py:70: AssertionError</failure></testcase></testsuite></testsuites>

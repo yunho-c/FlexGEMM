@@ -31,6 +31,22 @@ def _upload(tensor, device):
                            dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT)
 
 
+def _add_bias(result, bias, *, fp32_output=False):
+    """Preserve FP32 residuals through the SDK's row-broadcast addition.
+
+    On the pinned Wormhole SDK, broadcast add sends FP32 values through the
+    matrix engine's reduced-precision input path. Equal-shaped operands select
+    the SFPU path, so expand only when full-precision output was requested.
+    """
+    import ttnn
+    if bias is None:
+        return result
+    if fp32_output:
+        bias = ttnn.repeat(ttnn.typecast(bias, ttnn.float32), [result.shape[0], 1])
+        return ttnn.add(result, bias, dtype=ttnn.float32)
+    return ttnn.add(result, bias)
+
+
 @dataclass
 class PreparedExplicitConv:
     expanded: object

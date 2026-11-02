@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 import torch
 from .reference import validate
-from .ops import _upload, _matmul_fidelity
+from .ops import _upload, _matmul_fidelity, _add_bias
 
 
 def _round32(n):
@@ -57,9 +57,7 @@ class PreparedSparseConv:
             if not fp32_output:
                 result = ttnn.typecast(result, ttnn.bfloat16)
         result = ttnn.slice(result, [0, 0], [self.m, self.co])
-        if self.bias is not None:
-            result = ttnn.add(result, self.bias)
-        return result
+        return _add_bias(result, self.bias, fp32_output=fp32_output)
 
 
 def prepare_implicit(feats, weight, neighbor_map, *, device, bias=None, masked=False):

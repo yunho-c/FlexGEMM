@@ -69,17 +69,29 @@ def main():
                 host_full = ttnn.to_torch(full).float()
                 index = tuple(int(i) for i in torch.unravel_index((host_full - expected).abs().argmax(), expected.shape))
                 row = {"variant": variant, "fp32_output": fp32,
+                    "raw_dtype": str(raw.dtype), "with_bias_dtype": str(full.dtype),
                     "raw": correctness(host_raw, raw_expected, contract),
                     "with_bias": correctness(host_full, expected, contract),
                     "host_fp32_bias_after_download": correctness(host_raw + (0 if fixture["bias"] is None else fixture["bias"].float()), expected, contract),
                     "largest_error_index": list(index),
                     "largest_error_values": {"raw": float(host_raw[index]), "raw_reference": float(raw_expected[index]),
                         "with_bias": float(host_full[index]), "reference": float(expected[index])}}
+                row["failing_values"] = [{"index": at, "raw": float(host_raw[tuple(at)]),
+                    "raw_reference": float(raw_expected[tuple(at)]), "with_bias": float(host_full[tuple(at)]),
+                    "reference": float(expected[tuple(at)]),
+                    "host_fp32_bias": float((host_raw + (0 if fixture["bias"] is None else fixture["bias"].float()))[tuple(at)])}
+                    for at in row["with_bias"].get("first_failures", [])]
                 if fp32:
                     converted = ttnn.typecast(full, ttnn.bfloat16)
                     ttnn.synchronize_device(device)
                     row["single_final_bf16_rounding"] = correctness(ttnn.to_torch(converted).float(), expected, contract)
                     del converted
+                    if weights.bias is not None:
+                        precise_bias = ttnn.typecast(weights.bias, ttnn.float32)
+                        precise_sum = ttnn.add(raw, precise_bias, dtype=ttnn.float32)
+                        row["explicit_fp32_bias"] = correctness(ttnn.to_torch(precise_sum).float(), expected, contract)
+                        row["explicit_fp32_bias_dtype"] = str(precise_sum.dtype)
+                        del precise_bias, precise_sum
                 report["results"].append(row)
                 write_json(args.output, report)
                 del raw, full, host_raw, host_full
