@@ -1,0 +1,24 @@
+{
+  "iteration": 19,
+  "purpose": "Matched complete decoder application diagnostic: explicit digit baseline versus integrated four-product implicit candidate",
+  "created_utc": "2026-11-02T15:29:14Z",
+  "candidate_commit": "facc5e2e414d6654f716fd5486ba53292e39998a",
+  "baseline_commit": "8c1c896b19892e9abcd340de9f8f8942f13c0728",
+  "planned_sequence": [
+    "baseline-a",
+    "candidate-b",
+    "baseline-c"
+  ],
+  "warm_repeats_per_decoder": 2,
+  "hardware_lock": "/tmp/genrecon-tt-pjrt.lock",
+  "timeout_seconds_per_worker": 900,
+  "gates": "Saved CPU continuous/coordinate/subdivision/edge gates unchanged. Candidate-baseline comparison is additional and never replaces CPU gates.",
+  "timing": "Complete synchronized decoder calls including boundary transfers and actual topology-cache policy. First-use and warm timings separate. Two warm samples per decoder are diagnostic, not an operator-style promotion campaign.",
+  "topology_cache_max_rows": 262144,
+  "integrity": {
+    "digit_scene_probe.py": "5b88ff0f6ced3294d0fcdd29a0f6a38bf1c97035ced3e7cc0abe85a005f5d2c5",
+    "genrecon_digit_adapter.py": "c725f4a4668ea4396121a7dc49c51034f3fa6dfc4b3c8d54a541921cb11073e1",
+    "run_scene.py": "4848530611000359b46d6fc4e4b8681ac9cef2b5f3a53916bbc7a8406fabfd0e"
+  },
+  "no_concurrent_cpu_heavy_analysis": true
+}

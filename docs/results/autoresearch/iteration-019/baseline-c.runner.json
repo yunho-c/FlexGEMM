@@ -1,0 +1,12 @@
+{
+  "status": "complete",
+  "candidate_root": "/home/user/GitHub/flexgemm-evaluator",
+  "algorithm": "digit_explicit_gemm",
+  "script_sha256": "5b88ff0f6ced3294d0fcdd29a0f6a38bf1c97035ced3e7cc0abe85a005f5d2c5",
+  "whole_worker_timeout_seconds": 900,
+  "lock_wait_seconds": 1.244997838512063e-05,
+  "returncode": 1,
+  "timeout": null,
+  "elapsed_seconds": 121.64702863100683,
+  "device_recovery_required": false
+}

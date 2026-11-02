@@ -760,6 +760,30 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
 - Decision: retain opt-in integration. Matched complete-decoder testing is next;
   application benefit and SOTA are unproven. Evidence is in iteration-018.
 
+### 019 — complete matched BF16 decoder integration
+
+- Run explicit iteration015 / implicit iteration018 / explicit iteration015
+  through the same isolated GenRecon adapter, preserving all non-convolution
+  operations, checkpoints, saved CPU gates and the 262,144-row topology-cache limit.
+- All 36 saved output/guide comparisons across the three pairs are bitwise equal,
+  with exact coordinates and subdivision/edge signs. Warm calls repeat exactly.
+- One diagnostic A/B/A bracket with two warm calls per decoder gives shape
+  11.445487 / 10.068519 / 11.432286 seconds (1.136104×) and texture
+  10.953361 / 10.049999 / 10.936736 seconds (1.089060×). Baseline drift is
+  0.1154% / 0.1519%. This is one scene, not a broad performance promotion.
+- All three runs fail the original FP32 CPU parity gates. Fixed-guide shape
+  relative L2 is 0.014234 with 10,159 edge-sign mismatches; predicted outputs have
+  1,724,221 voxels versus CPU's 1,711,800. Preserve these failures separately
+  from the successful matched BF16 comparison and passing operator contract.
+- Each candidate decoder uses 16 implicit and 24 explicit-fallback convolutions.
+  Topology construction remains 2.96–3.57 seconds per warm call because large
+  maps are rebuilt. Initial preparation and first-use timing are reported separately.
+- Three normal numerical-failure worker exits, no timeout/reset; source, reference,
+  checkpoint and harness integrity checks pass. Original GenRecon remains unchanged.
+- Decision: retain opt-in integration. Test bounded within-stage topology reuse,
+  continue kernel profiling and independent-scene coverage. Full FP32 decoder
+  parity and SOTA remain unproven. Evidence and verifier are in iteration-019.
+
 The additional CPU capture tools are:
 
 ```bash

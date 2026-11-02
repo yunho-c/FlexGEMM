@@ -1,0 +1,80 @@
+{
+  "scope": "Unchanged complete-decoder A/B/A reports and logs; tensor artifacts remain in scratch storage with hashes in comparison.json.",
+  "files": [
+    {
+      "path": "baseline-a.runner.json",
+      "sha256": "c78a4335841070f5ea9d987f040fb72a403005ad2e0f7882b87f8312e390c4d9",
+      "bytes": 414
+    },
+    {
+      "path": "baseline-a.log",
+      "sha256": "7ef713eccbbe8d585f663e86a7343920bb8afc003187b56493c80805500135e1",
+      "bytes": 56283
+    },
+    {
+      "path": "baseline-a/result.json",
+      "sha256": "c5af65f3310d27b807ab1e55ee55b3ca92dcf9ae725792729dc3d49afde03e9d",
+      "bytes": 95538
+    },
+    {
+      "path": "candidate-b.runner.json",
+      "sha256": "988489a2189e2e50ca1a161ca81e317f7a09e7e8679e1b37007e176b60d10a3e",
+      "bytes": 417
+    },
+    {
+      "path": "candidate-b.log",
+      "sha256": "74edf960cbf684823ddef1bd8efe409484bc43c2764d82a4bb5d0cf5b27ad914",
+      "bytes": 42411
+    },
+    {
+      "path": "candidate-b/result.json",
+      "sha256": "cc28c3edf57efb767a90412c51a8b10f3febdbee468763f9ad6b04f1a75139cc",
+      "bytes": 99331
+    },
+    {
+      "path": "baseline-c.runner.json",
+      "sha256": "78440803ea7e1b327a2f857cd8fd2718ac0cebdd803a13589899bafa4ecd3a82",
+      "bytes": 413
+    },
+    {
+      "path": "baseline-c.log",
+      "sha256": "0e092ebdb664684b676898e227943ddc8837063d16a6011b9231738e58aa2d3f",
+      "bytes": 4235
+    },
+    {
+      "path": "baseline-c/result.json",
+      "sha256": "5fd190ecd6cff8d89a70f5c6a55e8ba176a2594570b9adea20cef31c74a81514",
+      "bytes": 95546
+    },
+    {
+      "path": "plan.json",
+      "sha256": "4d267002f6bff91d52e1d9741d8776ec37ffd389cc043df30539c51cb1cbfda6",
+      "bytes": 1314
+    },
+    {
+      "path": "comparison.json",
+      "sha256": "4cf8ec25a89a3a88d6362c47c45df0c13fe93feb8f05ec56cc3b5ccb3c8fcb0d",
+      "bytes": 24960
+    },
+    {
+      "path": "harness/digit_scene_probe.py",
+      "sha256": "5b88ff0f6ced3294d0fcdd29a0f6a38bf1c97035ced3e7cc0abe85a005f5d2c5",
+      "bytes": 19155
+    },
+    {
+      "path": "harness/genrecon_digit_adapter.py",
+      "sha256": "c725f4a4668ea4396121a7dc49c51034f3fa6dfc4b3c8d54a541921cb11073e1",
+      "bytes": 2985
+    },
+    {
+      "path": "harness/run_scene.py",
+      "sha256": "4848530611000359b46d6fc4e4b8681ac9cef2b5f3a53916bbc7a8406fabfd0e",
+      "bytes": 1961
+    },
+    {
+      "path": "compare.py",
+      "sha256": "e9b7da594479bd3dbc026e55dd8a1f1df98bf584a07b990c894da9279c4db6f8",
+      "bytes": 4975
+    }
+  ]
+}

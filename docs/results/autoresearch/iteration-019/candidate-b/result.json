@@ -1,0 +1,3463 @@
+{
+  "status": "numerical_failure",
+  "phase": "complete",
+  "precision": "bf16",
+  "algorithm": "digit_implicit_gemm",
+  "row_chunk": "per-layer floor32(1048576/paddedCi)",
+  "input_voxels": 4490,
+  "input_scope": "saved_real_image_latent",
+  "original_input_sha256": "ec164c1e73ee3f9117068a45e2e75100f26345b25aba5f954ca6db91d3d69d41",
+  "reference_dir": "/home/user/tt-scratchpad/genrecon/sparse-decoder-poster-bounded",
+  "reference_manifest_sha256": "176bc05823ce4213956da22e37d9c918a537fb520677437aa46e71fb9b52e5f9",
+  "reference_files_sha256": {
+    "decoder_input.npz": "593adfea32242c0e7f664dfe08a7d6c6528ec06291101763157c912b0f00639e",
+    "shape_reference.pt": "d3a4c458a05d1e4efa6d82962b7a2132959db04650c26fa774d300bd9b20fb5d",
+    "texture_reference.pt": "432b5a3cdd52e90ee10f26502d4d24274aec3f4352806efa0c31ca932736af29",
+    "reference_guides.pt": "401522fa0f8bfbb8cb91ea60748da198e6b866da66e4a73e12c3fda4c893ebdf",
+    "shape_wide_input.pt": "d9dbec7db2dcdde98ba7e2189dd3b93ecab0e604c2419be412e17c016210e6cc"
+  },
+  "checkpoint_sha256": {
+    "shape_dec_next_dc_f16c32_fp16.json": "5f1b856dffce79466fb18f5f0eefc08f08c673b24b3c05b20359c0b6d318a209",
+    "shape_dec_next_dc_f16c32_fp16.safetensors": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581",
+    "tex_dec_next_dc_f16c32_fp16.json": "22074e4ab5b28e2b72d33a3fe61bf416134b89e12d0fc5c729f37da75da0c4d1",
+    "tex_dec_next_dc_f16c32_fp16.safetensors": "97ea69addea2ecd9312910f5f548234665eef51c088386180b7cd5b258645e3c"
+  },
+  "gate": {
+    "relative_l2": 0.0001,
+    "pcc": 0.999999,
+    "coordinates": "exact",
+    "subdivision_signs": "exact",
+    "geometry_edge_signs": "exact",
+    "scope": "decoder numerical parity; real-scene reconstruction quality is separate"
+  },
+  "threads": 16,
+  "versions": {
+    "torch": "2.11.0+cpu",
+    "python": "3.10.19 (main, Jan 14 2026, 19:36:24) [Clang 21.1.4 ]"
+  },
+  "started_utc": "2026-11-02T15:31:47Z",
+  "fixed_shape_precision": "bf16",
+  "warm_repeats": 2,
+  "warm": {
+    "shape": {
+      "seconds": [
+        10.121783585986122,
+        10.015254281985108
+      ],
+      "stats": [
+        {
+          "topology_seconds": 3.0781922919559292,
+          "stage_voxels": [
+            4490,
+            20250,
+            88519,
+            389307,
+            1724221
+          ],
+          "feature_uploads": 1,
+          "subdivision_downloads": 4,
+          "digit_calls": [
+            {
+              "name": "blocks.0.0.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.1.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.2.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.3.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.4.conv1",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 4096,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.4.conv2",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.0.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.1.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.2.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.3.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.4.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.5.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.6.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.7.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.8.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.9.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.10.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.11.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.12.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.13.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.14.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.15.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.16.conv1",
+              "rows": 20250,
+              "ci": 512,
+              "co": 2048,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.16.conv2",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.0.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.1.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.2.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.3.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.4.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.5.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.6.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.7.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.8.conv1",
+              "rows": 88519,
+              "ci": 256,
+              "co": 1024,
+              "row_chunk": 4096,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.2.8.conv2",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.0.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.1.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.2.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.3.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.4.conv1",
+              "rows": 389307,
+              "ci": 128,
+              "co": 512,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.4.conv2",
+              "rows": 1724221,
+              "ci": 64,
+              "co": 64,
+              "row_chunk": 16384,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            }
+          ],
+          "total_seconds": 10.119839717983268
+        },
+        {
+          "topology_seconds": 2.960765029885806,
+          "stage_voxels": [
+            4490,
+            20250,
+            88519,
+            389307,
+            1724221
+          ],
+          "feature_uploads": 1,
+          "subdivision_downloads": 4,
+          "digit_calls": [
+            {
+              "name": "blocks.0.0.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.1.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.2.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.3.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.4.conv1",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 4096,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.4.conv2",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.0.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.1.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.2.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.3.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.4.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.5.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.6.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.7.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.8.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.9.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.10.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.11.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.12.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.13.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.14.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.15.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.16.conv1",
+              "rows": 20250,
+              "ci": 512,
+              "co": 2048,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.16.conv2",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.0.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.1.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.2.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.3.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.4.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.5.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.6.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.7.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.8.conv1",
+              "rows": 88519,
+              "ci": 256,
+              "co": 1024,
+              "row_chunk": 4096,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.2.8.conv2",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.0.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.1.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.2.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.3.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.4.conv1",
+              "rows": 389307,
+              "ci": 128,
+              "co": 512,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.4.conv2",
+              "rows": 1724221,
+              "ci": 64,
+              "co": 64,
+              "row_chunk": 16384,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            }
+          ],
+          "total_seconds": 10.013631425972562
+        }
+      ],
+      "repeat_outputs_equal": true,
+      "repeat_guides_equal": true,
+      "median_seconds": 10.068518933985615,
+      "min_seconds": 10.015254281985108,
+      "max_seconds": 10.121783585986122
+    },
+    "texture": {
+      "seconds": [
+        10.06011668901192,
+        10.03988128300989
+      ],
+      "stats": [
+        {
+          "topology_seconds": 3.3639399329549633,
+          "stage_voxels": [
+            4490,
+            20250,
+            88519,
+            389307,
+            1724221
+          ],
+          "feature_uploads": 1,
+          "subdivision_downloads": 0,
+          "digit_calls": [
+            {
+              "name": "blocks.0.0.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.1.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.2.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.3.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.4.conv1",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 4096,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.4.conv2",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.0.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.1.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.2.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.3.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.4.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.5.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.6.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.7.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.8.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.9.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.10.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.11.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.12.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.13.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.14.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.15.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.16.conv1",
+              "rows": 20250,
+              "ci": 512,
+              "co": 2048,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.16.conv2",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.0.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.1.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.2.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.3.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.4.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.5.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.6.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.7.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.8.conv1",
+              "rows": 88519,
+              "ci": 256,
+              "co": 1024,
+              "row_chunk": 4096,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.2.8.conv2",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.0.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.1.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.2.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.3.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.4.conv1",
+              "rows": 389307,
+              "ci": 128,
+              "co": 512,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.4.conv2",
+              "rows": 1724221,
+              "ci": 64,
+              "co": 64,
+              "row_chunk": 16384,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            }
+          ],
+          "total_seconds": 10.05843397200806
+        },
+        {
+          "topology_seconds": 3.3154276006971486,
+          "stage_voxels": [
+            4490,
+            20250,
+            88519,
+            389307,
+            1724221
+          ],
+          "feature_uploads": 1,
+          "subdivision_downloads": 0,
+          "digit_calls": [
+            {
+              "name": "blocks.0.0.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.1.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.2.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.3.conv",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 1024,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.4.conv1",
+              "rows": 4490,
+              "ci": 1024,
+              "co": 4096,
+              "row_chunk": 1024,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.0.4.conv2",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.0.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.1.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.2.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.3.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.4.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.5.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.6.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.7.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.8.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.9.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.10.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.11.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.12.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.13.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.14.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.15.conv",
+              "rows": 20250,
+              "ci": 512,
+              "co": 512,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.16.conv1",
+              "rows": 20250,
+              "ci": 512,
+              "co": 2048,
+              "row_chunk": 2048,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.1.16.conv2",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.0.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.1.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.2.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.3.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.4.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.5.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.6.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.7.conv",
+              "rows": 88519,
+              "ci": 256,
+              "co": 256,
+              "row_chunk": 4096,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.2.8.conv1",
+              "rows": 88519,
+              "ci": 256,
+              "co": 1024,
+              "row_chunk": 4096,
+              "path": "digit_explicit_gemm",
+              "fallback_reason": "per_core_cb_budget"
+            },
+            {
+              "name": "blocks.2.8.conv2",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.0.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.1.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.2.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.3.conv",
+              "rows": 389307,
+              "ci": 128,
+              "co": 128,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.4.conv1",
+              "rows": 389307,
+              "ci": 128,
+              "co": 512,
+              "row_chunk": 8192,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            },
+            {
+              "name": "blocks.3.4.conv2",
+              "rows": 1724221,
+              "ci": 64,
+              "co": 64,
+              "row_chunk": 16384,
+              "path": "digit_implicit_gemm",
+              "fallback_reason": null
+            }
+          ],
+          "total_seconds": 10.037178252998274
+        }
+      ],
+      "repeat_outputs_equal": true,
+      "repeat_guides_equal": true,
+      "median_seconds": 10.049998986010905,
+      "min_seconds": 10.03988128300989,
+      "max_seconds": 10.06011668901192
+    }
+  },
+  "timing_scope": "complete calls including CPU boundary transfers, topology and output synchronization; excludes weight preparation, comparisons and artifact I/O",
+  "watcher": "disabled",
+  "scope": "saved CPU references; one decoder's weights resident at a time; all voxel rows retained",
+  "source": {
+    "commit": "8d07db88360bf14858318fabbf51bb11e91c982e",
+    "dirty": true,
+    "sha256": {
+      "experiments/tenstorrent/sparse_decoder_scene_probe.py": "cb97660668b22c72487e1ba9899c13404451855a2e1dbf1521b38c842f93ab78",
+      "experiments/tenstorrent/sparse_decoder_probe.py": "d36bb9ed9e71c17115d83ba47d76d27456a759d77bfef8938646da49f2480a78",
+      "genrecon/models/sc_vaes/sparse_unet_vae.py": "22d7f4f48ab9d58012d20aa0aad849d1ee97c0f06e961756987cde7cc5946f8c",
+      "genrecon/modules/sparse/conv/conv_reference.py": "d08086879d00f5da539c428d672b1399bc6340d28c5b9a676b0ba79767be3a2c",
+      "genrecon/backends/tenstorrent/__init__.py": "1e299786b91f8491a4e0b21f2c8b4074aa9a60c63928d30d6450b131f0ae6465",
+      "genrecon/backends/tenstorrent/precision.py": "fd73cf6890ad9fdf4399253ed3d8c3694407823befb6d3466bd5bede9303dd75",
+      "genrecon/backends/tenstorrent/sparse_decoder.py": "acd89654fb7fa194db0b18540f953178b787fb9960077ff37092925cf2ebc725"
+    }
+  },
+  "flex_gemm": {
+    "commit": "facc5e2e414d6654f716fd5486ba53292e39998a",
+    "dirty": false,
+    "sha256": {
+      "flex_gemm/tenstorrent/__init__.py": "77a358e234274658599c29d251bbeaaee81611cb5d985f02152a4cf32a8815e0",
+      "flex_gemm/tenstorrent/_k6.py": "31daa021586e56537ff4bf539d6864bf9300df4a6e927bdb0060a7568d2587e9",
+      "flex_gemm/tenstorrent/conv.py": "389903b43e5246a94bfba678070a0b031da45c749de5e5c0484c20ac65c7f6c5",
+      "flex_gemm/tenstorrent/digit_implicit.py": "538587e2bf91bc4a712fb0c2bd296f242c781f8ad8c65e1e7de7a01b35e5f634",
+      "flex_gemm/tenstorrent/digits.py": "7ae1cb8e5828f47061f15d1e409bfedce551b08f9a408159d263b962db059a07",
+      "flex_gemm/tenstorrent/feature_digits.py": "33a6117dcfc96b4224fc7c82ddccb4fda00308f1999aff5cbc7209867659fd76",
+      "flex_gemm/tenstorrent/gather.py": "84bb18bfd4d77468aee9366342a3976f92cf0d71dd2da13a157d955156895315",
+      "flex_gemm/tenstorrent/implicit.py": "b512b11eff94b770c9131ba3a1f376b7f060bd17206a8ab0c3aae693e0eee688",
+      "flex_gemm/tenstorrent/kernels/compute.cpp": "431780ae171a14f2e4ea9db2b8b7db5fc23b064bde7e12623da60070a4cee075",
+      "flex_gemm/tenstorrent/kernels/copy_output_tiles.cpp": "c1f12ea86cbc2545842495c5c9cf8774e9bf45b1533b3cbb40859834e2e2c642",
+      "flex_gemm/tenstorrent/kernels/feature_digits_compute.cpp": "671870f8c356b59efbf92f719fe52216f3907f0583c32464ec6bd09117b45a19",
+      "flex_gemm/tenstorrent/kernels/feature_digits_reader.cpp": "f68826bc0b439952af1f9afd70b2130632a0d2b4ee3ff2f2c1dc08f37cfe7263",
+      "flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp": "b3014798f33717b0e77c0ad86c0dd298903cb9bb13aabdde02aeb6bb1fc0ec0c",
+      "flex_gemm/tenstorrent/kernels/gather.cpp": "b546a590ae983e7a16c6cd0d9029ae6ed15eb5923b25a06cc85a882b67c537a7",
+      "flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp": "3e90a55804c69d0a4ab46c5210bcfd5e74bd320253d8c5a231b21731cd691572",
+      "flex_gemm/tenstorrent/kernels/k6/k6_gather.hpp": "65d87341df1520505bc29b978eb150ba833ed72f7d7d7a5213e06e880b24cb1d",
+      "flex_gemm/tenstorrent/kernels/k6/k6_reader.cpp": "6c0cbda26487ca64aa97820d5dc93ab5f19c0be88a08b6c7a20db8d35510c17d",
+      "flex_gemm/tenstorrent/kernels/k6/k6_writer.cpp": "ad34a8130564e554d545c62868b088beaab2b1c2fa72a53310dcaeb41243f1fa",
+      "flex_gemm/tenstorrent/kernels/reader.cpp": "6ba3b2ef6f4f80f3b354cb40210c181753d593236ffb080ff36825d61ceeddab",
+      "flex_gemm/tenstorrent/kernels/writer.cpp": "494dcd0566cec973a6b792109071a37f40c6579a155ed1d4d6ef3029505d83fc",
+      "flex_gemm/tenstorrent/masking.py": "32c66f47bd2caef0ec94e34c23e0ae09562206a47267cc490db304cf7f0d10b7",
+      "flex_gemm/tenstorrent/ops.py": "c5e99c9032b6f472ee6d276ad196bb6caeaaadc539cb96a6fad25eb17b4a12db",
+      "flex_gemm/tenstorrent/reference.py": "a0dc3709115acfb282ea9d472b63ed470e62421e478ab67d20b2387b8ea0bdd3",
+      "flex_gemm/tenstorrent/resident.py": "88e039e8c320a7b29853626403e6a56a3da469e35a136fa13e4db2bb868ecb25"
+    }
+  },
+  "tt_metal": {
+    "commit": "9f9cd4fd590f4b606bd0981a4fe0b6403eb38ec9",
+    "dirty": false,
+    "sha256": {}
+  },
+  "prior_fixed_shape": {
+    "shape_fixed": {
+      "coordinates_equal": true,
+      "actual_voxels": 1711800,
+      "reference_voxels": 1711800,
+      "features": {
+        "shape_match": true,
+        "finite": true,
+        "relative_l2": 1.1487012456033988e-06,
+        "pcc": 0.9999999999992679,
+        "max_abs": 0.00054168701171875
+      }
+    },
+    "subdivisions_fixed": [
+      {
+        "features": {
+          "shape_match": true,
+          "finite": true,
+          "relative_l2": 5.954842679505219e-07,
+          "pcc": 0.9999999999998125,
+          "max_abs": 0.000396728515625
+        },
+        "sign_mismatches": 0,
+        "decisions": 35920
+      },
+      {
+        "features": {
+          "shape_match": true,
+          "finite": true,
+          "relative_l2": 6.550622761616988e-07,
+          "pcc": 0.9999999999997833,
+          "max_abs": 0.00037384033203125
+        },
+        "sign_mismatches": 0,
+        "decisions": 162008
+      },
+      {
+        "features": {
+          "shape_match": true,
+          "finite": true,
+          "relative_l2": 9.054248266695413e-07,
+          "pcc": 0.9999999999995858,
+          "max_abs": 0.0001983642578125
+        },
+        "sign_mismatches": 1,
+        "decisions": 708192
+      },
+      {
+        "features": {
+          "shape_match": true,
+          "finite": true,
+          "relative_l2": 7.975786509951537e-07,
+          "pcc": 0.9999999999996911,
+          "max_abs": 0.000179290771484375
+        },
+        "sign_mismatches": 0,
+        "decisions": 3109272
+      }
+    ],
+    "geometry_fixed": {
+      "vertices": {
+        "shape_match": true,
+        "finite": true,
+        "relative_l2": 1.0001459029499352e-06,
+        "pcc": 0.9999999999978887,
+        "max_abs": 1.239776611328125e-05
+      },
+      "edge_sign_mismatches": 0,
+      "edge_decisions": 5135400,
+      "quad_weights": {
+        "shape_match": true,
+        "finite": true,
+        "relative_l2": 3.3192899871010666e-06,
+        "pcc": 0.9999999999933938,
+        "max_abs": 0.000164031982421875
+      }
+    },
+    "captured_wide": {
+      "input_channels": 1024,
+      "output_channels": 4096,
+      "input_origin": "saved_latent",
+      "features": {
+        "shape_match": true,
+        "finite": true,
+        "relative_l2": 1.3922503898048543e-07,
+        "pcc": 0.9999999999999576,
+        "max_abs": 0.000244140625
+      },
+      "atol": 0.02,
+      "rtol": 0.02,
+      "passed": true
+    }
+  },
+  "integration_source_sha256": {
+    "/home/user/tt-scratchpad/flexgemm-autoresearch/integration-implicit-v1/digit_scene_probe.py": "5b88ff0f6ced3294d0fcdd29a0f6a38bf1c97035ced3e7cc0abe85a005f5d2c5",
+    "/home/user/tt-scratchpad/flexgemm-autoresearch/integration-implicit-v1/genrecon_digit_adapter.py": "c725f4a4668ea4396121a7dc49c51034f3fa6dfc4b3c8d54a541921cb11073e1",
+    "/home/user/tt-scratchpad/flexgemm-autoresearch/integration-implicit-v1/run_scene.py": "4848530611000359b46d6fc4e4b8681ac9cef2b5f3a53916bbc7a8406fabfd0e"
+  },
+  "topology_cache_max_rows": 262144,
+  "application_track": "BF16 decoder with selected digit convolution path; original strict CPU gates unchanged",
+  "comparison_scope": "baseline/candidate FlexGEMM versions use identical adapter and non-convolution operators",
+  "device": {
+    "id": 1,
+    "architecture": "Arch.WORMHOLE_B0",
+    "grid": [
+      8,
+      8
+    ]
+  },
+  "shape_prepare_seconds": 5.992836335033644,
+  "memory_after_shape_prepare": {
+    "dram": {
+      "banks": 12,
+      "capacity_bytes": 12849278208,
+      "allocated_bytes": 1779081216
+    },
+    "l1": {
+      "banks": 64,
+      "capacity_bytes": 89182208,
+      "allocated_bytes": 0
+    }
+  },
+  "fixed_shape": {
+    "captured_wide": {
+      "input_channels": 1024,
+      "output_channels": 4096,
+      "features": {
+        "shape_match": true,
+        "finite": true,
+        "relative_l2": 0.001708250866345287,
+        "pcc": 0.9999985408455666,
+        "max_abs": 3.4241943359375
+      },
+      "atol": 0.02,
+      "rtol": 0.02,
+      "passed": false
+    },
+    "wall_seconds": 12.453902521985583,
+    "shape_fixed": {
+      "coordinates_equal": true,
+      "actual_voxels": 1711800,
+      "reference_voxels": 1711800,
+      "features": {
+        "shape_match": true,
+        "finite": true,
+        "relative_l2": 0.014233725552826546,
+        "pcc": 0.9998938195475645,
+        "max_abs": 7.126605987548828
+      },
+      "common_voxels": 1711800,
+      "missing_voxels": 0,
+      "extra_voxels": 0,
+      "common_features": {
+        "shape_match": true,
+        "finite": true,
+        "relative_l2": 0.014233725552826546,
+        "pcc": 0.9998938195475645,
+        "max_abs": 7.126605987548828
+      },
+      "common_rows_with_abs_error_over_1e_3": 1711800,
+      "common_edge_sign_mismatches": 10159,
+      "common_edge_decisions": 5135400
+    },
+    "stats": {
+      "topology_seconds": 3.3732563090743497,
+      "stage_voxels": [
+        4490,
+        20251,
+        88524,
+        388659,
+        1711800
+      ],
+      "feature_uploads": 1,
+      "subdivision_downloads": 4,
+      "digit_calls": [
+        {
+          "name": "blocks.0.0.conv",
+          "rows": 4490,
+          "ci": 1024,
+          "co": 1024,
+          "row_chunk": 1024,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.0.1.conv",
+          "rows": 4490,
+          "ci": 1024,
+          "co": 1024,
+          "row_chunk": 1024,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.0.2.conv",
+          "rows": 4490,
+          "ci": 1024,
+          "co": 1024,
+          "row_chunk": 1024,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.0.3.conv",
+          "rows": 4490,
+          "ci": 1024,
+          "co": 1024,
+          "row_chunk": 1024,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.0.4.conv1",
+          "rows": 4490,
+          "ci": 1024,
+          "co": 4096,
+          "row_chunk": 1024,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.0.4.conv2",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.0.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.1.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.2.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.3.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.4.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.5.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.6.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.7.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.8.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.9.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.10.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.11.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.12.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.13.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.14.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.15.conv",
+          "rows": 20251,
+          "ci": 512,
+          "co": 512,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.16.conv1",
+          "rows": 20251,
+          "ci": 512,
+          "co": 2048,
+          "row_chunk": 2048,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.1.16.conv2",
+          "rows": 88524,
+          "ci": 256,
+          "co": 256,
+          "row_chunk": 4096,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        },
+        {
+          "name": "blocks.2.0.conv",
+          "rows": 88524,
+          "ci": 256,
+          "co": 256,
+          "row_chunk": 4096,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        },
+        {
+          "name": "blocks.2.1.conv",
+          "rows": 88524,
+          "ci": 256,
+          "co": 256,
+          "row_chunk": 4096,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        },
+        {
+          "name": "blocks.2.2.conv",
+          "rows": 88524,
+          "ci": 256,
+          "co": 256,
+          "row_chunk": 4096,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        },
+        {
+          "name": "blocks.2.3.conv",
+          "rows": 88524,
+          "ci": 256,
+          "co": 256,
+          "row_chunk": 4096,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        },
+        {
+          "name": "blocks.2.4.conv",
+          "rows": 88524,
+          "ci": 256,
+          "co": 256,
+          "row_chunk": 4096,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        },
+        {
+          "name": "blocks.2.5.conv",
+          "rows": 88524,
+          "ci": 256,
+          "co": 256,
+          "row_chunk": 4096,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        },
+        {
+          "name": "blocks.2.6.conv",
+          "rows": 88524,
+          "ci": 256,
+          "co": 256,
+          "row_chunk": 4096,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        },
+        {
+          "name": "blocks.2.7.conv",
+          "rows": 88524,
+          "ci": 256,
+          "co": 256,
+          "row_chunk": 4096,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        },
+        {
+          "name": "blocks.2.8.conv1",
+          "rows": 88524,
+          "ci": 256,
+          "co": 1024,
+          "row_chunk": 4096,
+          "path": "digit_explicit_gemm",
+          "fallback_reason": "per_core_cb_budget"
+        },
+        {
+          "name": "blocks.2.8.conv2",
+          "rows": 388659,
+          "ci": 128,
+          "co": 128,
+          "row_chunk": 8192,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        },
+        {
+          "name": "blocks.3.0.conv",
+          "rows": 388659,
+          "ci": 128,
+          "co": 128,
+          "row_chunk": 8192,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        },
+        {
+          "name": "blocks.3.1.conv",
+          "rows": 388659,
+          "ci": 128,
+          "co": 128,
+          "row_chunk": 8192,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        },
+        {
+          "name": "blocks.3.2.conv",
+          "rows": 388659,
+          "ci": 128,
+          "co": 128,
+          "row_chunk": 8192,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        },
+        {
+          "name": "blocks.3.3.conv",
+          "rows": 388659,
+          "ci": 128,
+          "co": 128,
+          "row_chunk": 8192,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        },
+        {
+          "name": "blocks.3.4.conv1",
+          "rows": 388659,
+          "ci": 128,
+          "co": 512,
+          "row_chunk": 8192,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        },
+        {
+          "name": "blocks.3.4.conv2",
+          "rows": 1711800,
+          "ci": 64,
+          "co": 64,
+          "row_chunk": 16384,
+          "path": "digit_implicit_gemm",
+          "fallback_reason": null
+        }
+      ],
+      "total_seconds": 12.452399155008607
+    },
+    "subdivisions_fixed": [
+      {
+        "features": {
+          "shape_match": true,
+          "finite": true,
+          "relative_l2": 0.0037258438285695246,
+          "pcc": 0.9999965173822877,
+          "max_abs": 1.9827880859375
+        },
+        "sign_mismatches": 1,
+        "decisions": 35920
+      },
+      {
+        "features": {
+          "shape_match": true,
+          "finite": true,
+          "relative_l2": 0.008241196166979579,
+          "pcc": 0.9999902623942288,
+          "max_abs": 3.9089813232421875
+        },
+        "sign_mismatches": 17,
+        "decisions": 162008
+      },
+      {
+        "features": {
+          "shape_match": true,
+          "finite": true,
+          "relative_l2": 0.016098622158823125,
+          "pcc": 0.999943704196247,
+          "max_abs": 3.5531463623046875
+        },
+        "sign_mismatches": 1113,
+        "decisions": 708192
+      },
+      {
+        "features": {
+          "shape_match": true,
+          "finite": true,
+          "relative_l2": 0.01900275764172668,
+          "pcc": 0.9998990894910764,
+          "max_abs": 3.421356201171875
+        },
+        "sign_mismatches": 17246,
+        "decisions": 3109272
+      }
+    ],
+    "geometry_fixed": {
+      "vertices": {
+        "shape_match": true,
+        "finite": true,
+        "relative_l2": 0.010771527582758338,
+        "pcc": 0.9997606304813589,
+        "max_abs": 0.1686762571334839
+      },
+      "edge_sign_mismatches": 10159,
+      "edge_decisions": 5135400,
+      "quad_weights": {
+        "shape_match": true,
+        "finite": true,
+        "relative_l2": 0.035642718747918654,
+        "pcc": 0.9992422829086967,
+        "max_abs": 2.534449815750122
+      }
+    }
+  },
+  "shape_wall_seconds": 21.39174368197564,
+  "shape_predicted": {
+    "coordinates_equal": false,
+    "actual_voxels": 1724221,
+    "reference_voxels": 1711800,
+    "features": null,
+    "common_voxels": 1704300,
+    "missing_voxels": 7500,
+    "extra_voxels": 19921,
+    "common_features": {
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.18445109948056698,
+      "pcc": 0.9809762553003545,
+      "max_abs": 100.37805557250977
+    },
+    "common_rows_with_abs_error_over_1e_3": 1704300,
+    "common_edge_sign_mismatches": 73824,
+    "common_edge_decisions": 5112900
+  },
+  "shape_stats": {
+    "topology_seconds": 3.127239079971332,
+    "stage_voxels": [
+      4490,
+      20250,
+      88519,
+      389307,
+      1724221
+    ],
+    "feature_uploads": 1,
+    "subdivision_downloads": 4,
+    "digit_calls": [
+      {
+        "name": "blocks.0.0.conv",
+        "rows": 4490,
+        "ci": 1024,
+        "co": 1024,
+        "row_chunk": 1024,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.0.1.conv",
+        "rows": 4490,
+        "ci": 1024,
+        "co": 1024,
+        "row_chunk": 1024,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.0.2.conv",
+        "rows": 4490,
+        "ci": 1024,
+        "co": 1024,
+        "row_chunk": 1024,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.0.3.conv",
+        "rows": 4490,
+        "ci": 1024,
+        "co": 1024,
+        "row_chunk": 1024,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.0.4.conv1",
+        "rows": 4490,
+        "ci": 1024,
+        "co": 4096,
+        "row_chunk": 1024,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.0.4.conv2",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.0.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.1.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.2.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.3.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.4.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.5.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.6.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.7.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.8.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.9.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.10.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.11.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.12.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.13.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.14.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.15.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.16.conv1",
+        "rows": 20250,
+        "ci": 512,
+        "co": 2048,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.16.conv2",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.0.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.1.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.2.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.3.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.4.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.5.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.6.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.7.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.8.conv1",
+        "rows": 88519,
+        "ci": 256,
+        "co": 1024,
+        "row_chunk": 4096,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.2.8.conv2",
+        "rows": 389307,
+        "ci": 128,
+        "co": 128,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.0.conv",
+        "rows": 389307,
+        "ci": 128,
+        "co": 128,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.1.conv",
+        "rows": 389307,
+        "ci": 128,
+        "co": 128,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.2.conv",
+        "rows": 389307,
+        "ci": 128,
+        "co": 128,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.3.conv",
+        "rows": 389307,
+        "ci": 128,
+        "co": 128,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.4.conv1",
+        "rows": 389307,
+        "ci": 128,
+        "co": 512,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.4.conv2",
+        "rows": 1724221,
+        "ci": 64,
+        "co": 64,
+        "row_chunk": 16384,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      }
+    ],
+    "total_seconds": 21.389713024022058
+  },
+  "subdivisions_predicted": [
+    {
+      "common_parents": 4490,
+      "extra_parents": 0,
+      "missing_parents": 0,
+      "common_sign_mismatches": 1
+    },
+    {
+      "common_parents": 20250,
+      "extra_parents": 0,
+      "missing_parents": 1,
+      "common_sign_mismatches": 18
+    },
+    {
+      "common_parents": 88512,
+      "extra_parents": 7,
+      "missing_parents": 12,
+      "common_sign_mismatches": 1253
+    },
+    {
+      "common_parents": 388348,
+      "extra_parents": 959,
+      "missing_parents": 311,
+      "common_sign_mismatches": 25261
+    }
+  ],
+  "memory_after_shape_release": {
+    "dram": {
+      "banks": 12,
+      "capacity_bytes": 12849278208,
+      "allocated_bytes": 17620992
+    },
+    "l1": {
+      "banks": 64,
+      "capacity_bytes": 89182208,
+      "allocated_bytes": 0
+    }
+  },
+  "texture_prepare_seconds": 5.226044729002751,
+  "memory_after_texture_prepare": {
+    "dram": {
+      "banks": 12,
+      "capacity_bytes": 12849278208,
+      "allocated_bytes": 1796431872
+    },
+    "l1": {
+      "banks": 64,
+      "capacity_bytes": 89182208,
+      "allocated_bytes": 0
+    }
+  },
+  "texture_fixed_wall_seconds": 9.976529978972394,
+  "texture_fixed": {
+    "coordinates_equal": true,
+    "actual_voxels": 1711800,
+    "reference_voxels": 1711800,
+    "features": {
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.007241368556819888,
+      "pcc": 0.9999740038823559,
+      "max_abs": 0.08056581765413284
+    },
+    "common_voxels": 1711800,
+    "missing_voxels": 0,
+    "extra_voxels": 0,
+    "common_features": {
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.007241368556819888,
+      "pcc": 0.9999740038823559,
+      "max_abs": 0.08056581765413284
+    },
+    "common_rows_with_abs_error_over_1e_3": 1711625
+  },
+  "texture_fixed_stats": {
+    "topology_seconds": 3.4028586848871782,
+    "stage_voxels": [
+      4490,
+      20251,
+      88524,
+      388659,
+      1711800
+    ],
+    "feature_uploads": 1,
+    "subdivision_downloads": 0,
+    "digit_calls": [
+      {
+        "name": "blocks.0.0.conv",
+        "rows": 4490,
+        "ci": 1024,
+        "co": 1024,
+        "row_chunk": 1024,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.0.1.conv",
+        "rows": 4490,
+        "ci": 1024,
+        "co": 1024,
+        "row_chunk": 1024,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.0.2.conv",
+        "rows": 4490,
+        "ci": 1024,
+        "co": 1024,
+        "row_chunk": 1024,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.0.3.conv",
+        "rows": 4490,
+        "ci": 1024,
+        "co": 1024,
+        "row_chunk": 1024,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.0.4.conv1",
+        "rows": 4490,
+        "ci": 1024,
+        "co": 4096,
+        "row_chunk": 1024,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.0.4.conv2",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.0.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.1.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.2.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.3.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.4.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.5.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.6.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.7.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.8.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.9.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.10.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.11.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.12.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.13.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.14.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.15.conv",
+        "rows": 20251,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.16.conv1",
+        "rows": 20251,
+        "ci": 512,
+        "co": 2048,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.16.conv2",
+        "rows": 88524,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.0.conv",
+        "rows": 88524,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.1.conv",
+        "rows": 88524,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.2.conv",
+        "rows": 88524,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.3.conv",
+        "rows": 88524,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.4.conv",
+        "rows": 88524,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.5.conv",
+        "rows": 88524,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.6.conv",
+        "rows": 88524,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.7.conv",
+        "rows": 88524,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.8.conv1",
+        "rows": 88524,
+        "ci": 256,
+        "co": 1024,
+        "row_chunk": 4096,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.2.8.conv2",
+        "rows": 388659,
+        "ci": 128,
+        "co": 128,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.0.conv",
+        "rows": 388659,
+        "ci": 128,
+        "co": 128,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.1.conv",
+        "rows": 388659,
+        "ci": 128,
+        "co": 128,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.2.conv",
+        "rows": 388659,
+        "ci": 128,
+        "co": 128,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.3.conv",
+        "rows": 388659,
+        "ci": 128,
+        "co": 128,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.4.conv1",
+        "rows": 388659,
+        "ci": 128,
+        "co": 512,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.4.conv2",
+        "rows": 1711800,
+        "ci": 64,
+        "co": 64,
+        "row_chunk": 16384,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      }
+    ],
+    "total_seconds": 9.974932751967572
+  },
+  "texture_wall_seconds": 9.8943765470176,
+  "texture_predicted": {
+    "coordinates_equal": false,
+    "actual_voxels": 1724221,
+    "reference_voxels": 1711800,
+    "features": null,
+    "common_voxels": 1704300,
+    "missing_voxels": 7500,
+    "extra_voxels": 19921,
+    "common_features": {
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.008466732067531154,
+      "pcc": 0.9999643664477109,
+      "max_abs": 0.5493274331092834
+    },
+    "common_rows_with_abs_error_over_1e_3": 1704144
+  },
+  "texture_predicted_stats": {
+    "topology_seconds": 3.400495738023892,
+    "stage_voxels": [
+      4490,
+      20250,
+      88519,
+      389307,
+      1724221
+    ],
+    "feature_uploads": 1,
+    "subdivision_downloads": 0,
+    "digit_calls": [
+      {
+        "name": "blocks.0.0.conv",
+        "rows": 4490,
+        "ci": 1024,
+        "co": 1024,
+        "row_chunk": 1024,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.0.1.conv",
+        "rows": 4490,
+        "ci": 1024,
+        "co": 1024,
+        "row_chunk": 1024,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.0.2.conv",
+        "rows": 4490,
+        "ci": 1024,
+        "co": 1024,
+        "row_chunk": 1024,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.0.3.conv",
+        "rows": 4490,
+        "ci": 1024,
+        "co": 1024,
+        "row_chunk": 1024,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.0.4.conv1",
+        "rows": 4490,
+        "ci": 1024,
+        "co": 4096,
+        "row_chunk": 1024,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.0.4.conv2",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.0.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.1.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.2.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.3.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.4.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.5.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.6.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.7.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.8.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.9.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.10.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.11.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.12.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.13.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.14.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.15.conv",
+        "rows": 20250,
+        "ci": 512,
+        "co": 512,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.16.conv1",
+        "rows": 20250,
+        "ci": 512,
+        "co": 2048,
+        "row_chunk": 2048,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.1.16.conv2",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.0.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.1.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.2.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.3.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.4.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.5.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.6.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.7.conv",
+        "rows": 88519,
+        "ci": 256,
+        "co": 256,
+        "row_chunk": 4096,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.2.8.conv1",
+        "rows": 88519,
+        "ci": 256,
+        "co": 1024,
+        "row_chunk": 4096,
+        "path": "digit_explicit_gemm",
+        "fallback_reason": "per_core_cb_budget"
+      },
+      {
+        "name": "blocks.2.8.conv2",
+        "rows": 389307,
+        "ci": 128,
+        "co": 128,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.0.conv",
+        "rows": 389307,
+        "ci": 128,
+        "co": 128,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.1.conv",
+        "rows": 389307,
+        "ci": 128,
+        "co": 128,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.2.conv",
+        "rows": 389307,
+        "ci": 128,
+        "co": 128,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.3.conv",
+        "rows": 389307,
+        "ci": 128,
+        "co": 128,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.4.conv1",
+        "rows": 389307,
+        "ci": 128,
+        "co": 512,
+        "row_chunk": 8192,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      },
+      {
+        "name": "blocks.3.4.conv2",
+        "rows": 1724221,
+        "ci": 64,
+        "co": 64,
+        "row_chunk": 16384,
+        "path": "digit_implicit_gemm",
+        "fallback_reason": null
+      }
+    ],
+    "total_seconds": 9.892657969961874
+  },
+  "chain_coordinates_equal": true,
+  "sources_unchanged": true
+}

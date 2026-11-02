@@ -1,0 +1,300 @@
+[SPARSE] Conv backend: flex_gemm; Attention backend: flash_attn
+load_shape
+2026-11-02 15:28:12.877 | DEBUG    | ttnn:<module>:78 - Initial ttnn.CONFIG:
+Config{cache_path=/home/user/.cache/ttnn,model_cache_path=/home/user/.cache/ttnn/models,tmp_dir=/tmp/ttnn,enable_model_cache=false,enable_fast_runtime_mode=true,validate_program_args=false,throw_exception_on_fallback=false,enable_logging=false,enable_graph_report=false,enable_graph_python_stack_traces=false,enable_detailed_buffer_report=false,enable_detailed_tensor_report=false,enable_comparison_mode=false,comparison_mode_should_raise_exception=false,comparison_mode_pcc=0.9999,root_report_path=generated/ttnn/reports,report_name=std::nullopt,std::nullopt}
+2026-11-02 15:28:13.429 | info     |          Device | Opening user mode device driver (tt_cluster.cpp:228)
+2026-11-02 15:28:13.429 | info     |             UMD | Cluster constructor started. (cluster.cpp:389)
+2026-11-02 15:28:13.429 | info     |             UMD | Creating TopologyDiscovery for architecture: wormhole_b0 (topology_discovery.cpp:96)
+2026-11-02 15:28:13.429 | info     |             UMD | Starting topology discovery. (topology_discovery.cpp:115)
+2026-11-02 15:28:13.431 | info     |             UMD | Established firmware bundle version: 19.11.0 (topology_discovery.cpp:575)
+2026-11-02 15:28:13.431 | info     |             UMD | Completed topology discovery. (topology_discovery.cpp:119)
+2026-11-02 15:28:13.526 | info     |             UMD | Opening local chip ids/PCIe ids: {0}/[3] and remote chip ids {} (cluster.cpp:173)
+2026-11-02 15:28:13.526 | info     |             UMD | IOMMU: disabled (cluster.cpp:147)
+2026-11-02 15:28:13.526 | info     |             UMD | KMD version: 2.3.0 (cluster.cpp:150)
+2026-11-02 15:28:13.526 | info     |             UMD | Cluster constructor completed. (cluster.cpp:648)
+2026-11-02 15:28:13.527 | info     |             UMD | Starting devices in cluster (cluster.cpp:1188)
+2026-11-02 15:28:13.529 | info     |             UMD | Starting devices in cluster completed. (cluster.cpp:1196)
+2026-11-02 15:28:13.633 | info     |     Distributed | Using auto discovery to generate mesh graph. (metal_env.cpp:437)
+2026-11-02 15:28:13.633 | info     |     Distributed | Constructing control plane using auto-discovery (no mesh graph descriptor). (metal_env.cpp:499)
+2026-11-02 15:28:13.633 | warning  |          Always | Unknown motherboard 'H12DSG-O-CPU' for chip_id=0 (bus_id=0x25) — falling back to bus_id as tray_id. Add this motherboard and its bus IDs to mobo_to_bus_ids in physical_system_discovery.cpp. (physical_system_discovery.cpp:119)
+2026-11-02 15:28:13.634 | info     |          Fabric | Logical multi-mesh adjacency: intermesh degree histogram {0:1}; intra-mesh degree histograms mesh0 {0:1} (topology_mapper_utils.cpp:3329)
+2026-11-02 15:28:13.634 | info     |          Fabric | Physical multi-mesh adjacency: intermesh degree histogram {0:1}; intra-mesh degree histograms mesh0 {0:1} (topology_mapper_utils.cpp:3337)
+2026-11-02 15:28:13.721 | info     |           Metal | D2HSocket: Using hugepage fallback for device 0 (data_dev_addr=0x3fdfe000, pcie_xy_enc=0xc08) (d2h_socket.cpp:164)
+tt_captured_wide_convolution
+tt_shape_fixed_guides
+Building brisc, compile step:
+/home/user/tt-metal/runtime/sfpi/compiler/bin/riscv-tt-elf-g++ -O2 -std=c++17 -ftt-nttp -ftt-constinit -ftt-consteval -ftt-no-dyninit -flto=auto -ffast-math -fno-finite-math-only -fsigned-zeros -fno-associative-math -fno-exceptions -fno-rtti -fno-use-cxa-atexit -g -MMD -Wall -Werror -Wno-error=deprecated-declarations -Wno-error=multistatement-macros -Wno-error=parentheses -Wno-error=unused-but-set-variable -Wno-unused-variable -Wno-unused-function -mcpu=tt-wh -fno-tree-loop-distribute-patterns -I. -I.. -I/home/user/tt-metal/ -I/home/user/tt-metal/ttnn -I/home/user/tt-metal/ttnn/cpp -I/home/user/tt-metal/tt_metal -I/home/user/tt-metal/tt_metal/hw/inc -I/home/user/tt-metal/tt_metal/tt-llk/common -I/home/user/tt-metal/tt_metal/hostdevcommon/api -I/home/user/tt-metal/tt_metal/api/ -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_io -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/wormhole_b0_defines -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/noc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/common/inc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/llk_lib -I/home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx -I/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels -DIS_NOT_POW2_NUM_DRAM_BANKS=1 -DLOG_BASE_2_OF_NUM_L1_BANKS=6 -DNUM_DRAM_BANKS=12 -DNUM_L1_BANKS=64 -DPCIE_NOC_X=0 -DPCIE_NOC_Y=3 -DTENSIX_FIRMWARE -DLOCAL_MEM_EN=0 -DROUTING_FW_ENABLED -DPROCESSOR_INDEX=0 -DCOMPILE_FOR_BRISC -DPROGRAMMABLE_CORE_TYPE=0 -DARCH_WORMHOLE -DDISPATCH_MESSAGE_ADDR=4290183304 -DKERNEL_BUILD -DNOC_INDEX=1 -DNOC_MODE=0 -DFULL_KERNEL_NAME="feature_digits_writer/9295045866561498674/" -DKERNEL_COMPILE_TIME_ARGS=20251,512,16,2,1024,2,1024 -c -o /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/feature_digits_writer/9295045866561498674/brisc/brisck.1710170348343460880_1264955.o /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/brisck.cc -MF /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/feature_digits_writer/9295045866561498674/brisc/brisck.1710170348343460880_1264955.d
+In file included from ../kernel_includes.hpp:1,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/brisck.cc:22:
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp: In function 'void kernel_main()':
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:31:45: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   31 |             const uint64_t hd = get_noc_addr(mt * 32 + r, high) + kt * 64;
+      |                                 ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
+In file included from /home/user/tt-metal/tt_metal/hw/inc/api/dataflow/dataflow_api.h:18,
+                 from /home/user/tt-metal/tt_metal/hw/inc/internal/firmware_common.h:24,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/brisck.cc:17:
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:32:45: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   32 |             const uint64_t ld = get_noc_addr(mt * 32 + r, low) + kt * 64;
+      |                                 ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:39:47: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   39 |             noc_async_write(zero, get_noc_addr(ROWS, high) + kt * 64, 64);
+      |                                   ~~~~~~~~~~~~^~~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:40:47: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   40 |             noc_async_write(zero, get_noc_addr(ROWS, low) + kt * 64, 64);
+      |                                   ~~~~~~~~~~~~^~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+Building ncrisc, compile step:
+/home/user/tt-metal/runtime/sfpi/compiler/bin/riscv-tt-elf-g++ -O2 -std=c++17 -ftt-nttp -ftt-constinit -ftt-consteval -ftt-no-dyninit -flto=auto -ffast-math -fno-finite-math-only -fsigned-zeros -fno-associative-math -fno-exceptions -fno-rtti -fno-use-cxa-atexit -g -MMD -Wall -Werror -Wno-error=deprecated-declarations -Wno-error=multistatement-macros -Wno-error=parentheses -Wno-error=unused-but-set-variable -Wno-unused-variable -Wno-unused-function -mcpu=tt-wh -fno-tree-loop-distribute-patterns -I. -I.. -I/home/user/tt-metal/ -I/home/user/tt-metal/ttnn -I/home/user/tt-metal/ttnn/cpp -I/home/user/tt-metal/tt_metal -I/home/user/tt-metal/tt_metal/hw/inc -I/home/user/tt-metal/tt_metal/tt-llk/common -I/home/user/tt-metal/tt_metal/hostdevcommon/api -I/home/user/tt-metal/tt_metal/api/ -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_io -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/wormhole_b0_defines -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/noc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/common/inc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/llk_lib -I/home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx -I/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels -DIS_NOT_POW2_NUM_DRAM_BANKS=1 -DLOG_BASE_2_OF_NUM_L1_BANKS=6 -DNUM_DRAM_BANKS=12 -DNUM_L1_BANKS=64 -DPCIE_NOC_X=0 -DPCIE_NOC_Y=3 -DTENSIX_FIRMWARE -DLOCAL_MEM_EN=0 -DROUTING_FW_ENABLED -DPROCESSOR_INDEX=1 -DCOMPILE_FOR_NCRISC -DPROGRAMMABLE_CORE_TYPE=0 -DARCH_WORMHOLE -DDISPATCH_MESSAGE_ADDR=4290183304 -DKERNEL_BUILD -DNOC_INDEX=0 -DNOC_MODE=0 -DFULL_KERNEL_NAME="gather/5550037198198769454/" -DKERNEL_COMPILE_TIME_ARGS=27,16,2,1024,2,81024,2,2048 -c -o /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/gather/5550037198198769454/ncrisc/ncrisck.1710170348343460880_1264955.o /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/ncrisck.cc -MF /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/gather/5550037198198769454/ncrisc/ncrisck.1710170348343460880_1264955.d
+In file included from ../kernel_includes.hpp:1,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/ncrisck.cc:23:
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/gather.cpp: In function 'void kernel_main()':
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/gather.cpp:28:36: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   28 |         noc_async_read(get_noc_addr(v, map) + (row_tile_base + mt) * 128, scratch, 128);
+      |                        ~~~~~~~~~~~~^~~~~~~~
+In file included from /home/user/tt-metal/tt_metal/hw/inc/api/dataflow/dataflow_api.h:18,
+                 from /home/user/tt-metal/tt_metal/hw/inc/internal/firmware_common.h:24,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/ncrisck.cc:17:
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/gather.cpp:36:54: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   36 |                     const uint64_t src = get_noc_addr(ids[r], x) + kt * 64;
+      |                                          ~~~~~~~~~~~~^~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+Building ncrisc, compile step:
+/home/user/tt-metal/runtime/sfpi/compiler/bin/riscv-tt-elf-g++ -O2 -std=c++17 -ftt-nttp -ftt-constinit -ftt-consteval -ftt-no-dyninit -flto=auto -ffast-math -fno-finite-math-only -fsigned-zeros -fno-associative-math -fno-exceptions -fno-rtti -fno-use-cxa-atexit -g -MMD -Wall -Werror -Wno-error=deprecated-declarations -Wno-error=multistatement-macros -Wno-error=parentheses -Wno-error=unused-but-set-variable -Wno-unused-variable -Wno-unused-function -mcpu=tt-wh -fno-tree-loop-distribute-patterns -I. -I.. -I/home/user/tt-metal/ -I/home/user/tt-metal/ttnn -I/home/user/tt-metal/ttnn/cpp -I/home/user/tt-metal/tt_metal -I/home/user/tt-metal/tt_metal/hw/inc -I/home/user/tt-metal/tt_metal/tt-llk/common -I/home/user/tt-metal/tt_metal/hostdevcommon/api -I/home/user/tt-metal/tt_metal/api/ -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_io -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/wormhole_b0_defines -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/noc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/common/inc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/llk_lib -I/home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx -I/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels -DIS_NOT_POW2_NUM_DRAM_BANKS=1 -DLOG_BASE_2_OF_NUM_L1_BANKS=6 -DNUM_DRAM_BANKS=12 -DNUM_L1_BANKS=64 -DPCIE_NOC_X=0 -DPCIE_NOC_Y=3 -DTENSIX_FIRMWARE -DLOCAL_MEM_EN=0 -DROUTING_FW_ENABLED -DPROCESSOR_INDEX=1 -DCOMPILE_FOR_NCRISC -DPROGRAMMABLE_CORE_TYPE=0 -DARCH_WORMHOLE -DDISPATCH_MESSAGE_ADDR=4290183304 -DKERNEL_BUILD -DNOC_INDEX=0 -DNOC_MODE=0 -DFULL_KERNEL_NAME="gather/11385477313079500039/" -DKERNEL_COMPILE_TIME_ARGS=27,8,2,512,2,354176,2,2048 -c -o /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/gather/11385477313079500039/ncrisc/ncrisck.1710170348343460880_1264955.o /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/ncrisck.cc -MF /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/gather/11385477313079500039/ncrisc/ncrisck.1710170348343460880_1264955.d
+In file included from ../kernel_includes.hpp:1,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/ncrisck.cc:23:
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/gather.cpp: In function 'void kernel_main()':
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/gather.cpp:28:36: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   28 |         noc_async_read(get_noc_addr(v, map) + (row_tile_base + mt) * 128, scratch, 128);
+      |                        ~~~~~~~~~~~~^~~~~~~~
+In file included from /home/user/tt-metal/tt_metal/hw/inc/api/dataflow/dataflow_api.h:18,
+                 from /home/user/tt-metal/tt_metal/hw/inc/internal/firmware_common.h:24,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/ncrisck.cc:17:
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/gather.cpp:36:54: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   36 |                     const uint64_t src = get_noc_addr(ids[r], x) + kt * 64;
+      |                                          ~~~~~~~~~~~~^~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+Building ncrisc, compile step:
+/home/user/tt-metal/runtime/sfpi/compiler/bin/riscv-tt-elf-g++ -O2 -std=c++17 -ftt-nttp -ftt-constinit -ftt-consteval -ftt-no-dyninit -flto=auto -ffast-math -fno-finite-math-only -fsigned-zeros -fno-associative-math -fno-exceptions -fno-rtti -fno-use-cxa-atexit -g -MMD -Wall -Werror -Wno-error=deprecated-declarations -Wno-error=multistatement-macros -Wno-error=parentheses -Wno-error=unused-but-set-variable -Wno-unused-variable -Wno-unused-function -mcpu=tt-wh -fno-tree-loop-distribute-patterns -I. -I.. -I/home/user/tt-metal/ -I/home/user/tt-metal/ttnn -I/home/user/tt-metal/ttnn/cpp -I/home/user/tt-metal/tt_metal -I/home/user/tt-metal/tt_metal/hw/inc -I/home/user/tt-metal/tt_metal/tt-llk/common -I/home/user/tt-metal/tt_metal/hostdevcommon/api -I/home/user/tt-metal/tt_metal/api/ -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_io -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/wormhole_b0_defines -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/noc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/common/inc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/llk_lib -I/home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx -I/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels -DIS_NOT_POW2_NUM_DRAM_BANKS=1 -DLOG_BASE_2_OF_NUM_L1_BANKS=6 -DNUM_DRAM_BANKS=12 -DNUM_L1_BANKS=64 -DPCIE_NOC_X=0 -DPCIE_NOC_Y=3 -DTENSIX_FIRMWARE -DLOCAL_MEM_EN=0 -DROUTING_FW_ENABLED -DPROCESSOR_INDEX=1 -DCOMPILE_FOR_NCRISC -DPROGRAMMABLE_CORE_TYPE=0 -DARCH_WORMHOLE -DDISPATCH_MESSAGE_ADDR=4290183304 -DKERNEL_BUILD -DNOC_INDEX=0 -DNOC_MODE=0 -DFULL_KERNEL_NAME="gather/11523726698973439386/" -DKERNEL_COMPILE_TIME_ARGS=27,2,2,128,2,6847232,2,2048 -c -o /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/gather/11523726698973439386/ncrisc/ncrisck.1710170348343460880_1264955.o /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/ncrisck.cc -MF /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/gather/11523726698973439386/ncrisc/ncrisck.1710170348343460880_1264955.d
+In file included from ../kernel_includes.hpp:1,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/ncrisck.cc:23:
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/gather.cpp: In function 'void kernel_main()':
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/gather.cpp:28:36: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   28 |         noc_async_read(get_noc_addr(v, map) + (row_tile_base + mt) * 128, scratch, 128);
+      |                        ~~~~~~~~~~~~^~~~~~~~
+In file included from /home/user/tt-metal/tt_metal/hw/inc/api/dataflow/dataflow_api.h:18,
+                 from /home/user/tt-metal/tt_metal/hw/inc/internal/firmware_common.h:24,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/ncrisck.cc:17:
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/gather.cpp:36:54: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   36 |                     const uint64_t src = get_noc_addr(ids[r], x) + kt * 64;
+      |                                          ~~~~~~~~~~~~^~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+tt_shape_predicted_guides
+Building brisc, compile step:
+/home/user/tt-metal/runtime/sfpi/compiler/bin/riscv-tt-elf-g++ -O2 -std=c++17 -ftt-nttp -ftt-constinit -ftt-consteval -ftt-no-dyninit -flto=auto -ffast-math -fno-finite-math-only -fsigned-zeros -fno-associative-math -fno-exceptions -fno-rtti -fno-use-cxa-atexit -g -MMD -Wall -Werror -Wno-error=deprecated-declarations -Wno-error=multistatement-macros -Wno-error=parentheses -Wno-error=unused-but-set-variable -Wno-unused-variable -Wno-unused-function -mcpu=tt-wh -fno-tree-loop-distribute-patterns -I. -I.. -I/home/user/tt-metal/ -I/home/user/tt-metal/ttnn -I/home/user/tt-metal/ttnn/cpp -I/home/user/tt-metal/tt_metal -I/home/user/tt-metal/tt_metal/hw/inc -I/home/user/tt-metal/tt_metal/tt-llk/common -I/home/user/tt-metal/tt_metal/hostdevcommon/api -I/home/user/tt-metal/tt_metal/api/ -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_io -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/wormhole_b0_defines -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/noc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/common/inc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/llk_lib -I/home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx -I/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels -DIS_NOT_POW2_NUM_DRAM_BANKS=1 -DLOG_BASE_2_OF_NUM_L1_BANKS=6 -DNUM_DRAM_BANKS=12 -DNUM_L1_BANKS=64 -DPCIE_NOC_X=0 -DPCIE_NOC_Y=3 -DTENSIX_FIRMWARE -DLOCAL_MEM_EN=0 -DROUTING_FW_ENABLED -DPROCESSOR_INDEX=0 -DCOMPILE_FOR_BRISC -DPROGRAMMABLE_CORE_TYPE=0 -DARCH_WORMHOLE -DDISPATCH_MESSAGE_ADDR=4290183304 -DKERNEL_BUILD -DNOC_INDEX=1 -DNOC_MODE=0 -DFULL_KERNEL_NAME="feature_digits_writer/9843776623059865134/" -DKERNEL_COMPILE_TIME_ARGS=20250,512,16,2,1024,2,1024 -c -o /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/feature_digits_writer/9843776623059865134/brisc/brisck.1710170348343460880_1264955.o /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/brisck.cc -MF /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/feature_digits_writer/9843776623059865134/brisc/brisck.1710170348343460880_1264955.d
+In file included from ../kernel_includes.hpp:1,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/brisck.cc:22:
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp: In function 'void kernel_main()':
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:31:45: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   31 |             const uint64_t hd = get_noc_addr(mt * 32 + r, high) + kt * 64;
+      |                                 ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
+In file included from /home/user/tt-metal/tt_metal/hw/inc/api/dataflow/dataflow_api.h:18,
+                 from /home/user/tt-metal/tt_metal/hw/inc/internal/firmware_common.h:24,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/brisck.cc:17:
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:32:45: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   32 |             const uint64_t ld = get_noc_addr(mt * 32 + r, low) + kt * 64;
+      |                                 ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:39:47: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   39 |             noc_async_write(zero, get_noc_addr(ROWS, high) + kt * 64, 64);
+      |                                   ~~~~~~~~~~~~^~~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:40:47: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   40 |             noc_async_write(zero, get_noc_addr(ROWS, low) + kt * 64, 64);
+      |                                   ~~~~~~~~~~~~^~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+Building brisc, compile step:
+/home/user/tt-metal/runtime/sfpi/compiler/bin/riscv-tt-elf-g++ -O2 -std=c++17 -ftt-nttp -ftt-constinit -ftt-consteval -ftt-no-dyninit -flto=auto -ffast-math -fno-finite-math-only -fsigned-zeros -fno-associative-math -fno-exceptions -fno-rtti -fno-use-cxa-atexit -g -MMD -Wall -Werror -Wno-error=deprecated-declarations -Wno-error=multistatement-macros -Wno-error=parentheses -Wno-error=unused-but-set-variable -Wno-unused-variable -Wno-unused-function -mcpu=tt-wh -fno-tree-loop-distribute-patterns -I. -I.. -I/home/user/tt-metal/ -I/home/user/tt-metal/ttnn -I/home/user/tt-metal/ttnn/cpp -I/home/user/tt-metal/tt_metal -I/home/user/tt-metal/tt_metal/hw/inc -I/home/user/tt-metal/tt_metal/tt-llk/common -I/home/user/tt-metal/tt_metal/hostdevcommon/api -I/home/user/tt-metal/tt_metal/api/ -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_io -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/wormhole_b0_defines -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/noc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/common/inc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/llk_lib -I/home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx -I/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels -DIS_NOT_POW2_NUM_DRAM_BANKS=1 -DLOG_BASE_2_OF_NUM_L1_BANKS=6 -DNUM_DRAM_BANKS=12 -DNUM_L1_BANKS=64 -DPCIE_NOC_X=0 -DPCIE_NOC_Y=3 -DTENSIX_FIRMWARE -DLOCAL_MEM_EN=0 -DROUTING_FW_ENABLED -DPROCESSOR_INDEX=0 -DCOMPILE_FOR_BRISC -DPROGRAMMABLE_CORE_TYPE=0 -DARCH_WORMHOLE -DDISPATCH_MESSAGE_ADDR=4290183304 -DKERNEL_BUILD -DNOC_INDEX=1 -DNOC_MODE=0 -DFULL_KERNEL_NAME="feature_digits_writer/4537985069823016242/" -DKERNEL_COMPILE_TIME_ARGS=88519,256,8,2,512,2,512 -c -o /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/feature_digits_writer/4537985069823016242/brisc/brisck.1710170348343460880_1264955.o /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/brisck.cc -MF /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/feature_digits_writer/4537985069823016242/brisc/brisck.1710170348343460880_1264955.d
+In file included from ../kernel_includes.hpp:1,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/brisck.cc:22:
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp: In function 'void kernel_main()':
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:31:45: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   31 |             const uint64_t hd = get_noc_addr(mt * 32 + r, high) + kt * 64;
+      |                                 ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
+In file included from /home/user/tt-metal/tt_metal/hw/inc/api/dataflow/dataflow_api.h:18,
+                 from /home/user/tt-metal/tt_metal/hw/inc/internal/firmware_common.h:24,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/brisck.cc:17:
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:32:45: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   32 |             const uint64_t ld = get_noc_addr(mt * 32 + r, low) + kt * 64;
+      |                                 ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:39:47: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   39 |             noc_async_write(zero, get_noc_addr(ROWS, high) + kt * 64, 64);
+      |                                   ~~~~~~~~~~~~^~~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:40:47: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   40 |             noc_async_write(zero, get_noc_addr(ROWS, low) + kt * 64, 64);
+      |                                   ~~~~~~~~~~~~^~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+Building brisc, compile step:
+/home/user/tt-metal/runtime/sfpi/compiler/bin/riscv-tt-elf-g++ -O2 -std=c++17 -ftt-nttp -ftt-constinit -ftt-consteval -ftt-no-dyninit -flto=auto -ffast-math -fno-finite-math-only -fsigned-zeros -fno-associative-math -fno-exceptions -fno-rtti -fno-use-cxa-atexit -g -MMD -Wall -Werror -Wno-error=deprecated-declarations -Wno-error=multistatement-macros -Wno-error=parentheses -Wno-error=unused-but-set-variable -Wno-unused-variable -Wno-unused-function -mcpu=tt-wh -fno-tree-loop-distribute-patterns -I. -I.. -I/home/user/tt-metal/ -I/home/user/tt-metal/ttnn -I/home/user/tt-metal/ttnn/cpp -I/home/user/tt-metal/tt_metal -I/home/user/tt-metal/tt_metal/hw/inc -I/home/user/tt-metal/tt_metal/tt-llk/common -I/home/user/tt-metal/tt_metal/hostdevcommon/api -I/home/user/tt-metal/tt_metal/api/ -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_io -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/wormhole_b0_defines -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/noc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/common/inc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/llk_lib -I/home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx -I/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels -DIS_NOT_POW2_NUM_DRAM_BANKS=1 -DLOG_BASE_2_OF_NUM_L1_BANKS=6 -DNUM_DRAM_BANKS=12 -DNUM_L1_BANKS=64 -DPCIE_NOC_X=0 -DPCIE_NOC_Y=3 -DTENSIX_FIRMWARE -DLOCAL_MEM_EN=0 -DROUTING_FW_ENABLED -DPROCESSOR_INDEX=0 -DCOMPILE_FOR_BRISC -DPROGRAMMABLE_CORE_TYPE=0 -DARCH_WORMHOLE -DDISPATCH_MESSAGE_ADDR=4290183304 -DKERNEL_BUILD -DNOC_INDEX=1 -DNOC_MODE=0 -DFULL_KERNEL_NAME="feature_digits_writer/4199265519486863614/" -DKERNEL_COMPILE_TIME_ARGS=389307,128,4,2,256,2,256 -c -o /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/feature_digits_writer/4199265519486863614/brisc/brisck.1710170348343460880_1264955.o /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/brisck.cc -MF /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/feature_digits_writer/4199265519486863614/brisc/brisck.1710170348343460880_1264955.d
+In file included from ../kernel_includes.hpp:1,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/brisck.cc:22:
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp: In function 'void kernel_main()':
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:31:45: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   31 |             const uint64_t hd = get_noc_addr(mt * 32 + r, high) + kt * 64;
+      |                                 ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
+In file included from /home/user/tt-metal/tt_metal/hw/inc/api/dataflow/dataflow_api.h:18,
+                 from /home/user/tt-metal/tt_metal/hw/inc/internal/firmware_common.h:24,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/brisck.cc:17:
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:32:45: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   32 |             const uint64_t ld = get_noc_addr(mt * 32 + r, low) + kt * 64;
+      |                                 ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:39:47: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   39 |             noc_async_write(zero, get_noc_addr(ROWS, high) + kt * 64, 64);
+      |                                   ~~~~~~~~~~~~^~~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:40:47: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   40 |             noc_async_write(zero, get_noc_addr(ROWS, low) + kt * 64, 64);
+      |                                   ~~~~~~~~~~~~^~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+Building ncrisc, compile step:
+/home/user/tt-metal/runtime/sfpi/compiler/bin/riscv-tt-elf-g++ -O2 -std=c++17 -ftt-nttp -ftt-constinit -ftt-consteval -ftt-no-dyninit -flto=auto -ffast-math -fno-finite-math-only -fsigned-zeros -fno-associative-math -fno-exceptions -fno-rtti -fno-use-cxa-atexit -g -MMD -Wall -Werror -Wno-error=deprecated-declarations -Wno-error=multistatement-macros -Wno-error=parentheses -Wno-error=unused-but-set-variable -Wno-unused-variable -Wno-unused-function -mcpu=tt-wh -fno-tree-loop-distribute-patterns -I. -I.. -I/home/user/tt-metal/ -I/home/user/tt-metal/ttnn -I/home/user/tt-metal/ttnn/cpp -I/home/user/tt-metal/tt_metal -I/home/user/tt-metal/tt_metal/hw/inc -I/home/user/tt-metal/tt_metal/tt-llk/common -I/home/user/tt-metal/tt_metal/hostdevcommon/api -I/home/user/tt-metal/tt_metal/api/ -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_io -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/wormhole_b0_defines -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/noc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/common/inc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/llk_lib -I/home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx -I/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels -DIS_NOT_POW2_NUM_DRAM_BANKS=1 -DLOG_BASE_2_OF_NUM_L1_BANKS=6 -DNUM_DRAM_BANKS=12 -DNUM_L1_BANKS=64 -DPCIE_NOC_X=0 -DPCIE_NOC_Y=3 -DTENSIX_FIRMWARE -DLOCAL_MEM_EN=0 -DROUTING_FW_ENABLED -DPROCESSOR_INDEX=1 -DCOMPILE_FOR_NCRISC -DPROGRAMMABLE_CORE_TYPE=0 -DARCH_WORMHOLE -DDISPATCH_MESSAGE_ADDR=4290183304 -DKERNEL_BUILD -DNOC_INDEX=0 -DNOC_MODE=0 -DFULL_KERNEL_NAME="gather/8172008438173501461/" -DKERNEL_COMPILE_TIME_ARGS=27,4,2,256,2,1557248,2,2048 -c -o /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/gather/8172008438173501461/ncrisc/ncrisck.1710170348343460880_1264955.o /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/ncrisck.cc -MF /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/gather/8172008438173501461/ncrisc/ncrisck.1710170348343460880_1264955.d
+In file included from ../kernel_includes.hpp:1,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/ncrisck.cc:23:
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/gather.cpp: In function 'void kernel_main()':
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/gather.cpp:28:36: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   28 |         noc_async_read(get_noc_addr(v, map) + (row_tile_base + mt) * 128, scratch, 128);
+      |                        ~~~~~~~~~~~~^~~~~~~~
+In file included from /home/user/tt-metal/tt_metal/hw/inc/api/dataflow/dataflow_api.h:18,
+                 from /home/user/tt-metal/tt_metal/hw/inc/internal/firmware_common.h:24,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/ncrisck.cc:17:
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/gather.cpp:36:54: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   36 |                     const uint64_t src = get_noc_addr(ids[r], x) + kt * 64;
+      |                                          ~~~~~~~~~~~~^~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+Building brisc, compile step:
+/home/user/tt-metal/runtime/sfpi/compiler/bin/riscv-tt-elf-g++ -O2 -std=c++17 -ftt-nttp -ftt-constinit -ftt-consteval -ftt-no-dyninit -flto=auto -ffast-math -fno-finite-math-only -fsigned-zeros -fno-associative-math -fno-exceptions -fno-rtti -fno-use-cxa-atexit -g -MMD -Wall -Werror -Wno-error=deprecated-declarations -Wno-error=multistatement-macros -Wno-error=parentheses -Wno-error=unused-but-set-variable -Wno-unused-variable -Wno-unused-function -mcpu=tt-wh -fno-tree-loop-distribute-patterns -I. -I.. -I/home/user/tt-metal/ -I/home/user/tt-metal/ttnn -I/home/user/tt-metal/ttnn/cpp -I/home/user/tt-metal/tt_metal -I/home/user/tt-metal/tt_metal/hw/inc -I/home/user/tt-metal/tt_metal/tt-llk/common -I/home/user/tt-metal/tt_metal/hostdevcommon/api -I/home/user/tt-metal/tt_metal/api/ -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_io -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/wormhole_b0_defines -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/noc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/common/inc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/llk_lib -I/home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx -I/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels -DIS_NOT_POW2_NUM_DRAM_BANKS=1 -DLOG_BASE_2_OF_NUM_L1_BANKS=6 -DNUM_DRAM_BANKS=12 -DNUM_L1_BANKS=64 -DPCIE_NOC_X=0 -DPCIE_NOC_Y=3 -DTENSIX_FIRMWARE -DLOCAL_MEM_EN=0 -DROUTING_FW_ENABLED -DPROCESSOR_INDEX=0 -DCOMPILE_FOR_BRISC -DPROGRAMMABLE_CORE_TYPE=0 -DARCH_WORMHOLE -DDISPATCH_MESSAGE_ADDR=4290183304 -DKERNEL_BUILD -DNOC_INDEX=1 -DNOC_MODE=0 -DFULL_KERNEL_NAME="feature_digits_writer/11040369325904528146/" -DKERNEL_COMPILE_TIME_ARGS=1724221,64,2,2,128,2,128 -c -o /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/feature_digits_writer/11040369325904528146/brisc/brisck.1710170348343460880_1264955.o /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/brisck.cc -MF /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/feature_digits_writer/11040369325904528146/brisc/brisck.1710170348343460880_1264955.d
+In file included from ../kernel_includes.hpp:1,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/brisck.cc:22:
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp: In function 'void kernel_main()':
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:31:45: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   31 |             const uint64_t hd = get_noc_addr(mt * 32 + r, high) + kt * 64;
+      |                                 ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
+In file included from /home/user/tt-metal/tt_metal/hw/inc/api/dataflow/dataflow_api.h:18,
+                 from /home/user/tt-metal/tt_metal/hw/inc/internal/firmware_common.h:24,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/brisck.cc:17:
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:32:45: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   32 |             const uint64_t ld = get_noc_addr(mt * 32 + r, low) + kt * 64;
+      |                                 ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:39:47: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   39 |             noc_async_write(zero, get_noc_addr(ROWS, high) + kt * 64, 64);
+      |                                   ~~~~~~~~~~~~^~~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp:40:47: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   40 |             noc_async_write(zero, get_noc_addr(ROWS, low) + kt * 64, 64);
+      |                                   ~~~~~~~~~~~~^~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+Building ncrisc, compile step:
+/home/user/tt-metal/runtime/sfpi/compiler/bin/riscv-tt-elf-g++ -O2 -std=c++17 -ftt-nttp -ftt-constinit -ftt-consteval -ftt-no-dyninit -flto=auto -ffast-math -fno-finite-math-only -fsigned-zeros -fno-associative-math -fno-exceptions -fno-rtti -fno-use-cxa-atexit -g -MMD -Wall -Werror -Wno-error=deprecated-declarations -Wno-error=multistatement-macros -Wno-error=parentheses -Wno-error=unused-but-set-variable -Wno-unused-variable -Wno-unused-function -mcpu=tt-wh -fno-tree-loop-distribute-patterns -I. -I.. -I/home/user/tt-metal/ -I/home/user/tt-metal/ttnn -I/home/user/tt-metal/ttnn/cpp -I/home/user/tt-metal/tt_metal -I/home/user/tt-metal/tt_metal/hw/inc -I/home/user/tt-metal/tt_metal/tt-llk/common -I/home/user/tt-metal/tt_metal/hostdevcommon/api -I/home/user/tt-metal/tt_metal/api/ -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_io -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/wormhole_b0_defines -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/noc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/common/inc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/llk_lib -I/home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx -I/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels -DIS_NOT_POW2_NUM_DRAM_BANKS=1 -DLOG_BASE_2_OF_NUM_L1_BANKS=6 -DNUM_DRAM_BANKS=12 -DNUM_L1_BANKS=64 -DPCIE_NOC_X=0 -DPCIE_NOC_Y=3 -DTENSIX_FIRMWARE -DLOCAL_MEM_EN=0 -DROUTING_FW_ENABLED -DPROCESSOR_INDEX=1 -DCOMPILE_FOR_NCRISC -DPROGRAMMABLE_CORE_TYPE=0 -DARCH_WORMHOLE -DDISPATCH_MESSAGE_ADDR=4290183304 -DKERNEL_BUILD -DNOC_INDEX=0 -DNOC_MODE=0 -DFULL_KERNEL_NAME="gather/1987841731421048701/" -DKERNEL_COMPILE_TIME_ARGS=27,2,2,128,2,6896896,2,2048 -c -o /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/gather/1987841731421048701/ncrisc/ncrisck.1710170348343460880_1264955.o /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/ncrisck.cc -MF /home/user/.cache/tt-metal-cache/5383662850992527414/kernels/gather/1987841731421048701/ncrisc/ncrisck.1710170348343460880_1264955.d
+In file included from ../kernel_includes.hpp:1,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/ncrisck.cc:23:
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/gather.cpp: In function 'void kernel_main()':
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/gather.cpp:28:36: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   28 |         noc_async_read(get_noc_addr(v, map) + (row_tile_base + mt) * 128, scratch, 128);
+      |                        ~~~~~~~~~~~~^~~~~~~~
+In file included from /home/user/tt-metal/tt_metal/hw/inc/api/dataflow/dataflow_api.h:18,
+                 from /home/user/tt-metal/tt_metal/hw/inc/internal/firmware_common.h:24,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/ncrisck.cc:17:
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+/home/user/GitHub/flexgemm-evaluator/flex_gemm/tenstorrent/kernels/gather.cpp:36:54: warning: 'uint64_t get_noc_addr(uint32_t, const InterleavedAddrGen<DRAM>&, uint32_t, uint8_t) [with bool DRAM = true; uint64_t = long long unsigned int; uint32_t = long unsigned int; uint8_t = unsigned char]' is deprecated: Use <typename AddrGen> get_noc_addr instead. [-Wdeprecated-declarations]
+   36 |                     const uint64_t src = get_noc_addr(ids[r], x) + kt * 64;
+      |                                          ~~~~~~~~~~~~^~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/internal/dataflow/dataflow_api_addrgen.h:455:1: note: declared here
+  455 | get_noc_addr(const uint32_t id, const InterleavedAddrGen<DRAM>& addrgen, uint32_t offset = 0, uint8_t noc = noc_index) {
+      | ^~~~~~~~~~~~
+warm_shape_1
+warm_shape_2
+load_texture
+tt_texture_fixed_guides
+tt_texture_predicted_guides
+warm_texture_1
+warm_texture_2
+complete
+2026-11-02 15:31:28.513 | info     |    BuildKernels | JIT cache stats: 839/1235 hits (67.9%) [839 cached, 1215 build-once dedup, 0 merged artifacts, 0 merged genfiles] (build_cache_telemetry.cpp:207)
+2026-11-02 15:31:28.513 | info     |    BuildKernels | JIT telemetry: 3 registered TelemetryTokens (build_cache_telemetry.cpp:230)
+2026-11-02 15:31:28.615 | info     |          Device | Closing user mode device drivers (tt_cluster.cpp:513)
+2026-11-02 15:31:28.615 | info     |             UMD | Closing devices in cluster (cluster.cpp:1201)
+2026-11-02 15:31:28.620 | info     |             UMD | Closing devices in cluster completed. (cluster.cpp:1210)
+2026-11-02 15:31:28.620 | info     |             UMD | Cluster destructor started. (cluster.cpp:916)
+2026-11-02 15:31:28.620 | info     |             UMD | Cluster destructor completed. (cluster.cpp:919)

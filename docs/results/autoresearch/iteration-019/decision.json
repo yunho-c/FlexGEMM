@@ -1,0 +1,83 @@
+{
+  "iteration": 19,
+  "decision": "retain opt-in operator; matched BF16 decoder outputs are identical, while strict FP32 decoder parity remains failed in both baseline and candidate",
+  "candidate_commit": "facc5e2e414d6654f716fd5486ba53292e39998a",
+  "baseline_commit": "8c1c896b19892e9abcd340de9f8f8942f13c0728",
+  "original_genrecon_commit": "8d07db88360bf14858318fabbf51bb11e91c982e",
+  "saved_cpu_gates_unchanged": true,
+  "cpu_statuses": {
+    "baseline-a": "numerical_failure",
+    "candidate-b": "numerical_failure",
+    "baseline-c": "numerical_failure"
+  },
+  "matched_saved_output_and_guide_records": 36,
+  "matched_records_bitwise_equal": 36,
+  "warm_repeat_outputs_and_guides_equal": true,
+  "completed_device_workers": 3,
+  "numerical_failure_returncodes": 3,
+  "timeouts": 0,
+  "device_recovery_required": false,
+  "timing": {
+    "shape": {
+      "seconds": {
+        "baseline-a": [
+          11.471509884984698,
+          11.419464386010077
+        ],
+        "candidate-b": [
+          10.121783585986122,
+          10.015254281985108
+        ],
+        "baseline-c": [
+          11.460495674982667,
+          11.40407722996315
+        ]
+      },
+      "median_seconds": {
+        "baseline-a": 11.445487135497387,
+        "candidate-b": 10.068518933985615,
+        "baseline-c": 11.432286452472908
+      },
+      "bracket_ratio": 1.1361042144315732,
+      "baseline_drift_fraction": 0.0011540181542333582,
+      "scope": "Two warm samples per worker, one A/B/A bracket; diagnostic only"
+    },
+    "texture": {
+      "seconds": {
+        "baseline-a": [
+          10.918953298009,
+          10.987768683000468
+        ],
+        "candidate-b": [
+          10.06011668901192,
+          10.03988128300989
+        ],
+        "baseline-c": [
+          10.935804094013292,
+          10.937668272003066
+        ]
+      },
+      "median_seconds": {
+        "baseline-a": 10.953360990504734,
+        "candidate-b": 10.049998986010905,
+        "baseline-c": 10.936736183008179
+      },
+      "bracket_ratio": 1.0890596707513518,
+      "baseline_drift_fraction": 0.0015189340974393864,
+      "scope": "Two warm samples per worker, one A/B/A bracket; diagnostic only"
+    }
+  },
+  "candidate_sparse_calls_per_decoder": {
+    "implicit": 16,
+    "explicit_fallback": 24
+  },
+  "limitations": [
+    "one poster latent with 4490 input voxels; not independent scene coverage",
+    "one A/B/A bracket and two warm samples per decoder are diagnostic, not a broad performance promotion",
+    "FP32 CPU reference coordinate, continuous, subdivision and edge gates fail in baseline and candidate",
+    "allocator snapshots are not full-model transient peak measurements",
+    "static weight preparation, comparisons and artifact I/O excluded; topology and boundary transfers included",
+    "no SOTA claim"
+  ],
+  "next": "Measure bounded topology reuse within a decoder stage; keep feature values fresh and release large maps before wide C2S allocations. Continue kernel profiling and independent workload coverage."
+}
