@@ -85,6 +85,17 @@ shape decoder. Additional independent scenes, complete stage timings and
 accurate-output integration are still outstanding. Synthetic
 geometric-mean speedup describes coverage; it is not an application score.
 
+Iteration 011 adds an independent public LiDAR geometry corpus from
+[Autoware's test cloud in the pinned BEVFusion bundle](https://huggingface.co/changh95/bevfusion-p150/blob/300095a42e61075a3d5c9916620344c1067200b8/code/tt_bevfusion/samples/README.md).
+Independent voxelization and the coordinate-dictionary oracle reproduce its
+21,359 voxels and 112,747 submanifold neighbor interactions. Six fixed channel
+shapes use synthetic BF16 features, weights and biases, including ragged
+channels. This supplies different scene geometry, not captured BEVFusion
+activations or model performance. The manifest records source hashes, pinned
+URLs, Apache-2.0 attribution, voxel parameters and operand seeds. Once used to
+guide further changes, these cases are validation data rather than held-out
+data. Independent full-application scenes remain outstanding.
+
 Promote a performance candidate only after all applicable correctness cases
 pass and alternating incumbent/candidate measurements exceed observed timing
 noise. Baseline-against-baseline repeats establish that noise. A fixture known
@@ -523,6 +534,50 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   remain unconfirmed. Reports are unchanged in `iteration-010`; its compact
   allocation-event bundle reproduces all 30 original workspace bounds and
   records the full-trace hashes. Every worker exited normally.
+
+### 011 — gather both feature digits directly into tiles
+
+- Revisit iteration 003's direct tiled gather for the four-product algorithm.
+  Both high/low feature tables now gather into matmul tiles directly, using the
+  resident original-order topology. Each invocation reads fresh feature values;
+  missing neighbors and padded rows remain zero. Unaligned multi-chunk calls
+  retain embedding plus tilization. Numerical decomposition, four products,
+  HiFi3 fidelity and tolerances are unchanged. The accounting model is
+  `digit_explicit_v4` and charges both gathers' requested payloads.
+- All 30 existing corpus cases and six new independent LiDAR geometry cases
+  pass both feature variants, repeatability, input/source integrity, output
+  dtype/layout and allocator-traced workspace gates. The LiDAR corpus uses
+  21,359 real voxels and synthetic BF16 operands at six channel configurations;
+  it is not BEVFusion inference or captured model activations. Its preparer,
+  pinned source attribution and unchanged manifest are included. Thirteen
+  Watcher tests and 12 CPU evaluator tests pass, including exact gather checks
+  for missing/repeated neighbors, chunk boundaries and ragged channels/rows.
+- Three A/B/A rounds with eleven repetitions confirm the 388,659-row 128→128
+  gain against iteration 010 at the same row_chunk=8192. Candidate medians are
+  552.117, 552.114 and 552.229 ms versus approximately 689.9 ms. Speedups are
+  1.249600×, 1.249482× and 1.249355×; maximum baseline drift is 0.0236% and
+  maximum noise is 0.1151%. All nine trials pass.
+- The 4,490-row 1024→4096 comparison remains inconclusive: round speedups are
+  1.001734×, 0.999601× and 1.009230×, with maximum noise 3.4229%. All nine
+  trials pass numerically, but this is not a confirmed wide-layer improvement.
+- Maximum temporary-workspace bound remains 1,007,091,200 bytes. On the
+  confirmed narrow layer it falls from 514,855,936 to 426,944,512 bytes. All
+  36 archived compact allocation-event replays reproduce the original bounds,
+  allocation counts and final-output exclusions; full-trace hashes are retained.
+- Full-corpus three-repetition screening gives occurrence-weighted proxies of
+  9.881 s and 13.863 s for the two poster topologies. The largest 64-channel
+  cases screen at 1,249.609 ms (1,711,800 rows) and 1,739.282 ms (2,389,000
+  rows). These are unpaired operator measurements, not full-decoder speedups.
+- A separate component diagnostic passes at 552.180 ms unwrapped. Embedding
+  calls disappear and serialized layout conversion falls from 80.179 to
+  10.371 ms per forward; generic operations, which include the new gathers,
+  take 300.424 ms. Matmul remains approximately 217.731 ms and feature-digit
+  preparation spans 121.111/126.125 ms. The stage overlaps operation timings;
+  synchronized diagnostics cannot be summed into savings in the lean score.
+- Decision: retain the change for the confirmed narrow-layer gain and expanded
+  correctness coverage. Default dispatch, application-level benefit, matched
+  external comparisons and SOTA status remain unconfirmed. All 61 device
+  workers exited normally. Unchanged reports are in `iteration-011`.
 
 The additional CPU capture tools are:
 

@@ -108,7 +108,8 @@ def main():
             algorithm=config["algorithm"], split_k=config.get("split_k", 1),
             row_chunk=config.get("row_chunk", 256), available_cores=grid.x * grid.y,
             digit_output_assembly=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "OUTPUT_ASSEMBLY", "concat"),
-            digit_epilogue=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "EPILOGUE", "expanded"))
+            digit_epilogue=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "EPILOGUE", "expanded"),
+            digit_gather=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "GATHER", "embedding"))
         mandatory = report["work"]["split_partial_bytes"] + report["work"]["explicit_expansion_bytes"]
         if mandatory > contract["workspace_limit_bytes"]:
             raise ValueError("mandatory intermediate storage exceeds workspace cap")

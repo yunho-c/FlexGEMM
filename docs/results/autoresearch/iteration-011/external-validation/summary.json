@@ -1,0 +1,216 @@
+{
+  "status": "complete",
+  "scope": "independent real LiDAR geometry, synthetic BF16 operands; not BEVFusion inference",
+  "trials": [
+    {
+      "case": "autoware-test-pcd-21359-16x16",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 32768
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 10.175947041716427,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 93272064,
+        "dram_allocations": 53,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 182454272,
+        "temporary_dram_peak_bytes": 93272064,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 3731520,
+          "event_index": 889,
+          "aligned_bytes": 1376256,
+          "expected_padded_bytes": 1368064,
+          "excluded_bytes": 1368064
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 182454272,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-011/external-validation/autoware-test-pcd-21359-16x16.allocations.json.gz",
+        "trace_sha256": "293a94ec2fe8fb3d117c7106f5dbf103c1ecd938b94dca65cd5ef71db28fe02f"
+      }
+    },
+    {
+      "case": "autoware-test-pcd-21359-32x64",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 32768
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 11.025950021576136,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 109787136,
+        "dram_allocations": 50,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 198969344,
+        "temporary_dram_peak_bytes": 109787136,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 3739712,
+          "event_index": 826,
+          "aligned_bytes": 2752512,
+          "expected_padded_bytes": 2736128,
+          "excluded_bytes": 2736128
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 198969344,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-011/external-validation/autoware-test-pcd-21359-32x64.allocations.json.gz",
+        "trace_sha256": "e8e4c9028e399402eea748f5b56ecf0d33fe391f62901339650a858bddb2a024"
+      }
+    },
+    {
+      "case": "autoware-test-pcd-21359-64x64",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 16384
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 15.527695999480784,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 146976768,
+        "dram_allocations": 77,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 236158976,
+        "temporary_dram_peak_bytes": 144240640,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 4213312,
+          "event_index": 660,
+          "aligned_bytes": 2752512,
+          "expected_padded_bytes": 2736128,
+          "excluded_bytes": 2736128
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 233422848,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-011/external-validation/autoware-test-pcd-21359-64x64.allocations.json.gz",
+        "trace_sha256": "14dc1e2c9b3f178e5fcbfb9eb96d495cc888c8309acb7269e2b10df440e70f5c"
+      }
+    },
+    {
+      "case": "autoware-test-pcd-21359-128x128",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 8192
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 29.26214598119259,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 155172864,
+        "dram_allocations": 102,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 244355072,
+        "temporary_dram_peak_bytes": 149700608,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 5234240,
+          "event_index": 845,
+          "aligned_bytes": 5480448,
+          "expected_padded_bytes": 5472256,
+          "excluded_bytes": 5472256
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 238882816,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-011/external-validation/autoware-test-pcd-21359-128x128.allocations.json.gz",
+        "trace_sha256": "e0e72f471f89427c69d1e894dceef274989559eb71b2f2be2e52bd5a7ab65771"
+      }
+    },
+    {
+      "case": "autoware-test-pcd-21359-256x256",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 4096
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 57.261266047134995,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 171589632,
+        "dram_allocations": 181,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 260771840,
+        "temporary_dram_peak_bytes": 160645120,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 5670464,
+          "event_index": 1484,
+          "aligned_bytes": 10960896,
+          "expected_padded_bytes": 10944512,
+          "excluded_bytes": 10944512
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 249827328,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-011/external-validation/autoware-test-pcd-21359-256x256.allocations.json.gz",
+        "trace_sha256": "2a9ef1ec414df11fa2ee00b972cbc752dd6a9508b7c14f6a2e1339fb6579a57a"
+      }
+    },
+    {
+      "case": "autoware-test-pcd-21359-17x35",
+      "config": {
+        "algorithm": "digit_explicit_gemm",
+        "row_chunk": 32768
+      },
+      "status": "passed",
+      "returncode": 0,
+      "ms": 11.245820962358266,
+      "workspace": {
+        "kind": "conservative_bound_from_allocator_trace",
+        "new_dram_peak_bytes": 109787136,
+        "dram_allocations": 53,
+        "dram_banks": 12,
+        "inclusive_upper_bound_bytes": 198969344,
+        "temporary_dram_peak_bytes": 109787136,
+        "excluded_final_output": {
+          "device_id": 1,
+          "address": 3739712,
+          "event_index": 889,
+          "aligned_bytes": 2752512,
+          "expected_padded_bytes": 2736128,
+          "excluded_bytes": 2736128
+        },
+        "all_l1_capacity_bytes": 89182208,
+        "workspace_upper_bound_bytes": 198969344,
+        "workspace_limit_bytes": 1073741824,
+        "trace_valid": true,
+        "anomalies": [],
+        "within_limit": true,
+        "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+        "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-011/external-validation/autoware-test-pcd-21359-17x35.allocations.json.gz",
+        "trace_sha256": "a4706c68160d607f575cd78f0688d81d859999fb2cd2310e0f25b8dd966350d9"
+      }
+    }
+  ]
+}

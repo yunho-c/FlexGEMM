@@ -1,0 +1,6 @@
+{
+  "direct_tiled_gather": {
+    "algorithm": "digit_explicit_gemm",
+    "row_chunk": 8192
+  }
+}

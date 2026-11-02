@@ -14,6 +14,7 @@ from .ops import _add_bias, _compute_config
 
 OUTPUT_ASSEMBLY = "tile_copy"
 EPILOGUE = "tile_broadcast"
+GATHER = "tiled"
 
 
 @dataclass
@@ -167,6 +168,7 @@ def sparse_digit_conv_device(features, weights, topology, *, row_chunk=256, fp32
     scale_tile = ttnn.multiply(weights.scale_tile, feature_scale)
     outputs = []
     m = len(topology.host_indices)
+    use_tiled_gather = row_chunk % 32 == 0 or row_chunk >= m
     output = None
     if m > row_chunk and row_chunk % 32 == 0:
         output = ttnn.allocate_tensor_on_device(ttnn.Shape([m, weights.co]),
@@ -174,16 +176,20 @@ def sparse_digit_conv_device(features, weights, topology, *, row_chunk=256, fp32
     compute = _compute_config(weights.device)
     for start in range(0, m, row_chunk):
         end = min(start + row_chunk, m)
-        key = (start, end)
-        ids = topology.gathers.get(key)
-        if ids is None:
-            host = topology.host_indices[start:end]
-            host = torch.where(host < 0, topology.input_points, host)
-            ids = ttnn.from_torch(host.reshape(1, -1).to(torch.uint32), dtype=ttnn.uint32,
-                                   layout=ttnn.ROW_MAJOR_LAYOUT, device=weights.device)
-            topology.gathers[key] = ids
+        if not use_tiled_gather:
+            key = (start, end)
+            ids = topology.gathers.get(key)
+            if ids is None:
+                host = topology.host_indices[start:end]
+                host = torch.where(host < 0, topology.input_points, host)
+                ids = ttnn.from_torch(host.reshape(1, -1).to(torch.uint32), dtype=ttnn.uint32,
+                                       layout=ttnn.ROW_MAJOR_LAYOUT, device=weights.device)
+                topology.gathers[key] = ids
 
         def gather(x):
+            if use_tiled_gather:
+                from .gather import tiled_gather
+                return tiled_gather(x, topology, start, end, weights.ci)
             expanded = ttnn.embedding(ids, x, layout=ttnn.ROW_MAJOR_LAYOUT)
             return ttnn.to_layout(ttnn.reshape(expanded, [end - start, weights.volume * cp]), ttnn.TILE_LAYOUT)
 

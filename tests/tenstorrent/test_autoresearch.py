@@ -97,6 +97,16 @@ def test_digit_accounting_charges_all_four_products_and_both_gathers():
     tiled = work_accounting(mapping, 17, 35, algorithm="digit_explicit_gemm", row_chunk=32,
                             digit_output_assembly="tile_copy", digit_epilogue="tile_broadcast")
     assert tiled["model"] == "digit_explicit_v3" and tiled["issued_flops"] == digit["issued_flops"]
+    direct = work_accounting(mapping, 17, 35, algorithm="digit_explicit_gemm", row_chunk=32,
+                             digit_gather="tiled")
+    assert direct["model"] == "digit_explicit_v4"
+    assert direct["issued_flops"] == digit["issued_flops"]
+    assert direct["requested_feature_bytes"] == 2 * 65 * 3 * 32 * 2
+    assert direct["requested_map_bytes"] == 2 * 3 * 3 * 128
+    assert direct["gather_output_bytes"] == 2 * 96 * 3 * 32 * 2
+    unaligned = work_accounting(mapping, 17, 35, algorithm="digit_explicit_gemm", row_chunk=17,
+                                digit_gather="tiled", digit_epilogue="tile_broadcast")
+    assert unaligned["model"] == "digit_explicit_v3" and unaligned["requested_feature_bytes"] is None
 
 
 def test_runner_timeout_and_exit_failure_are_terminal(tmp_path):

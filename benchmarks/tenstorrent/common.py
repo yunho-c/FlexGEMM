@@ -77,7 +77,7 @@ def summarize(samples):
 
 
 def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, available_cores=64,
-                    digit_output_assembly="concat", digit_epilogue="expanded"):
+                    digit_output_assembly="concat", digit_epilogue="expanded", digit_gather="embedding"):
     """Model the baseline kernels' issued work/request payloads, not bus traffic.
 
     Model changes must accompany structural kernel changes. Counts include the
@@ -95,8 +95,9 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
         raise ValueError("invalid split_k")
     edges = int((mapping >= 0).sum())
     useful = 2 * edges * ci * co
-    fused_gather = algorithm == "tiled_gather_gemm"
     digit_products = algorithm == "digit_explicit_gemm"
+    digit_tiled = digit_products and digit_gather == "tiled" and (row_chunk % 32 == 0 or row_chunk >= m)
+    fused_gather = algorithm == "tiled_gather_gemm" or digit_tiled
     digit_copy = digit_products and digit_output_assembly == "tile_copy"
     explicit = algorithm in ("explicit_gemm", "tiled_gather_gemm", "digit_explicit_gemm")
     if fused_gather and row_chunk < m and row_chunk % 32:
@@ -123,8 +124,8 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
                           for start in range(0, m, row_chunk))
         tile_products = padded_rows // 32 * nt * volume * ct * (4 if digit_products else 1)
         if fused_gather:
-            feature_bytes = edges * ct * 64
-            map_reads = padded_rows // 32 * volume
+            feature_bytes = edges * ct * 64 * (2 if digit_tiled else 1)
+            map_reads = padded_rows // 32 * volume * (2 if digit_tiled else 1)
     else:
         for split in range(split_k):
             begin, end = volume * ct * split // split_k, volume * ct * (split + 1) // split_k
@@ -148,7 +149,7 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
     # Payload of S-1 FP32 adds: two inputs and one output per add. Slices/casts
     # may add traffic, so this is not total reduction traffic or peak workspace.
     reduction_bytes = (split_k - 1) * mt * 32 * nt * 32 * 12
-    return {"kind": "modeled", "model": ("digit_explicit_v3" if digit_epilogue == "tile_broadcast" else "digit_explicit_v2" if digit_copy else "digit_explicit_v1") if digit_products else "tiled_gather_v1" if fused_gather else "baseline_v1",
+    return {"kind": "modeled", "model": ("digit_explicit_v4" if digit_tiled else "digit_explicit_v3" if digit_epilogue == "tile_broadcast" else "digit_explicit_v2" if digit_copy else "digit_explicit_v1") if digit_products else "tiled_gather_v1" if fused_gather else "baseline_v1",
             "valid_interactions": edges, "useful_flops": useful, "issued_flops": issued,
             "issued_scope": "logical_padded_gemm" if explicit else "custom_kernel_tile_products",
             "work_efficiency": useful / issued, "dummy_tile_products": dummy,
@@ -156,7 +157,7 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
             "requested_feature_bytes": feature_bytes if fused_gather or not explicit else None,
             "requested_weight_bytes": None if explicit else weight_bytes,
             "requested_map_bytes": map_reads * 128 if fused_gather or not explicit else None,
-            "gather_output_bytes": padded_rows * volume * ct * 64 if fused_gather else None,
+            "gather_output_bytes": padded_rows * volume * ct * 64 * (2 if digit_tiled else 1) if fused_gather else None,
             "output_assembly_copy_bytes": mt * nt * 1024 * 4 if digit_copy and m > row_chunk and row_chunk % 32 == 0 else 0,
             "split_partial_bytes": partial_bytes, "reduction_add_payload_bytes": reduction_bytes,
             "explicit_expansion_bytes": math.ceil(min(row_chunk, m) / 32) * 32 * volume * ct * 32 * 2 * (2 if digit_products else 1) if explicit else 0,

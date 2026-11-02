@@ -7,6 +7,26 @@ from flex_gemm.tenstorrent import (
 from test_explicit import device
 
 
+@pytest.mark.parametrize("ci", [17, 33, 128])
+def test_tiled_digit_gather_exact_rows_and_padding(device, ci):
+    import ttnn
+    from flex_gemm.tenstorrent.gather import tiled_gather
+    generator = torch.Generator().manual_seed(111)
+    cp = (ci + 31) // 32 * 32
+    values = torch.zeros(67, cp, dtype=torch.bfloat16)
+    values[:, :ci] = torch.randn(67, ci, generator=generator).bfloat16()
+    mapping = torch.randint(-1, 67, (65, 3), generator=generator)
+    mapping[0] = -1
+    mapping[-1] = torch.tensor([66, -1, 0])
+    topology = prepare_sparse_topology(mapping, len(values), device=device)
+    features = ttnn.from_torch(values, dtype=ttnn.bfloat16, layout=ttnn.ROW_MAJOR_LAYOUT, device=device)
+    zero_appended = torch.cat([values, torch.zeros(1, cp, dtype=torch.bfloat16)])
+    expected = zero_appended[torch.where(mapping < 0, len(values), mapping)].reshape(65, -1)
+    for start, end in ((0, 32), (32, 64), (64, 65)):
+        actual = tiled_gather(features, topology, start, end, ci)
+        torch.testing.assert_close(ttnn.to_torch(actual), expected[start:end], atol=0, rtol=0)
+
+
 @pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
                                         "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
 @pytest.mark.parametrize("ci,co", [(32, 64), (17, 35)])

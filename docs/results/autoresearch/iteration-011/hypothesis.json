@@ -1,0 +1,9 @@
+{
+  "iteration": 11,
+  "baseline_commit": "34a92cb5a475110bdf5c54a460dc5377624f07e5",
+  "hypothesis": "Narrow-layer embedding plus layout conversion is expensive; direct tiled gather of both feature digits can reduce full-operator latency without changing arithmetic.",
+  "evidence": "Iteration 010 narrow component diagnostic: embedding 216.197 ms and to_layout 80.179 ms per serialized forward; full unwrapped median 689.668 ms. Serialized times are not additive savings.",
+  "candidate": "Use the archived iteration-003 direct tiled gather for each digit. Preserve ordinary embedding for non-tile-aligned chunk boundaries. Keep feature digit preparation, all four GEMMs, tile scale/bias and output assembly unchanged.",
+  "prediction": "Avoid expanded row-major intermediates and subsequent tilize traffic. Potential cost: many small NoC reads, explicit tile clearing and barriers can erase savings, especially for wide input channels.",
+  "acceptance": "Fixed correctness/workspace contract, full required corpus, then paired measurements beyond the existing noise rule. Screening alone does not promote."
+}
