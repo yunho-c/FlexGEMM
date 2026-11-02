@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "lock": "/tmp/genrecon-tt-pjrt.lock",
+  "case": "poster-shape-wide-4490",
+  "config": {
+    "algorithm": "implicit_gemm"
+  },
+  "candidate_root": "/home/user/GitHub/flexgemm-autoresearch",
+  "workload": "convolution",
+  "lock_wait_seconds": 1.021998468786478e-05,
+  "returncode": 0,
+  "timeout": null,
+  "elapsed_seconds": 25.066712148021907,
+  "device_recovery_required": false
+}

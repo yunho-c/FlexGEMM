@@ -1,0 +1,327 @@
+{
+  "status": "complete",
+  "screen_only": false,
+  "cases": [
+    "poster-shape-wide-4490"
+  ],
+  "baseline": {
+    "algorithm": "explicit_gemm",
+    "row_chunk": 256
+  },
+  "candidates": {
+    "chunk-1024": {
+      "algorithm": "explicit_gemm",
+      "row_chunk": 1024
+    }
+  },
+  "rounds": 3,
+  "repeat": 11,
+  "corpus_manifest_sha256": "aef598a1c914f6461e7e6decdaf4d42f6a7596bd7d736fe1e70086a33b5f0559",
+  "ordering_seed": 20261102,
+  "trials": [
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "baseline",
+      "round": 0,
+      "path": "trial-0000.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 58.14002500846982,
+        "min_ms": 57.998755015432835,
+        "max_ms": 58.28906601527706,
+        "mad_ms": 0.06075098644942045,
+        "samples_ms": [
+          58.06869501248002,
+          57.998755015432835,
+          58.20474500069395,
+          58.090974984224886,
+          58.13260504510254,
+          58.20077599491924,
+          58.28906601527706,
+          58.167654962744564,
+          58.14002500846982,
+          58.134365011937916,
+          58.229546004440635
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "chunk-1024",
+      "round": 0,
+      "path": "trial-0001.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 38.41236903099343,
+        "min_ms": 38.24252705089748,
+        "max_ms": 38.824599992949516,
+        "mad_ms": 0.06031099474057555,
+        "samples_ms": [
+          38.274698017630726,
+          38.70895999716595,
+          38.47268002573401,
+          38.24252705089748,
+          38.39085903018713,
+          38.80780003964901,
+          38.39450899977237,
+          38.41236903099343,
+          38.39477896690369,
+          38.42230804730207,
+          38.824599992949516
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "baseline",
+      "round": 0,
+      "path": "trial-0002.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 58.12498496379703,
+        "min_ms": 58.03869402734563,
+        "max_ms": 58.303846046328545,
+        "mad_ms": 0.03630999708548188,
+        "samples_ms": [
+          58.1133549567312,
+          58.03869402734563,
+          58.05096396943554,
+          58.11464600265026,
+          58.242665021680295,
+          58.12498496379703,
+          58.19488503038883,
+          58.10935504268855,
+          58.161294960882515,
+          58.138163993135095,
+          58.303846046328545
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "baseline",
+      "round": 1,
+      "path": "trial-0003.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 58.121914975345135,
+        "min_ms": 58.036354021169245,
+        "max_ms": 58.32898599328473,
+        "mad_ms": 0.06922095781192183,
+        "samples_ms": [
+          58.05269401753321,
+          58.045094017870724,
+          58.036354021169245,
+          58.100313995964825,
+          58.14647499937564,
+          58.07134398492053,
+          58.121914975345135,
+          58.32829495193437,
+          58.182355016469955,
+          58.32898599328473,
+          58.26434399932623
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "chunk-1024",
+      "round": 1,
+      "path": "trial-0004.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 38.514718995429575,
+        "min_ms": 38.02933596307412,
+        "max_ms": 39.13521103095263,
+        "mad_ms": 0.2539310371503234,
+        "samples_ms": [
+          38.832568970974535,
+          38.58886897796765,
+          38.208457990549505,
+          38.02933596307412,
+          38.53040898684412,
+          39.13521103095263,
+          38.514718995429575,
+          38.26078795827925,
+          38.32338802749291,
+          38.49074803292751,
+          38.78876002272591
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "baseline",
+      "round": 1,
+      "path": "trial-0005.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 58.15629300195724,
+        "min_ms": 58.05266398238018,
+        "max_ms": 58.26570402132347,
+        "mad_ms": 0.017421029042452574,
+        "samples_ms": [
+          58.05482401046902,
+          58.05266398238018,
+          58.08532400988042,
+          58.15629300195724,
+          58.18598403129727,
+          58.17371403099969,
+          58.15445497864857,
+          58.17074398510158,
+          58.156124025117606,
+          58.16112400498241,
+          58.26570402132347
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "baseline",
+      "round": 2,
+      "path": "trial-0006.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 58.128673990722746,
+        "min_ms": 58.031342981848866,
+        "max_ms": 58.26849403092638,
+        "mad_ms": 0.029960006941109896,
+        "samples_ms": [
+          58.03357396507636,
+          58.031342981848866,
+          58.04957402870059,
+          58.105233998503536,
+          58.110072975978255,
+          58.158633997663856,
+          58.13504400430247,
+          58.15220397198573,
+          58.128673990722746,
+          58.167404029518366,
+          58.26849403092638
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "chunk-1024",
+      "round": 2,
+      "path": "trial-0007.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 38.45387796172872,
+        "min_ms": 38.16170699428767,
+        "max_ms": 38.9759800164029,
+        "mad_ms": 0.1905010431073606,
+        "samples_ms": [
+          38.419218035414815,
+          38.16170699428767,
+          38.427817984484136,
+          38.704878999851644,
+          38.9759800164029,
+          38.39993698056787,
+          38.83019997738302,
+          38.45387796172872,
+          38.4358279989101,
+          38.68849796708673,
+          38.64437900483608
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "baseline",
+      "round": 2,
+      "path": "trial-0008.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 58.050712978001684,
+        "min_ms": 58.017653005663306,
+        "max_ms": 58.2776140072383,
+        "mad_ms": 0.0210499856621027,
+        "samples_ms": [
+          58.017653005663306,
+          58.02966299233958,
+          58.0776630085893,
+          58.16831404808909,
+          58.04295197594911,
+          58.06889396626502,
+          58.04552300833166,
+          58.07599303079769,
+          58.041713025886565,
+          58.050712978001684,
+          58.2776140072383
+        ]
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "chunk-1024",
+      "round": 0,
+      "comparison": {
+        "eligible": true,
+        "speedup": 1.5133798296281453,
+        "baseline_drift_fraction": 0.0002587535236724392,
+        "noise_fraction": 0.004710279235205174,
+        "before_ms": 58.14002500846982,
+        "candidate_ms": 38.41236903099343,
+        "after_ms": 58.12498496379703
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "chunk-1024",
+      "round": 1,
+      "comparison": {
+        "eligible": true,
+        "speedup": 1.5095294205458634,
+        "baseline_drift_fraction": 0.0005914813134888508,
+        "noise_fraction": 0.019779272219053963,
+        "before_ms": 58.121914975345135,
+        "candidate_ms": 38.514718995429575,
+        "after_ms": 58.15629300195724
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "chunk-1024",
+      "round": 2,
+      "comparison": {
+        "eligible": true,
+        "speedup": 1.5106325677591115,
+        "baseline_drift_fraction": 0.001342981140483257,
+        "noise_fraction": 0.014862041479688242,
+        "before_ms": 58.128673990722746,
+        "candidate_ms": 38.45387796172872,
+        "after_ms": 58.050712978001684
+      }
+    }
+  ],
+  "results": {
+    "chunk-1024": {
+      "cases": {
+        "poster-shape-wide-4490": {
+          "complete_and_correct": true,
+          "rounds": 3,
+          "median_speedup": 1.5106325677591115,
+          "minimum_speedup": 1.5095294205458634,
+          "maximum_noise_fraction": 0.019779272219053963,
+          "consistent_screening_win": true
+        }
+      },
+      "all_requested_cases_pass": true,
+      "geomean_speedup": 1.5106325677591115,
+      "promotion": "not_evaluated: requires full contract, workspace and application checks"
+    }
+  }
+}

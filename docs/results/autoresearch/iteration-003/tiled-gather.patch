@@ -1,0 +1,222 @@
+diff --git a/flex_gemm/tenstorrent/gather.py b/flex_gemm/tenstorrent/gather.py
+new file mode 100644
+index 0000000..87e6254
+--- /dev/null
++++ b/flex_gemm/tenstorrent/gather.py
+@@ -0,0 +1,40 @@
++"""Experimental direct tiled gather for the resident explicit algorithm."""
++
++from pathlib import Path
++
++from .implicit import _round32
++
++
++def tiled_gather(features, topology, start, end, ci):
++    """Gather full-neighborhood row chunks; start must be tile aligned."""
++    import ttnn
++    if start % 32 or not 0 <= start < end <= len(topology.host_indices):
++        raise ValueError("tiled gather requires a tile-aligned start and valid rows")
++    if topology.masks is not None:
++        raise ValueError("tiled gather requires original-order topology")
++    volume = topology.host_indices.shape[1]
++    cp, mp = _round32(ci), _round32(end - start)
++    output = ttnn.allocate_tensor_on_device(ttnn.Shape([end - start, volume * cp]),
++        ttnn.bfloat16, ttnn.TILE_LAYOUT, topology.device)
++    tasks = mp // 32 * volume
++    grid = topology.device.compute_with_storage_grid_size()
++    ncores = min(tasks, grid.x * grid.y)
++    cores = [ttnn.CoreCoord(i % grid.x, i // grid.x) for i in range(ncores)]
++    ranges = ttnn.CoreRangeSet([ttnn.CoreRange(c, c) for c in cores])
++    runtime = ttnn.RuntimeArgs()
++    for i, c in enumerate(cores):
++        begin, finish = tasks * i // ncores, tasks * (i + 1) // ncores
++        runtime[c.x][c.y] = [features.buffer_address(), topology.indices.buffer_address(),
++            output.buffer_address(), start // 32, begin, finish - begin]
++    compile_time = [volume, cp // 32]
++    for tensor in (features, topology.indices, output):
++        compile_time.extend(ttnn.TensorAccessorArgs(tensor).get_compile_time_args())
++    kernel = ttnn.KernelDescriptor(kernel_source=str(Path(__file__).parent / "kernels/gather.cpp"),
++        core_ranges=ranges, compile_time_args=compile_time, runtime_args=runtime,
++        config=ttnn.ReaderConfigDescriptor())
++    cbs = [ttnn.CBDescriptor(total_size=page, core_ranges=ranges,
++        format_descriptors=[ttnn.CBFormatDescriptor(buffer_index=index, data_format=dtype, page_size=page)])
++        for index, dtype, page in ((0, ttnn.bfloat16, 2048), (2, ttnn.uint32, 128))]
++    ttnn.generic_op([features, topology.indices, output],
++        ttnn.ProgramDescriptor(kernels=[kernel], cbs=cbs, semaphores=[]))
++    return output
+diff --git a/flex_gemm/tenstorrent/kernels/gather.cpp b/flex_gemm/tenstorrent/kernels/gather.cpp
+new file mode 100644
+index 0000000..a1f3fae
+--- /dev/null
++++ b/flex_gemm/tenstorrent/kernels/gather.cpp
+@@ -0,0 +1,47 @@
++// SPDX-License-Identifier: MIT
++#include "api/dataflow/dataflow_api.h"
++#include "tools/profiler/kernel_profiler.hpp"
++
++// Materialize each gathered tile once, directly in the layout consumed by
++// TTNN matmul. All feature values are fetched anew on every invocation.
++void kernel_main() {
++    DeviceZoneScopedN("FG_EXPLICIT_GATHER");
++    const uint32_t x_addr = get_arg_val<uint32_t>(0);
++    const uint32_t map_addr = get_arg_val<uint32_t>(1);
++    const uint32_t out_addr = get_arg_val<uint32_t>(2);
++    const uint32_t row_tile_base = get_arg_val<uint32_t>(3);
++    const uint32_t start = get_arg_val<uint32_t>(4);
++    const uint32_t count = get_arg_val<uint32_t>(5);
++    constexpr uint32_t V = get_compile_time_arg_val(0);
++    constexpr uint32_t CT = get_compile_time_arg_val(1);
++    constexpr auto xa = TensorAccessorArgs<2>();
++    constexpr auto ma = TensorAccessorArgs<xa.next_compile_time_args_offset()>();
++    constexpr auto oa = TensorAccessorArgs<ma.next_compile_time_args_offset()>();
++    const auto x = TensorAccessor(xa, x_addr);
++    const auto map = TensorAccessor(ma, map_addr);
++    const auto out = TensorAccessor(oa, out_addr);
++    cb_reserve_back(0, 1);
++    cb_reserve_back(2, 1);
++    const uint32_t tile = get_write_ptr(0), scratch = get_write_ptr(2);
++    for (uint32_t task = start; task < start + count; ++task) {
++        const uint32_t mt = task / V, v = task % V;
++        noc_async_read(get_noc_addr(v, map) + (row_tile_base + mt) * 128, scratch, 128);
++        noc_async_read_barrier();
++        const auto ids = reinterpret_cast<volatile uint32_t*>(scratch);
++        for (uint32_t kt = 0; kt < CT; ++kt) {
++            auto words = reinterpret_cast<volatile uint32_t*>(tile);
++            for (uint32_t i = 0; i < 512; ++i) words[i] = 0;
++            for (uint32_t r = 0; r < 32; ++r) {
++                if (ids[r] != 0xffffffff) {
++                    const uint64_t src = get_noc_addr(ids[r], x) + kt * 64;
++                    const uint32_t dst = tile + ((r / 16) * 512 + (r % 16) * 16) * 2;
++                    noc_async_read(src, dst, 32);
++                    noc_async_read(src + 32, dst + 512, 32);
++                }
++            }
++            noc_async_read_barrier();
++            noc_async_write_page((mt * V + v) * CT + kt, out, tile);
++            noc_async_write_barrier();
++        }
++    }
++}
+diff --git a/flex_gemm/tenstorrent/resident.py b/flex_gemm/tenstorrent/resident.py
+index 7cd8978..602557f 100644
+--- a/flex_gemm/tenstorrent/resident.py
++++ b/flex_gemm/tenstorrent/resident.py
+@@ -100,7 +100,7 @@ def sparse_conv_device(features, weights, topology, *, algorithm="implicit_gemm"
+     each chunk can access every input row, including neighbors outside it.
+     """
+     import ttnn
+-    choices = {"explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
++    choices = {"explicit_gemm", "tiled_gather_gemm", "implicit_gemm", "masked_implicit_gemm",
+                "implicit_gemm_splitk", "masked_implicit_gemm_splitk"}
+     if algorithm not in choices:
+         raise ValueError(f"unknown Tenstorrent algorithm: {algorithm}")
+@@ -111,6 +111,8 @@ def sparse_conv_device(features, weights, topology, *, algorithm="implicit_gemm"
+         raise ValueError("features, weights and topology must share a device and kernel volume")
+     if not isinstance(row_chunk, int) or isinstance(row_chunk, bool) or row_chunk < 1:
+         raise ValueError("row_chunk must be a positive integer")
++    if algorithm == "tiled_gather_gemm" and row_chunk < len(topology.host_indices) and row_chunk % 32:
++        raise ValueError("tiled gather row_chunk must be a multiple of 32 or cover all rows")
+     masked = algorithm.startswith("masked")
+     if masked and topology.masks is None:
+         raise ValueError("masked algorithms require a masked topology")
+@@ -121,24 +123,29 @@ def sparse_conv_device(features, weights, topology, *, algorithm="implicit_gemm"
+     if cp != weights.ci:
+         x = ttnn.pad(x, [(0, 0), (0, cp - weights.ci)], 0)
+     m = topology.host_indices.shape[0]
+-    if algorithm == "explicit_gemm":
++    if algorithm in ("explicit_gemm", "tiled_gather_gemm"):
+         # Missing neighbors read a real zero row. Per-offset channel padding
+         # matches the shared packed weight matrix, including ragged Ci.
+-        x = ttnn.pad(x, [(0, 1), (0, 0)], 0)
++        if algorithm == "explicit_gemm":
++            x = ttnn.pad(x, [(0, 1), (0, 0)], 0)
+         outputs = []
+         for start in range(0, m, row_chunk):
+             end = min(m, start + row_chunk)
+-            key = (start, end)
+-            ids = topology.gathers.get(key)
+-            if ids is None:
+-                host = topology.host_indices[start:end]
+-                host = torch.where(host < 0, topology.input_points, host)
+-                ids = ttnn.from_torch(host.reshape(1, -1).to(torch.uint32), dtype=ttnn.uint32,
+-                                       layout=ttnn.ROW_MAJOR_LAYOUT, device=weights.device)
+-                topology.gathers[key] = ids
+-            expanded = ttnn.embedding(ids, x, layout=ttnn.ROW_MAJOR_LAYOUT)
+-            expanded = ttnn.reshape(expanded, [end - start, weights.volume * cp])
+-            expanded = ttnn.to_layout(expanded, ttnn.TILE_LAYOUT)
++            if algorithm == "tiled_gather_gemm":
++                from .gather import tiled_gather
++                expanded = tiled_gather(x, topology, start, end, weights.ci)
++            else:
++                key = (start, end)
++                ids = topology.gathers.get(key)
++                if ids is None:
++                    host = topology.host_indices[start:end]
++                    host = torch.where(host < 0, topology.input_points, host)
++                    ids = ttnn.from_torch(host.reshape(1, -1).to(torch.uint32), dtype=ttnn.uint32,
++                                           layout=ttnn.ROW_MAJOR_LAYOUT, device=weights.device)
++                    topology.gathers[key] = ids
++                expanded = ttnn.embedding(ids, x, layout=ttnn.ROW_MAJOR_LAYOUT)
++                expanded = ttnn.reshape(expanded, [end - start, weights.volume * cp])
++                expanded = ttnn.to_layout(expanded, ttnn.TILE_LAYOUT)
+             outputs.append(ttnn.matmul(expanded, weights.weights,
+                                          dtype=ttnn.float32 if fp32_output else ttnn.bfloat16,
+                                          compute_kernel_config=_compute_config(weights.device)))
+diff --git a/tests/tenstorrent/test_resident.py b/tests/tenstorrent/test_resident.py
+index 3597e48..6bc82b0 100644
+--- a/tests/tenstorrent/test_resident.py
++++ b/tests/tenstorrent/test_resident.py
+@@ -6,7 +6,7 @@ from flex_gemm.tenstorrent import (
+ from test_explicit import device
+ 
+ 
+-@pytest.mark.parametrize("algorithm", ["explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
++@pytest.mark.parametrize("algorithm", ["explicit_gemm", "tiled_gather_gemm", "implicit_gemm", "masked_implicit_gemm",
+                                         "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
+ @pytest.mark.parametrize("ci,co", [(32, 64), (17, 35)])
+ def test_resident_chain_and_reuse(device, algorithm, ci, co):
+@@ -21,21 +21,22 @@ def test_resident_chain_and_reuse(device, algorithm, ci, co):
+     top = prepare_sparse_topology(mapping, 37, device=device, masked=algorithm.startswith("masked"))
+     p1 = prepare_sparse_weights(w1, device=device, bias=b)
+     p2 = prepare_sparse_weights(w2, device=device)
++    chunk = 32 if algorithm == "tiled_gather_gemm" else 17
+     # Keep old operands alive and use changed values on the same cached topology.
+     for delta in (0, 0.5):
+         xx = (x.float() + delta).bfloat16()
+         xd = ttnn.from_torch(xx, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+-        y = sparse_conv_device(xd, p1, top, algorithm=algorithm, row_chunk=17)
++        y = sparse_conv_device(xd, p1, top, algorithm=algorithm, row_chunk=chunk)
+         expected = sparse_conv_reference(xx, w1, mapping, b)
+         yh = ttnn.to_torch(y).float()
+         torch.testing.assert_close(yh, expected, atol=0.025, rtol=0.025)
+         # The second convolution consumes the first device tensor directly.
+-        z = sparse_conv_device(y, p2, top, algorithm=algorithm, row_chunk=17)
++        z = sparse_conv_device(y, p2, top, algorithm=algorithm, row_chunk=chunk)
+         expected2 = sparse_conv_reference(yh, w2, mapping)
+         torch.testing.assert_close(ttnn.to_torch(z).float(), expected2, atol=0.025, rtol=0.025)
+ 
+ 
+-@pytest.mark.parametrize("algorithm", ["explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
++@pytest.mark.parametrize("algorithm", ["explicit_gemm", "tiled_gather_gemm", "implicit_gemm", "masked_implicit_gemm",
+                                         "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
+ def test_fp32_output_preserves_small_residual(device, algorithm):
+     import ttnn
+@@ -54,7 +55,8 @@ def test_fp32_output_preserves_small_residual(device, algorithm):
+ 
+ 
+ @pytest.mark.parametrize("fp32_output", [False, True])
+-def test_explicit_many_row_chunks(device, fp32_output):
++@pytest.mark.parametrize("algorithm", ["explicit_gemm", "tiled_gather_gemm"])
++def test_explicit_many_row_chunks(device, fp32_output, algorithm):
+     import ttnn
+     # Seventeen chunks, including a ragged final chunk, reproduced a stalled
+     # SDK concat reader in the complete decoder. Bounded integer inputs keep
+@@ -67,7 +69,7 @@ def test_explicit_many_row_chunks(device, fp32_output):
+     top = prepare_sparse_topology(mapping, len(x), device=device)
+     weights = prepare_sparse_weights(w, device=device)
+     xd = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+-    actual = sparse_conv_device(xd, weights, top, algorithm="explicit_gemm",
++    actual = sparse_conv_device(xd, weights, top, algorithm=algorithm,
+                                 row_chunk=64, fp32_output=fp32_output)
+     expected = sparse_conv_reference(x, w, mapping)
+     if not fp32_output:

@@ -1,0 +1,15 @@
+{
+  "note": "Terminal push lacked credentials. The connected GitHub app published byte-identical trees with server-generated commit metadata. Local branch refs were synchronized after tree verification. Some reports retain the original local commit ID; source hashes remain authoritative.",
+  "commits": [
+    {
+      "local_commit": "b2322ef8436ab9b22431e8daf7205d8970ed4dc8",
+      "published_commit": "5b0b60fd532bc8abf2491a51f339d18527b03659",
+      "identical_tree": "2ce79555937c3ef0e0848c089d8f0ea059ab6dd1"
+    },
+    {
+      "local_commit": "7be9f47a26431b5fc02f88e175b58f0d091d737b",
+      "published_commit": "6d9fd2084472fa7d0ee927d61951322c1c1f7813",
+      "identical_tree": "bb81243efdcd321b759f8872dd5f129714f8e1f7"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "chunk-1024": {
+    "algorithm": "explicit_gemm",
+    "row_chunk": 1024
+  }
+}

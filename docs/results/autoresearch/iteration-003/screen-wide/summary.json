@@ -1,0 +1,311 @@
+{
+  "status": "complete",
+  "screen_only": true,
+  "cases": [
+    "poster-shape-wide-4490"
+  ],
+  "baseline": {
+    "algorithm": "explicit_gemm",
+    "row_chunk": 256
+  },
+  "candidates": {
+    "baseline-control": {
+      "algorithm": "explicit_gemm",
+      "row_chunk": 256
+    },
+    "chunk-512": {
+      "algorithm": "explicit_gemm",
+      "row_chunk": 512
+    },
+    "chunk-1024": {
+      "algorithm": "explicit_gemm",
+      "row_chunk": 1024
+    },
+    "chunk-2048": {
+      "algorithm": "explicit_gemm",
+      "row_chunk": 2048
+    },
+    "chunk-8192": {
+      "algorithm": "explicit_gemm",
+      "row_chunk": 8192
+    },
+    "implicit": {
+      "algorithm": "implicit_gemm"
+    },
+    "masked": {
+      "algorithm": "masked_implicit_gemm"
+    },
+    "masked-split-4": {
+      "algorithm": "masked_implicit_gemm_splitk",
+      "split_k": 4
+    },
+    "gather-2048": {
+      "algorithm": "tiled_gather_gemm",
+      "row_chunk": 2048
+    },
+    "gather-8192": {
+      "algorithm": "tiled_gather_gemm",
+      "row_chunk": 8192
+    }
+  },
+  "rounds": 3,
+  "repeat": 7,
+  "corpus_manifest_sha256": "aef598a1c914f6461e7e6decdaf4d42f6a7596bd7d736fe1e70086a33b5f0559",
+  "ordering_seed": 20261102,
+  "trials": [
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "baseline",
+      "round": 0,
+      "path": "trial-0000.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 58.120125031564385,
+        "min_ms": 58.04482498206198,
+        "max_ms": 58.23448597220704,
+        "mad_ms": 0.033520045690238476,
+        "samples_ms": [
+          58.086604985874146,
+          58.19043499650434,
+          58.04482498206198,
+          58.120125031564385,
+          58.138006017543375,
+          58.10914497124031,
+          58.23448597220704
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "chunk-1024",
+      "round": 0,
+      "path": "trial-0001.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 38.401124998927116,
+        "min_ms": 38.20194397121668,
+        "max_ms": 38.81905705202371,
+        "mad_ms": 0.05761999636888504,
+        "samples_ms": [
+          38.34350500255823,
+          38.419124961365014,
+          38.81905705202371,
+          38.401124998927116,
+          38.41751499567181,
+          38.20194397121668,
+          38.267765019554645
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "chunk-2048",
+      "round": 0,
+      "path": "trial-0002.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 42.072040028870106,
+        "min_ms": 41.84222797630355,
+        "max_ms": 42.39218996372074,
+        "mad_ms": 0.1504510291852057,
+        "samples_ms": [
+          41.91507899668068,
+          41.84222797630355,
+          42.072040028870106,
+          42.21396998036653,
+          42.22066001966596,
+          41.9215889996849,
+          42.39218996372074
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "chunk-8192",
+      "round": 0,
+      "path": "trial-0003.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 43.21186395827681,
+        "min_ms": 43.15866297110915,
+        "max_ms": 43.46827499102801,
+        "mad_ms": 0.05308096297085285,
+        "samples_ms": [
+          43.252233997918665,
+          43.21186395827681,
+          43.175472994334996,
+          43.158782995305955,
+          43.15866297110915,
+          43.29643398523331,
+          43.46827499102801
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "baseline-control",
+      "round": 0,
+      "path": "trial-0004.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 58.08870302280411,
+        "min_ms": 58.0310930381529,
+        "max_ms": 58.27464401954785,
+        "mad_ms": 0.057609984651207924,
+        "samples_ms": [
+          58.0310930381529,
+          58.056902955286205,
+          58.052733016666025,
+          58.08870302280411,
+          58.14746202668175,
+          58.22115304181352,
+          58.27464401954785
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "gather-2048",
+      "round": 0,
+      "path": "trial-0005.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 42.38863004138693,
+        "min_ms": 42.198869050480425,
+        "max_ms": 42.75290097575635,
+        "mad_ms": 0.18427107715979218,
+        "samples_ms": [
+          42.198869050480425,
+          42.20435896422714,
+          42.43072000099346,
+          42.263909010216594,
+          42.613191006239504,
+          42.75290097575635,
+          42.38863004138693
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "masked-split-4",
+      "round": 0,
+      "path": "trial-0006.json",
+      "runner_status": "failed",
+      "status": "numerical_or_integrity_failure",
+      "timing": {
+        "median_ms": 1517.0563429710455,
+        "min_ms": 1515.0474620168097,
+        "max_ms": 1521.568676980678,
+        "mad_ms": 0.705912068951875,
+        "samples_ms": [
+          1517.0563429710455,
+          1517.7622550399974,
+          1515.0474620168097,
+          1521.568676980678,
+          1516.6125950054266,
+          1516.2458620034158,
+          1517.1386140282266
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "implicit",
+      "round": 0,
+      "path": "trial-0007.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 1419.6497150114737,
+        "min_ms": 1418.1897649541497,
+        "max_ms": 1419.8845669743605,
+        "mad_ms": 0.2348519628867507,
+        "samples_ms": [
+          1418.1897649541497,
+          1418.253443960566,
+          1419.6563179721124,
+          1419.8732979712076,
+          1419.8845669743605,
+          1419.6497150114737,
+          1419.3822920206003
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "masked",
+      "round": 0,
+      "path": "trial-0008.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 1505.0154160126112,
+        "min_ms": 1503.7611830048263,
+        "max_ms": 1507.0122180040926,
+        "mad_ms": 1.2542330077849329,
+        "samples_ms": [
+          1505.0154160126112,
+          1504.375382035505,
+          1506.9778509787284,
+          1506.3578280387446,
+          1504.9724809941836,
+          1507.0122180040926,
+          1503.7611830048263
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "chunk-512",
+      "round": 0,
+      "path": "trial-0009.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 43.45360101433471,
+        "min_ms": 43.18729997612536,
+        "max_ms": 43.646421981975436,
+        "mad_ms": 0.1056100009009242,
+        "samples_ms": [
+          43.305411003530025,
+          43.18729997612536,
+          43.45360101433471,
+          43.353590997867286,
+          43.55584201402962,
+          43.55921101523563,
+          43.646421981975436
+        ]
+      }
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "candidate": "gather-8192",
+      "round": 0,
+      "path": "trial-0010.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 42.977289005648345,
+        "min_ms": 42.79543901793659,
+        "max_ms": 43.30911097349599,
+        "mad_ms": 0.18184998771175742,
+        "samples_ms": [
+          42.85659902961925,
+          42.79543901793659,
+          42.86943899933249,
+          42.977289005648345,
+          43.30911097349599,
+          43.25901000993326,
+          43.257409997750074
+        ]
+      }
+    }
+  ],
+  "comparisons": []
+}

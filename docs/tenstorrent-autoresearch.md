@@ -246,6 +246,48 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   candidate has been promoted. Next: the chunk/gather screen, paired repeats,
   full correctness coverage and per-candidate memory capture.
 
+### 003 — chunk screening and discarded direct tiled gather
+
+- Hypothesis: the small-case wait profile and large-case traffic model suggest
+  reducing data-supply overhead. Test larger explicit row chunks and a new
+  gather that writes tiles directly, then calls the existing TTNN matmul.
+- The tiled-gather implementation passed five Watcher-enabled tests covering
+  missing neighbors, ragged channels, changing-feature reuse, device chaining,
+  FP32 residual preservation and 17 chunks with cross-chunk neighbors. The
+  candidate patch and tests are archived in `iteration-003/tiled-gather.patch`.
+- Full wide-layer screening, seven repetitions per configuration:
+
+| Algorithm / row chunk | Median ms | Correctness |
+| --- | ---: | --- |
+| Explicit / 256 | 58.120 | Pass |
+| Unchanged baseline control / 256 | 58.089 | Pass |
+| Explicit / 512 | 43.454 | Pass |
+| Explicit / 1024 | 38.401 | Pass |
+| Explicit / 2048 | 42.072 | Pass |
+| Explicit / 8192 | 43.212 | Pass |
+| Direct tiled gather / 1024 | 38.404 | Pass |
+| Direct tiled gather / 2048 | 42.389 | Pass |
+| Direct tiled gather / 8192 | 42.977 | Pass |
+| Implicit | 1419.650 | Pass |
+| Masked implicit | 1505.015 | Pass |
+| Masked split-K=4 | 1517.056 | Fail: 1/2 elements in feature variants 0/1 |
+
+- Three independent A/B/A rounds, eleven repetitions per trial, confirm
+  explicit row_chunk=1024 against 256. Candidate medians are 38.412, 38.515
+  and 38.454 ms; bracketed speedups are 1.5134×, 1.5095× and 1.5106×.
+  Baseline drift stays below 0.135%; the maximum noise proxy is 1.978%.
+  All outputs, feature-reuse checks and integrity checks pass for this case.
+- Decision: retain row_chunk=1024 as a configuration lead. Discard direct tiled
+  gather for this workload: it does not improve on the best ordinary gather.
+  Its active API/kernel changes are removed; the complete patch and raw evidence
+  remain reproducible. The `tiled_gather_v1` accounting model describes that
+  archived experiment, not a currently exposed device algorithm.
+- Limits: the regression fixture, all synthetic/real cases and workspace bound
+  have not yet been revalidated for row_chunk=1024. The known original numerical
+  failure remains unresolved. The default is unchanged and no global candidate
+  or state-of-the-art claim is promoted. Device workers exited normally and the
+  shared board was released by 07:10 UTC.
+
 The additional CPU capture tools are:
 
 ```bash
