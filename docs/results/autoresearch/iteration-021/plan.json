@@ -1,0 +1,24 @@
+{
+  "iteration": 21,
+  "created_utc": "2026-11-02T16:28:18Z",
+  "baseline_root": "/home/user/GitHub/flexgemm-implicit-evaluator",
+  "baseline_commit": "7bda9c49de31135493ab9ef84c157fe668d3f181",
+  "hypothesis": "Omit unused BF16 native product tables and conversion/write traffic; preserve all four FP32 products, arithmetic order, HiFi3 and original conservative tap planning.",
+  "contract": "36 unchanged fixtures; existing BF16-rounded CPU goldens, numerical tolerances and 1GiB workspace bound unchanged",
+  "validation": "18 Watcher tests including bitwise FP32-only/table-output product comparison; 13 CPU tests; full36 memory replay; 3x11-repeat paired A/B/A on narrow, largest, wide feasible and wide fallback",
+  "paired_cases": [
+    "n388659-128x128-k3x3x3",
+    "n2389000-64x64-k3x3x3",
+    "n388659-128x512-k3x3x3",
+    "n4490-1024x4096-k3x3x3"
+  ],
+  "work_model": "New output-mode label and zero unused BF16 write bytes; all other modeled quantities and old-policy results remain identical. Requested payloads are not bus measurements.",
+  "source_patch_sha256": "a2fc3d6fd874082e487ff1add99764bf80cbe502fc3dabe1dae6ca4c387f3222",
+  "additional_application_validation": {
+    "declared_utc": "2026-11-02T16:36:20Z",
+    "purpose": "Validate new kernel output mode through unchanged iteration020 stage-cache adapter; compare complete saved outputs/guides to archived iteration020 candidate.",
+    "baseline": "/home/user/tt-scratchpad/flexgemm-autoresearch/campaign-020/candidate-b",
+    "timing_scope": "unpaired diagnostic only; no new decoder speedup claim",
+    "warm_repeats": 1
+  }
+}

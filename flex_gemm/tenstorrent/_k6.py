@@ -41,11 +41,13 @@ class K6Layer:
         self.tg, self.nch = self.plan(0)
         self._dev: Optional[Tuple[Any, Any]] = None
 
-    def cb_bytes(self, tg: int, nch: int, nbmax: int, has_res: bool = True, write_y: bool = True) -> int:
+    def cb_bytes(self, tg: int, nch: int, nbmax: int, has_res: bool = True, write_y: bool = True,
+                 write_table: bool = True) -> int:
         """Circular-buffer bytes per core of the layer (the descriptor in :meth:`__call__`)."""
         ci, co, K = self.cin_t, self.cout_t, self.K
         b = 2 * tg * ci * TB16 + tg * ci * co * TB32 + co * TB32 + 4 * 32 + tg * ci * TB16 + 2 * K * 128 + 4 * 32 \
-            + co * 64 + ci * TB16 + 2 * co * TB16
+            + ci * TB16
+        b += co * 64 + 2 * co * TB16 if write_table else 0
         b += 2 * co * TB32 if has_res else 0
         b += nbmax * co * TB32 if nch > 1 else 0
         b += 2 * co * TB32 if write_y else 0
@@ -70,13 +72,17 @@ class K6Layer:
         return self._dev
 
     def __call__(self, table: Any, index: Any, identity: Any = None, write_y: bool = False, dead_skip: bool = True,
-                 table_memory: str = "dram"):
+                 table_memory: str = "dram", write_table: bool = True):
         """``table`` bf16 ROW_MAJOR ``[1, 1, V + 1, cin_pad]`` (row V zero), ``index`` uint32 ROW_MAJOR
         ``[rows / 32, K * 32]`` (C13 tile order), ``identity`` fp32 TILE ``[1, 1, rows, cout_pad]`` or None ->
         ``(y, table_out)``: y the fp32 TILE output (``write_y``; else None) and the next bf16 ROW_MAJOR table
         ``[1, 1, rows + 1, cout_pad]`` (zero last row). ``dead_skip``: only live blocks' rows are written (else
-        all-sentinel blocks are computed as the stock layer does: every row written, deterministic)."""
+        all-sentinel blocks are computed as the stock layer does: every row written, deterministic).
+        ``write_table=False`` omits the BF16 table and requires ``write_y=True``.
+        Tap planning deliberately retains the original table-output CB bound."""
         import ttnn
+        if not write_table and not write_y:
+            raise ValueError("K6 requires at least one output")
 
         spec = self.spec
         dev = table.device()
@@ -90,8 +96,10 @@ class K6Layer:
         has_res = identity is not None
         w, b = self._upload(dev)
         tmc = ttnn.L1_MEMORY_CONFIG if table_memory == "l1" else ttnn.DRAM_MEMORY_CONFIG
-        out = ttnn.allocate_tensor_on_device(ttnn.Shape([1, 1, rows + 1, spec.cout_pad]), ttnn.bfloat16,
-                                             ttnn.ROW_MAJOR_LAYOUT, dev, tmc)
+        out = None
+        if write_table:
+            out = ttnn.allocate_tensor_on_device(ttnn.Shape([1, 1, rows + 1, spec.cout_pad]), ttnn.bfloat16,
+                                                 ttnn.ROW_MAJOR_LAYOUT, dev, tmc)
         y = None
         if write_y:
             y = ttnn.allocate_tensor_on_device(ttnn.Shape([1, 1, rows, spec.cout_pad]), ttnn.float32,
@@ -125,9 +133,10 @@ class K6Layer:
                cb(5, tg * cin_t, ttnn.bfloat16, TB16),                   # tilized taps
                cb(7, 2, ttnn.float32, K * 128),                          # reader's index rows (double buffer)
                cb(8, 4, ttnn.float32, 32),                               # meta (writer)
-               cb(9, 1, ttnn.bfloat16, cout_t * 64),                     # the zero row (core 0)
-               cb(10, 1, ttnn.bfloat16, cin_t * TB16),                   # reader's zero tap region
-               cb(16, 2 * cout_t, ttnn.bfloat16, TB16)]                  # untilized output rows
+               cb(10, 1, ttnn.bfloat16, cin_t * TB16)]                   # reader's zero tap region
+        if write_table:
+            cbs += [cb(9, 1, ttnn.bfloat16, cout_t * 64),                # the zero output row
+                    cb(16, 2 * cout_t, ttnn.bfloat16, TB16)]             # untilized output rows
         if has_res:
             cbs.append(cb(3, 2 * cout_t, ttnn.float32, TB32))
         if nch > 1:
@@ -158,17 +167,18 @@ class K6Layer:
 
         ident = identity if has_res else w
         yt = y if write_y else out
+        ot = out if write_table else y  # unused accessor when the table writer is compiled out
         rd_ct = [N_RT_READER, K, cin_t, cout_t, nch, tg, nblk, nc, sent, int(has_res), int(bool(dead_skip)),
                  int(mcast), int(g.x) - 1, int(split)] + acc(table) + acc(index) + acc(w) \
             + acc(b) + acc(ident)
         wr_ct = [N_RT, cout_t, nblk, nc, rows, int(bool(write_y)), int(split), K, cin_t, nch, tg, sent,
-                 int(bool(dead_skip))] + acc(out) + acc(yt) + acc(table) + acc(index)
+                 int(bool(dead_skip)), int(bool(write_table))] + acc(ot) + acc(yt) + acc(table) + acc(index)
         cp_ct = [N_RT, K, cin_t, cout_t, nch, tg, nblk, nc, int(has_res), int(bool(write_y)), int(bool(spec.relu)),
-                 int(split)]
+                 int(split), int(bool(write_table))]
         ks = [kd("k6_reader.cpp", rd_ct, rd, [table.buffer_address(), index.buffer_address(), w.buffer_address(),
                                               b.buffer_address(), ident.buffer_address()],
                  ttnn.ReaderConfigDescriptor()),
-              kd("k6_writer.cpp", wr_ct, wr, [out.buffer_address(), yt.buffer_address(), table.buffer_address(),
+              kd("k6_writer.cpp", wr_ct, wr, [ot.buffer_address(), yt.buffer_address(), table.buffer_address(),
                                               index.buffer_address()],
                  ttnn.WriterConfigDescriptor()),
               kd("k6_compute.cpp", cp_ct, cp, [], ccfg)]
@@ -177,7 +187,8 @@ class K6Layer:
             ios.append(identity)
         if write_y:
             ios.append(y)
-        ios.append(out)
+        if write_table:
+            ios.append(out)
         sems = [ttnn.SemaphoreDescriptor(id=0, core_ranges=crs, initial_value=0),
                 ttnn.SemaphoreDescriptor(id=1, core_ranges=crs, initial_value=0)]
         ttnn.generic_op(ios, ttnn.ProgramDescriptor(kernels=ks, semaphores=sems, cbs=cbs))

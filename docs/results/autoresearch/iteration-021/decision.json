@@ -1,0 +1,99 @@
+{
+  "iteration": 21,
+  "decision": "retain FP32-only product output for opt-in digit_implicit_gemm; default unchanged",
+  "baseline_commit": "7bda9c49de31135493ab9ef84c157fe668d3f181",
+  "fixed_contract_unchanged": true,
+  "full_cases_passed": 36,
+  "implicit_cases": 24,
+  "fallback_cases": 12,
+  "watcher_tests_passed": 18,
+  "cpu_tests_passed": 13,
+  "bitwise_product_comparisons": 32,
+  "paired_results": {
+    "narrow": {
+      "fp32_only_digit_implicit": {
+        "cases": {
+          "n388659-128x128-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 1.0264511546887456,
+            "minimum_speedup": 1.026340876847522,
+            "maximum_noise_fraction": 0.0023508380367941784,
+            "consistent_screening_win": true
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 1.0264511546887456,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    },
+    "largest": {
+      "fp32_only_digit_implicit": {
+        "cases": {
+          "n2389000-64x64-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 1.0403334912701334,
+            "minimum_speedup": 1.0286884164737702,
+            "maximum_noise_fraction": 0.057874615021095185,
+            "consistent_screening_win": false
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 1.0403334912701334,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    },
+    "wide-feasible": {
+      "fp32_only_digit_implicit": {
+        "cases": {
+          "n388659-128x512-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 1.028248421679595,
+            "minimum_speedup": 1.0279438039324083,
+            "maximum_noise_fraction": 0.0019296098484225899,
+            "consistent_screening_win": true
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 1.028248421679595,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    },
+    "fallback": {
+      "fp32_only_digit_implicit": {
+        "cases": {
+          "n4490-1024x4096-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 1.0001590517165668,
+            "minimum_speedup": 0.9923543333340954,
+            "maximum_noise_fraction": 0.013651267978433279,
+            "consistent_screening_win": false
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 1.0001590517165668,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    }
+  },
+  "maximum_workspace_bytes": 726282240,
+  "memory_replays": 36,
+  "normal_device_worker_exits": 74,
+  "timeouts": 0,
+  "device_recovery_required": false,
+  "limitations": [
+    "one update to an opt-in kernel; defaults unchanged",
+    "full-decoder remains outside original FP32 parity gates; one poster only",
+    "no SOTA claim"
+  ],
+  "confirmed_paired_case_groups": [
+    "narrow",
+    "wide-feasible"
+  ],
+  "application_matched_output_and_guide_records": 12,
+  "application_bitwise_equal_to_iteration020": true,
+  "original_application_cpu_gates": "unchanged numerical_failure"
+}

@@ -217,3 +217,31 @@ def test_digit_implicit_volume_fallback_is_explicit(device):
     a = sparse_conv_device(resident, weights, topology, algorithm='digit_implicit_gemm', row_chunk=32)
     b = sparse_conv_device(resident, weights, topology, algorithm='digit_explicit_gemm', row_chunk=32)
     torch.testing.assert_close(ttnn.to_torch(a), ttnn.to_torch(b), atol=0, rtol=0)
+
+
+@pytest.mark.parametrize('rows,ci,co,volume', [(65,17,35,3),(257,128,128,27),(8193,64,64,27)])
+def test_digit_implicit_fp32_only_products_match_table_path(device,rows,ci,co,volume):
+    import ttnn
+    from flex_gemm.tenstorrent.digits import _feature_digits
+    g=torch.Generator().manual_seed(211)
+    inputs=rows+19
+    mapping=torch.randint(-1,inputs,(rows,volume),generator=g)
+    mapping[:32]=-1;mapping[-1]=inputs-1
+    weights=prepare_sparse_digit_weights(torch.randn(co,volume,ci,generator=g).bfloat16(),device=device)
+    topology=prepare_sparse_topology(mapping,inputs,device=device)
+    plan=prepare_sparse_digit_implicit(weights,topology,row_chunk=8192)
+    assert plan.info['path']=='digit_implicit_gemm' and not plan.info['unused_bf16_output_included']
+    for delta in (0.,.03125):
+        values=(torch.randn(inputs,ci,generator=g)+delta).bfloat16()
+        resident=ttnn.from_torch(values,device=device,dtype=ttnn.bfloat16,layout=ttnn.TILE_LAYOUT)
+        high,low,scale=_feature_digits(resident,(ci+31)//32*32)
+        for _,_,index in plan.chunks:
+            for table in (high,low):
+                for layer in weights.implicit_layers:
+                    old,unused=layer(table,index,write_y=True,dead_skip=False,write_table=True)
+                    actual,absent=layer(table,index,write_y=True,dead_skip=False,write_table=False)
+                    assert absent is None and unused is not None
+                    torch.testing.assert_close(ttnn.to_torch(actual).view(torch.int32),
+                                               ttnn.to_torch(old).view(torch.int32),atol=0,rtol=0)
+                    del old,unused,actual
+        torch.testing.assert_close(ttnn.to_torch(resident),values,atol=0,rtol=0)

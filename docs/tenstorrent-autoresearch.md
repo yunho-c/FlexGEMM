@@ -807,6 +807,30 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   starting with unused BF16 product outputs, while broader application coverage
   remains pending. Evidence, source and verifier are in iteration-020.
 
+### 021 — remove unused BF16 outputs from native digit products
+
+- K6 product calls write only FP32 output; omit the unused BF16 table, sentinel,
+  conversion and writes. Keep four-product arithmetic, HiFi3, tap planning and
+  public defaults unchanged. All 36 fixtures retain their 24/12 implicit/fallback
+  dispatch and pass the fixed correctness, residency, integrity and workspace gates.
+- Eighteen Watcher tests pass, including 32 bitwise product comparisons to the
+  table-producing path; 13 CPU evaluator tests pass. Thirty-six allocator replays
+  retain the maximum 726,282,240-byte workspace bound.
+- Three A/B/A rounds of eleven repetitions cover narrow, largest, wide-feasible
+  and fallback workloads. Narrow gains 2.63–2.65% with maximum noise 0.2351%;
+  wide-feasible gains 2.79–2.83% with maximum noise 0.1930%. Largest remains
+  inconclusive at 5.7875% noise; fallback is unchanged within noise. All rounds
+  and exact medians are retained in iteration-021.
+- The output-mode work model removes only the unused BF16 write count; all other
+  fields match the prior model. The largest removed payload is 1,223,255,040 bytes,
+  not a measured bus-traffic saving.
+- Complete decoder outputs/guides through the unchanged iteration020 adapter
+  match all 12 saved records bitwise. Its original FP32 CPU parity failure remains.
+  No paired application speedup is claimed for this follow-up.
+- All 74 device workers finish normally without timeout/reset. Retain the opt-in
+  output-path change; next profile wait regions and dispatch gaps before a larger
+  four-product dataflow rewrite. SOTA remains unproven.
+
 The additional CPU capture tools are:
 
 ```bash

@@ -207,9 +207,11 @@ def _digit_implicit_accounting(mapping, ci, co, row_chunk, cores, policy):
             work[local % cores] += 4 * int(active[start // 32 + local].sum()) * ct * nt
         # Both data-movement RISCs read a full index page for every tap chunk.
         index_bytes += 4 * 2 * blocks * volume * 128 * plan["tap_chunks"]
-        unused_output += 4 * (blocks * 32 + 1) * nt * 32 * 2
+        if policy.get("unused_bf16_output_included", True):
+            unused_output += 4 * (blocks * 32 + 1) * nt * 32 * 2
     senders = policy["grid"][1] if policy["multicast"] else cores
-    return {"kind": "modeled", "model": "digit_implicit_k6_v1",
+    model = "digit_implicit_k6_v1" if policy.get("unused_bf16_output_included", True) else "digit_implicit_k6_fp32_output_v1"
+    return {"kind": "modeled", "model": model,
         "valid_interactions": edges, "useful_flops": useful, "issued_flops": issued,
         "issued_scope": "four_custom_kernel_products_with_empty_tap_skips",
         "work_efficiency": useful / issued if issued else None, "dummy_tile_products": 0,

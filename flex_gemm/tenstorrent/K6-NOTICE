@@ -2,7 +2,8 @@ K6 source derives from changh95/bevfusion-p150, Apache-2.0.
 https://huggingface.co/changh95/bevfusion-p150/tree/300095a42e61075a3d5c9916620344c1067200b8
 
 The four kernel files retain original SPDX notices. Local kernel changes:
-copy_init renamed to copy_tile_init for the pinned TT-Metal SDK. The Python
+copy_init renamed to copy_tile_init for the pinned TT-Metal SDK; an optional
+FP32-only output mode omits the unused BF16 table, conversion and writes. The Python
 layer is trimmed to the required program builder, fixed to HiFi3 and explicit
 prepared weights, with environment-controlled debug paths removed. FlexGEMM's
 wrapper guards physical multicast coordinates and CB feasibility, runs four

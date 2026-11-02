@@ -8,7 +8,7 @@
 // into CB_GATH2 (k6_gather.hpp); a block's outputs are written one block later, after the next block's gathers, so
 // the compute never waits for this RISC's writes.
 // CT args: [0] per-core RT-arg count (P3) [1] COUT_T [2] NBLK [3] NC [4] ROWS [5] WRITE_Y [6] SPLIT [7] K [8] CIN_T
-// [9] NCH [10] TG [11] SENT [12] DEAD_SKIP, then the TensorAccessorArgs of the output table, y, the input table and
+// [9] NCH [10] TG [11] SENT [12] DEAD_SKIP [13] WRITE_TABLE, then the TensorAccessorArgs of the output table, y, the input table and
 // the index. Common RT args: [table_out, y, table_in, index]. Per-core RT args: [me].
 #include <cstdint>
 
@@ -27,7 +27,8 @@ constexpr uint32_t NCH = get_compile_time_arg_val(9);
 constexpr uint32_t TG = get_compile_time_arg_val(10);
 constexpr uint32_t SENT = get_compile_time_arg_val(11);
 constexpr uint32_t DEAD_SKIP = get_compile_time_arg_val(12);
-constexpr auto o_args = TensorAccessorArgs<13>();
+constexpr uint32_t WRITE_TABLE = get_compile_time_arg_val(13);
+constexpr auto o_args = TensorAccessorArgs<14>();
 constexpr auto y_args = TensorAccessorArgs<o_args.next_compile_time_args_offset()>();
 constexpr auto t_args = TensorAccessorArgs<y_args.next_compile_time_args_offset()>();
 constexpr auto i_args = TensorAccessorArgs<t_args.next_compile_time_args_offset()>();
@@ -48,21 +49,23 @@ inline void write_block(uint32_t b, const OA& out, const YA& yy) {
             cb_pop_front(CB_Y, 1);
         }
     }
-    cb_wait_front(CB_OUT, COUT_T);
-    uint32_t rp = get_read_ptr(CB_OUT);
-    for (uint32_t v = 0; v < 32; ++v) {
-        noc_async_write(rp, out.get_noc_addr(b * 32 + v), ROWB);
-        rp += ROWB;
+    if constexpr (WRITE_TABLE) {
+        cb_wait_front(CB_OUT, COUT_T);
+        uint32_t rp = get_read_ptr(CB_OUT);
+        for (uint32_t v = 0; v < 32; ++v) {
+            noc_async_write(rp, out.get_noc_addr(b * 32 + v), ROWB);
+            rp += ROWB;
+        }
+        noc_async_writes_flushed();
+        cb_pop_front(CB_OUT, COUT_T);
     }
-    noc_async_writes_flushed();
-    cb_pop_front(CB_OUT, COUT_T);
 }
 
 void kernel_main() {
     const uint32_t me = get_arg_val<uint32_t>(0);
     const auto out = TensorAccessor(o_args, get_common_arg_val<uint32_t>(0), ROWB);
     const auto yy = TensorAccessor(y_args, get_common_arg_val<uint32_t>(1), TB32);
-    if (me == 0) {
+    if (WRITE_TABLE && me == 0) {
         cb_reserve_back(CB_ZERO, 1);
         const uint32_t zp = get_write_ptr(CB_ZERO);
         volatile tt_l1_ptr uint32_t* z = reinterpret_cast<volatile tt_l1_ptr uint32_t*>(zp);

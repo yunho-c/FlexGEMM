@@ -202,7 +202,9 @@ cross tile boundaries, and FP32 cancellation across reduction tiles.
 
 `digit_implicit_gemm` uses the validated integer-digit decomposition with four
 fused gather/matmul calls on Wormhole. It avoids materializing the two expanded
-activation matrices in DRAM. The existing explicit digit path remains available
+activation matrices in DRAM. Each call writes only its FP32 product; unused BF16
+product tables, conversions and writes are omitted. Reconstruction, final output
+dtype and conservative tap planning remain unchanged. The existing explicit digit path remains available
 as `digit_explicit_gemm`; neither changes the default algorithm.
 
 ```python

@@ -1,0 +1,382 @@
+diff --git a/benchmarks/tenstorrent/common.py b/benchmarks/tenstorrent/common.py
+index 29d80fe..32144a4 100644
+--- a/benchmarks/tenstorrent/common.py
++++ b/benchmarks/tenstorrent/common.py
+@@ -207,9 +207,11 @@ def _digit_implicit_accounting(mapping, ci, co, row_chunk, cores, policy):
+             work[local % cores] += 4 * int(active[start // 32 + local].sum()) * ct * nt
+         # Both data-movement RISCs read a full index page for every tap chunk.
+         index_bytes += 4 * 2 * blocks * volume * 128 * plan["tap_chunks"]
+-        unused_output += 4 * (blocks * 32 + 1) * nt * 32 * 2
++        if policy.get("unused_bf16_output_included", True):
++            unused_output += 4 * (blocks * 32 + 1) * nt * 32 * 2
+     senders = policy["grid"][1] if policy["multicast"] else cores
+-    return {"kind": "modeled", "model": "digit_implicit_k6_v1",
++    model = "digit_implicit_k6_v1" if policy.get("unused_bf16_output_included", True) else "digit_implicit_k6_fp32_output_v1"
++    return {"kind": "modeled", "model": model,
+         "valid_interactions": edges, "useful_flops": useful, "issued_flops": issued,
+         "issued_scope": "four_custom_kernel_products_with_empty_tap_skips",
+         "work_efficiency": useful / issued if issued else None, "dummy_tile_products": 0,
+diff --git a/flex_gemm/tenstorrent/K6-NOTICE b/flex_gemm/tenstorrent/K6-NOTICE
+index 5176ade..cfeb878 100644
+--- a/flex_gemm/tenstorrent/K6-NOTICE
++++ b/flex_gemm/tenstorrent/K6-NOTICE
+@@ -2,7 +2,8 @@ K6 source derives from changh95/bevfusion-p150, Apache-2.0.
+ https://huggingface.co/changh95/bevfusion-p150/tree/300095a42e61075a3d5c9916620344c1067200b8
+ 
+ The four kernel files retain original SPDX notices. Local kernel changes:
+-copy_init renamed to copy_tile_init for the pinned TT-Metal SDK. The Python
++copy_init renamed to copy_tile_init for the pinned TT-Metal SDK; an optional
++FP32-only output mode omits the unused BF16 table, conversion and writes. The Python
+ layer is trimmed to the required program builder, fixed to HiFi3 and explicit
+ prepared weights, with environment-controlled debug paths removed. FlexGEMM's
+ wrapper guards physical multicast coordinates and CB feasibility, runs four
+diff --git a/flex_gemm/tenstorrent/_k6.py b/flex_gemm/tenstorrent/_k6.py
+index 18596de..1bc33a6 100644
+--- a/flex_gemm/tenstorrent/_k6.py
++++ b/flex_gemm/tenstorrent/_k6.py
+@@ -41,11 +41,13 @@ class K6Layer:
+         self.tg, self.nch = self.plan(0)
+         self._dev: Optional[Tuple[Any, Any]] = None
+ 
+-    def cb_bytes(self, tg: int, nch: int, nbmax: int, has_res: bool = True, write_y: bool = True) -> int:
++    def cb_bytes(self, tg: int, nch: int, nbmax: int, has_res: bool = True, write_y: bool = True,
++                 write_table: bool = True) -> int:
+         """Circular-buffer bytes per core of the layer (the descriptor in :meth:`__call__`)."""
+         ci, co, K = self.cin_t, self.cout_t, self.K
+         b = 2 * tg * ci * TB16 + tg * ci * co * TB32 + co * TB32 + 4 * 32 + tg * ci * TB16 + 2 * K * 128 + 4 * 32 \
+-            + co * 64 + ci * TB16 + 2 * co * TB16
++            + ci * TB16
++        b += co * 64 + 2 * co * TB16 if write_table else 0
+         b += 2 * co * TB32 if has_res else 0
+         b += nbmax * co * TB32 if nch > 1 else 0
+         b += 2 * co * TB32 if write_y else 0
+@@ -70,13 +72,17 @@ class K6Layer:
+         return self._dev
+ 
+     def __call__(self, table: Any, index: Any, identity: Any = None, write_y: bool = False, dead_skip: bool = True,
+-                 table_memory: str = "dram"):
++                 table_memory: str = "dram", write_table: bool = True):
+         """``table`` bf16 ROW_MAJOR ``[1, 1, V + 1, cin_pad]`` (row V zero), ``index`` uint32 ROW_MAJOR
+         ``[rows / 32, K * 32]`` (C13 tile order), ``identity`` fp32 TILE ``[1, 1, rows, cout_pad]`` or None ->
+         ``(y, table_out)``: y the fp32 TILE output (``write_y``; else None) and the next bf16 ROW_MAJOR table
+         ``[1, 1, rows + 1, cout_pad]`` (zero last row). ``dead_skip``: only live blocks' rows are written (else
+-        all-sentinel blocks are computed as the stock layer does: every row written, deterministic)."""
++        all-sentinel blocks are computed as the stock layer does: every row written, deterministic).
++        ``write_table=False`` omits the BF16 table and requires ``write_y=True``.
++        Tap planning deliberately retains the original table-output CB bound."""
+         import ttnn
++        if not write_table and not write_y:
++            raise ValueError("K6 requires at least one output")
+ 
+         spec = self.spec
+         dev = table.device()
+@@ -90,8 +96,10 @@ class K6Layer:
+         has_res = identity is not None
+         w, b = self._upload(dev)
+         tmc = ttnn.L1_MEMORY_CONFIG if table_memory == "l1" else ttnn.DRAM_MEMORY_CONFIG
+-        out = ttnn.allocate_tensor_on_device(ttnn.Shape([1, 1, rows + 1, spec.cout_pad]), ttnn.bfloat16,
+-                                             ttnn.ROW_MAJOR_LAYOUT, dev, tmc)
++        out = None
++        if write_table:
++            out = ttnn.allocate_tensor_on_device(ttnn.Shape([1, 1, rows + 1, spec.cout_pad]), ttnn.bfloat16,
++                                                 ttnn.ROW_MAJOR_LAYOUT, dev, tmc)
+         y = None
+         if write_y:
+             y = ttnn.allocate_tensor_on_device(ttnn.Shape([1, 1, rows, spec.cout_pad]), ttnn.float32,
+@@ -125,9 +133,10 @@ class K6Layer:
+                cb(5, tg * cin_t, ttnn.bfloat16, TB16),                   # tilized taps
+                cb(7, 2, ttnn.float32, K * 128),                          # reader's index rows (double buffer)
+                cb(8, 4, ttnn.float32, 32),                               # meta (writer)
+-               cb(9, 1, ttnn.bfloat16, cout_t * 64),                     # the zero row (core 0)
+-               cb(10, 1, ttnn.bfloat16, cin_t * TB16),                   # reader's zero tap region
+-               cb(16, 2 * cout_t, ttnn.bfloat16, TB16)]                  # untilized output rows
++               cb(10, 1, ttnn.bfloat16, cin_t * TB16)]                   # reader's zero tap region
++        if write_table:
++            cbs += [cb(9, 1, ttnn.bfloat16, cout_t * 64),                # the zero output row
++                    cb(16, 2 * cout_t, ttnn.bfloat16, TB16)]             # untilized output rows
+         if has_res:
+             cbs.append(cb(3, 2 * cout_t, ttnn.float32, TB32))
+         if nch > 1:
+@@ -158,17 +167,18 @@ class K6Layer:
+ 
+         ident = identity if has_res else w
+         yt = y if write_y else out
++        ot = out if write_table else y  # unused accessor when the table writer is compiled out
+         rd_ct = [N_RT_READER, K, cin_t, cout_t, nch, tg, nblk, nc, sent, int(has_res), int(bool(dead_skip)),
+                  int(mcast), int(g.x) - 1, int(split)] + acc(table) + acc(index) + acc(w) \
+             + acc(b) + acc(ident)
+         wr_ct = [N_RT, cout_t, nblk, nc, rows, int(bool(write_y)), int(split), K, cin_t, nch, tg, sent,
+-                 int(bool(dead_skip))] + acc(out) + acc(yt) + acc(table) + acc(index)
++                 int(bool(dead_skip)), int(bool(write_table))] + acc(ot) + acc(yt) + acc(table) + acc(index)
+         cp_ct = [N_RT, K, cin_t, cout_t, nch, tg, nblk, nc, int(has_res), int(bool(write_y)), int(bool(spec.relu)),
+-                 int(split)]
++                 int(split), int(bool(write_table))]
+         ks = [kd("k6_reader.cpp", rd_ct, rd, [table.buffer_address(), index.buffer_address(), w.buffer_address(),
+                                               b.buffer_address(), ident.buffer_address()],
+                  ttnn.ReaderConfigDescriptor()),
+-              kd("k6_writer.cpp", wr_ct, wr, [out.buffer_address(), yt.buffer_address(), table.buffer_address(),
++              kd("k6_writer.cpp", wr_ct, wr, [ot.buffer_address(), yt.buffer_address(), table.buffer_address(),
+                                               index.buffer_address()],
+                  ttnn.WriterConfigDescriptor()),
+               kd("k6_compute.cpp", cp_ct, cp, [], ccfg)]
+@@ -177,7 +187,8 @@ class K6Layer:
+             ios.append(identity)
+         if write_y:
+             ios.append(y)
+-        ios.append(out)
++        if write_table:
++            ios.append(out)
+         sems = [ttnn.SemaphoreDescriptor(id=0, core_ranges=crs, initial_value=0),
+                 ttnn.SemaphoreDescriptor(id=1, core_ranges=crs, initial_value=0)]
+         ttnn.generic_op(ios, ttnn.ProgramDescriptor(kernels=ks, semaphores=sems, cbs=cbs))
+diff --git a/flex_gemm/tenstorrent/digit_implicit.py b/flex_gemm/tenstorrent/digit_implicit.py
+index 4d402d7..feb885e 100644
+--- a/flex_gemm/tenstorrent/digit_implicit.py
++++ b/flex_gemm/tenstorrent/digit_implicit.py
+@@ -50,7 +50,8 @@ def prepare_sparse_digit_implicit(weights, topology, *, row_chunk=256):
+     info = {"path": "digit_implicit_gemm", "reason": None, "row_chunk": row_chunk,
+             "grid": [grid.x, grid.y], "cb_budget_bytes": CB_BUDGET, "chunks": [],
+             "product_calls": 4, "weight_storage": "FP32 encoding of BF16 integer digits",
+-            "unused_bf16_output_included": True}
++            "unused_bf16_output_included": False,
++            "tap_planning": "conservative_original_table_output_bound"}
+ 
+     def fallback(reason):
+         info.update(path="digit_explicit_gemm", reason=reason)
+@@ -70,7 +71,7 @@ def prepare_sparse_digit_implicit(weights, topology, *, row_chunk=256):
+         end = min(start + row_chunk, rows)
+         nbmax = (_round32(end - start) // 32 + grid.x * grid.y - 1) // (grid.x * grid.y)
+         tg, nch = layer.plan(nbmax)
+-        cb_bytes = layer.cb_bytes(tg, nch, nbmax, has_res=False, write_y=True)
++        cb_bytes = layer.cb_bytes(tg, nch, nbmax, has_res=False, write_y=True, write_table=False)
+         info["chunks"].append({"start": start, "end": end, "tap_chunk": tg,
+                                "tap_chunks": nch, "cb_bytes": cb_bytes})
+         if cb_bytes > CB_BUDGET:
+@@ -132,9 +133,8 @@ def sparse_digit_implicit_conv_device(features, weights, topology, *, row_chunk=
+         weights.device, ttnn.DRAM_MEMORY_CONFIG)
+     for start, end, index in plan.chunks:
+         def product(table, digit):
+-            y, unused = weights.implicit_layers[digit](table, index, identity=None,
+-                write_y=True, dead_skip=False, table_memory="dram")
+-            del unused
++            y, _ = weights.implicit_layers[digit](table, index, identity=None,
++                write_y=True, dead_skip=False, table_memory="dram", write_table=False)
+             return ttnn.reshape(y, [index.shape[0] * 32, _round32(weights.co)])
+ 
+         top = product(high, 0)
+diff --git a/flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp b/flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp
+index cc24122..6da3a27 100644
+--- a/flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp
++++ b/flex_gemm/tenstorrent/kernels/k6/k6_compute.cpp
+@@ -4,7 +4,7 @@
+ // Per (chunk, live block of this core): tilize the present taps' gathered rows (CB_GATH, row-major [32, CIN_T * 32]
+ // per tap) into CB_TL at slot p * CIN_T (CB_TL always takes TG * CIN_T pages per block: fixed increments), then for
+ // each output tile n: DEST[0] (+)= sum over present taps p, input tiles c of TL[p, c] x W[p, c, n] (fp32 weights,
+-// HiFi4, fp32 DEST, tap-major / channel order = the stock im2col matmul's K order). Between chunks the fp32 partial
++// HiFi3, fp32 DEST, tap-major / channel order = the stock im2col matmul's K order). Between chunks the fp32 partial
+ // goes through CB_ACC (UnpackToDestFp32 reload: exact). Last chunk, the epilogue in the order of the stock programs:
+ //   y = acc + bias                       add_binary_tile<NearestEven> (binary_ng's fp32 SFPU add)
+ //   y = y + identity     (HAS_RES)       add_binary_tile<NearestEven>
+@@ -13,7 +13,8 @@
+ //   out = bf16(y)                        typecast_tile<Float32, Float16_b> (ttnn.typecast), packed untilized into
+ //                                        CB_OUT (32 rows x COUT_T * 32 bf16, row-major: the next table's rows)
+ // CT args: [0] per-core RT-arg count (P3) [1] K [2] CIN_T [3] COUT_T [4] NCH [5] TG [6] NBLK [7] NC [8] HAS_RES
+-//          [9] WRITE_Y [10] RELU [11] SPLIT (odd-rank present taps come from CB_GATH2, the writer's gathers). Per-core RT args: [me].
++//          [9] WRITE_Y [10] RELU [11] SPLIT [12] WRITE_TABLE. Per-core RT args: [me].
++// WRITE_TABLE=0 packs the FP32 product directly, omitting BF16 conversion/untilization.
+ #include <cstdint>
+ 
+ #include "api/compute/common.h"
+@@ -44,6 +45,8 @@ constexpr uint32_t HAS_RES = get_compile_time_arg_val(8);
+ constexpr uint32_t WRITE_Y = get_compile_time_arg_val(9);
+ constexpr uint32_t RELU = get_compile_time_arg_val(10);
+ constexpr uint32_t SPLIT = get_compile_time_arg_val(11);
++constexpr uint32_t WRITE_TABLE = get_compile_time_arg_val(12);
++static_assert(WRITE_Y || WRITE_TABLE);
+ 
+ constexpr uint32_t CB_GATH = 0, CB_W = 1, CB_BIAS = 2, CB_IDENT = 3, CB_META = 4, CB_TL = 5, CB_ACC = 6;
+ constexpr uint32_t CB_GATH2 = 11, CB_OUT = 16, CB_Y = 17;
+@@ -52,11 +55,13 @@ constexpr uint32_t TLN = TG * CIN_T;
+ 
+ void kernel_main() {
+     const uint32_t me = get_arg_val<uint32_t>(0);
+-    compute_kernel_hw_startup<SrcOrder::Reverse>(CB_TL, CB_W, CB_OUT);
++    compute_kernel_hw_startup<SrcOrder::Reverse>(CB_TL, CB_W, WRITE_TABLE ? CB_OUT : CB_Y);
+     // BH: the DEST remap of pack-untilize is a MATH-thread setting; arm it once here, outside any DEST section (as
+     // the stock matmul's untilize_out path leaves it armed for its later matmuls)
+-    pack_untilize_dest_init<1, COUT_T>(CB_OUT);
+-    pack_untilize_uninit(CB_OUT);
++    if constexpr (WRITE_TABLE) {
++        pack_untilize_dest_init<1, COUT_T>(CB_OUT);
++        pack_untilize_uninit(CB_OUT);
++    }
+     cb_wait_front(CB_BIAS, COUT_T);
+ 
+     for (uint32_t ch = 0; ch < NCH; ++ch) {
+@@ -96,7 +101,9 @@ void kernel_main() {
+             cb_push_back(CB_TL, TLN);
+             cb_wait_front(CB_TL, TLN);
+             if (last) {
+-                cb_reserve_back(CB_OUT, COUT_T);
++                if constexpr (WRITE_TABLE) {
++                    cb_reserve_back(CB_OUT, COUT_T);
++                }
+                 if constexpr (HAS_RES) {
+                     cb_wait_front(CB_IDENT, COUT_T);
+                 }
+@@ -152,12 +159,14 @@ void kernel_main() {
+                     relu_tile_init();
+                     relu_tile(0);
+                 }
+-                if constexpr (WRITE_Y) {
++                if constexpr (WRITE_Y && WRITE_TABLE) {
+                     copy_dest_values_init();
+                     copy_dest_values<DataFormat::Float32>(0, 2);
+                 }
+-                typecast_tile_init<(uint32_t)DataFormat::Float32, (uint32_t)DataFormat::Float16_b>();
+-                typecast_tile<(uint32_t)DataFormat::Float32, (uint32_t)DataFormat::Float16_b>(0);
++                if constexpr (WRITE_TABLE) {
++                    typecast_tile_init<(uint32_t)DataFormat::Float32, (uint32_t)DataFormat::Float16_b>();
++                    typecast_tile<(uint32_t)DataFormat::Float32, (uint32_t)DataFormat::Float16_b>(0);
++                }
+                 tile_regs_commit();
+                 if constexpr (WRITE_Y) {
+                     cb_reserve_back(CB_Y, 1);
+@@ -165,19 +174,23 @@ void kernel_main() {
+                 tile_regs_wait();
+                 if constexpr (WRITE_Y) {
+                     pack_reconfig_data_format(CB_Y);
+-                    pack_tile(2, CB_Y);
++                    pack_tile(WRITE_TABLE ? 2 : 0, CB_Y);
++                }
++                if constexpr (WRITE_TABLE) {
++                    pack_reconfig_data_format(CB_OUT);
++                    pack_untilize_dest_init<1, COUT_T, false, TILE_C_DIM, false, false>(CB_OUT);
++                    pack_untilize_dest<1, COUT_T>(CB_OUT, 1, n);
++                    pack_untilize_uninit(CB_OUT);
+                 }
+-                pack_reconfig_data_format(CB_OUT);
+-                pack_untilize_dest_init<1, COUT_T, false, TILE_C_DIM, false, false>(CB_OUT);
+-                pack_untilize_dest<1, COUT_T>(CB_OUT, 1, n);
+-                pack_untilize_uninit(CB_OUT);
+                 tile_regs_release();
+                 if constexpr (WRITE_Y) {
+                     cb_push_back(CB_Y, 1);
+                 }
+             }
+             if (last) {
+-                cb_push_back(CB_OUT, COUT_T);
++                if constexpr (WRITE_TABLE) {
++                    cb_push_back(CB_OUT, COUT_T);
++                }
+                 if constexpr (HAS_RES) {
+                     cb_pop_front(CB_IDENT, COUT_T);
+                 }
+diff --git a/flex_gemm/tenstorrent/kernels/k6/k6_writer.cpp b/flex_gemm/tenstorrent/kernels/k6/k6_writer.cpp
+index ef64819..eec02e0 100644
+--- a/flex_gemm/tenstorrent/kernels/k6/k6_writer.cpp
++++ b/flex_gemm/tenstorrent/kernels/k6/k6_writer.cpp
+@@ -8,7 +8,7 @@
+ // into CB_GATH2 (k6_gather.hpp); a block's outputs are written one block later, after the next block's gathers, so
+ // the compute never waits for this RISC's writes.
+ // CT args: [0] per-core RT-arg count (P3) [1] COUT_T [2] NBLK [3] NC [4] ROWS [5] WRITE_Y [6] SPLIT [7] K [8] CIN_T
+-// [9] NCH [10] TG [11] SENT [12] DEAD_SKIP, then the TensorAccessorArgs of the output table, y, the input table and
++// [9] NCH [10] TG [11] SENT [12] DEAD_SKIP [13] WRITE_TABLE, then the TensorAccessorArgs of the output table, y, the input table and
+ // the index. Common RT args: [table_out, y, table_in, index]. Per-core RT args: [me].
+ #include <cstdint>
+ 
+@@ -27,7 +27,8 @@ constexpr uint32_t NCH = get_compile_time_arg_val(9);
+ constexpr uint32_t TG = get_compile_time_arg_val(10);
+ constexpr uint32_t SENT = get_compile_time_arg_val(11);
+ constexpr uint32_t DEAD_SKIP = get_compile_time_arg_val(12);
+-constexpr auto o_args = TensorAccessorArgs<13>();
++constexpr uint32_t WRITE_TABLE = get_compile_time_arg_val(13);
++constexpr auto o_args = TensorAccessorArgs<14>();
+ constexpr auto y_args = TensorAccessorArgs<o_args.next_compile_time_args_offset()>();
+ constexpr auto t_args = TensorAccessorArgs<y_args.next_compile_time_args_offset()>();
+ constexpr auto i_args = TensorAccessorArgs<t_args.next_compile_time_args_offset()>();
+@@ -48,21 +49,23 @@ inline void write_block(uint32_t b, const OA& out, const YA& yy) {
+             cb_pop_front(CB_Y, 1);
+         }
+     }
+-    cb_wait_front(CB_OUT, COUT_T);
+-    uint32_t rp = get_read_ptr(CB_OUT);
+-    for (uint32_t v = 0; v < 32; ++v) {
+-        noc_async_write(rp, out.get_noc_addr(b * 32 + v), ROWB);
+-        rp += ROWB;
++    if constexpr (WRITE_TABLE) {
++        cb_wait_front(CB_OUT, COUT_T);
++        uint32_t rp = get_read_ptr(CB_OUT);
++        for (uint32_t v = 0; v < 32; ++v) {
++            noc_async_write(rp, out.get_noc_addr(b * 32 + v), ROWB);
++            rp += ROWB;
++        }
++        noc_async_writes_flushed();
++        cb_pop_front(CB_OUT, COUT_T);
+     }
+-    noc_async_writes_flushed();
+-    cb_pop_front(CB_OUT, COUT_T);
+ }
+ 
+ void kernel_main() {
+     const uint32_t me = get_arg_val<uint32_t>(0);
+     const auto out = TensorAccessor(o_args, get_common_arg_val<uint32_t>(0), ROWB);
+     const auto yy = TensorAccessor(y_args, get_common_arg_val<uint32_t>(1), TB32);
+-    if (me == 0) {
++    if (WRITE_TABLE && me == 0) {
+         cb_reserve_back(CB_ZERO, 1);
+         const uint32_t zp = get_write_ptr(CB_ZERO);
+         volatile tt_l1_ptr uint32_t* z = reinterpret_cast<volatile tt_l1_ptr uint32_t*>(zp);
+diff --git a/tests/tenstorrent/test_autoresearch.py b/tests/tenstorrent/test_autoresearch.py
+index 8225a3b..602b94a 100644
+--- a/tests/tenstorrent/test_autoresearch.py
++++ b/tests/tenstorrent/test_autoresearch.py
+@@ -212,6 +212,12 @@ def test_implicit_digit_accounting_empty_taps_chunks_and_fallback():
+     assert r['requested_map_bytes'] == 4 * 2 * 3 * 3 * 128 * 2
+     assert r['requested_weight_bytes'] == 4 * 2 * 2 * 3 * 1 * 2 * 4096
+     assert sum(r['core_tile_products']) == 16
++    fp32_only = work_accounting(mapping, 17, 35, algorithm='digit_implicit_gemm', row_chunk=64,
++        available_cores=4, digit_implicit_policy=dict(policy, unused_bf16_output_included=False))
++    assert fp32_only.pop('model') == 'digit_implicit_k6_fp32_output_v1'
++    assert fp32_only.pop('unused_bf16_table_write_bytes') == 0
++    old = dict(r); old.pop('model'); assert old.pop('unused_bf16_table_write_bytes') > 0
++    assert fp32_only == old
+     empty = work_accounting(torch.full_like(mapping, -1), 17, 35, algorithm='digit_implicit_gemm',
+         row_chunk=64, available_cores=4, digit_implicit_policy=policy)
+     assert empty['issued_flops'] == empty['useful_flops'] == 0 and empty['work_efficiency'] is None
+diff --git a/tests/tenstorrent/test_resident.py b/tests/tenstorrent/test_resident.py
+index 7c80d61..ab73278 100644
+--- a/tests/tenstorrent/test_resident.py
++++ b/tests/tenstorrent/test_resident.py
+@@ -217,3 +217,31 @@ def test_digit_implicit_volume_fallback_is_explicit(device):
+     a = sparse_conv_device(resident, weights, topology, algorithm='digit_implicit_gemm', row_chunk=32)
+     b = sparse_conv_device(resident, weights, topology, algorithm='digit_explicit_gemm', row_chunk=32)
+     torch.testing.assert_close(ttnn.to_torch(a), ttnn.to_torch(b), atol=0, rtol=0)
++
++
++@pytest.mark.parametrize('rows,ci,co,volume', [(65,17,35,3),(257,128,128,27),(8193,64,64,27)])
++def test_digit_implicit_fp32_only_products_match_table_path(device,rows,ci,co,volume):
++    import ttnn
++    from flex_gemm.tenstorrent.digits import _feature_digits
++    g=torch.Generator().manual_seed(211)
++    inputs=rows+19
++    mapping=torch.randint(-1,inputs,(rows,volume),generator=g)
++    mapping[:32]=-1;mapping[-1]=inputs-1
++    weights=prepare_sparse_digit_weights(torch.randn(co,volume,ci,generator=g).bfloat16(),device=device)
++    topology=prepare_sparse_topology(mapping,inputs,device=device)
++    plan=prepare_sparse_digit_implicit(weights,topology,row_chunk=8192)
++    assert plan.info['path']=='digit_implicit_gemm' and not plan.info['unused_bf16_output_included']
++    for delta in (0.,.03125):
++        values=(torch.randn(inputs,ci,generator=g)+delta).bfloat16()
++        resident=ttnn.from_torch(values,device=device,dtype=ttnn.bfloat16,layout=ttnn.TILE_LAYOUT)
++        high,low,scale=_feature_digits(resident,(ci+31)//32*32)
++        for _,_,index in plan.chunks:
++            for table in (high,low):
++                for layer in weights.implicit_layers:
++                    old,unused=layer(table,index,write_y=True,dead_skip=False,write_table=True)
++                    actual,absent=layer(table,index,write_y=True,dead_skip=False,write_table=False)
++                    assert absent is None and unused is not None
++                    torch.testing.assert_close(ttnn.to_torch(actual).view(torch.int32),
++                                               ttnn.to_torch(old).view(torch.int32),atol=0,rtol=0)
++                    del old,unused,actual
++        torch.testing.assert_close(ttnn.to_torch(resident),values,atol=0,rtol=0)

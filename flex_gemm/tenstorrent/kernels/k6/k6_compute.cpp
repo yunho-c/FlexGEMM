@@ -4,7 +4,7 @@
 // Per (chunk, live block of this core): tilize the present taps' gathered rows (CB_GATH, row-major [32, CIN_T * 32]
 // per tap) into CB_TL at slot p * CIN_T (CB_TL always takes TG * CIN_T pages per block: fixed increments), then for
 // each output tile n: DEST[0] (+)= sum over present taps p, input tiles c of TL[p, c] x W[p, c, n] (fp32 weights,
-// HiFi4, fp32 DEST, tap-major / channel order = the stock im2col matmul's K order). Between chunks the fp32 partial
+// HiFi3, fp32 DEST, tap-major / channel order = the stock im2col matmul's K order). Between chunks the fp32 partial
 // goes through CB_ACC (UnpackToDestFp32 reload: exact). Last chunk, the epilogue in the order of the stock programs:
 //   y = acc + bias                       add_binary_tile<NearestEven> (binary_ng's fp32 SFPU add)
 //   y = y + identity     (HAS_RES)       add_binary_tile<NearestEven>
@@ -13,7 +13,8 @@
 //   out = bf16(y)                        typecast_tile<Float32, Float16_b> (ttnn.typecast), packed untilized into
 //                                        CB_OUT (32 rows x COUT_T * 32 bf16, row-major: the next table's rows)
 // CT args: [0] per-core RT-arg count (P3) [1] K [2] CIN_T [3] COUT_T [4] NCH [5] TG [6] NBLK [7] NC [8] HAS_RES
-//          [9] WRITE_Y [10] RELU [11] SPLIT (odd-rank present taps come from CB_GATH2, the writer's gathers). Per-core RT args: [me].
+//          [9] WRITE_Y [10] RELU [11] SPLIT [12] WRITE_TABLE. Per-core RT args: [me].
+// WRITE_TABLE=0 packs the FP32 product directly, omitting BF16 conversion/untilization.
 #include <cstdint>
 
 #include "api/compute/common.h"
@@ -44,6 +45,8 @@ constexpr uint32_t HAS_RES = get_compile_time_arg_val(8);
 constexpr uint32_t WRITE_Y = get_compile_time_arg_val(9);
 constexpr uint32_t RELU = get_compile_time_arg_val(10);
 constexpr uint32_t SPLIT = get_compile_time_arg_val(11);
+constexpr uint32_t WRITE_TABLE = get_compile_time_arg_val(12);
+static_assert(WRITE_Y || WRITE_TABLE);
 
 constexpr uint32_t CB_GATH = 0, CB_W = 1, CB_BIAS = 2, CB_IDENT = 3, CB_META = 4, CB_TL = 5, CB_ACC = 6;
 constexpr uint32_t CB_GATH2 = 11, CB_OUT = 16, CB_Y = 17;
@@ -52,11 +55,13 @@ constexpr uint32_t TLN = TG * CIN_T;
 
 void kernel_main() {
     const uint32_t me = get_arg_val<uint32_t>(0);
-    compute_kernel_hw_startup<SrcOrder::Reverse>(CB_TL, CB_W, CB_OUT);
+    compute_kernel_hw_startup<SrcOrder::Reverse>(CB_TL, CB_W, WRITE_TABLE ? CB_OUT : CB_Y);
     // BH: the DEST remap of pack-untilize is a MATH-thread setting; arm it once here, outside any DEST section (as
     // the stock matmul's untilize_out path leaves it armed for its later matmuls)
-    pack_untilize_dest_init<1, COUT_T>(CB_OUT);
-    pack_untilize_uninit(CB_OUT);
+    if constexpr (WRITE_TABLE) {
+        pack_untilize_dest_init<1, COUT_T>(CB_OUT);
+        pack_untilize_uninit(CB_OUT);
+    }
     cb_wait_front(CB_BIAS, COUT_T);
 
     for (uint32_t ch = 0; ch < NCH; ++ch) {
@@ -96,7 +101,9 @@ void kernel_main() {
             cb_push_back(CB_TL, TLN);
             cb_wait_front(CB_TL, TLN);
             if (last) {
-                cb_reserve_back(CB_OUT, COUT_T);
+                if constexpr (WRITE_TABLE) {
+                    cb_reserve_back(CB_OUT, COUT_T);
+                }
                 if constexpr (HAS_RES) {
                     cb_wait_front(CB_IDENT, COUT_T);
                 }
@@ -152,12 +159,14 @@ void kernel_main() {
                     relu_tile_init();
                     relu_tile(0);
                 }
-                if constexpr (WRITE_Y) {
+                if constexpr (WRITE_Y && WRITE_TABLE) {
                     copy_dest_values_init();
                     copy_dest_values<DataFormat::Float32>(0, 2);
                 }
-                typecast_tile_init<(uint32_t)DataFormat::Float32, (uint32_t)DataFormat::Float16_b>();
-                typecast_tile<(uint32_t)DataFormat::Float32, (uint32_t)DataFormat::Float16_b>(0);
+                if constexpr (WRITE_TABLE) {
+                    typecast_tile_init<(uint32_t)DataFormat::Float32, (uint32_t)DataFormat::Float16_b>();
+                    typecast_tile<(uint32_t)DataFormat::Float32, (uint32_t)DataFormat::Float16_b>(0);
+                }
                 tile_regs_commit();
                 if constexpr (WRITE_Y) {
                     cb_reserve_back(CB_Y, 1);
@@ -165,19 +174,23 @@ void kernel_main() {
                 tile_regs_wait();
                 if constexpr (WRITE_Y) {
                     pack_reconfig_data_format(CB_Y);
-                    pack_tile(2, CB_Y);
+                    pack_tile(WRITE_TABLE ? 2 : 0, CB_Y);
                 }
-                pack_reconfig_data_format(CB_OUT);
-                pack_untilize_dest_init<1, COUT_T, false, TILE_C_DIM, false, false>(CB_OUT);
-                pack_untilize_dest<1, COUT_T>(CB_OUT, 1, n);
-                pack_untilize_uninit(CB_OUT);
+                if constexpr (WRITE_TABLE) {
+                    pack_reconfig_data_format(CB_OUT);
+                    pack_untilize_dest_init<1, COUT_T, false, TILE_C_DIM, false, false>(CB_OUT);
+                    pack_untilize_dest<1, COUT_T>(CB_OUT, 1, n);
+                    pack_untilize_uninit(CB_OUT);
+                }
                 tile_regs_release();
                 if constexpr (WRITE_Y) {
                     cb_push_back(CB_Y, 1);
                 }
             }
             if (last) {
-                cb_push_back(CB_OUT, COUT_T);
+                if constexpr (WRITE_TABLE) {
+                    cb_push_back(CB_OUT, COUT_T);
+                }
                 if constexpr (HAS_RES) {
                     cb_pop_front(CB_IDENT, COUT_T);
                 }

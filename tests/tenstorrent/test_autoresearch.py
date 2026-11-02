@@ -212,6 +212,12 @@ def test_implicit_digit_accounting_empty_taps_chunks_and_fallback():
     assert r['requested_map_bytes'] == 4 * 2 * 3 * 3 * 128 * 2
     assert r['requested_weight_bytes'] == 4 * 2 * 2 * 3 * 1 * 2 * 4096
     assert sum(r['core_tile_products']) == 16
+    fp32_only = work_accounting(mapping, 17, 35, algorithm='digit_implicit_gemm', row_chunk=64,
+        available_cores=4, digit_implicit_policy=dict(policy, unused_bf16_output_included=False))
+    assert fp32_only.pop('model') == 'digit_implicit_k6_fp32_output_v1'
+    assert fp32_only.pop('unused_bf16_table_write_bytes') == 0
+    old = dict(r); old.pop('model'); assert old.pop('unused_bf16_table_write_bytes') > 0
+    assert fp32_only == old
     empty = work_accounting(torch.full_like(mapping, -1), 17, 35, algorithm='digit_implicit_gemm',
         row_chunk=64, available_cores=4, digit_implicit_policy=policy)
     assert empty['issued_flops'] == empty['useful_flops'] == 0 and empty['work_efficiency'] is None

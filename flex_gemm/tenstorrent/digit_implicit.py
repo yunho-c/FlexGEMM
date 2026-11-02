@@ -50,7 +50,8 @@ def prepare_sparse_digit_implicit(weights, topology, *, row_chunk=256):
     info = {"path": "digit_implicit_gemm", "reason": None, "row_chunk": row_chunk,
             "grid": [grid.x, grid.y], "cb_budget_bytes": CB_BUDGET, "chunks": [],
             "product_calls": 4, "weight_storage": "FP32 encoding of BF16 integer digits",
-            "unused_bf16_output_included": True}
+            "unused_bf16_output_included": False,
+            "tap_planning": "conservative_original_table_output_bound"}
 
     def fallback(reason):
         info.update(path="digit_explicit_gemm", reason=reason)
@@ -70,7 +71,7 @@ def prepare_sparse_digit_implicit(weights, topology, *, row_chunk=256):
         end = min(start + row_chunk, rows)
         nbmax = (_round32(end - start) // 32 + grid.x * grid.y - 1) // (grid.x * grid.y)
         tg, nch = layer.plan(nbmax)
-        cb_bytes = layer.cb_bytes(tg, nch, nbmax, has_res=False, write_y=True)
+        cb_bytes = layer.cb_bytes(tg, nch, nbmax, has_res=False, write_y=True, write_table=False)
         info["chunks"].append({"start": start, "end": end, "tap_chunk": tg,
                                "tap_chunks": nch, "cb_bytes": cb_bytes})
         if cb_bytes > CB_BUDGET:
@@ -132,9 +133,8 @@ def sparse_digit_implicit_conv_device(features, weights, topology, *, row_chunk=
         weights.device, ttnn.DRAM_MEMORY_CONFIG)
     for start, end, index in plan.chunks:
         def product(table, digit):
-            y, unused = weights.implicit_layers[digit](table, index, identity=None,
-                write_y=True, dead_skip=False, table_memory="dram")
-            del unused
+            y, _ = weights.implicit_layers[digit](table, index, identity=None,
+                write_y=True, dead_skip=False, table_memory="dram", write_table=False)
             return ttnn.reshape(y, [index.shape[0] * 32, _round32(weights.co)])
 
         top = product(high, 0)

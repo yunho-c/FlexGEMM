@@ -1,0 +1,6 @@
+{
+  "fp32_only_digit_implicit": {
+    "algorithm": "digit_implicit_gemm",
+    "row_chunk": 16384
+  }
+}
