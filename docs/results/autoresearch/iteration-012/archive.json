@@ -1,0 +1,144 @@
+{
+  "scope": "Unchanged iteration012 evaluator experiment reports and DRAM allocation events; original full trace paths/hashes retained",
+  "files": [
+    {
+      "path": "components-residency.json",
+      "sha256": "9db4862f7f955319cff03f27771808e596ba49242f7551e4d02fa3b7f7838f74"
+    },
+    {
+      "path": "components-residency.runner.json",
+      "sha256": "d86919cad20f8958c66c211d1016c5907bbcbb276b3596e63471159862d1e85c"
+    },
+    {
+      "path": "evaluator-tests.xml",
+      "sha256": "b3cf80611a309367b10d482026b85b95ffdb4080e9770e064309323d74abb048"
+    },
+    {
+      "path": "host-output-candidate.patch",
+      "sha256": "90776fd3709378cf8bca0e8e3098f68ec4967135b99e9dc5302f36d38f1fb3f7"
+    },
+    {
+      "path": "hypothesis.json",
+      "sha256": "2e2e7f8686c6f8a7e1245cd366a4f8ff6bbf20f58245f45b928f7db8a5f6b549"
+    },
+    {
+      "path": "l1-output-candidate.patch",
+      "sha256": "bb932194d2caaead8e027daf6ed996dd71c39275b0cca2643fe577d1bbf8e3f6"
+    },
+    {
+      "path": "memory-checks/autoware-test-pcd-21359-256x256.json",
+      "sha256": "d4fd49a2e252180d80c53d492691a0fd5437c0d478e77f1ca5ce7208698fb98d"
+    },
+    {
+      "path": "memory-checks/autoware-test-pcd-21359-256x256.runner.json",
+      "sha256": "2cfbdceaed9b65a3b6c6b274e465b282fa1b015f30cf6b17a07713e00ab7cd3a"
+    },
+    {
+      "path": "memory-checks/n2389000-64x64-k3x3x3.json",
+      "sha256": "b6d11241a38485066e9517cdb6ffdc271861e6ae8fc41b1da7283461d9670e93"
+    },
+    {
+      "path": "memory-checks/n2389000-64x64-k3x3x3.runner.json",
+      "sha256": "7b984a386a30c8b19bd063409409bfc31938f63cf20e90b8aa594c1cd05f650a"
+    },
+    {
+      "path": "memory-checks/n388659-128x128-k3x3x3.json",
+      "sha256": "9435e2c0a1fcb585f04e6005caf36b70b5b78b24fc3ec398cfdeeb88c0177c28"
+    },
+    {
+      "path": "memory-checks/n388659-128x128-k3x3x3.runner.json",
+      "sha256": "ccfd956d900393299301f9d88a2b516582590a6be238303c931bc3d849c8da54"
+    },
+    {
+      "path": "memory-checks/n4490-1024x4096-k3x3x3.json",
+      "sha256": "00099bcc951e1b901163c60fd9713e05aa7f81b4c923cc5d4b72ac37aa7323fa"
+    },
+    {
+      "path": "memory-checks/n4490-1024x4096-k3x3x3.runner.json",
+      "sha256": "c6b082769c6126e1042060a37dcfaa9ad9dec7978d4f6adb9c30faf716807c4a"
+    },
+    {
+      "path": "memory-checks/tune-scattered-35-17x45.json",
+      "sha256": "d4b9d442c1122c0829e35948faa8119d4451337bc45afff843f906038d95b765"
+    },
+    {
+      "path": "memory-checks/tune-scattered-35-17x45.runner.json",
+      "sha256": "f1493aa50ebb6a8bfd17831b70dc70221e28dfe3db0560c84071e0b6a3d38cea"
+    },
+    {
+      "path": "memory-comparison.json",
+      "sha256": "d3c3ec0459ddf3d60bfef2a313e991ce02216b7d74f44ee58a2a950c7b8db63a"
+    },
+    {
+      "path": "reject-host.json",
+      "sha256": "b15627405b9395cec0e1d529307919e75d690be777c99b9902092eb09684e8f3"
+    },
+    {
+      "path": "reject-host.runner.json",
+      "sha256": "fb7bedc9976b2593a3870ab4aff72ddf9063c7be79c3d54f3ad674cad9cbd5ce"
+    },
+    {
+      "path": "reject-l1.json",
+      "sha256": "156b591716ea6e77e68f7fc44e19aea14eb102355000a83275d17c7c208c4c46"
+    },
+    {
+      "path": "reject-l1.runner.json",
+      "sha256": "6ca67e009e0e3012f0c93d6929a73f5b3c8fdedd348648e0ab59a5ea9e0ceb73"
+    },
+    {
+      "path": "residency-tests.runner.json",
+      "sha256": "0bfde78d4feeeea4e5bfd73e0f9b9a6ce0ea28674ecefe86a0bfd7e561a483ed"
+    },
+    {
+      "path": "residency-tests.xml",
+      "sha256": "7a30cf3a94fbfb16b56da9d547c096c788278fbb51a95114087a218a10e59071"
+    }
+  ],
+  "memory_replays": [
+    {
+      "report": "memory-checks/tune-scattered-35-17x45.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-012/memory-checks/tune-scattered-35-17x45.allocations.json.gz",
+      "original_trace_sha256": "82461c22d376e98abb39004aa2829b4c112cfe1191bddbc1cb7c7061357a6efa",
+      "workspace_upper_bound_bytes": 89874944,
+      "compact_output_event_index": 98,
+      "original_output_event_counter": 724
+    },
+    {
+      "report": "memory-checks/n4490-1024x4096-k3x3x3.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-012/memory-checks/n4490-1024x4096-k3x3x3.allocations.json.gz",
+      "original_trace_sha256": "34eaf791355749b682ba1afb92b130860c5795cbf99bda4d7900492308a20b4f",
+      "workspace_upper_bound_bytes": 322850816,
+      "compact_output_event_index": 151,
+      "original_output_event_counter": 1052
+    },
+    {
+      "report": "memory-checks/n388659-128x128-k3x3x3.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-012/memory-checks/n388659-128x128-k3x3x3.allocations.json.gz",
+      "original_trace_sha256": "78cccded285337a2107397350cf1a9088425c5368e71ebaae99eba1647cbff17",
+      "workspace_upper_bound_bytes": 426944512,
+      "compact_output_event_index": 1149,
+      "original_output_event_counter": 7883
+    },
+    {
+      "report": "memory-checks/autoware-test-pcd-21359-256x256.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-012/memory-checks/autoware-test-pcd-21359-256x256.allocations.json.gz",
+      "original_trace_sha256": "579e3945c3063719cd5c4bdfd2a783d8aeef734ef0c0a29e6fb253a8ae01e1b5",
+      "workspace_upper_bound_bytes": 249827328,
+      "compact_output_event_index": 173,
+      "original_output_event_counter": 1203
+    },
+    {
+      "report": "memory-checks/n2389000-64x64-k3x3x3.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-012/memory-checks/n2389000-64x64-k3x3x3.allocations.json.gz",
+      "original_trace_sha256": "d64a348cd68b3ed7898f523f59901b8baef970bbb0a86436b30400898fc62bb9",
+      "workspace_upper_bound_bytes": 1007091200,
+      "compact_output_event_index": 3441,
+      "original_output_event_counter": 23565
+    }
+  ],
+  "allocation_event_bundle": {
+    "path": "allocation-events.json.gz",
+    "sha256": "5fa7f4d68e18d96f8337f07c95eb3ab9da67ce5b88f04b4edc2d7dc9fa6c4f72",
+    "bytes": 88362
+  }
+}

@@ -18,7 +18,7 @@ import traceback
 import torch
 
 from .common import correctness, sha256, summarize, write_json
-from .evaluate import source_state
+from .evaluate import source_state, tensor_contract
 
 
 def main():
@@ -109,6 +109,9 @@ def main():
         topology = candidate.prepare_sparse_topology(fixture["mapping"], len(fixture["features"][0]), device=device)
         features = [ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
                     for x in fixture["features"]]
+        report["input_contract"] = [tensor_contract(x, device) for x in features]
+        if not all(c["tensor_contract_valid"] for c in report["input_contract"]):
+            raise ValueError("input tensor residency or format violates the fixed contract")
 
         def forward(index, samples=None, check=False):
             ttnn.synchronize_device(device)
@@ -120,9 +123,8 @@ def main():
                 samples.append(elapsed)
             if check:
                 metric = correctness(ttnn.to_torch(result), fixture["expected"][index], contract)
-                metric.update(variant=index, dtype_valid=result.dtype == ttnn.bfloat16,
-                              layout_valid=result.layout == ttnn.TILE_LAYOUT)
-                metric["passed"] &= metric["dtype_valid"] and metric["layout_valid"]
+                metric.update(variant=index, **tensor_contract(result, device))
+                metric["passed"] &= metric["tensor_contract_valid"]
                 report["checks"].append(metric)
 
         for _ in range(2):

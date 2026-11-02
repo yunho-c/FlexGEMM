@@ -1,0 +1,16 @@
+diff --git a/flex_gemm/tenstorrent/__init__.py b/flex_gemm/tenstorrent/__init__.py
+index 2d1a89b..8348e91 100644
+--- a/flex_gemm/tenstorrent/__init__.py
++++ b/flex_gemm/tenstorrent/__init__.py
+@@ -11,3 +11,11 @@ __all__ = ["build_subm_neighbor_map", "sparse_conv_reference", "explicit_gemm",
+            "implicit_gemm", "masked_implicit_gemm", "prepare_implicit", "split_k_gemm",
+            "prepare_explicit", "sparse_submanifold_conv3d", "prepare_sparse_weights",
+            "prepare_sparse_topology", "sparse_conv_device", "prepare_sparse_digit_weights"]
++
++
++# Deliberately nonconforming output for evaluator rejection testing.
++_original_sparse_conv_device = sparse_conv_device
++def sparse_conv_device(*args, **kwargs):
++    import ttnn
++    result = _original_sparse_conv_device(*args, **kwargs)
++    return ttnn.to_memory_config(result, ttnn.L1_MEMORY_CONFIG)

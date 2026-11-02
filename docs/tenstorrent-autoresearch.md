@@ -579,6 +579,36 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   external comparisons and SOTA status remain unconfirmed. All 61 device
   workers exited normally. Unchanged reports are in `iteration-011`.
 
+### 012 — preserve allocator evidence with cheaper memory capture
+
+- Disable TTNN's Python argument/return sidecar during memory capture, as
+  recommended by the pinned SDK for memory-only tracking. Keep C++ graph capture
+  and its allocator events. No kernel, reference, fidelity or tolerance changes.
+- Five representative probes (tiny, wide, narrow, LiDAR and the largest layer)
+  reproduce iteration 011's allocation lifetime/size sequences and workspace
+  bounds exactly, including which final allocation is excluded. The largest
+  remains 1,007,091,200 bytes. A CPU replay verifies event ordering, reused
+  addresses, allocation counts and exclusion identity from committed bundles.
+- The 2,389,000-row complete worker takes 57.982 s versus 434.998 s in the
+  archived run, with 2.982 s spent in the new capture. The narrow worker takes
+  23.474 s versus 71.223 s. These are observed evaluator-overhead reductions
+  across separate runs, not paired operator/application speedups.
+- Add an explicit tensor gate for allocated storage on the expected device,
+  DRAM, BF16 and tiled layout in both main and component evaluators. Input
+  preparation must pass too. Previously dtype/layout were explicit and memory
+  reports identified DRAM output allocations, but lean timings lacked a
+  direct residency gate. No prior candidate residency violation was found.
+- Full evaluator rejection tests return numerically correct L1 and host
+  outputs from isolated candidate checkouts. Both fail the new gate as intended;
+  the exact patches and failed reports are preserved. One focused Watcher test
+  also rejects wrong dtype/layout, 12 CPU evaluator tests pass, and the component
+  evaluator passes its shared-gate integration check. All processes exit normally.
+- Decision: retain the stricter gate and cheaper capture. This iteration uses
+  five representative cases to verify evaluator behavior; iteration 011's
+  36-case kernel validation is unchanged. Reports, compact allocator events and
+  CPU replay are in `iteration-012`. Next: tune integer-product matmul blocking
+  while preserving all four products, then measure actual decoder integration.
+
 The additional CPU capture tools are:
 
 ```bash

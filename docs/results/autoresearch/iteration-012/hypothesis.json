@@ -1,0 +1,8 @@
+{
+  "iteration": 12,
+  "candidate_commit": "b6fc69aa3ba90a5a071f7f657494743880e4eeab",
+  "hypothesis": "Disable unused Python I/O capture while preserving C++ allocator events; add explicit residency checks",
+  "fixed": "Candidate kernel sources, contract tolerances and CPU goldens unchanged",
+  "adoption_gate": "Allocator lifetime/size sequence and workspace exclusion match archived iteration011; DRAM candidate passes and numerical-equivalent L1/host output candidates fail; report wall-time effects as evaluator overhead only",
+  "sdk_commit": "9f9cd4fd590f4b606bd0981a4fe0b6403eb38ec9"
+}

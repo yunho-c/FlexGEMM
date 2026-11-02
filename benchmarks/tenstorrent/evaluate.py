@@ -36,6 +36,21 @@ def memory(device):
     return result
 
 
+def tensor_contract(tensor, device):
+    """Inspect residency and format without copying or changing the tensor."""
+    import ttnn
+    on_device = ttnn.is_tensor_storage_on_device(tensor) and tensor.is_allocated()
+    actual_device = tensor.device() if on_device else None
+    buffer_type = tensor.memory_config().buffer_type
+    checks = {"dtype_valid": tensor.dtype == ttnn.bfloat16,
+              "layout_valid": tensor.layout == ttnn.TILE_LAYOUT,
+              "device_valid": actual_device is not None and actual_device.id() == device.id(),
+              "dram_valid": on_device and buffer_type == ttnn.BufferType.DRAM}
+    return {**checks, "tensor_contract_valid": all(checks.values()),
+            "storage_type": str(tensor.storage_type()), "buffer_type": str(buffer_type),
+            "device_id": actual_device.id() if actual_device is not None else None}
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--corpus", type=Path, required=True)
@@ -126,6 +141,9 @@ def main():
         features = [ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT,
                                     device=device) for x in fixture["features"]]
         ttnn.synchronize_device(device)
+        report["input_contract"] = [tensor_contract(x, device) for x in features]
+        if not all(c["tensor_contract_valid"] for c in report["input_contract"]):
+            raise ValueError("input tensor residency or format violates the fixed contract")
         report["memory"] = {"before": before, "prepared": memory(device),
                             "scope": "live allocator snapshots, not transient peaks"}
 
@@ -137,10 +155,8 @@ def main():
         def check(result, index, label):
             actual = ttnn.to_torch(result).float()
             metrics = correctness(actual, fixture["expected"][index], contract)
-            metrics.update(label=label, feature_variant=index,
-                           dtype_valid=result.dtype == ttnn.bfloat16,
-                           layout_valid=result.layout == ttnn.TILE_LAYOUT)
-            metrics["passed"] &= metrics["dtype_valid"] and metrics["layout_valid"]
+            metrics.update(label=label, feature_variant=index, **tensor_contract(result, device))
+            metrics["passed"] &= metrics["tensor_contract_valid"]
             report["checks"].append(metrics)
             return actual
 
@@ -159,9 +175,17 @@ def main():
             phase("capture_memory")
             ttnn.graph.begin_graph_capture(ttnn.graph.RunMode.NORMAL)
             try:
+                # end_graph_capture returns C++ events; Python argument/return
+                # summaries are unused and can dominate large memory probes.
+                ttnn.graph.disable_python_io_recording()
+                report["memory_capture"] = {
+                    "python_io_recording": ttnn.graph.is_python_io_recording_enabled(),
+                    "scope": "C++ graph including allocator events; Python I/O sidecar disabled"}
+                capture_start = time.perf_counter()
                 output = execute(0)
             finally:
                 allocation_trace = ttnn.graph.end_graph_capture()
+            report["memory_capture"]["elapsed_ms"] = (time.perf_counter() - capture_start) * 1000
             trace_path = args.output.with_suffix(".allocations.json.gz")
             with gzip.open(trace_path, "wt") as stream:
                 json.dump(allocation_trace, stream)
