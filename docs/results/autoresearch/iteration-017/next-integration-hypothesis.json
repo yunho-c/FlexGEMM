@@ -1,0 +1,24 @@
+{
+  "status": "design only; wait for iteration017 completion",
+  "hypothesis": "Expose a separate opt-in digit_implicit_gemm algorithm using four fused K6 gather/matmul calls, static digit weights/topology and the incumbent epilogue. Default remains unchanged until application validation.",
+  "implementation": [
+    "Vendor only the required Apache-2.0 K6 layer and four kernels with notices and explicit pinned provenance; no full encoder dependency.",
+    "Prepare BF16 digit weights using existing public preparation, then cache two FP32 weight views and zero bias for prototype-equivalent arithmetic. Explicit static preparation API builds plans and index pages before timing.",
+    "Cache static topology plans by actual topology object plus row chunk and grid, never by shape alone; no feature-value caches.",
+    "Use bounded tile-aligned row chunks, physical multicast guard, fixed HiFi3, dead_skip=False and FP32 outputs. Support requested FP32 final output too.",
+    "All-channel wide/infeasible cases and unaligned interior chunks explicitly fall back to digit_explicit_gemm; report selected path and reason. Initial shape-only speed dispatch can be restricted to independently confirmed shapes.",
+    "Add independent work model for four fused products with active tap skips, no DRAM im2col, FP32 weight multicast and redundant output tables; requested bytes are not physical traffic.",
+    "Extend candidate source integrity hash to .hpp/.h so included gather helper is protected. Include vendors in installed package data.",
+    "Check all36 including fallback, BF16/FP32 output/cancellation, topology reuse, missing/repeated neighbors, changed features, ragged channels and many row chunks; replay workspace.",
+    "Three paired rounds on narrow and largest, plus a fallback control. Small shapes and 128\u2192512 currently screen slower; retain records.",
+    "Integrate shape/texture decoders through prepared scratch adapter, preserve strict saved CPU quality gates and report any application failures."
+  ],
+  "later_fusion": [
+    "One four-product kernel can share both gathered digit tables, weight loads and output assembly; remove four redundant BF16 table outputs.",
+    "Channel partitioning needed before claiming wide-layer support."
+  ],
+  "limits": [
+    "Iteration017 is still running; no integration or promotion yet",
+    "The 48 integer-product checks match incumbent bitwise; exact CPU integer-dot equality was an overstrong assumption and failed for both incumbent and prototype. Never silently relabel those failed checks."
+  ]
+}

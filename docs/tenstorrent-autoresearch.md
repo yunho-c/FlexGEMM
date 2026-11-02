@@ -711,6 +711,31 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   still require channel partitioning or incumbent fallback. Full application
   validation and SOTA remain pending.
 
+### 017 — confirm the four-product K6 prototype
+
+- Use four K6 gather/matmul calls with existing fresh integer feature digits,
+  static integer weight digits encoded in FP32, FP32 products and the incumbent
+  reconstruction/epilogue. HiFi3 and immutable CPU golden tolerances stay fixed.
+- All 24 feasible cases pass, including the seven decoder cases that failed
+  ordinary K6. Twelve wide cases remain unsupported; production dispatch is
+  unchanged. Several small cases and both 128→512 decoder shapes screen slower.
+- Three clean A/B/A rounds confirm 388,659-row 128→128:
+  171.735 / 171.663 / 171.680 ms, speedups 2.908429 / 2.910213 / 2.908000,
+  maximum noise 0.2249%. For 2,389,000-row 64→64:
+  479.340 / 484.331 / 479.125 ms, speedups 3.259543 / 3.225936 / 3.260971,
+  maximum noise 3.2865%. Each trial has eleven repetitions.
+- The initial narrow bracket overlapped CPU analysis. Preserve it as diagnostic
+  and use a prospectively declared replacement for three clean rounds.
+- Two exact-CPU-integer product oracles fail. A separate control establishes
+  bitwise equality with incumbent HiFi3 matmul on all 48 products; sixteen
+  products share the same CPU-exact deviations. Keep all failures and controls;
+  no fixed convolution gate changes. The low-level arithmetic cause is unresolved.
+- All 33 workspace captures pass (maximum 726,282,240 bytes). All 50 workers
+  exit normally, including the two retained oracle failures; no timeout/reset.
+- Decision: keep the prototype for opt-in integration, fallback and full36
+  validation, then complete decoder tests. Evidence, source snapshots, work
+  model and verifier are in iteration-017. Application benefit and SOTA pending.
+
 The additional CPU capture tools are:
 
 ```bash

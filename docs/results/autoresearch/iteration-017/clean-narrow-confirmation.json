@@ -1,0 +1,64 @@
+{
+  "scope": "Original narrow rounds 1 and 2 plus the replacement round; original round 0 excluded prospectively for overlapping CPU analysis.",
+  "comparisons": [
+    {
+      "candidate": "four_product_k6",
+      "case": "n388659-128x128-k3x3x3",
+      "round": 0,
+      "comparison": {
+        "eligible": true,
+        "speedup": 2.9084294075061234,
+        "baseline_drift_fraction": 0.00019456210208868008,
+        "noise_fraction": 0.0022485866788768474,
+        "before_ms": 499.5264290482737,
+        "candidate_ms": 171.73455900046974,
+        "after_ms": 499.4292590417899
+      }
+    },
+    {
+      "candidate": "four_product_k6",
+      "case": "n388659-128x128-k3x3x3",
+      "round": 1,
+      "comparison": {
+        "eligible": true,
+        "speedup": 2.9102128621790686,
+        "baseline_drift_fraction": 1.1451881214874504e-05,
+        "noise_fraction": 0.0015625538873348275,
+        "before_ms": 499.5792200206779,
+        "candidate_ms": 171.6631680028513,
+        "after_ms": 499.5734989643097
+      }
+    },
+    {
+      "candidate": "four_product_k6",
+      "case": "n388659-128x128-k3x3x3",
+      "round": 2,
+      "comparison": {
+        "eligible": true,
+        "speedup": 2.9079998879687508,
+        "baseline_drift_fraction": 0.0001826523567292071,
+        "noise_fraction": 0.0007309363806378406,
+        "before_ms": 499.2910390137695,
+        "candidate_ms": 171.68000899255276,
+        "after_ms": 499.1998589830473
+      }
+    }
+  ],
+  "results": {
+    "four_product_k6": {
+      "cases": {
+        "n388659-128x128-k3x3x3": {
+          "complete_and_correct": true,
+          "rounds": 3,
+          "median_speedup": 2.9084294075061234,
+          "minimum_speedup": 2.9079998879687508,
+          "maximum_noise_fraction": 0.0022485866788768474,
+          "consistent_screening_win": true
+        }
+      },
+      "all_requested_cases_pass": true,
+      "geomean_speedup": 2.908429407506123,
+      "promotion": "not_evaluated: requires full contract, workspace and application checks"
+    }
+  }
+}

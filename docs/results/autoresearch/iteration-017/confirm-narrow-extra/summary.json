@@ -1,0 +1,122 @@
+{
+  "status": "complete",
+  "scope": "matched completed-operator A/B/A; candidate uses prototype harness with same external numerical/residency/workspace gate; no production integration",
+  "repeat": 11,
+  "rounds": 1,
+  "case": "n388659-128x128-k3x3x3",
+  "trials": [
+    {
+      "kind": "baseline",
+      "round": 0,
+      "report": "trial-0000.json",
+      "status": "passed",
+      "returncode": 0,
+      "timing": {
+        "median_ms": 499.2910390137695,
+        "min_ms": 498.8333770306781,
+        "max_ms": 499.61003998760134,
+        "mad_ms": 0.12164999498054385,
+        "samples_ms": [
+          499.39387902850285,
+          499.13610896328464,
+          499.151949014049,
+          499.2334090056829,
+          499.61003998760134,
+          499.16938901878893,
+          498.8333770306781,
+          499.38405002467334,
+          499.2910390137695,
+          499.47889999020845,
+          499.30039001628757
+        ]
+      }
+    },
+    {
+      "kind": "prototype",
+      "round": 0,
+      "report": "trial-0001.json",
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "timing": {
+        "median_ms": 171.68000899255276,
+        "min_ms": 171.63077899022028,
+        "max_ms": 171.90589901292697,
+        "mad_ms": 0.0295299687422812,
+        "samples_ms": [
+          171.68259900063276,
+          171.670367999468,
+          171.65047902381048,
+          171.81376001099125,
+          171.90589901292697,
+          171.66115902364254,
+          171.6510880505666,
+          171.7513090115972,
+          171.63077899022028,
+          171.8887999886647,
+          171.68000899255276
+        ]
+      }
+    },
+    {
+      "kind": "baseline",
+      "round": 0,
+      "report": "trial-0002.json",
+      "status": "passed",
+      "returncode": 0,
+      "timing": {
+        "median_ms": 499.1998589830473,
+        "min_ms": 498.78925702068955,
+        "max_ms": 499.42994996672496,
+        "mad_ms": 0.10269996710121632,
+        "samples_ms": [
+          499.3025589501485,
+          499.0694089792669,
+          499.1080680047162,
+          499.1998589830473,
+          499.3514000088908,
+          499.13069896865636,
+          498.78925702068955,
+          499.30185900302604,
+          499.3525600293651,
+          499.1773290093988,
+          499.42994996672496
+        ]
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "candidate": "four_product_k6",
+      "case": "n388659-128x128-k3x3x3",
+      "round": 0,
+      "comparison": {
+        "eligible": true,
+        "speedup": 2.9079998879687508,
+        "baseline_drift_fraction": 0.0001826523567292071,
+        "noise_fraction": 0.0007309363806378406,
+        "before_ms": 499.2910390137695,
+        "candidate_ms": 171.68000899255276,
+        "after_ms": 499.1998589830473
+      }
+    }
+  ],
+  "baseline_root": "/home/user/GitHub/flexgemm-evaluator",
+  "prototype_probe_sha256": "ff4bba5ceb8b4513aeef4898e0b827f5456d29bb5a3a49a80e6e13e23261fce5",
+  "results": {
+    "four_product_k6": {
+      "cases": {
+        "n388659-128x128-k3x3x3": {
+          "complete_and_correct": true,
+          "rounds": 1,
+          "median_speedup": 2.9079998879687508,
+          "minimum_speedup": 2.9079998879687508,
+          "maximum_noise_fraction": 0.0007309363806378406,
+          "consistent_screening_win": false
+        }
+      },
+      "all_requested_cases_pass": true,
+      "geomean_speedup": 2.9079998879687508,
+      "promotion": "not_evaluated: requires full contract, workspace and application checks"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "status": "unverified four-product prototype",
+  "upstream": {
+    "status": "API compatibility and physical multicast guard prepared; awaiting device validation",
+    "upstream": "https://huggingface.co/changh95/bevfusion-p150/tree/300095a42e61075a3d5c9916620344c1067200b8",
+    "license": "Apache-2.0",
+    "upstream_python_sha256": "aa09ed70c977ad243c10565e8e9511e200c033f434fb4aed8a326c3298f392f2",
+    "modified_python_sha256": "4a57ee55b5820b2c4ead778fe7654c3d35f6d9bd8f82b36bd976562530224708",
+    "changes": "Explicit fidelity selector, matched-operand row adapter, copy_init renamed to pinned SDK copy_tile_init, native row multicast disabled if physical compute columns have gaps. No arithmetic or precision threshold change.",
+    "original_kernel_files_sha256": {
+      "kernels/k6_reader.cpp": "6c0cbda26487ca64aa97820d5dc93ab5f19c0be88a08b6c7a20db8d35510c17d",
+      "kernels/k6_writer.cpp": "ad34a8130564e554d545c62868b088beaab2b1c2fa72a53310dcaeb41243f1fa",
+      "kernels/k6_compute.cpp": "d05d8396f91d7a048768ce5862f68aa7aa5c99f807dad62e2c563097ea3fa8f4",
+      "kernels/k6_gather.hpp": "65d87341df1520505bc29b978eb150ba833ed72f7d7d7a5213e06e880b24cb1d"
+    },
+    "port_kernel_files_sha256": {
+      "kernels/k6_compute.cpp": "3e90a55804c69d0a4ab46c5210bcfd5e74bd320253d8c5a231b21731cd691572",
+      "kernels/k6_reader.cpp": "6c0cbda26487ca64aa97820d5dc93ab5f19c0be88a08b6c7a20db8d35510c17d",
+      "kernels/k6_writer.cpp": "ad34a8130564e554d545c62868b088beaab2b1c2fa72a53310dcaeb41243f1fa",
+      "kernels/k6_gather.hpp": "65d87341df1520505bc29b978eb150ba833ed72f7d7d7a5213e06e880b24cb1d"
+    }
+  },
+  "arithmetic": "existing two integer digits, four FP32 products, same reconstruction order and one final BF16 conversion",
+  "changes": "Two statically prepared integer-weight K6 layers, FP32 write_y path, existing fresh feature extraction and scale/bias helpers. K6 port kernels unchanged from iteration016. The redundant BF16 table output remains timed.",
+  "source_dependency_commit": "8c1c896b19892e9abcd340de9f8f8942f13c0728"
+}

@@ -1,0 +1,65 @@
+{
+  "iteration": 17,
+  "decision": "retain prototype for integration; no production dispatch change",
+  "baseline_commit": "b20ff40aef8401a74e957b0bac468075567bece6",
+  "source_dependency_commit": "8c1c896b19892e9abcd340de9f8f8942f13c0728",
+  "fixed_contract_unchanged": true,
+  "eligible_cases_passed": 24,
+  "unsupported_cases": 12,
+  "paired_results": {
+    "narrow_clean": {
+      "four_product_k6": {
+        "cases": {
+          "n388659-128x128-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 2.9084294075061234,
+            "minimum_speedup": 2.9079998879687508,
+            "maximum_noise_fraction": 0.0022485866788768474,
+            "consistent_screening_win": true
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 2.908429407506123,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    },
+    "largest": {
+      "four_product_k6": {
+        "cases": {
+          "n2389000-64x64-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 3.2595426651816117,
+            "minimum_speedup": 3.225936414699983,
+            "maximum_noise_fraction": 0.03286509984286754,
+            "consistent_screening_win": true
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 3.2595426651816117,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    }
+  },
+  "product_diagnostic": {
+    "incumbent_bitwise_matches": 48,
+    "cpu_exact_matches": 32,
+    "cpu_exact_mismatches_shared_by_incumbent": 16,
+    "original_cpu_exact_oracle_failures_retained": 2,
+    "conclusion": "K6 product agrees with incumbent; FP32 representability alone did not guarantee exact CPU integer dots on this hardware path. Numerical contract unchanged; low-level cause unresolved."
+  },
+  "memory_captures": 33,
+  "maximum_workspace_bytes": 726282240,
+  "device_workers": 50,
+  "normal_success_exits": 48,
+  "normal_exact_oracle_failure_exits": 2,
+  "timeouts": 0,
+  "device_recovery_required": false,
+  "limitations": [
+    "twelve wide fixtures still unsupported by prototype",
+    "small cases and 128x512 screen slower; no universal gain",
+    "no complete decoder or SOTA result",
+    "four separate calls still duplicate gathers and write unused BF16 output tables"
+  ]
+}

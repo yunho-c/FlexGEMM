@@ -1,0 +1,11 @@
+K6 sparse-convolution comparator source
+
+Upstream: changh95/bevfusion-p150
+https://huggingface.co/changh95/bevfusion-p150/tree/300095a42e61075a3d5c9916620344c1067200b8
+License: Apache-2.0 (upstream metadata and source SPDX identifiers).
+Kernel sources retain their original SPDX notices.
+
+Local changes: sparse_k6.py permits an explicit HiFi3 or HiFi4 selection;
+adapter.py is a new matched-operand, bounded-row adapter. Exact source hashes
+and the constructor patch are recorded in provenance.json and
+fidelity-selection.patch. No original author endorsement is implied.

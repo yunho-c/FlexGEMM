@@ -1,0 +1,13 @@
+{
+  "iteration": 17,
+  "baseline_commit": "b20ff40aef8401a74e957b0bac468075567bece6",
+  "scope": "Test four-product K6 prototype before production integration",
+  "hypothesis": "Integer decomposition can preserve fixed accuracy while K6 avoids DRAM im2col materialization. Four calls retain redundant gathers and BF16 outputs; first establish correctness.",
+  "first_gates": [
+    "small ragged Watcher case",
+    "previously failing decoder 128x128 case",
+    "full36 and paired operator timing before any promotion"
+  ],
+  "wide_policy": "unsupported until explicit fallback or channel partitioning implemented",
+  "workspace_limit_bytes": 1073741824
+}

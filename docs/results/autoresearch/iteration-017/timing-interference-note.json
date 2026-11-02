@@ -1,0 +1,7 @@
+{
+  "recorded_utc": "2026-11-02T12:48:52.159783+00:00",
+  "issue": "CPU-only structural-work computation overlapped the initial narrow baseline. Model report completed at 12:47:23.664796 UTC; baseline report completed at 12:47:28.476814 UTC. Exact measurement overlap cannot be excluded.",
+  "affected_round": "confirm-narrow round 0",
+  "decision": "Preserve as diagnostic; exclude it from the clean three-round confirmation, regardless of its result. Run one additional narrow A/B/A after the campaign; combine with original rounds 1 and 2. Largest-case rounds unaffected.",
+  "note": "Declared before first comparison completion; no candidate or numerical gate change."
+}

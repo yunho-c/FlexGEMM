@@ -1,0 +1,457 @@
+{
+  "status": "complete",
+  "scope": "unpaired four-product K6 prototype; 24 eligible cases, no production integration or promotion",
+  "trials": [
+    {
+      "case": "autoware-test-pcd-21359-16x16",
+      "corpus": "autoware-lidar-corpus-v1",
+      "row_chunk": 32768,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 6.9447549758479,
+      "workspace_bytes": 108587008
+    },
+    {
+      "case": "autoware-test-pcd-21359-32x64",
+      "corpus": "autoware-lidar-corpus-v1",
+      "row_chunk": 32768,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 7.789727998897433,
+      "workspace_bytes": 125110272
+    },
+    {
+      "case": "autoware-test-pcd-21359-64x64",
+      "corpus": "autoware-lidar-corpus-v1",
+      "row_chunk": 16384,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 9.1069329646416,
+      "workspace_bytes": 120176640
+    },
+    {
+      "case": "autoware-test-pcd-21359-128x128",
+      "corpus": "autoware-lidar-corpus-v1",
+      "row_chunk": 8192,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 12.684904970228672,
+      "workspace_bytes": 125636608
+    },
+    {
+      "case": "autoware-test-pcd-21359-256x256",
+      "corpus": "autoware-lidar-corpus-v1",
+      "row_chunk": 4096,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 50.98765401635319,
+      "workspace_bytes": 136581120
+    },
+    {
+      "case": "autoware-test-pcd-21359-17x35",
+      "corpus": "autoware-lidar-corpus-v1",
+      "row_chunk": 32768,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 7.660788018256426,
+      "workspace_bytes": 125110272
+    },
+    {
+      "case": "tune-scattered-35-17x45",
+      "corpus": "corpus-v2",
+      "row_chunk": 32768,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 6.568694021552801,
+      "workspace_bytes": 89645568
+    },
+    {
+      "case": "tune-surface-256-64x64",
+      "corpus": "corpus-v2",
+      "row_chunk": 16384,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 4.267325042746961,
+      "workspace_bytes": 90003456
+    },
+    {
+      "case": "tune-clustered-1025-128x128",
+      "corpus": "corpus-v2",
+      "row_chunk": 8192,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 4.976977012120187,
+      "workspace_bytes": 93102080
+    },
+    {
+      "case": "tune-scattered-257-32x256",
+      "corpus": "corpus-v2",
+      "row_chunk": 32768,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 4.743186989799142,
+      "workspace_bytes": 91132928
+    },
+    {
+      "case": "tune-surface-4096-64x64",
+      "corpus": "corpus-v2",
+      "row_chunk": 16384,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 4.772396991029382,
+      "workspace_bytes": 96884736
+    },
+    {
+      "case": "validation-scattered-35-17x45",
+      "corpus": "corpus-v2",
+      "row_chunk": 32768,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 6.427782995160669,
+      "workspace_bytes": 89645568
+    },
+    {
+      "case": "validation-surface-256-64x64",
+      "corpus": "corpus-v2",
+      "row_chunk": 16384,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 6.277161999605596,
+      "workspace_bytes": 90003456
+    },
+    {
+      "case": "validation-clustered-1025-128x128",
+      "corpus": "corpus-v2",
+      "row_chunk": 8192,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 5.388688994571567,
+      "workspace_bytes": 93102080
+    },
+    {
+      "case": "validation-scattered-257-32x256",
+      "corpus": "corpus-v2",
+      "row_chunk": 32768,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 4.990298009943217,
+      "workspace_bytes": 91132928
+    },
+    {
+      "case": "validation-surface-4096-64x64",
+      "corpus": "corpus-v2",
+      "row_chunk": 16384,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 5.606470047496259,
+      "workspace_bytes": 96884736
+    },
+    {
+      "case": "n88524-256x256-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "row_chunk": 4096,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 197.7415619767271,
+      "workspace_bytes": 205361152
+    },
+    {
+      "case": "n388659-128x128-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "row_chunk": 8192,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 171.63251800229773,
+      "workspace_bytes": 313698304
+    },
+    {
+      "case": "n388659-128x512-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "row_chunk": 8192,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 650.8594329934567,
+      "workspace_bytes": 389294080
+    },
+    {
+      "case": "n1711800-64x64-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "row_chunk": 16384,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 341.8480010004714,
+      "workspace_bytes": 552924160
+    },
+    {
+      "case": "n125219-256x256-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "row_chunk": 4096,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 278.9964539697394,
+      "workspace_bytes": 242933760
+    },
+    {
+      "case": "n551044-128x128-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "row_chunk": 8192,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 242.05090198665857,
+      "workspace_bytes": 396847104
+    },
+    {
+      "case": "n551044-128x512-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "row_chunk": 8192,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 912.1545449597761,
+      "workspace_bytes": 472442880
+    },
+    {
+      "case": "n2389000-64x64-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "row_chunk": 16384,
+      "status": "passed_probe_gates",
+      "returncode": 0,
+      "median_ms": 476.69908695388585,
+      "workspace_bytes": 726282240
+    }
+  ],
+  "unsupported": [
+    {
+      "case": "poster-shape-wide-4490",
+      "reason": "per-core CB feasibility check fails",
+      "plans": [
+        {
+          "rows": 394,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 18831104,
+          "within_budget": false
+        },
+        {
+          "rows": 1024,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 18831104,
+          "within_budget": false
+        }
+      ]
+    },
+    {
+      "case": "shape-norm-silu-513-known-failure",
+      "reason": "per-core CB feasibility check fails",
+      "plans": [
+        {
+          "rows": 513,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 18831104,
+          "within_budget": false
+        }
+      ]
+    },
+    {
+      "case": "n4490-1024x1024-k3x3x3",
+      "reason": "per-core CB feasibility check fails",
+      "plans": [
+        {
+          "rows": 394,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5062400,
+          "within_budget": false
+        },
+        {
+          "rows": 1024,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5062400,
+          "within_budget": false
+        }
+      ]
+    },
+    {
+      "case": "n4490-1024x4096-k3x3x3",
+      "reason": "per-core CB feasibility check fails",
+      "plans": [
+        {
+          "rows": 394,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 18831104,
+          "within_budget": false
+        },
+        {
+          "rows": 1024,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 18831104,
+          "within_budget": false
+        }
+      ]
+    },
+    {
+      "case": "n20251-512x512-k3x3x3",
+      "reason": "per-core CB feasibility check fails",
+      "plans": [
+        {
+          "rows": 1819,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1489664,
+          "within_budget": false
+        },
+        {
+          "rows": 2048,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1489664,
+          "within_budget": false
+        }
+      ]
+    },
+    {
+      "case": "n20251-512x2048-k3x3x3",
+      "reason": "per-core CB feasibility check fails",
+      "plans": [
+        {
+          "rows": 1819,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5228288,
+          "within_budget": false
+        },
+        {
+          "rows": 2048,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5228288,
+          "within_budget": false
+        }
+      ]
+    },
+    {
+      "case": "n88524-256x1024-k3x3x3",
+      "reason": "per-core CB feasibility check fails",
+      "plans": [
+        {
+          "rows": 2508,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1703680,
+          "within_budget": false
+        },
+        {
+          "rows": 4096,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1703680,
+          "within_budget": false
+        }
+      ]
+    },
+    {
+      "case": "n6181-1024x1024-k3x3x3",
+      "reason": "per-core CB feasibility check fails",
+      "plans": [
+        {
+          "rows": 37,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5062400,
+          "within_budget": false
+        },
+        {
+          "rows": 1024,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5062400,
+          "within_budget": false
+        }
+      ]
+    },
+    {
+      "case": "n6181-1024x4096-k3x3x3",
+      "reason": "per-core CB feasibility check fails",
+      "plans": [
+        {
+          "rows": 37,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 18831104,
+          "within_budget": false
+        },
+        {
+          "rows": 1024,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 18831104,
+          "within_budget": false
+        }
+      ]
+    },
+    {
+      "case": "n28223-512x512-k3x3x3",
+      "reason": "per-core CB feasibility check fails",
+      "plans": [
+        {
+          "rows": 1599,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1489664,
+          "within_budget": false
+        },
+        {
+          "rows": 2048,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1489664,
+          "within_budget": false
+        }
+      ]
+    },
+    {
+      "case": "n28223-512x2048-k3x3x3",
+      "reason": "per-core CB feasibility check fails",
+      "plans": [
+        {
+          "rows": 1599,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5228288,
+          "within_budget": false
+        },
+        {
+          "rows": 2048,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5228288,
+          "within_budget": false
+        }
+      ]
+    },
+    {
+      "case": "n125219-256x1024-k3x3x3",
+      "reason": "per-core CB feasibility check fails",
+      "plans": [
+        {
+          "rows": 2339,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1703680,
+          "within_budget": false
+        },
+        {
+          "rows": 4096,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1703680,
+          "within_budget": false
+        }
+      ]
+    }
+  ]
+}

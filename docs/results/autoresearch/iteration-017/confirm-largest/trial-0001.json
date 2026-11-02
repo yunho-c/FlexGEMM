@@ -1,0 +1,1784 @@
+{
+  "status": "passed_probe_gates",
+  "scope": "unscored four-product K6 prototype with fixed BF16 goldens and HiFi3; no paired timing or promotion",
+  "comparator_sha256": {
+    "adapter.py": "eddca4cbe9657afda1ff80124b79f5732658a71af479cc8f44fcd78de43fac14",
+    "kernels/k6_compute.cpp": "3e90a55804c69d0a4ab46c5210bcfd5e74bd320253d8c5a231b21731cd691572",
+    "kernels/k6_gather.hpp": "65d87341df1520505bc29b978eb150ba833ed72f7d7d7a5213e06e880b24cb1d",
+    "kernels/k6_reader.cpp": "6c0cbda26487ca64aa97820d5dc93ab5f19c0be88a08b6c7a20db8d35510c17d",
+    "kernels/k6_writer.cpp": "ad34a8130564e554d545c62868b088beaab2b1c2fa72a53310dcaeb41243f1fa",
+    "sparse_k6.py": "4a57ee55b5820b2c4ead778fe7654c3d35f6d9bd8f82b36bd976562530224708"
+  },
+  "upstream": {
+    "status": "unverified four-product prototype",
+    "upstream": {
+      "status": "API compatibility and physical multicast guard prepared; awaiting device validation",
+      "upstream": "https://huggingface.co/changh95/bevfusion-p150/tree/300095a42e61075a3d5c9916620344c1067200b8",
+      "license": "Apache-2.0",
+      "upstream_python_sha256": "aa09ed70c977ad243c10565e8e9511e200c033f434fb4aed8a326c3298f392f2",
+      "modified_python_sha256": "4a57ee55b5820b2c4ead778fe7654c3d35f6d9bd8f82b36bd976562530224708",
+      "changes": "Explicit fidelity selector, matched-operand row adapter, copy_init renamed to pinned SDK copy_tile_init, native row multicast disabled if physical compute columns have gaps. No arithmetic or precision threshold change.",
+      "original_kernel_files_sha256": {
+        "kernels/k6_reader.cpp": "6c0cbda26487ca64aa97820d5dc93ab5f19c0be88a08b6c7a20db8d35510c17d",
+        "kernels/k6_writer.cpp": "ad34a8130564e554d545c62868b088beaab2b1c2fa72a53310dcaeb41243f1fa",
+        "kernels/k6_compute.cpp": "d05d8396f91d7a048768ce5862f68aa7aa5c99f807dad62e2c563097ea3fa8f4",
+        "kernels/k6_gather.hpp": "65d87341df1520505bc29b978eb150ba833ed72f7d7d7a5213e06e880b24cb1d"
+      },
+      "port_kernel_files_sha256": {
+        "kernels/k6_compute.cpp": "3e90a55804c69d0a4ab46c5210bcfd5e74bd320253d8c5a231b21731cd691572",
+        "kernels/k6_reader.cpp": "6c0cbda26487ca64aa97820d5dc93ab5f19c0be88a08b6c7a20db8d35510c17d",
+        "kernels/k6_writer.cpp": "ad34a8130564e554d545c62868b088beaab2b1c2fa72a53310dcaeb41243f1fa",
+        "kernels/k6_gather.hpp": "65d87341df1520505bc29b978eb150ba833ed72f7d7d7a5213e06e880b24cb1d"
+      }
+    },
+    "arithmetic": "existing two integer digits, four FP32 products, same reconstruction order and one final BF16 conversion",
+    "changes": "Two statically prepared integer-weight K6 layers, FP32 write_y path, existing fresh feature extraction and scale/bias helpers. K6 port kernels unchanged from iteration016. The redundant BF16 table output remains timed.",
+    "source_dependency_commit": "8c1c896b19892e9abcd340de9f8f8942f13c0728"
+  },
+  "fidelity": "HiFi3",
+  "case": {
+    "name": "n2389000-64x64-k3x3x3",
+    "split": "application",
+    "file": "n2389000-64x64-k3x3x3.pt",
+    "sha256": "78fec0e93a7a41b640950616d73646441391142cd7439247908b8163ee752417",
+    "points": 2389000,
+    "ci": 64,
+    "co": 64,
+    "volume": 27,
+    "occurrences": 1,
+    "valid_interactions": 32657280,
+    "topology_oracle_rows": 1024,
+    "prepare_seconds": 35.43766324099852,
+    "provenance": {
+      "kind": "captured_decoder_layer",
+      "layer": "blocks.3.4.conv2",
+      "capture_sha256": "86f0b81a4d8710bd19dc887ebbff757909b904b7fc162fbafc279fa1647f03bc",
+      "scene_input_sha256": "6f62d5a77923330962996c0782cc1be2c105971fd5acd4654c9880f892596cc0",
+      "checkpoint_sha256": "e3b718d3e43e4f8780e9a24ac6fff231811a67e3b058e336e10fe654c911d581"
+    }
+  },
+  "fixture_sha256": "78fec0e93a7a41b640950616d73646441391142cd7439247908b8163ee752417",
+  "original_contract_sha256": "f49de05e37d42f895008c14caeac408513fad7a3537fbca5d74ad265131f5733",
+  "numerical_gate": {
+    "atol": 0.025,
+    "rtol": 0.025,
+    "max_relative_l2": 0.01
+  },
+  "row_chunk": 16384,
+  "checks": [
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016279111944952518,
+      "max_abs_error": 0.25054931640625,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.1533083494213404,
+      "first_failures": [],
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "variant": 0,
+      "label": "warmup"
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016352075464335885,
+      "max_abs_error": 0.125213623046875,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.15096189147345382,
+      "first_failures": [],
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "variant": 1,
+      "label": "warmup"
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016279111944952518,
+      "max_abs_error": 0.25054931640625,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.1533083494213404,
+      "first_failures": [],
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "variant": 0,
+      "label": "memory_capture"
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016279111944952518,
+      "max_abs_error": 0.25054931640625,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.1533083494213404,
+      "first_failures": [],
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "variant": 0,
+      "label": "timed",
+      "repeat_bitwise_equal": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016352075464335885,
+      "max_abs_error": 0.125213623046875,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.15096189147345382,
+      "first_failures": [],
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "variant": 1,
+      "label": "timed",
+      "repeat_bitwise_equal": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016279111944952518,
+      "max_abs_error": 0.25054931640625,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.1533083494213404,
+      "first_failures": [],
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "variant": 0,
+      "label": "timed",
+      "repeat_bitwise_equal": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016352075464335885,
+      "max_abs_error": 0.125213623046875,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.15096189147345382,
+      "first_failures": [],
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "variant": 1,
+      "label": "timed",
+      "repeat_bitwise_equal": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016279111944952518,
+      "max_abs_error": 0.25054931640625,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.1533083494213404,
+      "first_failures": [],
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "variant": 0,
+      "label": "timed",
+      "repeat_bitwise_equal": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016352075464335885,
+      "max_abs_error": 0.125213623046875,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.15096189147345382,
+      "first_failures": [],
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "variant": 1,
+      "label": "timed",
+      "repeat_bitwise_equal": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016279111944952518,
+      "max_abs_error": 0.25054931640625,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.1533083494213404,
+      "first_failures": [],
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "variant": 0,
+      "label": "timed",
+      "repeat_bitwise_equal": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016352075464335885,
+      "max_abs_error": 0.125213623046875,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.15096189147345382,
+      "first_failures": [],
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "variant": 1,
+      "label": "timed",
+      "repeat_bitwise_equal": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016279111944952518,
+      "max_abs_error": 0.25054931640625,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.1533083494213404,
+      "first_failures": [],
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "variant": 0,
+      "label": "timed",
+      "repeat_bitwise_equal": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016352075464335885,
+      "max_abs_error": 0.125213623046875,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.15096189147345382,
+      "first_failures": [],
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "variant": 1,
+      "label": "timed",
+      "repeat_bitwise_equal": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0016279111944952518,
+      "max_abs_error": 0.25054931640625,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.1533083494213404,
+      "first_failures": [],
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1,
+      "variant": 0,
+      "label": "timed",
+      "repeat_bitwise_equal": true
+    }
+  ],
+  "samples": [
+    477.454689971637,
+    479.3402170180343,
+    492.8312849951908,
+    479.1102160234004,
+    481.92783596459776,
+    486.6865439689718,
+    475.2563920337707,
+    480.3512010257691,
+    479.59134803386405,
+    477.9336819774471,
+    475.62454297440127
+  ],
+  "source": {
+    "root": "/home/user/GitHub/flexgemm-evaluator",
+    "commit": "8c1c896b19892e9abcd340de9f8f8942f13c0728",
+    "dirty": false,
+    "sha256": {
+      "flex_gemm/tenstorrent/__init__.py": "3c46ffc40c3b93e480d8dd830404921675c490ccb1a94f609a7423cdc151bb8c",
+      "flex_gemm/tenstorrent/conv.py": "389903b43e5246a94bfba678070a0b031da45c749de5e5c0484c20ac65c7f6c5",
+      "flex_gemm/tenstorrent/digits.py": "ac35d99eabf040e81d039f7178c1cd4eb254a2112d31b7634b0ccb53ad5f1641",
+      "flex_gemm/tenstorrent/feature_digits.py": "33a6117dcfc96b4224fc7c82ddccb4fda00308f1999aff5cbc7209867659fd76",
+      "flex_gemm/tenstorrent/gather.py": "84bb18bfd4d77468aee9366342a3976f92cf0d71dd2da13a157d955156895315",
+      "flex_gemm/tenstorrent/implicit.py": "b512b11eff94b770c9131ba3a1f376b7f060bd17206a8ab0c3aae693e0eee688",
+      "flex_gemm/tenstorrent/masking.py": "32c66f47bd2caef0ec94e34c23e0ae09562206a47267cc490db304cf7f0d10b7",
+      "flex_gemm/tenstorrent/ops.py": "c5e99c9032b6f472ee6d276ad196bb6caeaaadc539cb96a6fad25eb17b4a12db",
+      "flex_gemm/tenstorrent/reference.py": "a0dc3709115acfb282ea9d472b63ed470e62421e478ab67d20b2387b8ea0bdd3",
+      "flex_gemm/tenstorrent/resident.py": "011696c79b5b108c29a9d256878e70d44957a1d46f0612411eeb1581e11bdc6c",
+      "flex_gemm/tenstorrent/kernels/compute.cpp": "431780ae171a14f2e4ea9db2b8b7db5fc23b064bde7e12623da60070a4cee075",
+      "flex_gemm/tenstorrent/kernels/copy_output_tiles.cpp": "c1f12ea86cbc2545842495c5c9cf8774e9bf45b1533b3cbb40859834e2e2c642",
+      "flex_gemm/tenstorrent/kernels/feature_digits_compute.cpp": "671870f8c356b59efbf92f719fe52216f3907f0583c32464ec6bd09117b45a19",
+      "flex_gemm/tenstorrent/kernels/feature_digits_reader.cpp": "f68826bc0b439952af1f9afd70b2130632a0d2b4ee3ff2f2c1dc08f37cfe7263",
+      "flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp": "b3014798f33717b0e77c0ad86c0dd298903cb9bb13aabdde02aeb6bb1fc0ec0c",
+      "flex_gemm/tenstorrent/kernels/gather.cpp": "b546a590ae983e7a16c6cd0d9029ae6ed15eb5923b25a06cc85a882b67c537a7",
+      "flex_gemm/tenstorrent/kernels/reader.cpp": "6ba3b2ef6f4f80f3b354cb40210c181753d593236ffb080ff36825d61ceeddab",
+      "flex_gemm/tenstorrent/kernels/writer.cpp": "494dcd0566cec973a6b792109071a37f40c6579a155ed1d4d6ef3029505d83fc"
+    }
+  },
+  "probe_sha256": "ff4bba5ceb8b4513aeef4898e0b827f5456d29bb5a3a49a80e6e13e23261fce5",
+  "promotion": "not_evaluated",
+  "algorithm": "four_product_k6",
+  "watcher": null,
+  "repeat": 11,
+  "tt_metal_commit": "9f9cd4fd590f4b606bd0981a4fe0b6403eb38ec9",
+  "phase": "complete",
+  "port_settings": {
+    "physical_core_rows": [
+      [
+        [
+          18,
+          18
+        ],
+        [
+          19,
+          18
+        ],
+        [
+          20,
+          18
+        ],
+        [
+          21,
+          18
+        ],
+        [
+          22,
+          18
+        ],
+        [
+          23,
+          18
+        ],
+        [
+          24,
+          18
+        ],
+        [
+          25,
+          18
+        ]
+      ],
+      [
+        [
+          18,
+          19
+        ],
+        [
+          19,
+          19
+        ],
+        [
+          20,
+          19
+        ],
+        [
+          21,
+          19
+        ],
+        [
+          22,
+          19
+        ],
+        [
+          23,
+          19
+        ],
+        [
+          24,
+          19
+        ],
+        [
+          25,
+          19
+        ]
+      ],
+      [
+        [
+          18,
+          20
+        ],
+        [
+          19,
+          20
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          21,
+          20
+        ],
+        [
+          22,
+          20
+        ],
+        [
+          23,
+          20
+        ],
+        [
+          24,
+          20
+        ],
+        [
+          25,
+          20
+        ]
+      ],
+      [
+        [
+          18,
+          21
+        ],
+        [
+          19,
+          21
+        ],
+        [
+          20,
+          21
+        ],
+        [
+          21,
+          21
+        ],
+        [
+          22,
+          21
+        ],
+        [
+          23,
+          21
+        ],
+        [
+          24,
+          21
+        ],
+        [
+          25,
+          21
+        ]
+      ],
+      [
+        [
+          18,
+          22
+        ],
+        [
+          19,
+          22
+        ],
+        [
+          20,
+          22
+        ],
+        [
+          21,
+          22
+        ],
+        [
+          22,
+          22
+        ],
+        [
+          23,
+          22
+        ],
+        [
+          24,
+          22
+        ],
+        [
+          25,
+          22
+        ]
+      ],
+      [
+        [
+          18,
+          23
+        ],
+        [
+          19,
+          23
+        ],
+        [
+          20,
+          23
+        ],
+        [
+          21,
+          23
+        ],
+        [
+          22,
+          23
+        ],
+        [
+          23,
+          23
+        ],
+        [
+          24,
+          23
+        ],
+        [
+          25,
+          23
+        ]
+      ],
+      [
+        [
+          18,
+          24
+        ],
+        [
+          19,
+          24
+        ],
+        [
+          20,
+          24
+        ],
+        [
+          21,
+          24
+        ],
+        [
+          22,
+          24
+        ],
+        [
+          23,
+          24
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          25,
+          24
+        ]
+      ],
+      [
+        [
+          18,
+          25
+        ],
+        [
+          19,
+          25
+        ],
+        [
+          20,
+          25
+        ],
+        [
+          21,
+          25
+        ],
+        [
+          22,
+          25
+        ],
+        [
+          23,
+          25
+        ],
+        [
+          24,
+          25
+        ],
+        [
+          25,
+          25
+        ]
+      ]
+    ],
+    "multicast": true,
+    "split_gather": true,
+    "product_calls": 4,
+    "fp32_product_output": true,
+    "unused_bf16_output_included": true,
+    "integer_weight_storage": "FP32 encoding of incumbent BF16 integer digits"
+  },
+  "plans": [
+    {
+      "start": 0,
+      "end": 16384,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 16384,
+      "end": 32768,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 32768,
+      "end": 49152,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 49152,
+      "end": 65536,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 65536,
+      "end": 81920,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 81920,
+      "end": 98304,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 98304,
+      "end": 114688,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 114688,
+      "end": 131072,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 131072,
+      "end": 147456,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 147456,
+      "end": 163840,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 163840,
+      "end": 180224,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 180224,
+      "end": 196608,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 196608,
+      "end": 212992,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 212992,
+      "end": 229376,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 229376,
+      "end": 245760,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 245760,
+      "end": 262144,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 262144,
+      "end": 278528,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 278528,
+      "end": 294912,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 294912,
+      "end": 311296,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 311296,
+      "end": 327680,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 327680,
+      "end": 344064,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 344064,
+      "end": 360448,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 360448,
+      "end": 376832,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 376832,
+      "end": 393216,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 393216,
+      "end": 409600,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 409600,
+      "end": 425984,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 425984,
+      "end": 442368,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 442368,
+      "end": 458752,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 458752,
+      "end": 475136,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 475136,
+      "end": 491520,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 491520,
+      "end": 507904,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 507904,
+      "end": 524288,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 524288,
+      "end": 540672,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 540672,
+      "end": 557056,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 557056,
+      "end": 573440,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 573440,
+      "end": 589824,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 589824,
+      "end": 606208,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 606208,
+      "end": 622592,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 622592,
+      "end": 638976,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 638976,
+      "end": 655360,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 655360,
+      "end": 671744,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 671744,
+      "end": 688128,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 688128,
+      "end": 704512,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 704512,
+      "end": 720896,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 720896,
+      "end": 737280,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 737280,
+      "end": 753664,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 753664,
+      "end": 770048,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 770048,
+      "end": 786432,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 786432,
+      "end": 802816,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 802816,
+      "end": 819200,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 819200,
+      "end": 835584,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 835584,
+      "end": 851968,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 851968,
+      "end": 868352,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 868352,
+      "end": 884736,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 884736,
+      "end": 901120,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 901120,
+      "end": 917504,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 917504,
+      "end": 933888,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 933888,
+      "end": 950272,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 950272,
+      "end": 966656,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 966656,
+      "end": 983040,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 983040,
+      "end": 999424,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 999424,
+      "end": 1015808,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1015808,
+      "end": 1032192,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1032192,
+      "end": 1048576,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1048576,
+      "end": 1064960,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1064960,
+      "end": 1081344,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1081344,
+      "end": 1097728,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1097728,
+      "end": 1114112,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1114112,
+      "end": 1130496,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1130496,
+      "end": 1146880,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1146880,
+      "end": 1163264,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1163264,
+      "end": 1179648,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1179648,
+      "end": 1196032,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1196032,
+      "end": 1212416,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1212416,
+      "end": 1228800,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1228800,
+      "end": 1245184,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1245184,
+      "end": 1261568,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1261568,
+      "end": 1277952,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1277952,
+      "end": 1294336,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1294336,
+      "end": 1310720,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1310720,
+      "end": 1327104,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1327104,
+      "end": 1343488,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1343488,
+      "end": 1359872,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1359872,
+      "end": 1376256,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1376256,
+      "end": 1392640,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1392640,
+      "end": 1409024,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1409024,
+      "end": 1425408,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1425408,
+      "end": 1441792,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1441792,
+      "end": 1458176,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1458176,
+      "end": 1474560,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1474560,
+      "end": 1490944,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1490944,
+      "end": 1507328,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1507328,
+      "end": 1523712,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1523712,
+      "end": 1540096,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1540096,
+      "end": 1556480,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1556480,
+      "end": 1572864,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1572864,
+      "end": 1589248,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1589248,
+      "end": 1605632,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1605632,
+      "end": 1622016,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1622016,
+      "end": 1638400,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1638400,
+      "end": 1654784,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1654784,
+      "end": 1671168,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1671168,
+      "end": 1687552,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1687552,
+      "end": 1703936,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1703936,
+      "end": 1720320,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1720320,
+      "end": 1736704,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1736704,
+      "end": 1753088,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1753088,
+      "end": 1769472,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1769472,
+      "end": 1785856,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1785856,
+      "end": 1802240,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1802240,
+      "end": 1818624,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1818624,
+      "end": 1835008,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1835008,
+      "end": 1851392,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1851392,
+      "end": 1867776,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1867776,
+      "end": 1884160,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1884160,
+      "end": 1900544,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1900544,
+      "end": 1916928,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1916928,
+      "end": 1933312,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1933312,
+      "end": 1949696,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1949696,
+      "end": 1966080,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1966080,
+      "end": 1982464,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1982464,
+      "end": 1998848,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 1998848,
+      "end": 2015232,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2015232,
+      "end": 2031616,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2031616,
+      "end": 2048000,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2048000,
+      "end": 2064384,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2064384,
+      "end": 2080768,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2080768,
+      "end": 2097152,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2097152,
+      "end": 2113536,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2113536,
+      "end": 2129920,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2129920,
+      "end": 2146304,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2146304,
+      "end": 2162688,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2162688,
+      "end": 2179072,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2179072,
+      "end": 2195456,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2195456,
+      "end": 2211840,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2211840,
+      "end": 2228224,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2228224,
+      "end": 2244608,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2244608,
+      "end": 2260992,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2260992,
+      "end": 2277376,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2277376,
+      "end": 2293760,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2293760,
+      "end": 2310144,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2310144,
+      "end": 2326528,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2326528,
+      "end": 2342912,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2342912,
+      "end": 2359296,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2359296,
+      "end": 2375680,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 636800
+    },
+    {
+      "start": 2375680,
+      "end": 2389000,
+      "tap_chunk": 14,
+      "tap_chunks": 2,
+      "cb_bytes": 628608
+    }
+  ],
+  "input_contract": [
+    {
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1
+    },
+    {
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1
+    }
+  ],
+  "workspace": {
+    "kind": "conservative_bound_from_allocator_trace",
+    "new_dram_peak_bytes": 942895104,
+    "dram_allocations": 2363,
+    "dram_banks": 12,
+    "inclusive_upper_bound_bytes": 1032077312,
+    "temporary_dram_peak_bytes": 637100032,
+    "excluded_final_output": {
+      "device_id": 1,
+      "address": 126721344,
+      "event_index": 235,
+      "aligned_bytes": 305799168,
+      "expected_padded_bytes": 305795072,
+      "excluded_bytes": 305795072
+    },
+    "all_l1_capacity_bytes": 89182208,
+    "workspace_upper_bound_bytes": 726282240,
+    "workspace_limit_bytes": 1073741824,
+    "trace_valid": true,
+    "anomalies": [],
+    "within_limit": true,
+    "scope": "new aligned DRAM allocations excluding only the final output's padded tensor bytes from its identified live allocation, plus whole-device L1 capacity",
+    "trace_path": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-017/confirm-largest/trial-0001.allocations.json.gz",
+    "trace_sha256": "07c926800cbf0e7346c4f62757f365520a33f70c386c30232f98398e165ffb35"
+  },
+  "timing": {
+    "median_ms": 479.3402170180343,
+    "min_ms": 475.2563920337707,
+    "max_ms": 492.8312849951908,
+    "mad_ms": 1.8855270463973284,
+    "samples_ms": [
+      477.454689971637,
+      479.3402170180343,
+      492.8312849951908,
+      479.1102160234004,
+      481.92783596459776,
+      486.6865439689718,
+      475.2563920337707,
+      480.3512010257691,
+      479.59134803386405,
+      477.9336819774471,
+      475.62454297440127
+    ]
+  },
+  "input_unchanged": true,
+  "source_unchanged": true,
+  "fixture_unchanged": true,
+  "contract_unchanged": true,
+  "probe_unchanged": true,
+  "comparator_unchanged": true
+}

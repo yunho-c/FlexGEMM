@@ -1,0 +1,8 @@
+The prototype derives from the Apache-2.0 K6 port archived in iteration 016,
+originally changh95/bevfusion-p150 revision
+300095a42e61075a3d5c9916620344c1067200b8. Each source snapshot contains LICENSE
+and NOTICE. Local changes add four calls with integer digit weights, FP32
+product output and the incumbent reconstruction/epilogue. The separate BF16
+weight diagnostic changes weight CB format, page size and reader transfer
+sizes; it was not adopted. Kernel API and physical multicast guard changes
+from iteration 016 remain. No original author endorsement is implied.

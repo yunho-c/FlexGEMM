@@ -1,0 +1,82 @@
+2026-11-02 12:35:41.785 | DEBUG    | ttnn:<module>:78 - Initial ttnn.CONFIG:
+Config{cache_path=/home/user/.cache/ttnn,model_cache_path=/home/user/.cache/ttnn/models,tmp_dir=/tmp/ttnn,enable_model_cache=false,enable_fast_runtime_mode=true,validate_program_args=false,throw_exception_on_fallback=false,enable_logging=false,enable_graph_report=false,enable_graph_python_stack_traces=false,enable_detailed_buffer_report=false,enable_detailed_tensor_report=false,enable_comparison_mode=false,comparison_mode_should_raise_exception=false,comparison_mode_pcc=0.9999,root_report_path=generated/ttnn/reports,report_name=std::nullopt,std::nullopt}
+2026-11-02 12:35:41.920 | info     |          Device | Opening user mode device driver (tt_cluster.cpp:228)
+2026-11-02 12:35:41.920 | info     |             UMD | Cluster constructor started. (cluster.cpp:389)
+2026-11-02 12:35:41.920 | info     |             UMD | Creating TopologyDiscovery for architecture: wormhole_b0 (topology_discovery.cpp:96)
+2026-11-02 12:35:41.920 | info     |             UMD | Starting topology discovery. (topology_discovery.cpp:115)
+2026-11-02 12:35:41.922 | info     |             UMD | Established firmware bundle version: 19.11.0 (topology_discovery.cpp:575)
+2026-11-02 12:35:41.922 | info     |             UMD | Completed topology discovery. (topology_discovery.cpp:119)
+2026-11-02 12:35:42.025 | info     |             UMD | Opening local chip ids/PCIe ids: {0}/[3] and remote chip ids {} (cluster.cpp:173)
+2026-11-02 12:35:42.026 | info     |             UMD | IOMMU: disabled (cluster.cpp:147)
+2026-11-02 12:35:42.026 | info     |             UMD | KMD version: 2.3.0 (cluster.cpp:150)
+2026-11-02 12:35:42.026 | info     |             UMD | Cluster constructor completed. (cluster.cpp:648)
+2026-11-02 12:35:42.027 | info     |             UMD | Starting devices in cluster (cluster.cpp:1188)
+2026-11-02 12:35:42.029 | info     |             UMD | Starting devices in cluster completed. (cluster.cpp:1196)
+2026-11-02 12:35:42.155 | info     |     Distributed | Using auto discovery to generate mesh graph. (metal_env.cpp:437)
+2026-11-02 12:35:42.155 | info     |     Distributed | Constructing control plane using auto-discovery (no mesh graph descriptor). (metal_env.cpp:499)
+2026-11-02 12:35:42.155 | warning  |          Always | Unknown motherboard 'H12DSG-O-CPU' for chip_id=0 (bus_id=0x25) — falling back to bus_id as tray_id. Add this motherboard and its bus IDs to mobo_to_bus_ids in physical_system_discovery.cpp. (physical_system_discovery.cpp:119)
+2026-11-02 12:35:42.156 | info     |          Fabric | Logical multi-mesh adjacency: intermesh degree histogram {0:1}; intra-mesh degree histograms mesh0 {0:1} (topology_mapper_utils.cpp:3329)
+2026-11-02 12:35:42.156 | info     |          Fabric | Physical multi-mesh adjacency: intermesh degree histogram {0:1}; intra-mesh degree histograms mesh0 {0:1} (topology_mapper_utils.cpp:3337)
+2026-11-02 12:35:42.193 | info     |       LLRuntime | Watcher log file: /home/user/GitHub/flexgemm-evaluator/generated/watcher/watcher.log (watcher_server.cpp:296)
+2026-11-02 12:35:42.193 | info     |       LLRuntime | Watcher server initialized, disabled features: None (watcher_server.cpp:565)
+2026-11-02 12:35:42.193 | info     |           Metal | Watcher checking device 0 (watcher_device_reader.cpp:415)
+2026-11-02 12:35:42.253 | info     |           Metal | D2HSocket: Using hugepage fallback for device 0 (data_dev_addr=0x3fdfe000, pcie_xy_enc=0xc08) (d2h_socket.cpp:164)
+2026-11-02 12:35:43.202 | info     |           Metal | Watcher checking device 0 (watcher_device_reader.cpp:415)
+Building trisc1, compile step:
+/home/user/tt-metal/runtime/sfpi/compiler/bin/riscv-tt-elf-g++ -O3 -std=c++17 -ftt-nttp -ftt-constinit -ftt-consteval -ftt-no-dyninit -flto=auto -ffast-math -fno-finite-math-only -fsigned-zeros -fno-associative-math -fno-exceptions -fno-rtti -fno-use-cxa-atexit -g -MMD -Wall -Werror -Wno-error=deprecated-declarations -Wno-error=multistatement-macros -Wno-error=parentheses -Wno-error=unused-but-set-variable -Wno-unused-variable -Wno-unused-function -mcpu=tt-wh-tensix -I. -I.. -I/home/user/tt-metal/ -I/home/user/tt-metal/ttnn -I/home/user/tt-metal/ttnn/cpp -I/home/user/tt-metal/tt_metal -I/home/user/tt-metal/tt_metal/hw/inc -I/home/user/tt-metal/tt_metal/tt-llk/common -I/home/user/tt-metal/tt_metal/hostdevcommon/api -I/home/user/tt-metal/tt_metal/api/ -I/home/user/tt-metal/runtime/sfpi/include -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_io -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/wormhole_b0_defines -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/noc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/common/inc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/llk_lib -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_api -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_api/llk_sfpu -I/home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx -I/home/user/tt-scratchpad/flexgemm-autoresearch/comparators/k6-four-product-bf16-probe/kernels -DIS_NOT_POW2_NUM_DRAM_BANKS=1 -DLOG_BASE_2_OF_NUM_L1_BANKS=6 -DNUM_DRAM_BANKS=12 -DNUM_L1_BANKS=64 -DPCIE_NOC_X=0 -DPCIE_NOC_Y=3 -DTENSIX_FIRMWARE -DLOCAL_MEM_EN=0 -DWATCHER_ENABLED -DROUTING_FW_ENABLED -DPROCESSOR_INDEX=3 -DUCK_CHLKC_MATH -DCOMPILE_FOR_TRISC=1 -DPROGRAMMABLE_CORE_TYPE=0 -DARCH_WORMHOLE -DDISPATCH_MESSAGE_ADDR=4290183304 -DKERNEL_BUILD -DFULL_KERNEL_NAME="k6_compute/6554174913343717275/" -DKERNEL_COMPILE_TIME_ARGS=1,1,1,1,1,1,1,64,0,1,0,1 -c -o /home/user/.cache/tt-metal-cache/958459043310398569/kernels/k6_compute/6554174913343717275/trisc1/trisck.16679969108986651124_1131189.o /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/trisck.cc -MF /home/user/.cache/tt-metal-cache/958459043310398569/kernels/k6_compute/6554174913343717275/trisc1/trisck.16679969108986651124_1131189.d
+In file included from /home/user/tt-scratchpad/flexgemm-autoresearch/comparators/k6-four-product-bf16-probe/kernels/k6_compute.cpp:20,
+                 from ../chlkc_math.cpp:3,
+                 from /home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common/chlkc_list.h:16,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/trisck.cc:13:
+/home/user/tt-metal/tt_metal/hw/inc/api/compute/copy_dest_values.h: In function 'void ckernel::copy_dest_values(uint32_t, uint32_t)':
+/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_api/llk_sfpu/llk_math_eltwise_binary_sfpu_macros.h:51:43: warning: 'void ckernel::sfpu::copy_dest_value(uint, uint, uint) [with bool APPROXIMATION_MODE = false; int ITERATIONS = 8; uint = long unsigned int]' is deprecated: Use copy_dest_value<DataFormat, APPROXIMATION_MODE, ITERATIONS> instead [-Wdeprecated-declarations]
+   51 |      _llk_math_eltwise_binary_sfpu_params_(                                                               \
+      |      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   52 |          ::ckernel::sfpu::FN<_SFPU_BIN_EXPAND TEMPLATES>, DST_IN0, DST_IN1, DST_OUT, VECTOR_MODE, ##__VA_ARGS__))
+      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/api/compute/compute_kernel_api.h:66:19: note: in definition of macro 'MATH'
+   66 | #define MATH(...) __VA_ARGS__
+      |                   ^~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/api/compute/copy_dest_values.h:65:11: note: in expansion of macro 'SFPU_BINARY_CALL'
+   65 |     MATH((SFPU_BINARY_CALL(
+      |           ^~~~~~~~~~~~~~~~
+In file included from /home/user/tt-metal/tt_metal/hw/inc/api/compute/copy_dest_values.h:9,
+                 from /home/user/tt-scratchpad/flexgemm-autoresearch/comparators/k6-four-product-bf16-probe/kernels/k6_compute.cpp:22:
+/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_api/llk_sfpu/ckernel_sfpu_copy_dest_values.h:39:6: note: declared here
+   39 | void copy_dest_value(const uint dst_index_in, const uint dst_index_out, const uint /* unused */) {
+      |      ^~~~~~~~~~~~~~~
+2026-11-02 12:35:44.210 | info     |           Metal | Watcher checking device 0 (watcher_device_reader.cpp:415)
+2026-11-02 12:35:45.219 | info     |           Metal | Watcher checking device 0 (watcher_device_reader.cpp:415)
+Building trisc1, compile step:
+/home/user/tt-metal/runtime/sfpi/compiler/bin/riscv-tt-elf-g++ -O3 -std=c++17 -ftt-nttp -ftt-constinit -ftt-consteval -ftt-no-dyninit -flto=auto -ffast-math -fno-finite-math-only -fsigned-zeros -fno-associative-math -fno-exceptions -fno-rtti -fno-use-cxa-atexit -g -MMD -Wall -Werror -Wno-error=deprecated-declarations -Wno-error=multistatement-macros -Wno-error=parentheses -Wno-error=unused-but-set-variable -Wno-unused-variable -Wno-unused-function -mcpu=tt-wh-tensix -I. -I.. -I/home/user/tt-metal/ -I/home/user/tt-metal/ttnn -I/home/user/tt-metal/ttnn/cpp -I/home/user/tt-metal/tt_metal -I/home/user/tt-metal/tt_metal/hw/inc -I/home/user/tt-metal/tt_metal/tt-llk/common -I/home/user/tt-metal/tt_metal/hostdevcommon/api -I/home/user/tt-metal/tt_metal/api/ -I/home/user/tt-metal/runtime/sfpi/include -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_io -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/wormhole_b0_defines -I/home/user/tt-metal/tt_metal/hw/inc/internal/tt-1xx/wormhole/noc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/common/inc -I/home/user/tt-metal/tt_metal/tt-llk/tt_llk_wormhole_b0/llk_lib -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_api -I/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_api/llk_sfpu -I/home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx -I/home/user/tt-scratchpad/flexgemm-autoresearch/comparators/k6-four-product-bf16-probe/kernels -DIS_NOT_POW2_NUM_DRAM_BANKS=1 -DLOG_BASE_2_OF_NUM_L1_BANKS=6 -DNUM_DRAM_BANKS=12 -DNUM_L1_BANKS=64 -DPCIE_NOC_X=0 -DPCIE_NOC_Y=3 -DTENSIX_FIRMWARE -DLOCAL_MEM_EN=0 -DWATCHER_ENABLED -DROUTING_FW_ENABLED -DPROCESSOR_INDEX=3 -DUCK_CHLKC_MATH -DCOMPILE_FOR_TRISC=1 -DPROGRAMMABLE_CORE_TYPE=0 -DARCH_WORMHOLE -DDISPATCH_MESSAGE_ADDR=4290183304 -DKERNEL_BUILD -DFULL_KERNEL_NAME="k6_compute/5898961071360706425/" -DKERNEL_COMPILE_TIME_ARGS=1,27,1,2,1,27,1,64,0,1,0,1 -c -o /home/user/.cache/tt-metal-cache/958459043310398569/kernels/k6_compute/5898961071360706425/trisc1/trisck.16679969108986651124_1131189.o /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/trisck.cc -MF /home/user/.cache/tt-metal-cache/958459043310398569/kernels/k6_compute/5898961071360706425/trisc1/trisck.16679969108986651124_1131189.d
+In file included from /home/user/tt-scratchpad/flexgemm-autoresearch/comparators/k6-four-product-bf16-probe/kernels/k6_compute.cpp:20,
+                 from ../chlkc_math.cpp:3,
+                 from /home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common/chlkc_list.h:16,
+                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/trisck.cc:13:
+/home/user/tt-metal/tt_metal/hw/inc/api/compute/copy_dest_values.h: In function 'void ckernel::copy_dest_values(uint32_t, uint32_t)':
+/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_api/llk_sfpu/llk_math_eltwise_binary_sfpu_macros.h:51:43: warning: 'void ckernel::sfpu::copy_dest_value(uint, uint, uint) [with bool APPROXIMATION_MODE = false; int ITERATIONS = 8; uint = long unsigned int]' is deprecated: Use copy_dest_value<DataFormat, APPROXIMATION_MODE, ITERATIONS> instead [-Wdeprecated-declarations]
+   51 |      _llk_math_eltwise_binary_sfpu_params_(                                                               \
+      |      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   52 |          ::ckernel::sfpu::FN<_SFPU_BIN_EXPAND TEMPLATES>, DST_IN0, DST_IN1, DST_OUT, VECTOR_MODE, ##__VA_ARGS__))
+      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/api/compute/compute_kernel_api.h:66:19: note: in definition of macro 'MATH'
+   66 | #define MATH(...) __VA_ARGS__
+      |                   ^~~~~~~~~~~
+/home/user/tt-metal/tt_metal/hw/inc/api/compute/copy_dest_values.h:65:11: note: in expansion of macro 'SFPU_BINARY_CALL'
+   65 |     MATH((SFPU_BINARY_CALL(
+      |           ^~~~~~~~~~~~~~~~
+In file included from /home/user/tt-metal/tt_metal/hw/inc/api/compute/copy_dest_values.h:9,
+                 from /home/user/tt-scratchpad/flexgemm-autoresearch/comparators/k6-four-product-bf16-probe/kernels/k6_compute.cpp:22:
+/home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/llk_api/llk_sfpu/ckernel_sfpu_copy_dest_values.h:39:6: note: declared here
+   39 | void copy_dest_value(const uint dst_index_in, const uint dst_index_out, const uint /* unused */) {
+      |      ^~~~~~~~~~~~~~~
+2026-11-02 12:35:46.228 | info     |           Metal | Watcher checking device 0 (watcher_device_reader.cpp:415)
+2026-11-02 12:35:47.238 | info     |           Metal | Watcher checking device 0 (watcher_device_reader.cpp:415)
+2026-11-02 12:35:47.339 | info     |    BuildKernels | JIT cache stats: 78/88 hits (88.6%) [78 cached, 11 build-once dedup, 0 merged artifacts, 0 merged genfiles] (build_cache_telemetry.cpp:207)
+2026-11-02 12:35:47.339 | info     |    BuildKernels | JIT telemetry: 3 registered TelemetryTokens (build_cache_telemetry.cpp:230)
+2026-11-02 12:35:47.340 | info     |       LLRuntime | Watcher thread stopped watching... (watcher_server.cpp:613)
+2026-11-02 12:35:47.343 | info     |          Device | Closing user mode device drivers (tt_cluster.cpp:513)
+2026-11-02 12:35:47.343 | info     |             UMD | Closing devices in cluster (cluster.cpp:1201)
+2026-11-02 12:35:47.347 | info     |             UMD | Closing devices in cluster completed. (cluster.cpp:1210)
+2026-11-02 12:35:47.347 | info     |             UMD | Cluster destructor started. (cluster.cpp:916)
+2026-11-02 12:35:47.347 | info     |             UMD | Cluster destructor completed. (cluster.cpp:919)
