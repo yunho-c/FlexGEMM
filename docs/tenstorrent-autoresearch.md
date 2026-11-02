@@ -68,9 +68,10 @@ neighbors, captured 1024-channel decoder activations, and the pretrained
 regression is a separate mandatory case. Large tensors remain outside git;
 the committed manifest contains their hashes and provenance.
 
-Current coverage is not a held-out scene benchmark. Additional independent
-scenes, captured narrow/late-stage layers, layer occurrence counts, complete
-stage timings and accurate-output integration are still outstanding. Synthetic
+Current coverage is not a held-out scene benchmark. Iteration 001 adds full-size
+narrow/late-stage captures and measured layer occurrence counts from the poster
+shape decoder. Additional independent scenes, complete stage timings and
+accurate-output integration are still outstanding. Synthetic
 geometric-mean speedup describes coverage; it is not an application score.
 
 Promote a performance candidate only after all applicable correctness cases
@@ -120,3 +121,51 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   CPU topology/validation/masking regressions also pass.
 - Hardware status: pending the other conversation's device release. No latency
   improvement or state-of-the-art performance is claimed for this iteration.
+
+### 001 — hardware evaluator smoke and real shape corpus
+
+- Evidence: iteration 000's corpus/evaluator passes CPU checks. A coordinated
+  short hardware window permits testing evaluation and profiler extraction.
+- Prediction: including fresh feature gather changes comparisons with the old
+  prepared-explicit timings; the known numerical failure must still be rejected.
+- Result: resident explicit and implicit both pass on surface-256. Screening
+  medians are 1.006 ms explicit and 0.601 ms implicit. Full 4,490-row explicit
+  execution with row_chunk=256 passes at 58.088 ms. These use 7, 3 and 3 timed
+  repetitions respectively and are not paired promotion measurements.
+- The original LayerNorm+SiLU error reproduces exactly at [305,2295]; its report
+  fails. The second feature variant passes. No tolerance was changed.
+- Device profiling produced 13,440 records covering 21 program runs, with zero
+  unmatched start/end events. Program durations use the critical span across
+  cores/RISCs, not a sum of overlapping times. The raw CSV and parsed report are
+  committed. This first capture has no accumulated waits/hardware counters;
+  `TT_METAL_PROFILER_SUM=1` was identified in the pinned SDK and enabled for the
+  next profiling run. Operator identity remains null until correlated.
+- Independently replayed the full CPU shape decoder on the saved poster latent.
+  Captured nine distinct convolution signatures across all 40 invocations,
+  from 4,490 to 1,711,800 voxels and 64–4096 channels. Preserved all source and
+  output rows. Recorded occurrences (4,1,17,1,9,1,5,1,1), file/checkpoint/source
+  digests, and input provenance. The capture took 99.5 seconds and left source
+  files unchanged. Full BF16-rounded reference pairs are materialized for each
+  capture; 1,024 output rows per map are cross-checked against an independent
+  coordinate dictionary, with all input neighbors available.
+- Interpretation: the evaluation path works on hardware and rejects the known
+  error. The expanded corpus prevents optimizing only tiny synthetic cases.
+  No kernel/configuration has been promoted yet. Next: explicit row-chunk
+  screening, paired confirmations, wait profiling and resource calibration.
+
+The additional CPU capture tools are:
+
+```bash
+python -m benchmarks.tenstorrent.capture_genrecon \
+  --checkpoint /home/user/models/genrecon/trellis2/ckpts/shape_dec_next_dc_f16c32_fp16 \
+  --latent /home/user/tt-scratchpad/genrecon/sparse-decoder-poster-bounded/decoder_input.npz \
+  --output /home/user/tt-scratchpad/flexgemm-autoresearch/poster-shape-captures-v1
+
+python -m benchmarks.tenstorrent.prepare_captures \
+  --captures /home/user/tt-scratchpad/flexgemm-autoresearch/poster-shape-captures-v1 \
+  --output /home/user/tt-scratchpad/flexgemm-autoresearch/poster-shape-corpus-v1
+```
+
+This corpus supports an occurrence-weighted latency proxy. It uses one
+representative set of values/weights per repeated shape, so it does not replace
+the complete decoder's numerical or runtime validation.

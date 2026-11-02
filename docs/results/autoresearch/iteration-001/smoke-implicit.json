@@ -1,0 +1,257 @@
+{
+  "status": "passed",
+  "phase": "complete",
+  "case": {
+    "name": "tune-surface-256-64x64",
+    "split": "tune",
+    "file": "tune-surface-256-64x64.pt",
+    "sha256": "00875abe4cfee45451198f14980e9df55de487f6663fd6c3a42eba855d3369f7",
+    "points": 256,
+    "ci": 64,
+    "co": 64,
+    "volume": 27,
+    "valid_interactions": 2782,
+    "occurrences": null,
+    "provenance": {
+      "kind": "synthetic",
+      "seed": 20261103,
+      "topology": "surface"
+    },
+    "prepare_seconds": 0.021087131986860186
+  },
+  "config": {
+    "algorithm": "implicit_gemm"
+  },
+  "contract": {
+    "version": 1,
+    "operation": "forward sparse convolution; submanifold coordinate fixtures",
+    "input_dtype": "bfloat16",
+    "output_dtype": "bfloat16",
+    "input_layout": "TILE_LAYOUT, device DRAM",
+    "output_layout": "TILE_LAYOUT, device DRAM, original output row order",
+    "accumulation": "float32",
+    "wormhole_math_fidelity": "HiFi3",
+    "atol": 0.025,
+    "rtol": 0.025,
+    "max_relative_l2": 0.01,
+    "allow_input_mutation": false,
+    "allow_feature_dependent_preparation": false,
+    "persistent_state": [
+      "weights",
+      "integer topology",
+      "shape-dependent schedules"
+    ],
+    "timing": "host wall time including all required device operations and synchronization; excludes compilation, initial input upload, output download and static preparation",
+    "score": "per-case median completed-operator latency; geometric mean for synthetic coverage only; application score requires measured occurrence counts",
+    "workspace_limit_bytes": 1073741824,
+    "workspace_scope": "temporary tensors beyond resident input, output, weights and topology; estimates must be labeled, allocator snapshots are not peaks",
+    "promotion": "all selected correctness gates pass, evaluator/corpus hashes unchanged, and paired timing improvement exceeds measured baseline noise",
+    "known_failure_policy": "report numerical_failure; never convert xfail into a pass or exclude it silently",
+    "device_lock": "/tmp/genrecon-tt-pjrt.lock"
+  },
+  "mode": "timing",
+  "torch": "2.11.0+cpu",
+  "candidate": {
+    "root": "/home/user/GitHub/flexgemm",
+    "commit": "6492d51f585b1c0cd8a6a1113acff1b529379174",
+    "dirty": false,
+    "sha256": {
+      "flex_gemm/tenstorrent/__init__.py": "ac4a5710c385f8a430e6ce2414290c5d515af7b73774fe388de6849e2594443d",
+      "flex_gemm/tenstorrent/conv.py": "389903b43e5246a94bfba678070a0b031da45c749de5e5c0484c20ac65c7f6c5",
+      "flex_gemm/tenstorrent/implicit.py": "baa8af46a7a5fb67fdcb8af48a99561434c7eb813ee3f5d50f7020dde426647d",
+      "flex_gemm/tenstorrent/masking.py": "32c66f47bd2caef0ec94e34c23e0ae09562206a47267cc490db304cf7f0d10b7",
+      "flex_gemm/tenstorrent/ops.py": "e50109b5870445c353da6b76ce64e24048f61ce289bb75703ff661ec14241560",
+      "flex_gemm/tenstorrent/reference.py": "a0dc3709115acfb282ea9d472b63ed470e62421e478ab67d20b2387b8ea0bdd3",
+      "flex_gemm/tenstorrent/resident.py": "ff02aaf696667a9f78f215cf143578785e09edd83c09520fd6abb11714bf2ca3",
+      "flex_gemm/tenstorrent/kernels/compute.cpp": "62a17641703267248042b612b7a073513f9e353c64d246e39cf892c99e17ff8b",
+      "flex_gemm/tenstorrent/kernels/reader.cpp": "7ab92ff6db461c5ab72683010373c8054c3a95251b55df5aac9a0a6fda68fb2b",
+      "flex_gemm/tenstorrent/kernels/writer.cpp": "cab77fc929644c13dfd737c04fab920ed5b685b6c10aef0b06588a0720bc5ee5"
+    }
+  },
+  "evaluator_sha256": {
+    "/home/user/tt-scratchpad/flexgemm-autoresearch/corpus-v2/manifest.json": "aef598a1c914f6461e7e6decdaf4d42f6a7596bd7d736fe1e70086a33b5f0559",
+    "/home/user/tt-scratchpad/flexgemm-autoresearch/corpus-v2/contract.json": "f49de05e37d42f895008c14caeac408513fad7a3537fbca5d74ad265131f5733",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/__init__.py": "d530c6c7c2ea23e5361ce345bf5e48dcdc62ea4c81a5bf695e4f33b72fa2ca85",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/common.py": "5c6c569acb34b08e23974d673412f67c4b3e6a0de4fff93b9d65331db102d2db",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/evaluate.py": "e4764bc221900f16e2699f3e88e1e726114184ce4dab4ee09451385abaf77ca4",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/prepare.py": "04596d045e5bcf018513ea70da93a5c6b3e533082c49651daec832309bc662d1",
+    "/home/user/GitHub/flexgemm-autoresearch/benchmarks/tenstorrent/run.py": "b962e8c3bee2da77b2bcd0d25edf7773933a300434c12646944d12d318355828"
+  },
+  "timing_scope": "host wall time including all required device operations and synchronization; excludes compilation, initial input upload, output download and static preparation",
+  "samples": [
+    {
+      "variant": 0,
+      "ms": 0.6005420000292361
+    },
+    {
+      "variant": 1,
+      "ms": 0.5801619845442474
+    },
+    {
+      "variant": 0,
+      "ms": 0.6044419715180993
+    }
+  ],
+  "checks": [
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.002445234572490802,
+      "max_abs_error": 0.013220787048339844,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.17254421188722954,
+      "first_failures": [],
+      "label": "warmup",
+      "feature_variant": 0,
+      "dtype_valid": true,
+      "layout_valid": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0024315256614620855,
+      "max_abs_error": 0.008105874061584473,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.15373277092540866,
+      "first_failures": [],
+      "label": "warmup",
+      "feature_variant": 1,
+      "dtype_valid": true,
+      "layout_valid": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.0024315256614620855,
+      "max_abs_error": 0.008105874061584473,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.15373277092540866,
+      "first_failures": [],
+      "label": "last_timed",
+      "feature_variant": 1,
+      "dtype_valid": true,
+      "layout_valid": true,
+      "repeat_bitwise_equal": true
+    },
+    {
+      "passed": true,
+      "shape_match": true,
+      "finite": true,
+      "relative_l2": 0.002445234572490802,
+      "max_abs_error": 0.013220787048339844,
+      "elementwise_failures": 0,
+      "max_error_over_tolerance": 0.17254421188722954,
+      "first_failures": [],
+      "label": "last_timed",
+      "feature_variant": 0,
+      "dtype_valid": true,
+      "layout_valid": true,
+      "repeat_bitwise_equal": true
+    }
+  ],
+  "workspace_peak_measured": false,
+  "profiler": null,
+  "tt_metal_commit": "9f9cd4fd590f4b606bd0981a4fe0b6403eb38ec9",
+  "arch": "Arch.WORMHOLE_B0",
+  "available_grid": [
+    8,
+    8
+  ],
+  "math_fidelity": "MathFidelity.HiFi3",
+  "work": {
+    "kind": "modeled",
+    "model": "baseline_v1",
+    "valid_interactions": 2782,
+    "useful_flops": 22790144,
+    "issued_flops": 56623104,
+    "issued_scope": "custom_kernel_tile_products",
+    "work_efficiency": 0.40248842592592593,
+    "dummy_tile_products": 0,
+    "active_block_offsets": 216,
+    "dense_block_offsets": 216,
+    "requested_feature_bytes": 712192,
+    "requested_weight_bytes": 1769472,
+    "requested_map_bytes": 55296,
+    "split_partial_bytes": 0,
+    "reduction_add_payload_bytes": 0,
+    "explicit_expansion_bytes": 0,
+    "available_cores": 64,
+    "selected_cores": 16,
+    "core_tile_products": [
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54
+    ],
+    "core_work_max_over_mean": 1.0,
+    "dram_bus_bytes": null,
+    "noc_bus_bytes": null,
+    "peak_workspace_bytes": null
+  },
+  "static_prepare_ms": 8.806730038486421,
+  "memory": {
+    "before": {
+      "dram": {
+        "allocated_bytes": 0,
+        "capacity_bytes": 12849278208
+      },
+      "l1": {
+        "allocated_bytes": 0,
+        "capacity_bytes": 89182208
+      }
+    },
+    "prepared": {
+      "dram": {
+        "allocated_bytes": 380928,
+        "capacity_bytes": 12849278208
+      },
+      "l1": {
+        "allocated_bytes": 0,
+        "capacity_bytes": 89182208
+      }
+    },
+    "scope": "live allocator snapshots, not transient peaks",
+    "after_execution": {
+      "dram": {
+        "allocated_bytes": 454656,
+        "capacity_bytes": 12849278208
+      },
+      "l1": {
+        "allocated_bytes": 0,
+        "capacity_bytes": 89182208
+      }
+    }
+  },
+  "timing": {
+    "median_ms": 0.6005420000292361,
+    "min_ms": 0.5801619845442474,
+    "max_ms": 0.6044419715180993,
+    "mad_ms": 0.0038999714888632298,
+    "samples_ms": [
+      0.6005420000292361,
+      0.5801619845442474,
+      0.6044419715180993
+    ]
+  },
+  "input_unchanged": true,
+  "useful_tflops": 0.03794929247061906,
+  "issued_tflops": 0.09428666770557834,
+  "protected_files_unchanged": true,
+  "fixture_unchanged": true,
+  "candidate_source_unchanged": true
+}

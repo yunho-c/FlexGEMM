@@ -8,6 +8,7 @@ import torch
 
 from benchmarks.tenstorrent.common import correctness, neighbor_oracle, reference, work_accounting
 from benchmarks.tenstorrent.run import monitor
+from benchmarks.tenstorrent.profile import parse_device_csv
 
 
 CONTRACT = json.loads((Path(__file__).resolve().parents[2] /
@@ -79,3 +80,23 @@ def test_runner_timeout_and_exit_failure_are_terminal(tmp_path):
         failure = monitor([sys.executable, "-c", "raise SystemExit(3)"],
             log=log, report_path=tmp_path / "missing.json", compile_timeout=5, execution_timeout=5)
     assert failure["returncode"] == 3 and failure["timeout"] is None
+
+
+def test_profile_uses_critical_path_and_reports_missing_events(tmp_path):
+    path = tmp_path / "device.csv"
+    path.write_text("ARCH: wormhole_b0, CHIP_FREQ[MHz]: 1000\n"
+        "PCIe slot,core_x,core_y,RISC processor type,timer_id,time[cycles since reset],data,run host ID,zone name,type\n"
+        "0,1,1,BRISC,1,1000,0,1,BRISC-KERNEL,ZONE_START\n"
+        "0,1,1,BRISC,1,5000,0,1,BRISC-KERNEL,ZONE_END\n"
+        "0,1,1,TRISC_0,2,2000,0,1,TRISC-KERNEL,ZONE_START\n"
+        "0,1,1,TRISC_0,2,8000,0,1,TRISC-KERNEL,ZONE_END\n"
+        "0,2,1,BRISC,1,1500,0,1,BRISC-KERNEL,ZONE_START\n"
+        "0,2,1,BRISC,1,6000,0,1,BRISC-KERNEL,ZONE_END\n"
+        "0,1,1,BRISC,3,100,0,2,FG_MISSING,ZONE_END\n"
+        "0,1,1,TRISC_0,4,9000000,1500,1,FG_INPUT_WAIT,ZONE_TOTAL\n")
+    report = parse_device_csv(path)
+    assert report["runs"][0]["kernel_span_us"] == 7
+    assert report["runs"][0]["cores"] == 2
+    assert report["unmatched_ends"] == 1
+    assert report["runs"][0]["accumulated_zones"][0]["total_us"] == 1.5
+    assert report["hardware_counters"] is None

@@ -94,12 +94,26 @@ def main():
             env.pop("TT_METAL_DEVICE_PROFILER", None)
         elif args.mode == "profile":
             env["TT_METAL_DEVICE_PROFILER"] = "1"
+            env["TT_METAL_PROFILER_SUM"] = "1"
+            env["TT_METAL_PROFILER_DIR"] = str(args.output.with_suffix(".profile").resolve())
             env.pop("TT_METAL_WATCHER", None)
         with args.output.with_suffix(".log").open("w") as log:
             result = monitor(command, log=log, report_path=args.output,
                 compile_timeout=args.compile_timeout, execution_timeout=args.execution_timeout, env=env)
         record.update(result, status="timeout" if result["timeout"] else
                       ("passed" if result["returncode"] == 0 else "failed"))
+        if args.mode == "profile" and not result["timeout"]:
+            from .profile import parse_device_csv
+            csv_path = Path(env["TT_METAL_PROFILER_DIR"]) / ".logs/profile_log_device.csv"
+            if csv_path.exists():
+                try:
+                    profile_path = args.output.with_suffix(".profile.json")
+                    write_json(profile_path, parse_device_csv(csv_path))
+                    record["profile_report"] = str(profile_path)
+                except (ValueError, KeyError) as error:
+                    record["profile_error"] = str(error)
+            else:
+                record["profile_error"] = "device CSV not produced"
         write_json(runner_path, record)
         print(json.dumps(record), flush=True)
     return 0 if record["status"] == "passed" else 1

@@ -1,0 +1,833 @@
+{
+  "kind": "measured",
+  "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-001/profile/.logs/profile_log_device.csv",
+  "source_sha256": "5082ae7ec3127491302d0feef5284a37a6d0268950a37b7dd7f7829fce678394",
+  "header": "ARCH: wormhole_b0, CHIP_FREQ[MHz]: 1000, Max Compute Cores: 72",
+  "clock_mhz": 1000.0,
+  "rows": 13440,
+  "unmatched_starts": 0,
+  "unmatched_ends": 0,
+  "scope": "per-program device kernel spans; no summation of overlapping RISC/core durations; operator identity requires host correlation or custom zones",
+  "runs": [
+    {
+      "device": "0",
+      "run_host_id": "1024",
+      "cores": 16,
+      "kernel_span_us": 3.543,
+      "core_span_median_us": 3.315,
+      "core_span_max_us": 3.483,
+      "core_max_over_median": 1.0506787330316743,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 2.811,
+          "median_us": 2.955,
+          "max_us": 3.129
+        },
+        "NCRISC": {
+          "min_us": 0.441,
+          "median_us": 0.5885,
+          "max_us": 0.641
+        },
+        "TRISC_0": {
+          "min_us": 0.652,
+          "median_us": 0.8025,
+          "max_us": 0.846
+        },
+        "TRISC_1": {
+          "min_us": 0.165,
+          "median_us": 0.166,
+          "max_us": 0.168
+        },
+        "TRISC_2": {
+          "min_us": 1.014,
+          "median_us": 1.1564999999999999,
+          "max_us": 1.218
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "2048",
+      "cores": 16,
+      "kernel_span_us": 261.116,
+      "core_span_median_us": 256.352,
+      "core_span_max_us": 261.061,
+      "core_max_over_median": 1.018369273498939,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 250.975,
+          "median_us": 255.96249999999998,
+          "max_us": 260.639
+        },
+        "NCRISC": {
+          "min_us": 250.215,
+          "median_us": 255.2615,
+          "max_us": 259.887
+        },
+        "TRISC_0": {
+          "min_us": 250.364,
+          "median_us": 255.4325,
+          "max_us": 260.06
+        },
+        "TRISC_1": {
+          "min_us": 223.384,
+          "median_us": 228.501,
+          "max_us": 232.804
+        },
+        "TRISC_2": {
+          "min_us": 0.343,
+          "median_us": 0.3495,
+          "max_us": 0.353
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "3072",
+      "cores": 64,
+      "kernel_span_us": 3.374,
+      "core_span_median_us": 0.5145,
+      "core_span_max_us": 3.336,
+      "core_max_over_median": 6.48396501457726,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 0.097,
+          "median_us": 0.108,
+          "max_us": 2.981
+        },
+        "NCRISC": {
+          "min_us": 0.111,
+          "median_us": 0.123,
+          "max_us": 1.851
+        },
+        "TRISC_0": {
+          "min_us": 0.161,
+          "median_us": 0.1725,
+          "max_us": 2.41
+        },
+        "TRISC_1": {
+          "min_us": 0.133,
+          "median_us": 0.1685,
+          "max_us": 2.344
+        },
+        "TRISC_2": {
+          "min_us": 0.243,
+          "median_us": 0.2585,
+          "max_us": 2.224
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "4096",
+      "cores": 16,
+      "kernel_span_us": 3.568,
+      "core_span_median_us": 3.4185,
+      "core_span_max_us": 3.534,
+      "core_max_over_median": 1.0337867485739358,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 2.923,
+          "median_us": 3.0855,
+          "max_us": 3.177
+        },
+        "NCRISC": {
+          "min_us": 0.437,
+          "median_us": 0.5865,
+          "max_us": 0.66
+        },
+        "TRISC_0": {
+          "min_us": 0.643,
+          "median_us": 0.797,
+          "max_us": 0.878
+        },
+        "TRISC_1": {
+          "min_us": 0.164,
+          "median_us": 0.166,
+          "max_us": 0.176
+        },
+        "TRISC_2": {
+          "min_us": 1.009,
+          "median_us": 1.1585,
+          "max_us": 1.252
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "5120",
+      "cores": 16,
+      "kernel_span_us": 260.793,
+      "core_span_median_us": 256.46000000000004,
+      "core_span_max_us": 260.747,
+      "core_max_over_median": 1.0167160570849254,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 251.53,
+          "median_us": 256.0615,
+          "max_us": 260.368
+        },
+        "NCRISC": {
+          "min_us": 250.774,
+          "median_us": 255.3555,
+          "max_us": 259.603
+        },
+        "TRISC_0": {
+          "min_us": 250.942,
+          "median_us": 255.51850000000002,
+          "max_us": 259.773
+        },
+        "TRISC_1": {
+          "min_us": 223.959,
+          "median_us": 228.76,
+          "max_us": 232.663
+        },
+        "TRISC_2": {
+          "min_us": 0.343,
+          "median_us": 0.346,
+          "max_us": 0.35
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "6144",
+      "cores": 64,
+      "kernel_span_us": 3.988,
+      "core_span_median_us": 0.286,
+      "core_span_max_us": 2.64,
+      "core_max_over_median": 9.230769230769232,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 0.093,
+          "median_us": 0.123,
+          "max_us": 2.64
+        },
+        "NCRISC": {
+          "min_us": 0.113,
+          "median_us": 0.129,
+          "max_us": 1.507
+        },
+        "TRISC_0": {
+          "min_us": 0.188,
+          "median_us": 0.206,
+          "max_us": 1.856
+        },
+        "TRISC_1": {
+          "min_us": 0.126,
+          "median_us": 0.131,
+          "max_us": 1.651
+        },
+        "TRISC_2": {
+          "min_us": 0.259,
+          "median_us": 0.274,
+          "max_us": 1.679
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "7168",
+      "cores": 16,
+      "kernel_span_us": 3.67,
+      "core_span_median_us": 3.4175,
+      "core_span_max_us": 3.594,
+      "core_max_over_median": 1.0516459400146305,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 2.94,
+          "median_us": 3.0774999999999997,
+          "max_us": 3.243
+        },
+        "NCRISC": {
+          "min_us": 0.447,
+          "median_us": 0.585,
+          "max_us": 0.673
+        },
+        "TRISC_0": {
+          "min_us": 0.646,
+          "median_us": 0.798,
+          "max_us": 0.866
+        },
+        "TRISC_1": {
+          "min_us": 0.164,
+          "median_us": 0.166,
+          "max_us": 0.17
+        },
+        "TRISC_2": {
+          "min_us": 1.017,
+          "median_us": 1.162,
+          "max_us": 1.247
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "8192",
+      "cores": 16,
+      "kernel_span_us": 261.589,
+      "core_span_median_us": 256.35,
+      "core_span_max_us": 261.538,
+      "core_max_over_median": 1.020237955919641,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 251.093,
+          "median_us": 255.94,
+          "max_us": 261.128
+        },
+        "NCRISC": {
+          "min_us": 250.345,
+          "median_us": 255.203,
+          "max_us": 260.383
+        },
+        "TRISC_0": {
+          "min_us": 250.501,
+          "median_us": 255.376,
+          "max_us": 260.579
+        },
+        "TRISC_1": {
+          "min_us": 223.732,
+          "median_us": 228.76600000000002,
+          "max_us": 233.525
+        },
+        "TRISC_2": {
+          "min_us": 0.344,
+          "median_us": 0.348,
+          "max_us": 0.357
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "9216",
+      "cores": 64,
+      "kernel_span_us": 4.159,
+      "core_span_median_us": 0.284,
+      "core_span_max_us": 3.227,
+      "core_max_over_median": 11.362676056338028,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 0.088,
+          "median_us": 0.123,
+          "max_us": 3.053
+        },
+        "NCRISC": {
+          "min_us": 0.114,
+          "median_us": 0.129,
+          "max_us": 1.93
+        },
+        "TRISC_0": {
+          "min_us": 0.188,
+          "median_us": 0.206,
+          "max_us": 2.464
+        },
+        "TRISC_1": {
+          "min_us": 0.124,
+          "median_us": 0.132,
+          "max_us": 2.242
+        },
+        "TRISC_2": {
+          "min_us": 0.267,
+          "median_us": 0.273,
+          "max_us": 2.278
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "10240",
+      "cores": 16,
+      "kernel_span_us": 3.539,
+      "core_span_median_us": 3.4055,
+      "core_span_max_us": 3.497,
+      "core_max_over_median": 1.0268683012773454,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 2.932,
+          "median_us": 3.0774999999999997,
+          "max_us": 3.184
+        },
+        "NCRISC": {
+          "min_us": 0.442,
+          "median_us": 0.5925,
+          "max_us": 0.717
+        },
+        "TRISC_0": {
+          "min_us": 0.653,
+          "median_us": 0.802,
+          "max_us": 0.91
+        },
+        "TRISC_1": {
+          "min_us": 0.164,
+          "median_us": 0.166,
+          "max_us": 0.17
+        },
+        "TRISC_2": {
+          "min_us": 1.012,
+          "median_us": 1.1745,
+          "max_us": 1.288
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "11264",
+      "cores": 16,
+      "kernel_span_us": 260.733,
+      "core_span_median_us": 256.5455,
+      "core_span_max_us": 260.683,
+      "core_max_over_median": 1.0161277434217322,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 250.922,
+          "median_us": 256.1325,
+          "max_us": 260.278
+        },
+        "NCRISC": {
+          "min_us": 250.141,
+          "median_us": 255.3755,
+          "max_us": 259.513
+        },
+        "TRISC_0": {
+          "min_us": 250.304,
+          "median_us": 255.5505,
+          "max_us": 259.67
+        },
+        "TRISC_1": {
+          "min_us": 223.563,
+          "median_us": 229.39350000000002,
+          "max_us": 232.39
+        },
+        "TRISC_2": {
+          "min_us": 0.343,
+          "median_us": 0.3455,
+          "max_us": 0.357
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "12288",
+      "cores": 64,
+      "kernel_span_us": 4.125,
+      "core_span_median_us": 0.291,
+      "core_span_max_us": 2.91,
+      "core_max_over_median": 10.000000000000002,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 0.08,
+          "median_us": 0.12,
+          "max_us": 2.868
+        },
+        "NCRISC": {
+          "min_us": 0.112,
+          "median_us": 0.128,
+          "max_us": 1.673
+        },
+        "TRISC_0": {
+          "min_us": 0.185,
+          "median_us": 0.2005,
+          "max_us": 2.051
+        },
+        "TRISC_1": {
+          "min_us": 0.128,
+          "median_us": 0.138,
+          "max_us": 1.805
+        },
+        "TRISC_2": {
+          "min_us": 0.257,
+          "median_us": 0.282,
+          "max_us": 1.848
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "13312",
+      "cores": 16,
+      "kernel_span_us": 3.71,
+      "core_span_median_us": 3.525,
+      "core_span_max_us": 3.66,
+      "core_max_over_median": 1.0382978723404257,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 3.038,
+          "median_us": 3.1995,
+          "max_us": 3.292
+        },
+        "NCRISC": {
+          "min_us": 0.443,
+          "median_us": 0.5914999999999999,
+          "max_us": 0.665
+        },
+        "TRISC_0": {
+          "min_us": 0.65,
+          "median_us": 0.7985,
+          "max_us": 0.873
+        },
+        "TRISC_1": {
+          "min_us": 0.163,
+          "median_us": 0.165,
+          "max_us": 0.175
+        },
+        "TRISC_2": {
+          "min_us": 1.0,
+          "median_us": 1.1545,
+          "max_us": 1.245
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "14336",
+      "cores": 16,
+      "kernel_span_us": 260.842,
+      "core_span_median_us": 256.29650000000004,
+      "core_span_max_us": 260.798,
+      "core_max_over_median": 1.017563642109822,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 251.606,
+          "median_us": 255.9335,
+          "max_us": 260.43
+        },
+        "NCRISC": {
+          "min_us": 250.848,
+          "median_us": 255.227,
+          "max_us": 259.678
+        },
+        "TRISC_0": {
+          "min_us": 251.018,
+          "median_us": 255.40050000000002,
+          "max_us": 259.834
+        },
+        "TRISC_1": {
+          "min_us": 224.108,
+          "median_us": 228.9445,
+          "max_us": 232.748
+        },
+        "TRISC_2": {
+          "min_us": 0.343,
+          "median_us": 0.345,
+          "max_us": 0.353
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "15360",
+      "cores": 64,
+      "kernel_span_us": 4.179,
+      "core_span_median_us": 0.279,
+      "core_span_max_us": 2.66,
+      "core_max_over_median": 9.53405017921147,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 0.11,
+          "median_us": 0.1195,
+          "max_us": 2.653
+        },
+        "NCRISC": {
+          "min_us": 0.109,
+          "median_us": 0.124,
+          "max_us": 1.529
+        },
+        "TRISC_0": {
+          "min_us": 0.183,
+          "median_us": 0.2,
+          "max_us": 1.905
+        },
+        "TRISC_1": {
+          "min_us": 0.123,
+          "median_us": 0.1325,
+          "max_us": 1.661
+        },
+        "TRISC_2": {
+          "min_us": 0.258,
+          "median_us": 0.27,
+          "max_us": 1.707
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "16384",
+      "cores": 16,
+      "kernel_span_us": 3.515,
+      "core_span_median_us": 3.3970000000000002,
+      "core_span_max_us": 3.444,
+      "core_max_over_median": 1.0138357374153664,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 2.927,
+          "median_us": 3.0709999999999997,
+          "max_us": 3.143
+        },
+        "NCRISC": {
+          "min_us": 0.444,
+          "median_us": 0.587,
+          "max_us": 0.656
+        },
+        "TRISC_0": {
+          "min_us": 0.635,
+          "median_us": 0.7855000000000001,
+          "max_us": 0.861
+        },
+        "TRISC_1": {
+          "min_us": 0.163,
+          "median_us": 0.1655,
+          "max_us": 0.168
+        },
+        "TRISC_2": {
+          "min_us": 1.005,
+          "median_us": 1.1560000000000001,
+          "max_us": 1.225
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "17408",
+      "cores": 16,
+      "kernel_span_us": 261.06,
+      "core_span_median_us": 256.2635,
+      "core_span_max_us": 261.023,
+      "core_max_over_median": 1.01857268007344,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 251.205,
+          "median_us": 255.873,
+          "max_us": 260.631
+        },
+        "NCRISC": {
+          "min_us": 250.449,
+          "median_us": 255.0285,
+          "max_us": 259.875
+        },
+        "TRISC_0": {
+          "min_us": 250.607,
+          "median_us": 255.211,
+          "max_us": 260.031
+        },
+        "TRISC_1": {
+          "min_us": 223.585,
+          "median_us": 228.5475,
+          "max_us": 232.696
+        },
+        "TRISC_2": {
+          "min_us": 0.344,
+          "median_us": 0.348,
+          "max_us": 0.359
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "18432",
+      "cores": 64,
+      "kernel_span_us": 4.011,
+      "core_span_median_us": 0.286,
+      "core_span_max_us": 3.145,
+      "core_max_over_median": 10.996503496503497,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 0.098,
+          "median_us": 0.123,
+          "max_us": 3.145
+        },
+        "NCRISC": {
+          "min_us": 0.113,
+          "median_us": 0.13,
+          "max_us": 1.818
+        },
+        "TRISC_0": {
+          "min_us": 0.177,
+          "median_us": 0.1975,
+          "max_us": 2.18
+        },
+        "TRISC_1": {
+          "min_us": 0.122,
+          "median_us": 0.13,
+          "max_us": 1.952
+        },
+        "TRISC_2": {
+          "min_us": 0.263,
+          "median_us": 0.2745,
+          "max_us": 2.005
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "19456",
+      "cores": 16,
+      "kernel_span_us": 3.531,
+      "core_span_median_us": 3.2775,
+      "core_span_max_us": 3.478,
+      "core_max_over_median": 1.061174675819985,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 2.805,
+          "median_us": 2.955,
+          "max_us": 3.129
+        },
+        "NCRISC": {
+          "min_us": 0.444,
+          "median_us": 0.5894999999999999,
+          "max_us": 0.771
+        },
+        "TRISC_0": {
+          "min_us": 0.649,
+          "median_us": 0.7985,
+          "max_us": 0.982
+        },
+        "TRISC_1": {
+          "min_us": 0.163,
+          "median_us": 0.166,
+          "max_us": 0.169
+        },
+        "TRISC_2": {
+          "min_us": 1.011,
+          "median_us": 1.161,
+          "max_us": 1.329
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "20480",
+      "cores": 16,
+      "kernel_span_us": 261.537,
+      "core_span_median_us": 256.252,
+      "core_span_max_us": 261.492,
+      "core_max_over_median": 1.0204486208888126,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 251.983,
+          "median_us": 255.85649999999998,
+          "max_us": 261.105
+        },
+        "NCRISC": {
+          "min_us": 251.211,
+          "median_us": 255.14249999999998,
+          "max_us": 260.354
+        },
+        "TRISC_0": {
+          "min_us": 251.39,
+          "median_us": 255.333,
+          "max_us": 260.55
+        },
+        "TRISC_1": {
+          "min_us": 224.311,
+          "median_us": 228.8015,
+          "max_us": 233.452
+        },
+        "TRISC_2": {
+          "min_us": 0.343,
+          "median_us": 0.3455,
+          "max_us": 0.354
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    },
+    {
+      "device": "0",
+      "run_host_id": "21504",
+      "cores": 64,
+      "kernel_span_us": 4.162,
+      "core_span_median_us": 0.2875,
+      "core_span_max_us": 2.659,
+      "core_max_over_median": 9.248695652173913,
+      "by_risc": {
+        "BRISC": {
+          "min_us": 0.089,
+          "median_us": 0.1205,
+          "max_us": 2.659
+        },
+        "NCRISC": {
+          "min_us": 0.109,
+          "median_us": 0.128,
+          "max_us": 1.522
+        },
+        "TRISC_0": {
+          "min_us": 0.184,
+          "median_us": 0.199,
+          "max_us": 1.878
+        },
+        "TRISC_1": {
+          "min_us": 0.127,
+          "median_us": 0.133,
+          "max_us": 1.658
+        },
+        "TRISC_2": {
+          "min_us": 0.26,
+          "median_us": 0.277,
+          "max_us": 1.702
+        }
+      },
+      "accumulated_zones": [],
+      "custom_zones": [],
+      "operator_identity": null
+    }
+  ],
+  "hardware_counters": null
+}
