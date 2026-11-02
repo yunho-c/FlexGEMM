@@ -126,6 +126,8 @@ def main():
             digit_epilogue=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "EPILOGUE", "expanded"),
             digit_gather=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "GATHER", "embedding"))
         digit_module = sys.modules.get("flex_gemm.tenstorrent.digits")
+        if config["algorithm"] == "digit_explicit_gemm":
+            report["feature_digit_preparation"] = getattr(digit_module, "FEATURE_PREPARATION", "unfused")
         if (config["algorithm"] == "digit_explicit_gemm" and hasattr(digit_module, "matmul_plan")
                 and device.arch() == ttnn.Arch.WORMHOLE_B0):
             from collections import Counter

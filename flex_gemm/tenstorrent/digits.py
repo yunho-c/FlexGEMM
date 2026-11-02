@@ -15,6 +15,7 @@ from .ops import _add_bias, _compute_config
 OUTPUT_ASSEMBLY = "tile_copy"
 EPILOGUE = "tile_broadcast"
 GATHER = "tiled"
+FEATURE_PREPARATION = "fused_sfpu"
 MATMUL_K_BLOCK = 6
 MATMUL_L1_ESTIMATE_LIMIT = 1024 * 1024
 
@@ -139,12 +140,16 @@ def _copy_output_rows(chunk, output, start):
     ttnn.generic_op([chunk, output], ttnn.ProgramDescriptor(kernels=[kernel], cbs=[cb], semaphores=[]))
 
 
-def _feature_digits(features, cp):
+def _feature_digits(features, cp, *, fused=True):
     """Recompute digits each call, with bounded FP32 conversion scratch."""
     import ttnn
     maximum = ttnn.typecast(ttnn.max(ttnn.abs(features), keepdim=True), ttnn.float32)
     exponent = ttnn.subtract(ttnn.ceil(ttnn.log2(ttnn.maximum(maximum, 1e-30))), 7.)
     scale, inverse = ttnn.exp2(exponent), ttnn.exp2(ttnn.neg(exponent))
+    if fused and features.device().arch() == ttnn.Arch.WORMHOLE_B0:
+        from .feature_digits import feature_digits
+        high, low = feature_digits(features, inverse, cp)
+        return high, low, scale
     high_parts, low_parts = [], []
     rows, ci = features.shape
     chunk = max(32, (1048576 // cp // 32) * 32)

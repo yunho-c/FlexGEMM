@@ -1,0 +1,269 @@
+diff --git a/benchmarks/tenstorrent/evaluate.py b/benchmarks/tenstorrent/evaluate.py
+index c2fff1a..35ba0a5 100644
+--- a/benchmarks/tenstorrent/evaluate.py
++++ b/benchmarks/tenstorrent/evaluate.py
+@@ -126,6 +126,8 @@ def main():
+             digit_epilogue=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "EPILOGUE", "expanded"),
+             digit_gather=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "GATHER", "embedding"))
+         digit_module = sys.modules.get("flex_gemm.tenstorrent.digits")
++        if config["algorithm"] == "digit_explicit_gemm":
++            report["feature_digit_preparation"] = getattr(digit_module, "FEATURE_PREPARATION", "unfused")
+         if (config["algorithm"] == "digit_explicit_gemm" and hasattr(digit_module, "matmul_plan")
+                 and device.arch() == ttnn.Arch.WORMHOLE_B0):
+             from collections import Counter
+diff --git a/flex_gemm/tenstorrent/digits.py b/flex_gemm/tenstorrent/digits.py
+index 155de67..ead609c 100644
+--- a/flex_gemm/tenstorrent/digits.py
++++ b/flex_gemm/tenstorrent/digits.py
+@@ -15,6 +15,7 @@ from .ops import _add_bias, _compute_config
+ OUTPUT_ASSEMBLY = "tile_copy"
+ EPILOGUE = "tile_broadcast"
+ GATHER = "tiled"
++FEATURE_PREPARATION = "fused_sfpu"
+ MATMUL_K_BLOCK = 6
+ MATMUL_L1_ESTIMATE_LIMIT = 1024 * 1024
+ 
+@@ -139,12 +140,16 @@ def _copy_output_rows(chunk, output, start):
+     ttnn.generic_op([chunk, output], ttnn.ProgramDescriptor(kernels=[kernel], cbs=[cb], semaphores=[]))
+ 
+ 
+-def _feature_digits(features, cp):
++def _feature_digits(features, cp, *, fused=True):
+     """Recompute digits each call, with bounded FP32 conversion scratch."""
+     import ttnn
+     maximum = ttnn.typecast(ttnn.max(ttnn.abs(features), keepdim=True), ttnn.float32)
+     exponent = ttnn.subtract(ttnn.ceil(ttnn.log2(ttnn.maximum(maximum, 1e-30))), 7.)
+     scale, inverse = ttnn.exp2(exponent), ttnn.exp2(ttnn.neg(exponent))
++    if fused and features.device().arch() == ttnn.Arch.WORMHOLE_B0:
++        from .feature_digits import feature_digits
++        high, low = feature_digits(features, inverse, cp)
++        return high, low, scale
+     high_parts, low_parts = [], []
+     rows, ci = features.shape
+     chunk = max(32, (1048576 // cp // 32) * 32)
+diff --git a/tests/tenstorrent/test_resident.py b/tests/tenstorrent/test_resident.py
+index c0f76c8..bcaee63 100644
+--- a/tests/tenstorrent/test_resident.py
++++ b/tests/tenstorrent/test_resident.py
+@@ -7,6 +7,32 @@ from flex_gemm.tenstorrent import (
+ from test_explicit import device
+ 
+ 
++@pytest.mark.parametrize("rows,ci", [(1, 1), (35, 17), (65, 33), (2081, 128), (8193, 128)])
++def test_fused_feature_digits_match_unfused(device, rows, ci):
++    import ttnn
++    from flex_gemm.tenstorrent.digits import _feature_digits
++    values = torch.tensor([-128., -127.5, -126.5, -1.5, -.5, -.005859375,
++        -.001953125, 0., .001953125, .005859375, .5, 1.5, 126.5, 127.5, 128.])
++    pattern = values.repeat((rows * ci + len(values) - 1) // len(values))[:rows * ci].reshape(rows, ci)
++    cp = (ci + 31) // 32 * 32
++    for x in (pattern, pattern * 2.**-80, pattern * 2.**30, torch.zeros_like(pattern)):
++        x = x.bfloat16()
++        features = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
++        expected = _feature_digits(features, cp, fused=False)
++        actual = _feature_digits(features, cp)
++        for a, b in zip(actual, expected):
++            ah, bh = ttnn.to_torch(a), ttnn.to_torch(b)
++            bits = torch.int16 if ah.dtype == torch.bfloat16 else torch.int32
++            torch.testing.assert_close(ah.view(bits), bh.view(bits), atol=0, rtol=0)
++        for table in actual[:2]:
++            host = ttnn.to_torch(table)
++            assert tuple(host.shape) == (rows + 1, cp)
++            assert not bool(host[-1].any())
++            assert not bool(host[:, ci:].any())
++        torch.testing.assert_close(ttnn.to_torch(features), x, atol=0, rtol=0)
++        del expected, actual, features
++
++
+ @pytest.mark.parametrize("ci", [17, 33, 128])
+ def test_tiled_digit_gather_exact_rows_and_padding(device, ci):
+     import ttnn
+diff --git a/flex_gemm/tenstorrent/feature_digits.py b/flex_gemm/tenstorrent/feature_digits.py
+new file mode 100644
+index 0000000..ff50c52
+--- /dev/null
++++ b/flex_gemm/tenstorrent/feature_digits.py
+@@ -0,0 +1,49 @@
++"""Fresh BF16-to-integer-digit conversion with bounded per-core scratch."""
++
++from pathlib import Path
++
++
++def feature_digits(features, inverse, cp):
++    """Fuse SFPU extraction and write two final row-major tables plus zero rows."""
++    import ttnn
++    rows, ci = features.shape
++    if features.layout != ttnn.TILE_LAYOUT or features.dtype != ttnn.bfloat16:
++        raise ValueError("digit extraction requires tiled BF16 features")
++    if cp != (ci + 31) // 32 * 32 or rows <= 0:
++        raise ValueError("invalid feature shape/padded channels")
++    device = features.device()
++    outputs = [ttnn.allocate_tensor_on_device(ttnn.Shape([rows + 1, cp]),
++        ttnn.bfloat16, ttnn.ROW_MAJOR_LAYOUT, device, ttnn.DRAM_MEMORY_CONFIG) for _ in range(2)]
++    tasks = (rows + 31) // 32 * (cp // 32)
++    grid = device.compute_with_storage_grid_size()
++    cores = [ttnn.CoreCoord(i % grid.x, i // grid.x) for i in range(min(tasks, grid.x * grid.y))]
++    ranges = ttnn.CoreRangeSet([ttnn.CoreRange(c, c) for c in cores])
++    reader, compute, writer = ttnn.RuntimeArgs(), ttnn.RuntimeArgs(), ttnn.RuntimeArgs()
++    for i, c in enumerate(cores):
++        begin, end = tasks * i // len(cores), tasks * (i + 1) // len(cores)
++        reader[c.x][c.y] = [features.buffer_address(), inverse.buffer_address(), begin, end - begin]
++        compute[c.x][c.y] = [end - begin]
++        writer[c.x][c.y] = [outputs[0].buffer_address(), outputs[1].buffer_address(), begin, end - begin]
++    read_ct = []
++    for tensor in (features, inverse):
++        read_ct.extend(ttnn.TensorAccessorArgs(tensor).get_compile_time_args())
++    write_ct = [rows, ci, cp // 32]
++    for tensor in outputs:
++        write_ct.extend(ttnn.TensorAccessorArgs(tensor).get_compile_time_args())
++    root = Path(__file__).parent / "kernels"
++    kernels = [
++        ttnn.KernelDescriptor(kernel_source=str(root / "feature_digits_reader.cpp"), core_ranges=ranges,
++            compile_time_args=read_ct, runtime_args=reader, config=ttnn.ReaderConfigDescriptor()),
++        ttnn.KernelDescriptor(kernel_source=str(root / "feature_digits_compute.cpp"), core_ranges=ranges,
++            runtime_args=compute, config=ttnn.ComputeConfigDescriptor(
++                math_fidelity=ttnn.MathFidelity.HiFi3, fp32_dest_acc_en=True, math_approx_mode=False)),
++        ttnn.KernelDescriptor(kernel_source=str(root / "feature_digits_writer.cpp"), core_ranges=ranges,
++            compile_time_args=write_ct, runtime_args=writer, config=ttnn.WriterConfigDescriptor()),
++    ]
++    cbs = [ttnn.CBDescriptor(total_size=page * depth, core_ranges=ranges,
++        format_descriptors=[ttnn.CBFormatDescriptor(buffer_index=index, data_format=dtype, page_size=page)])
++        for index, dtype, page, depth in ((0, ttnn.bfloat16, 2048, 2), (2, ttnn.uint32, 32, 1),
++            (3, ttnn.uint32, 64, 1), (16, ttnn.bfloat16, 2048, 2), (17, ttnn.bfloat16, 2048, 2))]
++    ttnn.generic_op([features, inverse, *outputs],
++        ttnn.ProgramDescriptor(kernels=kernels, cbs=cbs, semaphores=[]))
++    return tuple(outputs)
+diff --git a/flex_gemm/tenstorrent/kernels/feature_digits_reader.cpp b/flex_gemm/tenstorrent/kernels/feature_digits_reader.cpp
+new file mode 100644
+index 0000000..20fabcb
+--- /dev/null
++++ b/flex_gemm/tenstorrent/kernels/feature_digits_reader.cpp
+@@ -0,0 +1,21 @@
++// SPDX-License-Identifier: MIT
++#include "api/dataflow/dataflow_api.h"
++
++void kernel_main() {
++    constexpr auto xa = TensorAccessorArgs<0>();
++    constexpr auto ia = TensorAccessorArgs<xa.next_compile_time_args_offset()>();
++    const auto x = TensorAccessor(xa, get_arg_val<uint32_t>(0));
++    const auto inverse = TensorAccessor(ia, get_arg_val<uint32_t>(1));
++    const uint32_t begin = get_arg_val<uint32_t>(2), count = get_arg_val<uint32_t>(3);
++    // The first FP32 element is the current invocation's inverse scale.
++    cb_reserve_back(2, 1);
++    noc_async_read(get_noc_addr(0, inverse), get_write_ptr(2), 32);
++    noc_async_read_barrier();
++    cb_push_back(2, 1);
++    for (uint32_t i = begin; i < begin + count; ++i) {
++        cb_reserve_back(0, 1);
++        noc_async_read_page(i, x, get_write_ptr(0));
++        noc_async_read_barrier();
++        cb_push_back(0, 1);
++    }
++}
+diff --git a/flex_gemm/tenstorrent/kernels/feature_digits_compute.cpp b/flex_gemm/tenstorrent/kernels/feature_digits_compute.cpp
+new file mode 100644
+index 0000000..cfa54e9
+--- /dev/null
++++ b/flex_gemm/tenstorrent/kernels/feature_digits_compute.cpp
+@@ -0,0 +1,49 @@
++// SPDX-License-Identifier: MIT
++#include "api/compute/tile_move_copy.h"
++#include "api/compute/eltwise_unary/eltwise_unary.h"
++#include "api/compute/eltwise_unary/binop_with_scalar.h"
++#include "api/compute/eltwise_unary/rounding.h"
++#include "api/compute/eltwise_unary/typecast.h"
++#include "api/compute/eltwise_binary_sfpu.h"
++#include "api/compute/copy_dest_values.h"
++
++using namespace ckernel;
++
++void kernel_main() {
++    const uint32_t count = get_arg_val<uint32_t>(0);
++    init_sfpu(0, 16);
++    cb_wait_front(2, 1);
++    UNPACK(asm volatile("fence"));
++    const uint32_t inverse_bits = read_tile_value(2, 0, 0);
++    for (uint32_t i = 0; i < count; ++i) {
++        cb_wait_front(0, 1);
++        tile_regs_acquire();
++        copy_tile(0, 0, 0);
++        binop_with_scalar_tile_init();
++        mul_unary_tile(0, inverse_bits);
++        copy_dest_values_init();
++        copy_dest_values<DataFormat::Float32>(0, 1);
++        rounding_op_tile_init();
++        round_tile(0, 0);
++        sub_binary_tile_init();
++        sub_binary_tile<ckernel::DstRoundingMode::NearestEven>(1, 0, 1);
++        binop_with_scalar_tile_init();
++        mul_unary_tile(1, 0x43800000);  // 256.0f
++        rounding_op_tile_init();
++        round_tile(1, 0);
++        typecast_tile_init<(uint32_t)DataFormat::Float32, (uint32_t)DataFormat::Float16_b>();
++        typecast_tile<(uint32_t)DataFormat::Float32, (uint32_t)DataFormat::Float16_b>(0);
++        typecast_tile<(uint32_t)DataFormat::Float32, (uint32_t)DataFormat::Float16_b>(1);
++        tile_regs_commit();
++        cb_reserve_back(16, 1);
++        cb_reserve_back(17, 1);
++        tile_regs_wait();
++        pack_tile(0, 16);
++        pack_tile(1, 17);
++        tile_regs_release();
++        cb_pop_front(0, 1);
++        cb_push_back(16, 1);
++        cb_push_back(17, 1);
++    }
++    cb_pop_front(2, 1);
++}
+diff --git a/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp b/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp
+new file mode 100644
+index 0000000..295f1bb
+--- /dev/null
++++ b/flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp
+@@ -0,0 +1,46 @@
++// SPDX-License-Identifier: MIT
++#include "api/dataflow/dataflow_api.h"
++
++void kernel_main() {
++    constexpr uint32_t ROWS = get_compile_time_arg_val(0);
++    constexpr uint32_t CI = get_compile_time_arg_val(1), CT = get_compile_time_arg_val(2);
++    constexpr auto ha = TensorAccessorArgs<3>();
++    constexpr auto la = TensorAccessorArgs<ha.next_compile_time_args_offset()>();
++    const auto high = TensorAccessor(ha, get_arg_val<uint32_t>(0));
++    const auto low = TensorAccessor(la, get_arg_val<uint32_t>(1));
++    const uint32_t begin = get_arg_val<uint32_t>(2), count = get_arg_val<uint32_t>(3);
++    cb_reserve_back(3, 1);
++    const uint32_t zero = get_write_ptr(3);
++    for (uint32_t i = 0; i < 16; ++i) reinterpret_cast<volatile uint32_t*>(zero)[i] = 0;
++    for (uint32_t task = begin; task < begin + count; ++task) {
++        cb_wait_front(16, 1);
++        cb_wait_front(17, 1);
++        const uint32_t h = get_read_ptr(16), l = get_read_ptr(17);
++        const uint32_t mt = task / CT, kt = task % CT;
++        for (uint32_t r = 0; r < 32 && mt * 32 + r < ROWS; ++r) {
++            const uint32_t offset = ((r / 16) * 512 + (r % 16) * 16) * 2;
++            if constexpr (CI % 32) {
++                if (kt == CT - 1) {
++                    for (uint32_t c = CI % 32; c < 32; ++c) {
++                        const uint32_t pos = offset + (c / 16) * 512 + (c % 16) * 2;
++                        *reinterpret_cast<volatile uint16_t*>(h + pos) = 0;
++                        *reinterpret_cast<volatile uint16_t*>(l + pos) = 0;
++                    }
++                }
++            }
++            const uint64_t hd = get_noc_addr(mt * 32 + r, high) + kt * 64;
++            const uint64_t ld = get_noc_addr(mt * 32 + r, low) + kt * 64;
++            noc_async_write(h + offset, hd, 32);
++            noc_async_write(h + offset + 512, hd + 32, 32);
++            noc_async_write(l + offset, ld, 32);
++            noc_async_write(l + offset + 512, ld + 32, 32);
++        }
++        if (mt == 0) {
++            noc_async_write(zero, get_noc_addr(ROWS, high) + kt * 64, 64);
++            noc_async_write(zero, get_noc_addr(ROWS, low) + kt * 64, 64);
++        }
++        noc_async_write_barrier();
++        cb_pop_front(16, 1);
++        cb_pop_front(17, 1);
++    }
++}

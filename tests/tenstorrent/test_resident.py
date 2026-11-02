@@ -7,6 +7,32 @@ from flex_gemm.tenstorrent import (
 from test_explicit import device
 
 
+@pytest.mark.parametrize("rows,ci", [(1, 1), (35, 17), (65, 33), (2081, 128), (8193, 128)])
+def test_fused_feature_digits_match_unfused(device, rows, ci):
+    import ttnn
+    from flex_gemm.tenstorrent.digits import _feature_digits
+    values = torch.tensor([-128., -127.5, -126.5, -1.5, -.5, -.005859375,
+        -.001953125, 0., .001953125, .005859375, .5, 1.5, 126.5, 127.5, 128.])
+    pattern = values.repeat((rows * ci + len(values) - 1) // len(values))[:rows * ci].reshape(rows, ci)
+    cp = (ci + 31) // 32 * 32
+    for x in (pattern, pattern * 2.**-80, pattern * 2.**30, torch.zeros_like(pattern)):
+        x = x.bfloat16()
+        features = ttnn.from_torch(x, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+        expected = _feature_digits(features, cp, fused=False)
+        actual = _feature_digits(features, cp)
+        for a, b in zip(actual, expected):
+            ah, bh = ttnn.to_torch(a), ttnn.to_torch(b)
+            bits = torch.int16 if ah.dtype == torch.bfloat16 else torch.int32
+            torch.testing.assert_close(ah.view(bits), bh.view(bits), atol=0, rtol=0)
+        for table in actual[:2]:
+            host = ttnn.to_torch(table)
+            assert tuple(host.shape) == (rows + 1, cp)
+            assert not bool(host[-1].any())
+            assert not bool(host[:, ci:].any())
+        torch.testing.assert_close(ttnn.to_torch(features), x, atol=0, rtol=0)
+        del expected, actual, features
+
+
 @pytest.mark.parametrize("ci", [17, 33, 128])
 def test_tiled_digit_gather_exact_rows_and_padding(device, ci):
     import ttnn

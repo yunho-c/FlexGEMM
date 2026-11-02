@@ -656,6 +656,38 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   fixture digests in iteration-014. No full sweep, workspace, paired timing,
   application or SOTA claim is made for a candidate that fails accuracy.
 
+### 015 — fuse fresh feature digit extraction
+
+- Replace the Wormhole feature conversion/rounding/layout/concat sequence with
+  a bounded SFPU program that directly writes both row-major digit tables.
+  Global scale calculation, four products, HiFi3, FP32 accumulation, matmul
+  policy and fixed numerical gates remain unchanged. No feature values persist.
+- All 36 cases pass full correctness, residency, integrity and workspace gates.
+  Five new Watcher tests establish raw-bit equality with the unfused helper,
+  including signed zero, ties, extreme scales, padding and chunk boundaries.
+  Fourteen existing digit Watcher tests and 12 CPU evaluator tests also pass.
+- Three eleven-repeat A/B/A rounds confirm 128→128 at 388,659 rows:
+  499.510/499.258/499.593 ms, speedups 1.074352×/1.075079×/1.074263×,
+  maximum noise 0.1303%. At 2,389,000 rows, 64→64 takes
+  1562.558/1562.359/1562.528 ms versus approximately 1768.0 ms,
+  speedups 1.131544×/1.131569×/1.131533×, maximum noise 0.0541%.
+- Wide 1024→4096 remains inconclusive (minimum gain 2.1163%, maximum noise
+  3.5549%). A three-round 51-repeat small control confirms 35-row 17→45:
+  speedups 1.189213×/1.230731×/1.208479×, maximum noise 6.8188%. This does
+  not resolve all other small shapes that screened slower in unpaired runs.
+- Maximum workspace falls 16.6%, from 1,007,091,200 to 839,528,448 bytes.
+  All 37 committed allocator-event replays match their original bounds and
+  output exclusions. All 77 device workers exit normally without recovery.
+- Unpaired occurrence-weighted proxies are 8.992 s and 12.599 s versus
+  9.603 s and 13.505 s. The component diagnostic passes at 499.028 ms;
+  synchronized feature preparation is 17.029/17.245 ms versus iteration 013's
+  119.565/113.783 ms. These stage timings overlap operation measurements and
+  cannot be added into lean savings. Neither proxy is a full decoder result.
+- Decision: retain in the opt-in algorithm, with default dispatch unchanged.
+  Reports, exact patch, compact allocation events and drivers are in iteration-015.
+  Prepared decoder integration and K6 comparator probes have not yet run;
+  application benefit, matched external comparisons and SOTA remain pending.
+
 The additional CPU capture tools are:
 
 ```bash

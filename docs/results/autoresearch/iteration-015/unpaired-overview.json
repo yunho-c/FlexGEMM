@@ -1,0 +1,340 @@
+{
+  "scope": "Unpaired screening against archived iteration013; no application or general speedup claim",
+  "cases": [
+    {
+      "case": "tune-scattered-35-17x45",
+      "corpus": "corpus-v2",
+      "previous_ms": 3.421813016757369,
+      "current_ms": 4.207064979709685,
+      "unpaired_ratio": 0.8133492192919485,
+      "previous_workspace_bytes": 89874944,
+      "current_workspace_bytes": 89874944
+    },
+    {
+      "case": "tune-surface-256-64x64",
+      "corpus": "corpus-v2",
+      "previous_ms": 4.413366026710719,
+      "current_ms": 3.734734025783837,
+      "unpaired_ratio": 1.1817082545214053,
+      "previous_workspace_bytes": 91756544,
+      "current_workspace_bytes": 91756544
+    },
+    {
+      "case": "tune-clustered-1025-128x128",
+      "corpus": "corpus-v2",
+      "previous_ms": 4.645107022952288,
+      "current_ms": 4.797847999725491,
+      "unpaired_ratio": 0.9681646903399312,
+      "previous_workspace_bytes": 107700224,
+      "current_workspace_bytes": 107700224
+    },
+    {
+      "case": "tune-scattered-257-32x256",
+      "corpus": "corpus-v2",
+      "previous_ms": 3.5490530426613986,
+      "current_ms": 4.341297026257962,
+      "unpaired_ratio": 0.8175098412283832,
+      "previous_workspace_bytes": 92165120,
+      "current_workspace_bytes": 92165120
+    },
+    {
+      "case": "tune-surface-4096-64x64",
+      "corpus": "corpus-v2",
+      "previous_ms": 5.501649982761592,
+      "current_ms": 5.347209982573986,
+      "unpaired_ratio": 1.0288823518602992,
+      "previous_workspace_bytes": 125179904,
+      "current_workspace_bytes": 125179904
+    },
+    {
+      "case": "validation-scattered-35-17x45",
+      "corpus": "corpus-v2",
+      "previous_ms": 3.419472952373326,
+      "current_ms": 4.193786007817835,
+      "unpaired_ratio": 0.8153665795057079,
+      "previous_workspace_bytes": 89874944,
+      "current_workspace_bytes": 89874944
+    },
+    {
+      "case": "validation-surface-256-64x64",
+      "corpus": "corpus-v2",
+      "previous_ms": 4.353906027972698,
+      "current_ms": 3.837094991467893,
+      "unpaired_ratio": 1.1346881006735507,
+      "previous_workspace_bytes": 91756544,
+      "current_workspace_bytes": 91756544
+    },
+    {
+      "case": "validation-clustered-1025-128x128",
+      "corpus": "corpus-v2",
+      "previous_ms": 4.128265019971877,
+      "current_ms": 4.769017978105694,
+      "unpaired_ratio": 0.8656425786030837,
+      "previous_workspace_bytes": 107700224,
+      "current_workspace_bytes": 107700224
+    },
+    {
+      "case": "validation-scattered-257-32x256",
+      "corpus": "corpus-v2",
+      "previous_ms": 3.4562830114737153,
+      "current_ms": 5.132029007654637,
+      "unpaired_ratio": 0.6734730077165433,
+      "previous_workspace_bytes": 92165120,
+      "current_workspace_bytes": 92165120
+    },
+    {
+      "case": "validation-surface-4096-64x64",
+      "corpus": "corpus-v2",
+      "previous_ms": 5.9294719831086695,
+      "current_ms": 5.488861002959311,
+      "unpaired_ratio": 1.0802736633177272,
+      "previous_workspace_bytes": 125179904,
+      "current_workspace_bytes": 125179904
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "corpus": "corpus-v2",
+      "previous_ms": 130.7422110112384,
+      "current_ms": 128.1726279994473,
+      "unpaired_ratio": 1.0200478296489497,
+      "previous_workspace_bytes": 322850816,
+      "current_workspace_bytes": 322850816
+    },
+    {
+      "case": "shape-norm-silu-513-known-failure",
+      "corpus": "corpus-v2",
+      "previous_ms": 20.03231196431443,
+      "current_ms": 19.667563028633595,
+      "unpaired_ratio": 1.0185457107802225,
+      "previous_workspace_bytes": 206262272,
+      "current_workspace_bytes": 206262272
+    },
+    {
+      "case": "n4490-1024x1024-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 56.3268429832533,
+      "current_ms": 53.54995001107454,
+      "unpaired_ratio": 1.0518561263195292,
+      "previous_workspace_bytes": 246566912,
+      "current_workspace_bytes": 246566912
+    },
+    {
+      "case": "n4490-1024x4096-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 130.9481819625944,
+      "current_ms": 128.7315209629014,
+      "unpaired_ratio": 1.0172192558831943,
+      "previous_workspace_bytes": 322850816,
+      "current_workspace_bytes": 322850816
+    },
+    {
+      "case": "n20251-512x512-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 117.0629319967702,
+      "current_ms": 111.65413598064333,
+      "unpaired_ratio": 1.0484424152193033,
+      "previous_workspace_bytes": 269520896,
+      "current_workspace_bytes": 269520896
+    },
+    {
+      "case": "n20251-512x2048-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 187.46755697065964,
+      "current_ms": 181.82892800541595,
+      "unpaired_ratio": 1.0310106264558505,
+      "previous_workspace_bytes": 345411584,
+      "current_workspace_bytes": 345411584
+    },
+    {
+      "case": "n88524-256x256-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 239.41476497566327,
+      "current_ms": 226.3758049812168,
+      "unpaired_ratio": 1.0575987349687321,
+      "previous_workspace_bytes": 318607360,
+      "current_workspace_bytes": 318607360
+    },
+    {
+      "case": "n88524-256x1024-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 305.46134198084474,
+      "current_ms": 291.48336697835475,
+      "unpaired_ratio": 1.0479546230969947,
+      "previous_workspace_bytes": 394301440,
+      "current_workspace_bytes": 394301440
+    },
+    {
+      "case": "n388659-128x128-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 536.4836369990371,
+      "current_ms": 499.49922400992364,
+      "unpaired_ratio": 1.0740429838753438,
+      "previous_workspace_bytes": 426944512,
+      "current_workspace_bytes": 426944512
+    },
+    {
+      "case": "n388659-128x512-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 656.7367900279351,
+      "current_ms": 619.6404920192435,
+      "unpaired_ratio": 1.0598674529609977,
+      "previous_workspace_bytes": 502540288,
+      "current_workspace_bytes": 502540288
+    },
+    {
+      "case": "n1711800-64x64-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 1270.1792469597422,
+      "current_ms": 1122.7904690313153,
+      "unpaired_ratio": 1.1312700650688514,
+      "previous_workspace_bytes": 746954240,
+      "current_workspace_bytes": 666170368
+    },
+    {
+      "case": "n6181-1024x1024-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 77.25184701848775,
+      "current_ms": 73.65115499123931,
+      "unpaired_ratio": 1.048888466551227,
+      "previous_workspace_bytes": 253513728,
+      "current_workspace_bytes": 253513728
+    },
+    {
+      "case": "n6181-1024x4096-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 168.3670519851148,
+      "current_ms": 164.58897397387773,
+      "unpaired_ratio": 1.022954623994659,
+      "previous_workspace_bytes": 329797632,
+      "current_workspace_bytes": 329797632
+    },
+    {
+      "case": "n28223-512x512-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 161.14381595980376,
+      "current_ms": 153.91774498857558,
+      "unpaired_ratio": 1.0469476145961243,
+      "previous_workspace_bytes": 285839360,
+      "current_workspace_bytes": 285839360
+    },
+    {
+      "case": "n28223-512x2048-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 257.4327270267531,
+      "current_ms": 251.03197601856664,
+      "unpaired_ratio": 1.0254977517593737,
+      "previous_workspace_bytes": 361730048,
+      "current_workspace_bytes": 361730048
+    },
+    {
+      "case": "n125219-256x256-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 341.1639799596742,
+      "current_ms": 322.47347303200513,
+      "unpaired_ratio": 1.0579598276780244,
+      "previous_workspace_bytes": 356179968,
+      "current_workspace_bytes": 356179968
+    },
+    {
+      "case": "n125219-256x1024-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 433.4766209940426,
+      "current_ms": 414.28595496108755,
+      "unpaired_ratio": 1.0463222704104405,
+      "previous_workspace_bytes": 431874048,
+      "current_workspace_bytes": 431874048
+    },
+    {
+      "case": "n551044-128x128-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 764.9388880236074,
+      "current_ms": 704.2113679926842,
+      "unpaired_ratio": 1.0862347908469918,
+      "previous_workspace_bytes": 512740352,
+      "current_workspace_bytes": 510093312
+    },
+    {
+      "case": "n551044-128x512-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 933.6599229718558,
+      "current_ms": 872.8084960021079,
+      "unpaired_ratio": 1.0697191047617862,
+      "previous_workspace_bytes": 585689088,
+      "current_workspace_bytes": 585689088
+    },
+    {
+      "case": "n2389000-64x64-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 1768.2958940276876,
+      "current_ms": 1562.2078989981674,
+      "unpaired_ratio": 1.1319209787389264,
+      "previous_workspace_bytes": 1007091200,
+      "current_workspace_bytes": 839528448
+    },
+    {
+      "case": "autoware-test-pcd-21359-16x16",
+      "corpus": "autoware-lidar-corpus-v1",
+      "previous_ms": 10.629643977154046,
+      "current_ms": 10.156537988223135,
+      "unpaired_ratio": 1.0465814226736998,
+      "previous_workspace_bytes": 182454272,
+      "current_workspace_bytes": 182454272
+    },
+    {
+      "case": "autoware-test-pcd-21359-32x64",
+      "corpus": "autoware-lidar-corpus-v1",
+      "previous_ms": 11.08778698835522,
+      "current_ms": 10.900530032813549,
+      "unpaired_ratio": 1.0171787018592653,
+      "previous_workspace_bytes": 198969344,
+      "current_workspace_bytes": 198969344
+    },
+    {
+      "case": "autoware-test-pcd-21359-64x64",
+      "corpus": "autoware-lidar-corpus-v1",
+      "previous_ms": 15.600696031469852,
+      "current_ms": 14.82707605464384,
+      "unpaired_ratio": 1.0521761656833017,
+      "previous_workspace_bytes": 233422848,
+      "current_workspace_bytes": 233422848
+    },
+    {
+      "case": "autoware-test-pcd-21359-128x128",
+      "corpus": "autoware-lidar-corpus-v1",
+      "previous_ms": 27.66756498022005,
+      "current_ms": 26.700789981987327,
+      "unpaired_ratio": 1.0362077301415022,
+      "previous_workspace_bytes": 238882816,
+      "current_workspace_bytes": 238882816
+    },
+    {
+      "case": "autoware-test-pcd-21359-256x256",
+      "corpus": "autoware-lidar-corpus-v1",
+      "previous_ms": 53.224499977659434,
+      "current_ms": 50.306407967582345,
+      "unpaired_ratio": 1.0580063679354232,
+      "previous_workspace_bytes": 249827328,
+      "current_workspace_bytes": 249827328
+    },
+    {
+      "case": "autoware-test-pcd-21359-17x35",
+      "corpus": "autoware-lidar-corpus-v1",
+      "previous_ms": 11.528217990417033,
+      "current_ms": 10.997451026923954,
+      "unpaired_ratio": 1.0482627258074309,
+      "previous_workspace_bytes": 198969344,
+      "current_workspace_bytes": 198969344
+    }
+  ],
+  "occurrence_weighted_proxy": {
+    "poster-shape-corpus-v1": {
+      "old_ms": 9603.321403556038,
+      "new_ms": 8991.673253593035
+    },
+    "full-sampler-shape-corpus-v1": {
+      "old_ms": 13504.854736151174,
+      "new_ms": 12599.447681976017
+    }
+  },
+  "all_cases_geomean_ratio_unweighted_not_application_score": 1.014660908376046
+}

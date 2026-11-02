@@ -1,0 +1,104 @@
+{
+  "iteration": 15,
+  "decision": "retain fused SFPU feature extraction in opt-in digit algorithm",
+  "baseline_commit": "180e5c672f80f6b4ffa10a671e7d9a3dfb2443a8",
+  "contract_unchanged": true,
+  "four_products_unchanged": true,
+  "paired_results": {
+    "narrow": {
+      "fused_feature_digits": {
+        "cases": {
+          "n388659-128x128-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 1.0743519322812458,
+            "minimum_speedup": 1.0742626010587608,
+            "maximum_noise_fraction": 0.0013032667082218995,
+            "consistent_screening_win": true
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 1.0743519322812458,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    },
+    "largest": {
+      "fused_feature_digits": {
+        "cases": {
+          "n2389000-64x64-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 1.1315441114156926,
+            "minimum_speedup": 1.1315326417554248,
+            "maximum_noise_fraction": 0.0005402121770849703,
+            "consistent_screening_win": true
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 1.1315441114156926,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    },
+    "wide": {
+      "fused_feature_digits": {
+        "cases": {
+          "n4490-1024x4096-k3x3x3": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 1.0362830773961795,
+            "minimum_speedup": 1.0211625780857032,
+            "maximum_noise_fraction": 0.0355489868699984,
+            "consistent_screening_win": false
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 1.0362830773961795,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    },
+    "small": {
+      "fused_feature_digits": {
+        "cases": {
+          "tune-scattered-35-17x45": {
+            "complete_and_correct": true,
+            "rounds": 3,
+            "median_speedup": 1.2084794589162435,
+            "minimum_speedup": 1.1892134391836289,
+            "maximum_noise_fraction": 0.06818796471424461,
+            "consistent_screening_win": true
+          }
+        },
+        "all_requested_cases_pass": true,
+        "geomean_speedup": 1.2084794589162435,
+        "promotion": "not_evaluated: requires full contract, workspace and application checks"
+      }
+    }
+  },
+  "tests": {
+    "full_cases_passed": 36,
+    "raw_bit_helper_watcher_cases": 5,
+    "existing_digit_watcher_cases": 14,
+    "cpu_evaluator_tests": 12,
+    "normal_device_worker_exits": 77
+  },
+  "maximum_workspace_before_bytes": 1007091200,
+  "maximum_workspace_after_bytes": 839528448,
+  "memory_replays": 37,
+  "unpaired_proxies": {
+    "poster-shape-corpus-v1": {
+      "old_ms": 9603.321403556038,
+      "new_ms": 8991.673253593035
+    },
+    "full-sampler-shape-corpus-v1": {
+      "old_ms": 13504.854736151174,
+      "new_ms": 12599.447681976017
+    }
+  },
+  "limitations": [
+    "wide comparison inconclusive under noise gate",
+    "unpaired short-run regressions remain visible",
+    "no general all-shape speedup claim",
+    "default dispatch unchanged",
+    "no application or external SOTA claim"
+  ]
+}

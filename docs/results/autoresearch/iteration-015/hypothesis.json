@@ -1,0 +1,17 @@
+{
+  "iteration": 15,
+  "baseline_commit": "180e5c672f80f6b4ffa10a671e7d9a3dfb2443a8",
+  "hypothesis": "Fuse fresh feature digit extraction and direct row-major output writes to eliminate full-tensor FP32 intermediates, conversion programs and concatenation",
+  "fixed": [
+    "global scale calculation",
+    "four integer GEMMs",
+    "HiFi3",
+    "FP32 accumulation",
+    "numerical gates",
+    "all36fixtures",
+    "rowchunk policy",
+    "matmul program policy"
+  ],
+  "gate": "bitwise helper equality across rounding ties/tails/scales/zero, Watcher, all36 full numerical/residency/workspace, three A/B/A rounds above noise",
+  "scope": "opt-in digit algorithm, no SOTA claim"
+}
