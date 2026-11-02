@@ -1,0 +1,26 @@
+{
+  "iteration": 20,
+  "created_utc": "2026-11-02T16:08:02Z",
+  "hypothesis": "Reuse one bounded integer topology across repeated large-stage convolutions and release before C2S, on layout change, and on forward exit. No feature values persist.",
+  "kernel_commit": "a2b31ccd3b9ae7cb9e7ba5a8aa8908852378a1bd",
+  "algorithm": "digit_implicit_gemm",
+  "baseline_policy": "original TopologyCache max_cached_rows=262144",
+  "candidate_policy": "original small topology cache plus one within-forward large topology, host tensor storage and aligned device metadata each <=256MiB between convolutions",
+  "sequence": [
+    "baseline-a",
+    "candidate-b",
+    "baseline-c"
+  ],
+  "warm_repeats_per_decoder": 3,
+  "gate_policy": "Original saved CPU gates unchanged. Matched BF16 output/guide comparison is additional, not a replacement.",
+  "score_scope": "Complete synchronized decoder calls including topology and boundary transfers; one diagnostic A/B/A bracket; static initial preparation and comparisons outside timing",
+  "shared_lock": "/tmp/genrecon-tt-pjrt.lock",
+  "whole_worker_timeout_seconds": 900,
+  "integrity": {
+    "digit_scene_probe.py": "6e657b6283d18a257e27096053265a0149fb261e6bfda7797c29f6bf603791ef",
+    "genrecon_digit_adapter.py": "1d3528e3950276633cea9177a8580fc9c6eb3fd3d659736631672576017b8256",
+    "run_scene.py": "66f1ad9002dacc434d76bcd3575ce8f225aa05097fcebeb44f06f0589708843d",
+    "stage_topology_cache.py": "e9dd1911354864b5217d487f1c1804ae783c705e3114c89f21e592348bdbf51a",
+    "test_stage_cache.py": "2032c1d66a45ca1fa73e52f39ba857212026923aaa3767c1a577e2b9aafdb053"
+  }
+}

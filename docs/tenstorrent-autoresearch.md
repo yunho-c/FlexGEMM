@@ -784,6 +784,29 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   continue kernel profiling and independent-scene coverage. Full FP32 decoder
   parity and SOTA remain unproven. Evidence and verifier are in iteration-019.
 
+### 020 — reuse bounded stage topology inside a decoder forward
+
+- Keep the implicit kernels fixed. Add one temporary large topology to the
+  isolated adapter, with exact coordinate/signature checks, 256 MiB host-tensor
+  and device-metadata limits, and release before C2S and on return/error.
+- All 36 matched output/guide records remain bitwise equal. Ten candidate
+  forwards finish with no large entry retained. Five map rebuilds are avoided
+  per forward; the final 1,724,221-row map exceeds the host budget and is not cached.
+- One diagnostic A/B/A bracket, three warm calls per decoder: shape
+  10.145796 / 8.715254 / 10.420886 seconds, 1.179924×; texture
+  10.158420 / 8.586000 / 10.383023 seconds, 1.196217×. Baseline drift is
+  2.6751% / 2.1868%; this is one scene and not broad performance confirmation.
+- Maximum retained host tensor/device metadata bytes: 90,319,224 / 99,440,640.
+  Device bounds use actual aligned buffer page metadata, checked against allocator
+  events in Watcher. These are cache limits, not full-model peak memory claims.
+- Warm topology time falls from 2.96–3.59 to 1.70–1.87 seconds. Original FP32
+  decoder parity gates fail identically under both cache policies and remain intact.
+- Three Watcher and two CPU tests pass; four device workers exit normally with
+  no timeout/reset. Original GenRecon, library kernels and defaults are unchanged.
+- Decision: retain the isolated cache prototype. Return to kernel dataflow,
+  starting with unused BF16 product outputs, while broader application coverage
+  remains pending. Evidence, source and verifier are in iteration-020.
+
 The additional CPU capture tools are:
 
 ```bash

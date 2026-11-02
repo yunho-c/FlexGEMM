@@ -1,0 +1,42 @@
+[SPARSE] Conv backend: flex_gemm; Attention backend: flash_attn
+load_shape
+2026-11-02 16:13:32.554 | DEBUG    | ttnn:<module>:78 - Initial ttnn.CONFIG:
+Config{cache_path=/home/user/.cache/ttnn,model_cache_path=/home/user/.cache/ttnn/models,tmp_dir=/tmp/ttnn,enable_model_cache=false,enable_fast_runtime_mode=true,validate_program_args=false,throw_exception_on_fallback=false,enable_logging=false,enable_graph_report=false,enable_graph_python_stack_traces=false,enable_detailed_buffer_report=false,enable_detailed_tensor_report=false,enable_comparison_mode=false,comparison_mode_should_raise_exception=false,comparison_mode_pcc=0.9999,root_report_path=generated/ttnn/reports,report_name=std::nullopt,std::nullopt}
+2026-11-02 16:13:33.133 | info     |          Device | Opening user mode device driver (tt_cluster.cpp:228)
+2026-11-02 16:13:33.133 | info     |             UMD | Cluster constructor started. (cluster.cpp:389)
+2026-11-02 16:13:33.134 | info     |             UMD | Creating TopologyDiscovery for architecture: wormhole_b0 (topology_discovery.cpp:96)
+2026-11-02 16:13:33.134 | info     |             UMD | Starting topology discovery. (topology_discovery.cpp:115)
+2026-11-02 16:13:33.135 | info     |             UMD | Established firmware bundle version: 19.11.0 (topology_discovery.cpp:575)
+2026-11-02 16:13:33.135 | info     |             UMD | Completed topology discovery. (topology_discovery.cpp:119)
+2026-11-02 16:13:33.244 | info     |             UMD | Opening local chip ids/PCIe ids: {0}/[3] and remote chip ids {} (cluster.cpp:173)
+2026-11-02 16:13:33.244 | info     |             UMD | IOMMU: disabled (cluster.cpp:147)
+2026-11-02 16:13:33.244 | info     |             UMD | KMD version: 2.3.0 (cluster.cpp:150)
+2026-11-02 16:13:33.244 | info     |             UMD | Cluster constructor completed. (cluster.cpp:648)
+2026-11-02 16:13:33.246 | info     |             UMD | Starting devices in cluster (cluster.cpp:1188)
+2026-11-02 16:13:33.248 | info     |             UMD | Starting devices in cluster completed. (cluster.cpp:1196)
+2026-11-02 16:13:33.404 | info     |     Distributed | Using auto discovery to generate mesh graph. (metal_env.cpp:437)
+2026-11-02 16:13:33.404 | info     |     Distributed | Constructing control plane using auto-discovery (no mesh graph descriptor). (metal_env.cpp:499)
+2026-11-02 16:13:33.405 | warning  |          Always | Unknown motherboard 'H12DSG-O-CPU' for chip_id=0 (bus_id=0x25) — falling back to bus_id as tray_id. Add this motherboard and its bus IDs to mobo_to_bus_ids in physical_system_discovery.cpp. (physical_system_discovery.cpp:119)
+2026-11-02 16:13:33.405 | info     |          Fabric | Logical multi-mesh adjacency: intermesh degree histogram {0:1}; intra-mesh degree histograms mesh0 {0:1} (topology_mapper_utils.cpp:3329)
+2026-11-02 16:13:33.405 | info     |          Fabric | Physical multi-mesh adjacency: intermesh degree histogram {0:1}; intra-mesh degree histograms mesh0 {0:1} (topology_mapper_utils.cpp:3337)
+2026-11-02 16:13:33.486 | info     |           Metal | D2HSocket: Using hugepage fallback for device 0 (data_dev_addr=0x3fdfe000, pcie_xy_enc=0xc08) (d2h_socket.cpp:164)
+tt_captured_wide_convolution
+tt_shape_fixed_guides
+tt_shape_predicted_guides
+warm_shape_1
+warm_shape_2
+warm_shape_3
+load_texture
+tt_texture_fixed_guides
+tt_texture_predicted_guides
+warm_texture_1
+warm_texture_2
+warm_texture_3
+complete
+2026-11-02 16:15:41.862 | info     |    BuildKernels | JIT cache stats: 1242/1242 hits (100.0%) [1242 cached, 1236 build-once dedup, 0 merged artifacts, 0 merged genfiles] (build_cache_telemetry.cpp:207)
+2026-11-02 16:15:41.862 | info     |    BuildKernels | JIT telemetry: 3 registered TelemetryTokens (build_cache_telemetry.cpp:230)
+2026-11-02 16:15:41.883 | info     |          Device | Closing user mode device drivers (tt_cluster.cpp:513)
+2026-11-02 16:15:41.883 | info     |             UMD | Closing devices in cluster (cluster.cpp:1201)
+2026-11-02 16:15:41.888 | info     |             UMD | Closing devices in cluster completed. (cluster.cpp:1210)
+2026-11-02 16:15:41.888 | info     |             UMD | Cluster destructor started. (cluster.cpp:916)
+2026-11-02 16:15:41.888 | info     |             UMD | Cluster destructor completed. (cluster.cpp:919)

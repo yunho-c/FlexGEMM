@@ -1,0 +1,13 @@
+{
+  "status": "complete",
+  "candidate_root": "/home/user/GitHub/flexgemm-autoresearch",
+  "algorithm": "digit_implicit_gemm",
+  "topology_policy": "baseline",
+  "script_sha256": "6e657b6283d18a257e27096053265a0149fb261e6bfda7797c29f6bf603791ef",
+  "whole_worker_timeout_seconds": 900,
+  "lock_wait_seconds": 1.0669988114386797e-05,
+  "returncode": 1,
+  "timeout": null,
+  "elapsed_seconds": 135.1878175419988,
+  "device_recovery_required": false
+}

@@ -1,0 +1,89 @@
+{
+  "iteration": 20,
+  "decision": "retain bounded within-forward topology cache prototype; library kernels and original GenRecon unchanged",
+  "kernel_commit": "a2b31ccd3b9ae7cb9e7ba5a8aa8908852378a1bd",
+  "algorithm": "digit_implicit_gemm",
+  "saved_cpu_gates_unchanged": true,
+  "cpu_statuses": {
+    "baseline-a": "numerical_failure",
+    "candidate-b": "numerical_failure",
+    "baseline-c": "numerical_failure"
+  },
+  "matched_saved_output_and_guide_records": 36,
+  "matched_records_bitwise_equal": 36,
+  "warm_repeat_outputs_and_guides_equal": true,
+  "completed_device_workers": 4,
+  "normal_numerical_failure_workers": 3,
+  "watcher_tests_passed": 3,
+  "cpu_tests_passed": 2,
+  "timeouts": 0,
+  "device_recovery_required": false,
+  "timing": {
+    "shape": {
+      "seconds": {
+        "baseline-a": [
+          10.3234657770372,
+          10.145796149969101,
+          9.966985840001144
+        ],
+        "candidate-b": [
+          8.682024418958463,
+          8.71525433799252,
+          8.728837840957567
+        ],
+        "baseline-c": [
+          10.420885722967796,
+          10.202983625989873,
+          10.427694324986078
+        ]
+      },
+      "median_seconds": {
+        "baseline-a": 10.145796149969101,
+        "candidate-b": 8.71525433799252,
+        "baseline-c": 10.420885722967796
+      },
+      "bracket_ratio": 1.1799243645294606,
+      "baseline_drift_fraction": 0.026750992182232126,
+      "scope": "Three warm samples per worker, one A/B/A bracket; diagnostic only"
+    },
+    "texture": {
+      "seconds": {
+        "baseline-a": [
+          10.158420149993617,
+          10.083960307005327,
+          10.174253567995038
+        ],
+        "candidate-b": [
+          8.586000437033363,
+          8.585751290025655,
+          8.647370136983227
+        ],
+        "baseline-c": [
+          10.384026006038766,
+          10.30282298399834,
+          10.383022779016756
+        ]
+      },
+      "median_seconds": {
+        "baseline-a": 10.158420149993617,
+        "candidate-b": 8.586000437033363,
+        "baseline-c": 10.383022779016756
+      },
+      "bracket_ratio": 1.1962172072814299,
+      "baseline_drift_fraction": 0.021868242635081442,
+      "scope": "Three warm samples per worker, one A/B/A bracket; diagnostic only"
+    }
+  },
+  "maximum_retained_host_tensor_bytes": 90319224,
+  "maximum_retained_device_metadata_bytes": 99440640,
+  "per_space_limit_bytes": 268435456,
+  "limitations": [
+    "one poster latent; one diagnostic A/B/A bracket with three warm samples per decoder",
+    "FP32 CPU decoder parity fails identically in both policies",
+    "host bound counts retained tensor storage, not Python object overhead or process RSS",
+    "device bound covers retained integer metadata, not complete-model transient memory peak",
+    "cache prototype remains isolated; no default API or original GenRecon changes",
+    "no SOTA claim"
+  ],
+  "next": "Return to kernel dataflow: remove unused native BF16 product tables, then investigate shared four-product gathering and reconstruction; integrate cache after broader application coverage."
+}

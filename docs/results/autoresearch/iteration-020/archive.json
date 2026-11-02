@@ -1,0 +1,120 @@
+{
+  "scope": "Unchanged stage-cache application A/B/A reports, tests and harness. Full tensor artifacts remain at hashed scratch paths.",
+  "files": [
+    {
+      "path": "baseline-a.runner.json",
+      "sha256": "08fee8dcf8ca87f1cf4ba8903c0cf258a2b5043fcdda29f81efe511f920c3d31",
+      "bytes": 449
+    },
+    {
+      "path": "baseline-a.log",
+      "sha256": "1034631d478f3383343de5510b3ac124c4239e5e02b9bd8170387b3597c16bea",
+      "bytes": 4263
+    },
+    {
+      "path": "baseline-a/result.json",
+      "sha256": "0dc08c63bfb1968cf23a27dec6eec70fef3b898eedaa17fb2d7e2131d1b18c0f",
+      "bytes": 122450
+    },
+    {
+      "path": "candidate-b.runner.json",
+      "sha256": "27a59ddc60dc806ed77dc121966a5340e250a19012c99d5539e58b66f55f719f",
+      "bytes": 447
+    },
+    {
+      "path": "candidate-b.log",
+      "sha256": "744800a06cf8a1e041b57ea7b4ee4ffa688102866a5255697a2164c281eaeda1",
+      "bytes": 4263
+    },
+    {
+      "path": "candidate-b/result.json",
+      "sha256": "ef10a44acdb520653d67d9785b83f2477619bd148ada10dbbc7cca6579e3a536",
+      "bytes": 629655
+    },
+    {
+      "path": "baseline-c.runner.json",
+      "sha256": "d12c6e3184cb63fe15b9afe244364879f28c59558c2f7996629477011689561a",
+      "bytes": 449
+    },
+    {
+      "path": "baseline-c.log",
+      "sha256": "406cde2d100409e45f681463900af02c71dbdd8ae07eacff1a8fdec596655bfc",
+      "bytes": 4263
+    },
+    {
+      "path": "baseline-c/result.json",
+      "sha256": "180836819a3a1867d221180b6ff36a2e9cda65eec971620de7004217e8e9e2e2",
+      "bytes": 122453
+    },
+    {
+      "path": "plan.json",
+      "sha256": "e3d14beb3ff96924e14942d65e053979d93ab2687163b1b7937a41b34e6a3d51",
+      "bytes": 1605
+    },
+    {
+      "path": "comparison.json",
+      "sha256": "bc27c81120f060441692ada2bd426dca3d7b0c9c45274b08c73ab8b9e7804f07",
+      "bytes": 28902
+    },
+    {
+      "path": "watcher-tests.log",
+      "sha256": "b03e1e02033640f11cc68bad4001be352bfad2348a400d9bc3148a70724b4bec",
+      "bytes": 1422
+    },
+    {
+      "path": "watcher-tests.xml",
+      "sha256": "6ddedd84b07537f37bdc8913a516d279816586dafc006d68fdd5226575ae2fd8",
+      "bytes": 801
+    },
+    {
+      "path": "watcher-tests.runner.json",
+      "sha256": "d791b446e3092c936d9bc4a35329e9d77b31bc2251ba6c5e6d6f99916167fb33",
+      "bytes": 118
+    },
+    {
+      "path": "cpu-tests.xml",
+      "sha256": "1dd2306fb76139ecc068b0e4895b69e51ee37ce014e4e1c82a66c28f88aa9b89",
+      "bytes": 447
+    },
+    {
+      "path": "exception-tests.xml",
+      "sha256": "ff2d2dfaeae44a95b0e699541006a4a55a6d1f1c09138a327dbb168bc1fbd877",
+      "bytes": 440
+    },
+    {
+      "path": "test_exception_cleanup.py",
+      "sha256": "0551880e0d0496ce1e6ba52a79785ae108de9ddd7b91f4b9ad0d50f5b54f120a",
+      "bytes": 1305
+    },
+    {
+      "path": "harness/digit_scene_probe.py",
+      "sha256": "6e657b6283d18a257e27096053265a0149fb261e6bfda7797c29f6bf603791ef",
+      "bytes": 19532
+    },
+    {
+      "path": "harness/genrecon_digit_adapter.py",
+      "sha256": "1d3528e3950276633cea9177a8580fc9c6eb3fd3d659736631672576017b8256",
+      "bytes": 3779
+    },
+    {
+      "path": "harness/run_scene.py",
+      "sha256": "66f1ad9002dacc434d76bcd3575ce8f225aa05097fcebeb44f06f0589708843d",
+      "bytes": 2119
+    },
+    {
+      "path": "harness/stage_topology_cache.py",
+      "sha256": "e9dd1911354864b5217d487f1c1804ae783c705e3114c89f21e592348bdbf51a",
+      "bytes": 4612
+    },
+    {
+      "path": "harness/test_stage_cache.py",
+      "sha256": "2032c1d66a45ca1fa73e52f39ba857212026923aaa3767c1a577e2b9aafdb053",
+      "bytes": 4888
+    },
+    {
+      "path": "compare.py",
+      "sha256": "ee2b2ddfea8d94c2733333d6db1425831747b5e06e99f246cf5f9c1c9110830a",
+      "bytes": 6377
+    }
+  ]
+}
