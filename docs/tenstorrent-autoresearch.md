@@ -609,6 +609,34 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   CPU replay are in `iteration-012`. Next: tune integer-product matmul blocking
   while preserving all four products, then measure actual decoder integration.
 
+### 013 — tune tall integer-product matmul blocking
+
+- Select an explicit Wormhole 1D multicast program for suitable tall digit
+  GEMMs, using a maximum six-tile K block, SDK-compatible FP32 subblocks and
+  a conservative 1 MiB CB estimate. Other shapes retain SDK selection. All
+  four products, HiFi3, FP32 accumulation and the numerical contract stay fixed.
+- Three eleven-repeat A/B/A rounds against iteration 012 confirm the
+  388,659-row 128→128 gain: 536.647/536.753/536.498 ms versus approximately
+  552.0 ms, or 1.028786×/1.028540×/1.028775×. Maximum noise is 0.1756% and
+  baseline drift 0.0161%. Six K-limit screens and all exact patches are retained.
+- All 36 cases pass correctness, residency, integrity and workspace gates;
+  maximum workspace remains 1,007,091,200 bytes. Fourteen Watcher tests and
+  12 CPU evaluator tests pass. A new test covers a partially occupied core
+  grid with ragged channels, missing/repeated neighbors and a one-row tail.
+- Unpaired occurrence-weighted proxies are 9.603 s and 13.505 s versus 9.881 s
+  and 13.863 s in iteration 011. Some shapes screen slower: largest 64→64
+  cases by about 1.6–1.7%, LiDAR 16→16 by 4.5%, and LiDAR 17→35 by 2.5%.
+  A paired small-case control is inconclusive (ratios 0.8683/0.9937/2.0851,
+  maximum baseline drift 41.0%). No general per-shape or application gain.
+- Component diagnostics pass at 536.533 ms unwrapped; serialized matmul is
+  203.357 ms versus iteration 011's 217.731 ms. Generic operations remain
+  about 301.752 ms. These synchronized timings cannot be added into lean savings.
+- Decision: retain in the opt-in digit algorithm, with default dispatch and
+  SOTA status unchanged. All 65 device workers exit normally. Unchanged
+  reports, patches, allocation-event replays and drivers are in iteration-013.
+  Shape-specific regression confirmation and application/external comparisons
+  remain required before broader adoption.
+
 The additional CPU capture tools are:
 
 ```bash

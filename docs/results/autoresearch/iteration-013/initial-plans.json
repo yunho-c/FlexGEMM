@@ -1,0 +1,135 @@
+[
+  {
+    "shape": [
+      8192,
+      3456,
+      128
+    ],
+    "plan": {
+      "config": {
+        "compute_with_storage_grid_size": [
+          8,
+          8
+        ],
+        "in0_block_w": 18,
+        "out_subblock_h": 1,
+        "out_subblock_w": 4,
+        "out_block_h": 4,
+        "out_block_w": 4,
+        "per_core_M": 4,
+        "per_core_N": 4,
+        "fuse_batch": false,
+        "mcast_in0": false
+      },
+      "estimated_cb_bytes": 720896
+    }
+  },
+  {
+    "shape": [
+      16384,
+      1728,
+      64
+    ],
+    "plan": {
+      "config": {
+        "compute_with_storage_grid_size": [
+          8,
+          8
+        ],
+        "in0_block_w": 18,
+        "out_subblock_h": 2,
+        "out_subblock_w": 2,
+        "out_block_h": 8,
+        "out_block_w": 2,
+        "per_core_M": 8,
+        "per_core_N": 2,
+        "fuse_batch": false,
+        "mcast_in0": false
+      },
+      "estimated_cb_bytes": 868352
+    }
+  },
+  {
+    "shape": [
+      4096,
+      6912,
+      256
+    ],
+    "plan": {
+      "config": {
+        "compute_with_storage_grid_size": [
+          8,
+          8
+        ],
+        "in0_block_w": 18,
+        "out_subblock_h": 1,
+        "out_subblock_w": 4,
+        "out_block_h": 2,
+        "out_block_w": 8,
+        "per_core_M": 2,
+        "per_core_N": 8,
+        "fuse_batch": false,
+        "mcast_in0": false
+      },
+      "estimated_cb_bytes": 868352
+    }
+  },
+  {
+    "shape": [
+      8192,
+      3456,
+      512
+    ],
+    "plan": {
+      "config": {
+        "compute_with_storage_grid_size": [
+          8,
+          8
+        ],
+        "in0_block_w": 4,
+        "out_subblock_h": 1,
+        "out_subblock_w": 4,
+        "out_block_h": 4,
+        "out_block_w": 16,
+        "per_core_M": 4,
+        "per_core_N": 16,
+        "fuse_batch": false,
+        "mcast_in0": false
+      },
+      "estimated_cb_bytes": 851968
+    }
+  },
+  {
+    "shape": [
+      1024,
+      27648,
+      4096
+    ],
+    "plan": null
+  },
+  {
+    "shape": [
+      2081,
+      864,
+      35
+    ],
+    "plan": {
+      "config": {
+        "compute_with_storage_grid_size": [
+          8,
+          8
+        ],
+        "in0_block_w": 9,
+        "out_subblock_h": 2,
+        "out_subblock_w": 2,
+        "out_block_h": 2,
+        "out_block_w": 2,
+        "per_core_M": 2,
+        "per_core_N": 2,
+        "fuse_batch": false,
+        "mcast_in0": false
+      },
+      "estimated_cb_bytes": 180224
+    }
+  }
+]

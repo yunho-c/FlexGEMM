@@ -1,0 +1,340 @@
+{
+  "scope": "Unpaired screening against archived iteration011; no application or general speedup claim",
+  "cases": [
+    {
+      "case": "tune-scattered-35-17x45",
+      "corpus": "corpus-v2",
+      "previous_ms": 3.5595529479905963,
+      "current_ms": 3.421813016757369,
+      "unpaired_ratio": 1.0402534944366288,
+      "current_workspace_bytes": 89874944,
+      "explicit_plan": false
+    },
+    {
+      "case": "tune-surface-256-64x64",
+      "corpus": "corpus-v2",
+      "previous_ms": 2.965149993542582,
+      "current_ms": 4.413366026710719,
+      "unpaired_ratio": 0.6718568039896994,
+      "current_workspace_bytes": 91756544,
+      "explicit_plan": false
+    },
+    {
+      "case": "tune-clustered-1025-128x128",
+      "corpus": "corpus-v2",
+      "previous_ms": 3.934594977181405,
+      "current_ms": 4.645107022952288,
+      "unpaired_ratio": 0.8470407587467589,
+      "current_workspace_bytes": 107700224,
+      "explicit_plan": false
+    },
+    {
+      "case": "tune-scattered-257-32x256",
+      "corpus": "corpus-v2",
+      "previous_ms": 4.521975992247462,
+      "current_ms": 3.5490530426613986,
+      "unpaired_ratio": 1.2741359280605393,
+      "current_workspace_bytes": 92165120,
+      "explicit_plan": false
+    },
+    {
+      "case": "tune-surface-4096-64x64",
+      "corpus": "corpus-v2",
+      "previous_ms": 5.003738042432815,
+      "current_ms": 5.501649982761592,
+      "unpaired_ratio": 0.909497706708189,
+      "current_workspace_bytes": 125179904,
+      "explicit_plan": true
+    },
+    {
+      "case": "validation-scattered-35-17x45",
+      "corpus": "corpus-v2",
+      "previous_ms": 3.3905430464074016,
+      "current_ms": 3.419472952373326,
+      "unpaired_ratio": 0.9915396593659719,
+      "current_workspace_bytes": 89874944,
+      "explicit_plan": false
+    },
+    {
+      "case": "validation-surface-256-64x64",
+      "corpus": "corpus-v2",
+      "previous_ms": 3.2640619901940227,
+      "current_ms": 4.353906027972698,
+      "unpaired_ratio": 0.7496859071425256,
+      "current_workspace_bytes": 91756544,
+      "explicit_plan": false
+    },
+    {
+      "case": "validation-clustered-1025-128x128",
+      "corpus": "corpus-v2",
+      "previous_ms": 3.8557539810426533,
+      "current_ms": 4.128265019971877,
+      "unpaired_ratio": 0.9339889668878185,
+      "current_workspace_bytes": 107700224,
+      "explicit_plan": false
+    },
+    {
+      "case": "validation-scattered-257-32x256",
+      "corpus": "corpus-v2",
+      "previous_ms": 3.6360330414026976,
+      "current_ms": 3.4562830114737153,
+      "unpaired_ratio": 1.052006745203524,
+      "current_workspace_bytes": 92165120,
+      "explicit_plan": false
+    },
+    {
+      "case": "validation-surface-4096-64x64",
+      "corpus": "corpus-v2",
+      "previous_ms": 5.113558028824627,
+      "current_ms": 5.9294719831086695,
+      "unpaired_ratio": 0.8623968615403965,
+      "current_workspace_bytes": 125179904,
+      "explicit_plan": true
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "corpus": "corpus-v2",
+      "previous_ms": 131.1956419958733,
+      "current_ms": 130.7422110112384,
+      "unpaired_ratio": 1.0034681300027573,
+      "current_workspace_bytes": 322850816,
+      "explicit_plan": false
+    },
+    {
+      "case": "shape-norm-silu-513-known-failure",
+      "corpus": "corpus-v2",
+      "previous_ms": 20.233793009538203,
+      "current_ms": 20.03231196431443,
+      "unpaired_ratio": 1.010057802892781,
+      "current_workspace_bytes": 206262272,
+      "explicit_plan": false
+    },
+    {
+      "case": "n4490-1024x1024-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 56.49159400491044,
+      "current_ms": 56.3268429832533,
+      "unpaired_ratio": 1.0029249113376746,
+      "current_workspace_bytes": 246566912,
+      "explicit_plan": false
+    },
+    {
+      "case": "n4490-1024x4096-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 130.4913600324653,
+      "current_ms": 130.9481819625944,
+      "unpaired_ratio": 0.9965114297634191,
+      "current_workspace_bytes": 322850816,
+      "explicit_plan": false
+    },
+    {
+      "case": "n20251-512x512-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 117.5274130073376,
+      "current_ms": 117.0629319967702,
+      "unpaired_ratio": 1.0039677889716636,
+      "current_workspace_bytes": 269520896,
+      "explicit_plan": false
+    },
+    {
+      "case": "n20251-512x2048-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 187.5860540312715,
+      "current_ms": 187.46755697065964,
+      "unpaired_ratio": 1.0006320936941127,
+      "current_workspace_bytes": 345411584,
+      "explicit_plan": false
+    },
+    {
+      "case": "n88524-256x256-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 255.02725801197812,
+      "current_ms": 239.41476497566327,
+      "unpaired_ratio": 1.065211070160614,
+      "current_workspace_bytes": 318607360,
+      "explicit_plan": true
+    },
+    {
+      "case": "n88524-256x1024-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 305.9003410162404,
+      "current_ms": 305.46134198084474,
+      "unpaired_ratio": 1.001437167245285,
+      "current_workspace_bytes": 394301440,
+      "explicit_plan": false
+    },
+    {
+      "case": "n388659-128x128-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 552.5336200371385,
+      "current_ms": 536.4836369990371,
+      "unpaired_ratio": 1.0299170038584609,
+      "current_workspace_bytes": 426944512,
+      "explicit_plan": true
+    },
+    {
+      "case": "n388659-128x512-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 725.5464139743708,
+      "current_ms": 656.7367900279351,
+      "unpaired_ratio": 1.1047750407640615,
+      "current_workspace_bytes": 502540288,
+      "explicit_plan": true
+    },
+    {
+      "case": "n1711800-64x64-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "previous_ms": 1249.609415011946,
+      "current_ms": 1270.1792469597422,
+      "unpaired_ratio": 0.9838055676023433,
+      "current_workspace_bytes": 746954240,
+      "explicit_plan": true
+    },
+    {
+      "case": "n6181-1024x1024-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 77.22870795987546,
+      "current_ms": 77.25184701848775,
+      "unpaired_ratio": 0.9997004724222742,
+      "current_workspace_bytes": 253513728,
+      "explicit_plan": false
+    },
+    {
+      "case": "n6181-1024x4096-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 168.288376997225,
+      "current_ms": 168.3670519851148,
+      "unpaired_ratio": 0.9995327174351382,
+      "current_workspace_bytes": 329797632,
+      "explicit_plan": false
+    },
+    {
+      "case": "n28223-512x512-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 160.81716999178752,
+      "current_ms": 161.14381595980376,
+      "unpaired_ratio": 0.9979729537489809,
+      "current_workspace_bytes": 285839360,
+      "explicit_plan": false
+    },
+    {
+      "case": "n28223-512x2048-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 257.1105979732238,
+      "current_ms": 257.4327270267531,
+      "unpaired_ratio": 0.9987486864733564,
+      "current_workspace_bytes": 361730048,
+      "explicit_plan": false
+    },
+    {
+      "case": "n125219-256x256-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 361.64688400458544,
+      "current_ms": 341.1639799596742,
+      "unpaired_ratio": 1.0600382960924901,
+      "current_workspace_bytes": 356179968,
+      "explicit_plan": true
+    },
+    {
+      "case": "n125219-256x1024-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 433.4970729541965,
+      "current_ms": 433.4766209940426,
+      "unpaired_ratio": 1.000047181229998,
+      "current_workspace_bytes": 431874048,
+      "explicit_plan": false
+    },
+    {
+      "case": "n551044-128x128-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 787.1833689860068,
+      "current_ms": 764.9388880236074,
+      "unpaired_ratio": 1.029080075952045,
+      "current_workspace_bytes": 512740352,
+      "explicit_plan": true
+    },
+    {
+      "case": "n551044-128x512-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 1031.2445600284263,
+      "current_ms": 933.6599229718558,
+      "unpaired_ratio": 1.1045183954624045,
+      "current_workspace_bytes": 585689088,
+      "explicit_plan": true
+    },
+    {
+      "case": "n2389000-64x64-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "previous_ms": 1739.2817660002038,
+      "current_ms": 1768.2958940276876,
+      "unpaired_ratio": 0.9835920401526254,
+      "current_workspace_bytes": 1007091200,
+      "explicit_plan": true
+    },
+    {
+      "case": "autoware-test-pcd-21359-16x16",
+      "corpus": "autoware-lidar-corpus-v1",
+      "previous_ms": 10.175947041716427,
+      "current_ms": 10.629643977154046,
+      "unpaired_ratio": 0.9573177675176388,
+      "current_workspace_bytes": 182454272,
+      "explicit_plan": true
+    },
+    {
+      "case": "autoware-test-pcd-21359-32x64",
+      "corpus": "autoware-lidar-corpus-v1",
+      "previous_ms": 11.025950021576136,
+      "current_ms": 11.08778698835522,
+      "unpaired_ratio": 0.9944229658412426,
+      "current_workspace_bytes": 198969344,
+      "explicit_plan": true
+    },
+    {
+      "case": "autoware-test-pcd-21359-64x64",
+      "corpus": "autoware-lidar-corpus-v1",
+      "previous_ms": 15.527695999480784,
+      "current_ms": 15.600696031469852,
+      "unpaired_ratio": 0.9953207195472682,
+      "current_workspace_bytes": 233422848,
+      "explicit_plan": true
+    },
+    {
+      "case": "autoware-test-pcd-21359-128x128",
+      "corpus": "autoware-lidar-corpus-v1",
+      "previous_ms": 29.26214598119259,
+      "current_ms": 27.66756498022005,
+      "unpaired_ratio": 1.0576335865520703,
+      "current_workspace_bytes": 238882816,
+      "explicit_plan": true
+    },
+    {
+      "case": "autoware-test-pcd-21359-256x256",
+      "corpus": "autoware-lidar-corpus-v1",
+      "previous_ms": 57.261266047134995,
+      "current_ms": 53.224499977659434,
+      "unpaired_ratio": 1.0758441332688886,
+      "current_workspace_bytes": 249827328,
+      "explicit_plan": true
+    },
+    {
+      "case": "autoware-test-pcd-21359-17x35",
+      "corpus": "autoware-lidar-corpus-v1",
+      "previous_ms": 11.245820962358266,
+      "current_ms": 11.528217990417033,
+      "unpaired_ratio": 0.975503843847027,
+      "current_workspace_bytes": 198969344,
+      "explicit_plan": true
+    }
+  ],
+  "occurrence_weighted_proxy": {
+    "poster-shape-corpus-v1": {
+      "old_ms": 9880.97940350417,
+      "new_ms": 9603.321403556038
+    },
+    "full-sampler-shape-corpus-v1": {
+      "old_ms": 13862.967896624468,
+      "new_ms": 13504.854736151174
+    }
+  },
+  "all_cases_geomean_ratio_unweighted_not_application_score": 0.988183837953361
+}

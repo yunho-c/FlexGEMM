@@ -1,0 +1,18 @@
+{
+  "iteration": 13,
+  "baseline_commit": "2ed860dd88e1f09e19c775c345620130a210b64c",
+  "hypothesis": "Larger K blocks may reduce intermediate partial-result packing/reload overhead in tall four-product integer GEMMs",
+  "fixed": [
+    "four products",
+    "HiFi3",
+    "FP32 accumulation",
+    "packer_l1_acc false",
+    "numerical contract",
+    "fixtures",
+    "row chunk policy"
+  ],
+  "screen": "Initial k18 with 1x4 subblocks and 900KiB CB estimate; then six K limits 2,6,9,12,18,27 with SDK FP32 subblock order and 1MiB conservative estimate",
+  "primary_source_revision": "9f9cd4fd590f4b606bd0981a4fe0b6403eb38ec9",
+  "adoption_gate": "All36 cases numerical/residency/workspace pass; exact tested source retained; three eleven-repeat A/B/A rounds exceed max2percent/noise; no full-application or SOTA claim",
+  "reporting": "Actual shape-selected program configs and conservative CB estimates in each report; estimates do not replace allocator/whole-L1 workspace bound"
+}

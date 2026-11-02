@@ -1,0 +1,66 @@
+{
+  "status": "complete",
+  "screen_only": true,
+  "cases": [
+    "n388659-128x128-k3x3x3"
+  ],
+  "baseline": {
+    "algorithm": "digit_explicit_gemm",
+    "row_chunk": 8192
+  },
+  "candidates": {
+    "k18": {
+      "algorithm": "digit_explicit_gemm",
+      "row_chunk": 8192
+    }
+  },
+  "rounds": 3,
+  "repeat": 5,
+  "corpus_manifest_sha256": "c5c08d454f75c8b0a78f6b3909d3c700c999ef188264c000bac0cc8c68e6ed67",
+  "ordering_seed": 20261102,
+  "trials": [
+    {
+      "case": "n388659-128x128-k3x3x3",
+      "candidate": "baseline",
+      "round": 0,
+      "path": "trial-0000.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 552.4461139575578,
+        "min_ms": 552.123382978607,
+        "max_ms": 552.5461840443313,
+        "mad_ms": 0.10007008677348495,
+        "samples_ms": [
+          552.5461840443313,
+          552.5242339936085,
+          552.4461139575578,
+          552.2183830034919,
+          552.123382978607
+        ]
+      }
+    },
+    {
+      "case": "n388659-128x128-k3x3x3",
+      "candidate": "k18",
+      "round": 0,
+      "path": "trial-0001.json",
+      "runner_status": "passed",
+      "status": "passed",
+      "timing": {
+        "median_ms": 535.9129839926027,
+        "min_ms": 535.7186640030704,
+        "max_ms": 536.1860949778929,
+        "mad_ms": 0.11070095933973789,
+        "samples_ms": [
+          536.1860949778929,
+          535.9129839926027,
+          535.7186640030704,
+          535.8812640188262,
+          536.0236849519424
+        ]
+      }
+    }
+  ],
+  "comparisons": []
+}

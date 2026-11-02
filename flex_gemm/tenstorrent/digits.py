@@ -15,6 +15,34 @@ from .ops import _add_bias, _compute_config
 OUTPUT_ASSEMBLY = "tile_copy"
 EPILOGUE = "tile_broadcast"
 GATHER = "tiled"
+MATMUL_K_BLOCK = 6
+MATMUL_L1_ESTIMATE_LIMIT = 1024 * 1024
+
+
+def matmul_plan(rows, k, n, grid):
+    """Shape-only Wormhole plan for tall integer-product GEMMs, or SDK default.
+
+    The conservative CB estimate counts double-buffered BF16 operands and
+    separate FP32 partial/output buffers. Actual compiler and allocator checks
+    remain required; this estimate is not a workspace measurement.
+    """
+    mt, kt, nt = _round32(rows) // 32, _round32(k) // 32, _round32(n) // 32
+    cores = grid[0] * grid[1]
+    if mt < cores or nt > 16 or mt // nt <= 8:
+        return None
+    pm, pn = (mt + cores - 1) // cores, nt
+    for block in range(min(MATMUL_K_BLOCK, kt), 1, -1):
+        estimate = 2 * block * (pm + pn) * 2048 + 2 * pm * pn * 4096
+        if kt % block == 0 and estimate <= MATMUL_L1_ESTIMATE_LIMIT:
+            break
+    else:
+        return None
+    sh, sw = next((h, w) for h, w in ((2, 2), (4, 1), (1, 4), (3, 1), (1, 3), (2, 1), (1, 2), (1, 1))
+                  if pm % h == 0 and pn % w == 0)
+    return {"config": {"compute_with_storage_grid_size": list(grid),
+        "in0_block_w": block, "out_subblock_h": sh, "out_subblock_w": sw,
+        "out_block_h": pm, "out_block_w": pn, "per_core_M": pm, "per_core_N": pn,
+        "fuse_batch": False, "mcast_in0": False}, "estimated_cb_bytes": estimate}
 
 
 @dataclass
@@ -194,9 +222,18 @@ def sparse_digit_conv_device(features, weights, topology, *, row_chunk=256, fp32
             return ttnn.to_layout(ttnn.reshape(expanded, [end - start, weights.volume * cp]), ttnn.TILE_LAYOUT)
 
         a, b = gather(high), gather(low)
+        program = None
+        if weights.device.arch() == ttnn.Arch.WORMHOLE_B0:
+            grid = weights.device.compute_with_storage_grid_size()
+            plan = matmul_plan(end - start, weights.volume * cp, weights.co, (grid.x, grid.y))
+            if plan is not None:
+                options = dict(plan["config"])
+                options["compute_with_storage_grid_size"] = ttnn.CoreCoord(grid.x, grid.y)
+                program = ttnn.MatmulMultiCoreReuseMultiCast1DProgramConfig(**options)
 
         def product(x, digit):
-            return ttnn.matmul(x, weights.digits[digit].weights, dtype=ttnn.float32, compute_kernel_config=compute)
+            return ttnn.matmul(x, weights.digits[digit].weights, dtype=ttnn.float32,
+                               compute_kernel_config=compute, program_config=program)
 
         top = product(a, 0)
         cross_a, cross_b = product(a, 1), product(b, 0)

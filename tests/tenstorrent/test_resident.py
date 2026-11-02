@@ -27,6 +27,30 @@ def test_tiled_digit_gather_exact_rows_and_padding(device, ci):
         torch.testing.assert_close(ttnn.to_torch(actual), expected[start:end], atol=0, rtol=0)
 
 
+def test_digit_blocked_matmul_ragged_core_boundary_and_reuse(device):
+    import ttnn
+    from flex_gemm.tenstorrent import prepare_sparse_digit_weights
+    from flex_gemm.tenstorrent.digits import matmul_plan
+    generator = torch.Generator().manual_seed(113)
+    rows, ci, co, volume = 2081, 17, 35, 3
+    x = torch.randn(rows, ci, generator=generator).bfloat16()
+    weight = (torch.randn(co, volume, ci, generator=generator) / 8).bfloat16()
+    bias = torch.randn(co, generator=generator).bfloat16()
+    mapping = torch.randint(-1, rows, (rows, volume), generator=generator)
+    mapping[0] = -1
+    mapping[-1] = torch.tensor([rows - 1, -1, 0])
+    prepared = prepare_sparse_digit_weights(weight, device=device, bias=bias)
+    topology = prepare_sparse_topology(mapping, rows, device=device)
+    grid = device.compute_with_storage_grid_size()
+    assert matmul_plan(2080, 96, co, (grid.x, grid.y)) is not None
+    for features in (x, (x.float() * .5 + .03125).bfloat16()):
+        resident = ttnn.from_torch(features, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
+        result = sparse_conv_device(resident, prepared, topology,
+            algorithm="digit_explicit_gemm", row_chunk=2080)
+        expected = sparse_conv_reference(features, weight, mapping, bias)
+        torch.testing.assert_close(ttnn.to_torch(result).float(), expected, atol=.025, rtol=.025)
+
+
 @pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
                                         "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
 @pytest.mark.parametrize("ci,co", [(32, 64), (17, 35)])

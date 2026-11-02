@@ -125,6 +125,20 @@ def main():
             digit_output_assembly=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "OUTPUT_ASSEMBLY", "concat"),
             digit_epilogue=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "EPILOGUE", "expanded"),
             digit_gather=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "GATHER", "embedding"))
+        digit_module = sys.modules.get("flex_gemm.tenstorrent.digits")
+        if (config["algorithm"] == "digit_explicit_gemm" and hasattr(digit_module, "matmul_plan")
+                and device.arch() == ttnn.Arch.WORMHOLE_B0):
+            from collections import Counter
+            rows = len(fixture["mapping"])
+            chunk = config.get("row_chunk", 256)
+            counts = Counter(min(chunk, rows - start) for start in range(0, rows, chunk))
+            report["matmul_policy"] = {"kind": "bounded_1d_kblocking_v1",
+                "maximum_k_block_tiles": digit_module.MATMUL_K_BLOCK,
+                "cb_estimate_limit_bytes": digit_module.MATMUL_L1_ESTIMATE_LIMIT,
+                "chunk_plans": [{"rows": count, "chunks": occurrences,
+                    "plan": digit_module.matmul_plan(count, entry["volume"] * ((entry["ci"] + 31) // 32 * 32),
+                                                    entry["co"], (grid.x, grid.y))}
+                    for count, occurrences in counts.items()]}
         mandatory = report["work"]["split_partial_bytes"] + report["work"]["explicit_expansion_bytes"]
         if mandatory > contract["workspace_limit_bytes"]:
             raise ValueError("mandatory intermediate storage exceeds workspace cap")

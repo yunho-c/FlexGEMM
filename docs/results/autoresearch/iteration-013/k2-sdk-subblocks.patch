@@ -1,0 +1,119 @@
+diff --git a/benchmarks/tenstorrent/evaluate.py b/benchmarks/tenstorrent/evaluate.py
+index 7bdcece..c2fff1a 100644
+--- a/benchmarks/tenstorrent/evaluate.py
++++ b/benchmarks/tenstorrent/evaluate.py
+@@ -125,6 +125,20 @@ def main():
+             digit_output_assembly=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "OUTPUT_ASSEMBLY", "concat"),
+             digit_epilogue=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "EPILOGUE", "expanded"),
+             digit_gather=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "GATHER", "embedding"))
++        digit_module = sys.modules.get("flex_gemm.tenstorrent.digits")
++        if (config["algorithm"] == "digit_explicit_gemm" and hasattr(digit_module, "matmul_plan")
++                and device.arch() == ttnn.Arch.WORMHOLE_B0):
++            from collections import Counter
++            rows = len(fixture["mapping"])
++            chunk = config.get("row_chunk", 256)
++            counts = Counter(min(chunk, rows - start) for start in range(0, rows, chunk))
++            report["matmul_policy"] = {"kind": "bounded_1d_kblocking_v1",
++                "maximum_k_block_tiles": digit_module.MATMUL_K_BLOCK,
++                "cb_estimate_limit_bytes": digit_module.MATMUL_L1_ESTIMATE_LIMIT,
++                "chunk_plans": [{"rows": count, "chunks": occurrences,
++                    "plan": digit_module.matmul_plan(count, entry["volume"] * ((entry["ci"] + 31) // 32 * 32),
++                                                    entry["co"], (grid.x, grid.y))}
++                    for count, occurrences in counts.items()]}
+         mandatory = report["work"]["split_partial_bytes"] + report["work"]["explicit_expansion_bytes"]
+         if mandatory > contract["workspace_limit_bytes"]:
+             raise ValueError("mandatory intermediate storage exceeds workspace cap")
+diff --git a/flex_gemm/tenstorrent/digits.py b/flex_gemm/tenstorrent/digits.py
+index 57fc08b..9ecb14c 100644
+--- a/flex_gemm/tenstorrent/digits.py
++++ b/flex_gemm/tenstorrent/digits.py
+@@ -15,6 +15,34 @@ from .ops import _add_bias, _compute_config
+ OUTPUT_ASSEMBLY = "tile_copy"
+ EPILOGUE = "tile_broadcast"
+ GATHER = "tiled"
++MATMUL_K_BLOCK = 2
++MATMUL_L1_ESTIMATE_LIMIT = 1024 * 1024
++
++
++def matmul_plan(rows, k, n, grid):
++    """Shape-only Wormhole plan for tall integer-product GEMMs, or SDK default.
++
++    The conservative CB estimate counts double-buffered BF16 operands and
++    separate FP32 partial/output buffers. Actual compiler and allocator checks
++    remain required; this estimate is not a workspace measurement.
++    """
++    mt, kt, nt = _round32(rows) // 32, _round32(k) // 32, _round32(n) // 32
++    cores = grid[0] * grid[1]
++    if mt < cores or nt > 16 or mt // nt <= 8:
++        return None
++    pm, pn = (mt + cores - 1) // cores, nt
++    for block in range(min(MATMUL_K_BLOCK, kt), 1, -1):
++        estimate = 2 * block * (pm + pn) * 2048 + 2 * pm * pn * 4096
++        if kt % block == 0 and estimate <= MATMUL_L1_ESTIMATE_LIMIT:
++            break
++    else:
++        return None
++    sh, sw = next((h, w) for h, w in ((2, 2), (4, 1), (1, 4), (3, 1), (1, 3), (2, 1), (1, 2), (1, 1))
++                  if pm % h == 0 and pn % w == 0)
++    return {"config": {"compute_with_storage_grid_size": list(grid),
++        "in0_block_w": block, "out_subblock_h": sh, "out_subblock_w": sw,
++        "out_block_h": pm, "out_block_w": pn, "per_core_M": pm, "per_core_N": pn,
++        "fuse_batch": False, "mcast_in0": False}, "estimated_cb_bytes": estimate}
+ 
+ 
+ @dataclass
+@@ -194,9 +222,18 @@ def sparse_digit_conv_device(features, weights, topology, *, row_chunk=256, fp32
+             return ttnn.to_layout(ttnn.reshape(expanded, [end - start, weights.volume * cp]), ttnn.TILE_LAYOUT)
+ 
+         a, b = gather(high), gather(low)
++        program = None
++        if weights.device.arch() == ttnn.Arch.WORMHOLE_B0:
++            grid = weights.device.compute_with_storage_grid_size()
++            plan = matmul_plan(end - start, weights.volume * cp, weights.co, (grid.x, grid.y))
++            if plan is not None:
++                options = dict(plan["config"])
++                options["compute_with_storage_grid_size"] = ttnn.CoreCoord(grid.x, grid.y)
++                program = ttnn.MatmulMultiCoreReuseMultiCast1DProgramConfig(**options)
+ 
+         def product(x, digit):
+-            return ttnn.matmul(x, weights.digits[digit].weights, dtype=ttnn.float32, compute_kernel_config=compute)
++            return ttnn.matmul(x, weights.digits[digit].weights, dtype=ttnn.float32,
++                               compute_kernel_config=compute, program_config=program)
+ 
+         top = product(a, 0)
+         cross_a, cross_b = product(a, 1), product(b, 0)
+diff --git a/tests/tenstorrent/test_resident.py b/tests/tenstorrent/test_resident.py
+index 6f0d1e1..c0f76c8 100644
+--- a/tests/tenstorrent/test_resident.py
++++ b/tests/tenstorrent/test_resident.py
+@@ -27,6 +27,30 @@ def test_tiled_digit_gather_exact_rows_and_padding(device, ci):
+         torch.testing.assert_close(ttnn.to_torch(actual), expected[start:end], atol=0, rtol=0)
+ 
+ 
++def test_digit_blocked_matmul_ragged_core_boundary_and_reuse(device):
++    import ttnn
++    from flex_gemm.tenstorrent import prepare_sparse_digit_weights
++    from flex_gemm.tenstorrent.digits import matmul_plan
++    generator = torch.Generator().manual_seed(113)
++    rows, ci, co, volume = 2081, 17, 35, 3
++    x = torch.randn(rows, ci, generator=generator).bfloat16()
++    weight = (torch.randn(co, volume, ci, generator=generator) / 8).bfloat16()
++    bias = torch.randn(co, generator=generator).bfloat16()
++    mapping = torch.randint(-1, rows, (rows, volume), generator=generator)
++    mapping[0] = -1
++    mapping[-1] = torch.tensor([rows - 1, -1, 0])
++    prepared = prepare_sparse_digit_weights(weight, device=device, bias=bias)
++    topology = prepare_sparse_topology(mapping, rows, device=device)
++    grid = device.compute_with_storage_grid_size()
++    assert matmul_plan(2080, 96, co, (grid.x, grid.y)) is not None
++    for features in (x, (x.float() * .5 + .03125).bfloat16()):
++        resident = ttnn.from_torch(features, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
++        result = sparse_conv_device(resident, prepared, topology,
++            algorithm="digit_explicit_gemm", row_chunk=2080)
++        expected = sparse_conv_reference(features, weight, mapping, bias)
++        torch.testing.assert_close(ttnn.to_torch(result).float(), expected, atol=.025, rtol=.025)
++
++
+ @pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+                                         "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
+ @pytest.mark.parametrize("ci,co", [(32, 64), (17, 35)])

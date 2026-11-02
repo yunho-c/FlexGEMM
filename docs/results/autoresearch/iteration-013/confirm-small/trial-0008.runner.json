@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "lock": "/tmp/genrecon-tt-pjrt.lock",
+  "case": "tune-surface-256-64x64",
+  "config": {
+    "algorithm": "digit_explicit_gemm",
+    "row_chunk": 16384
+  },
+  "candidate_root": "/home/user/GitHub/flexgemm-evaluator",
+  "workload": "convolution",
+  "lock_wait_seconds": 1.0970048606395721e-05,
+  "returncode": 0,
+  "timeout": null,
+  "elapsed_seconds": 5.615252944990061,
+  "device_recovery_required": false
+}

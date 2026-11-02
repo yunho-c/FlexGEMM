@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "lock": "/tmp/genrecon-tt-pjrt.lock",
+  "case": "autoware-test-pcd-21359-64x64",
+  "config": {
+    "algorithm": "digit_explicit_gemm",
+    "row_chunk": 16384
+  },
+  "candidate_root": "/home/user/GitHub/flexgemm-autoresearch",
+  "workload": "convolution",
+  "lock_wait_seconds": 1.047999830916524e-05,
+  "returncode": 0,
+  "timeout": null,
+  "elapsed_seconds": 7.020083259965759,
+  "device_recovery_required": false
+}

@@ -1,0 +1,6 @@
+{
+  "k6_policy_auto_fallback": {
+    "algorithm": "digit_explicit_gemm",
+    "row_chunk": 16384
+  }
+}

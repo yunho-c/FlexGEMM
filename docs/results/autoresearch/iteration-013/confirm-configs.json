@@ -1,0 +1,6 @@
+{
+  "k6_sdk_subblocks": {
+    "algorithm": "digit_explicit_gemm",
+    "row_chunk": 8192
+  }
+}

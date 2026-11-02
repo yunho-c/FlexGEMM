@@ -1,0 +1,356 @@
+{
+  "status": "complete",
+  "scope": "unpaired narrow-layer screening; numerical gates unchanged",
+  "subblock_policy": "SDK order, FP32 area <=4",
+  "cb_estimate_limit_bytes": 1048576,
+  "trials": [
+    {
+      "k_block": 2,
+      "path": "kblock-screen/k2.json",
+      "status": "passed",
+      "returncode": 0,
+      "median_ms": 551.9268520292826,
+      "plan": {
+        "kind": "bounded_1d_kblocking_v1",
+        "maximum_k_block_tiles": 2,
+        "cb_estimate_limit_bytes": 1048576,
+        "chunk_plans": [
+          {
+            "rows": 8192,
+            "chunks": 47,
+            "plan": {
+              "config": {
+                "compute_with_storage_grid_size": [
+                  8,
+                  8
+                ],
+                "in0_block_w": 2,
+                "out_subblock_h": 2,
+                "out_subblock_w": 2,
+                "out_block_h": 4,
+                "out_block_w": 4,
+                "per_core_M": 4,
+                "per_core_N": 4,
+                "fuse_batch": false,
+                "mcast_in0": false
+              },
+              "estimated_cb_bytes": 196608
+            }
+          },
+          {
+            "rows": 3635,
+            "chunks": 1,
+            "plan": {
+              "config": {
+                "compute_with_storage_grid_size": [
+                  8,
+                  8
+                ],
+                "in0_block_w": 2,
+                "out_subblock_h": 2,
+                "out_subblock_w": 2,
+                "out_block_h": 2,
+                "out_block_w": 4,
+                "per_core_M": 2,
+                "per_core_N": 4,
+                "fuse_batch": false,
+                "mcast_in0": false
+              },
+              "estimated_cb_bytes": 114688
+            }
+          }
+        ]
+      }
+    },
+    {
+      "k_block": 6,
+      "path": "kblock-screen/k6.json",
+      "status": "passed",
+      "returncode": 0,
+      "median_ms": 536.7351369932294,
+      "plan": {
+        "kind": "bounded_1d_kblocking_v1",
+        "maximum_k_block_tiles": 6,
+        "cb_estimate_limit_bytes": 1048576,
+        "chunk_plans": [
+          {
+            "rows": 8192,
+            "chunks": 47,
+            "plan": {
+              "config": {
+                "compute_with_storage_grid_size": [
+                  8,
+                  8
+                ],
+                "in0_block_w": 6,
+                "out_subblock_h": 2,
+                "out_subblock_w": 2,
+                "out_block_h": 4,
+                "out_block_w": 4,
+                "per_core_M": 4,
+                "per_core_N": 4,
+                "fuse_batch": false,
+                "mcast_in0": false
+              },
+              "estimated_cb_bytes": 327680
+            }
+          },
+          {
+            "rows": 3635,
+            "chunks": 1,
+            "plan": {
+              "config": {
+                "compute_with_storage_grid_size": [
+                  8,
+                  8
+                ],
+                "in0_block_w": 6,
+                "out_subblock_h": 2,
+                "out_subblock_w": 2,
+                "out_block_h": 2,
+                "out_block_w": 4,
+                "per_core_M": 2,
+                "per_core_N": 4,
+                "fuse_batch": false,
+                "mcast_in0": false
+              },
+              "estimated_cb_bytes": 212992
+            }
+          }
+        ]
+      }
+    },
+    {
+      "k_block": 9,
+      "path": "kblock-screen/k9.json",
+      "status": "passed",
+      "returncode": 0,
+      "median_ms": 541.5501240058802,
+      "plan": {
+        "kind": "bounded_1d_kblocking_v1",
+        "maximum_k_block_tiles": 9,
+        "cb_estimate_limit_bytes": 1048576,
+        "chunk_plans": [
+          {
+            "rows": 8192,
+            "chunks": 47,
+            "plan": {
+              "config": {
+                "compute_with_storage_grid_size": [
+                  8,
+                  8
+                ],
+                "in0_block_w": 9,
+                "out_subblock_h": 2,
+                "out_subblock_w": 2,
+                "out_block_h": 4,
+                "out_block_w": 4,
+                "per_core_M": 4,
+                "per_core_N": 4,
+                "fuse_batch": false,
+                "mcast_in0": false
+              },
+              "estimated_cb_bytes": 425984
+            }
+          },
+          {
+            "rows": 3635,
+            "chunks": 1,
+            "plan": {
+              "config": {
+                "compute_with_storage_grid_size": [
+                  8,
+                  8
+                ],
+                "in0_block_w": 9,
+                "out_subblock_h": 2,
+                "out_subblock_w": 2,
+                "out_block_h": 2,
+                "out_block_w": 4,
+                "per_core_M": 2,
+                "per_core_N": 4,
+                "fuse_batch": false,
+                "mcast_in0": false
+              },
+              "estimated_cb_bytes": 286720
+            }
+          }
+        ]
+      }
+    },
+    {
+      "k_block": 12,
+      "path": "kblock-screen/k12.json",
+      "status": "passed",
+      "returncode": 0,
+      "median_ms": 543.9674130175263,
+      "plan": {
+        "kind": "bounded_1d_kblocking_v1",
+        "maximum_k_block_tiles": 12,
+        "cb_estimate_limit_bytes": 1048576,
+        "chunk_plans": [
+          {
+            "rows": 8192,
+            "chunks": 47,
+            "plan": {
+              "config": {
+                "compute_with_storage_grid_size": [
+                  8,
+                  8
+                ],
+                "in0_block_w": 12,
+                "out_subblock_h": 2,
+                "out_subblock_w": 2,
+                "out_block_h": 4,
+                "out_block_w": 4,
+                "per_core_M": 4,
+                "per_core_N": 4,
+                "fuse_batch": false,
+                "mcast_in0": false
+              },
+              "estimated_cb_bytes": 524288
+            }
+          },
+          {
+            "rows": 3635,
+            "chunks": 1,
+            "plan": {
+              "config": {
+                "compute_with_storage_grid_size": [
+                  8,
+                  8
+                ],
+                "in0_block_w": 12,
+                "out_subblock_h": 2,
+                "out_subblock_w": 2,
+                "out_block_h": 2,
+                "out_block_w": 4,
+                "per_core_M": 2,
+                "per_core_N": 4,
+                "fuse_batch": false,
+                "mcast_in0": false
+              },
+              "estimated_cb_bytes": 360448
+            }
+          }
+        ]
+      }
+    },
+    {
+      "k_block": 18,
+      "path": "kblock-screen/k18.json",
+      "status": "passed",
+      "returncode": 0,
+      "median_ms": 541.254353011027,
+      "plan": {
+        "kind": "bounded_1d_kblocking_v1",
+        "maximum_k_block_tiles": 18,
+        "cb_estimate_limit_bytes": 1048576,
+        "chunk_plans": [
+          {
+            "rows": 8192,
+            "chunks": 47,
+            "plan": {
+              "config": {
+                "compute_with_storage_grid_size": [
+                  8,
+                  8
+                ],
+                "in0_block_w": 18,
+                "out_subblock_h": 2,
+                "out_subblock_w": 2,
+                "out_block_h": 4,
+                "out_block_w": 4,
+                "per_core_M": 4,
+                "per_core_N": 4,
+                "fuse_batch": false,
+                "mcast_in0": false
+              },
+              "estimated_cb_bytes": 720896
+            }
+          },
+          {
+            "rows": 3635,
+            "chunks": 1,
+            "plan": {
+              "config": {
+                "compute_with_storage_grid_size": [
+                  8,
+                  8
+                ],
+                "in0_block_w": 18,
+                "out_subblock_h": 2,
+                "out_subblock_w": 2,
+                "out_block_h": 2,
+                "out_block_w": 4,
+                "per_core_M": 2,
+                "per_core_N": 4,
+                "fuse_batch": false,
+                "mcast_in0": false
+              },
+              "estimated_cb_bytes": 507904
+            }
+          }
+        ]
+      }
+    },
+    {
+      "k_block": 27,
+      "path": "kblock-screen/k27.json",
+      "status": "passed",
+      "returncode": 0,
+      "median_ms": 542.728898988571,
+      "plan": {
+        "kind": "bounded_1d_kblocking_v1",
+        "maximum_k_block_tiles": 27,
+        "cb_estimate_limit_bytes": 1048576,
+        "chunk_plans": [
+          {
+            "rows": 8192,
+            "chunks": 47,
+            "plan": {
+              "config": {
+                "compute_with_storage_grid_size": [
+                  8,
+                  8
+                ],
+                "in0_block_w": 27,
+                "out_subblock_h": 2,
+                "out_subblock_w": 2,
+                "out_block_h": 4,
+                "out_block_w": 4,
+                "per_core_M": 4,
+                "per_core_N": 4,
+                "fuse_batch": false,
+                "mcast_in0": false
+              },
+              "estimated_cb_bytes": 1015808
+            }
+          },
+          {
+            "rows": 3635,
+            "chunks": 1,
+            "plan": {
+              "config": {
+                "compute_with_storage_grid_size": [
+                  8,
+                  8
+                ],
+                "in0_block_w": 27,
+                "out_subblock_h": 2,
+                "out_subblock_w": 2,
+                "out_block_h": 2,
+                "out_block_w": 4,
+                "per_core_M": 2,
+                "per_core_N": 4,
+                "fuse_batch": false,
+                "mcast_in0": false
+              },
+              "estimated_cb_bytes": 729088
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
