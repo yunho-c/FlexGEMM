@@ -1,0 +1,16 @@
+{
+  "iteration": 16,
+  "baseline_commit": "8c1c896b19892e9abcd340de9f8f8942f13c0728",
+  "scope": "External K6 Wormhole portability and matched-operand numerical/workspace study",
+  "upstream": "https://huggingface.co/changh95/bevfusion-p150/tree/300095a42e61075a3d5c9916620344c1067200b8",
+  "native_target": "Blackhole p150, HiFi4, FP32 weights, row-major BF16 feature tables",
+  "adapter": "BF16-rounded immutable fixture weights/bias encoded as FP32, tiled-DRAM BF16 input/output, no residual or ReLU, all rows written, bounded output-row chunks; conversions included in forward",
+  "first_probe": "HiFi3 on small ragged case under Watcher; preserve any compilation/runtime/numerical failure",
+  "fidelity_rule": "HiFi3 matches fixed fidelity; HiFi4 is an explicitly separate diagnostic, never relabeled as a fixed-track result",
+  "limits": [
+    "no native p150 timing comparison to Wormhole",
+    "no full application claim",
+    "wide layers may exceed K6 per-core weight budget; reject them rather than silently truncate"
+  ],
+  "probe_sha256": "87c2037328c4861be219661024cc5298b19f6c480bc8eb9afaa8f71ae585520d"
+}

@@ -1,0 +1,45 @@
+--- a/kernels/k6_compute.cpp
++++ b/kernels/k6_compute.cpp
+@@ -105,7 +105,7 @@
+                 tile_regs_acquire();
+                 if (ch > 0) {
+                     reconfig_data_format_srca(CB_ACC);
+-                    copy_init(CB_ACC);
++                    copy_tile_init(CB_ACC);
+                     cb_wait_front(CB_ACC, 1);
+                     copy_tile(CB_ACC, 0, 0);
+                     cb_pop_front(CB_ACC, 1);
+@@ -137,13 +137,13 @@
+                     continue;
+                 }
+                 reconfig_data_format_srca(CB_BIAS);
+-                copy_init(CB_BIAS);
++                copy_tile_init(CB_BIAS);
+                 copy_tile(CB_BIAS, n, 1);
+                 add_binary_tile_init();
+                 add_binary_tile<ckernel::DstRoundingMode::NearestEven>(0, 1, 0);
+                 if constexpr (HAS_RES) {
+                     reconfig_data_format_srca(CB_IDENT);
+-                    copy_init(CB_IDENT);
++                    copy_tile_init(CB_IDENT);
+                     copy_tile(CB_IDENT, n, 1);
+                     add_binary_tile_init();
+                     add_binary_tile<ckernel::DstRoundingMode::NearestEven>(0, 1, 0);
+--- a/adapter.py
++++ b/adapter.py
+@@ -64,6 +64,15 @@
+         self.fidelity, self.row_chunk = fidelity, row_chunk
+         self.chunks = []
+         grid = device.compute_with_storage_grid_size()
++        physical = [[device.worker_core_from_logical_core(ttnn.CoreCoord(x, y))
++                     for x in range(grid.x)] for y in range(grid.y)]
++        contiguous_rows = all(all(row[x].x == row[0].x + x and row[x].y == row[0].y
++                                  for x in range(grid.x)) for row in physical)
++        self.layer.mcast = self.layer.mcast and contiguous_rows
++        self.port_settings = {"physical_core_rows": [[[c.x, c.y] for c in row] for row in physical],
++            "multicast": self.layer.mcast, "split_gather": self.layer.split,
++            "multicast_guard": "enable native row rectangle only when physical compute columns are contiguous",
++            "copy_api": "copy_tile_init on pinned SDK"}
+         for start in range(0, self.rows, row_chunk):
+             stop = min(start + row_chunk, self.rows)
+             indices = index_rows(mapping[start:stop], input_rows)

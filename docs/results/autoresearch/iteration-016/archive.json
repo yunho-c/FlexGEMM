@@ -1,0 +1,546 @@
+{
+  "scope": "Unchanged reports, exact comparator sources and compact DRAM allocation events. Original full traces remain in scratch storage.",
+  "memory_source_sha256": "b6a8a3630beb6e5610c01003a09ff22d5b5c5688ca91d657291f262d58a6de86",
+  "files": [
+    {
+      "path": "adapter-v0.py",
+      "sha256": "cb0ac9ac4c357a4f08739ff2eb9fbdcb9d4cc1467e2f338ee0cf07748326116d"
+    },
+    {
+      "path": "campaign-summary.json",
+      "sha256": "a3f41812e58a832c841fc49aeacf710d42fd5b242ec7f33edf5b7d88469e82ed"
+    },
+    {
+      "path": "hifi3-cases/autoware-test-pcd-21359-128x128.json",
+      "sha256": "09b26bdb23609db509c022c39ecd875db98ce835449445649e11d0979b12f0d4"
+    },
+    {
+      "path": "hifi3-cases/autoware-test-pcd-21359-128x128.runner.json",
+      "sha256": "e05fc118b893a8305e6eb2817d3a760c14b0e085325ff6627fb4527946085da1"
+    },
+    {
+      "path": "hifi3-cases/autoware-test-pcd-21359-16x16.json",
+      "sha256": "fa67aaf00f22f30d97438b8659d12f5da8a4897ff264eaae5797fc7b2268407d"
+    },
+    {
+      "path": "hifi3-cases/autoware-test-pcd-21359-16x16.runner.json",
+      "sha256": "5848d33b7a1f98b286d6d1cf8a270ee2f410681dc60bedaa6271571f55db2e60"
+    },
+    {
+      "path": "hifi3-cases/autoware-test-pcd-21359-17x35.json",
+      "sha256": "a4f8e71b004a7992c61f67c63021c45c17b8dacc7d09387b357601841a2c34e1"
+    },
+    {
+      "path": "hifi3-cases/autoware-test-pcd-21359-17x35.runner.json",
+      "sha256": "4bd93bcaed9f8d9ea455b2e0dd7909654059c063910ed636831fc9aa040e873e"
+    },
+    {
+      "path": "hifi3-cases/autoware-test-pcd-21359-256x256.json",
+      "sha256": "8e446b3ed914ec24f13f4b969599f92b239449530bd90be7c695c204d359cc15"
+    },
+    {
+      "path": "hifi3-cases/autoware-test-pcd-21359-256x256.runner.json",
+      "sha256": "d36ff882b8b6964d134df0a5662f19e35797630d224f7fcbe5a300e9851e3398"
+    },
+    {
+      "path": "hifi3-cases/autoware-test-pcd-21359-32x64.json",
+      "sha256": "48a12dcd713953d358d838cf6fbc8c059dce5362845e31d6f5ce1c9cd7736b24"
+    },
+    {
+      "path": "hifi3-cases/autoware-test-pcd-21359-32x64.runner.json",
+      "sha256": "85c5527f9e95af623f80518f56dc7c854b5702cb4cead036e7acbf549e1cbad2"
+    },
+    {
+      "path": "hifi3-cases/autoware-test-pcd-21359-64x64.json",
+      "sha256": "cc90ffa25886b9b80f9b91740327761b4c1f59f5ee9688fa4e880b2b6630763c"
+    },
+    {
+      "path": "hifi3-cases/autoware-test-pcd-21359-64x64.runner.json",
+      "sha256": "238ea53de8a8156fc3d73a6940a081d5a8ef95a36ed36d486474c4dee53ab3f3"
+    },
+    {
+      "path": "hifi3-cases/n125219-256x256-k3x3x3.json",
+      "sha256": "556e4b8aff1fe4227830fbe9db53cbcbe9c9d2d081db7c51049ab2b093e8ff16"
+    },
+    {
+      "path": "hifi3-cases/n125219-256x256-k3x3x3.runner.json",
+      "sha256": "73d66fe86b3c1df77c54e0569afa2689d88009e4b7fd0df5ff191c361f001574"
+    },
+    {
+      "path": "hifi3-cases/n1711800-64x64-k3x3x3.json",
+      "sha256": "2cfaabaffd066e4847cb583234111119db76e3e3057d673d3516ccf898eb908a"
+    },
+    {
+      "path": "hifi3-cases/n1711800-64x64-k3x3x3.runner.json",
+      "sha256": "3e402557c27ec5d58c99cc58e9bf2f37d318ece715657bf187349fcb892f6d95"
+    },
+    {
+      "path": "hifi3-cases/n2389000-64x64-k3x3x3.json",
+      "sha256": "98bff162e275626a35bbcc47412a9fd8ceb985c3e6c88d4d67289e9da989faaf"
+    },
+    {
+      "path": "hifi3-cases/n2389000-64x64-k3x3x3.runner.json",
+      "sha256": "0d7ebe07e56a14f6f1b3df443682e1db208a4d9d5a244dd88c085be8107a6f00"
+    },
+    {
+      "path": "hifi3-cases/n388659-128x128-k3x3x3.json",
+      "sha256": "0c9926bd6df6e2b647ea368fbf8bb3b5906d54e673e68be962c04d1e7dbe09ab"
+    },
+    {
+      "path": "hifi3-cases/n388659-128x128-k3x3x3.runner.json",
+      "sha256": "e5057dd1f4eb75791282cf555fda3dd4dbebfe94b9cdfe88796d2520a52e0685"
+    },
+    {
+      "path": "hifi3-cases/n388659-128x512-k3x3x3.json",
+      "sha256": "5400087cf9b765ecf8ba91780b37cf35d7600f886f39fac50304398ad7f3a1c5"
+    },
+    {
+      "path": "hifi3-cases/n388659-128x512-k3x3x3.runner.json",
+      "sha256": "c1124a07e2616526ca3621f9eba76434f617d25fe24ac1e3fe9232659d408c46"
+    },
+    {
+      "path": "hifi3-cases/n551044-128x128-k3x3x3.json",
+      "sha256": "adf34e2013724afd722668323568d8149cc930eaee6a0ff7281e956e9c5e0389"
+    },
+    {
+      "path": "hifi3-cases/n551044-128x128-k3x3x3.runner.json",
+      "sha256": "ca241a52653bf7cd197d782530e51235b658734f720079015dba4c4279b56d1a"
+    },
+    {
+      "path": "hifi3-cases/n551044-128x512-k3x3x3.json",
+      "sha256": "eb75879e8d350d8c262b1203ba041301697aaf0065d129e431315adef78b5351"
+    },
+    {
+      "path": "hifi3-cases/n551044-128x512-k3x3x3.runner.json",
+      "sha256": "02f6fc8b1799692b6ac88cdb52d6a2f4fcff054582c20dac9d6c9d6a53d0de5a"
+    },
+    {
+      "path": "hifi3-cases/n88524-256x256-k3x3x3.json",
+      "sha256": "2d1f1637c6b29149d358f2e22e5da5c95cdc5d9ffde579bffd4da03061459617"
+    },
+    {
+      "path": "hifi3-cases/n88524-256x256-k3x3x3.runner.json",
+      "sha256": "7c9c52d70c1d975fe5ed02b41c270d1dbfaf689f60cfeb07c49f9717f02d3845"
+    },
+    {
+      "path": "hifi3-cases/tune-clustered-1025-128x128.json",
+      "sha256": "47ed0cefcb60de19c44f9517a9ed00ef392c38cd0ff1e8a94ad619600038237e"
+    },
+    {
+      "path": "hifi3-cases/tune-clustered-1025-128x128.runner.json",
+      "sha256": "9ae79ca3ff5ed85070b48a283bb3a4745fae4525f66d129b19acf9cde5a2b881"
+    },
+    {
+      "path": "hifi3-cases/tune-scattered-257-32x256.json",
+      "sha256": "716d5bccf17a29fcc56a2331c7d178a042cd32c83f9270d0555d6fc95ad6eb0a"
+    },
+    {
+      "path": "hifi3-cases/tune-scattered-257-32x256.runner.json",
+      "sha256": "2a2d2124443b14cac87259bcf1d6d632eee779190083780153ef2f61c492412b"
+    },
+    {
+      "path": "hifi3-cases/tune-scattered-35-17x45.json",
+      "sha256": "53cc30e24c3def027ede47df40ccc926973d4008719de99d8922c53f18371438"
+    },
+    {
+      "path": "hifi3-cases/tune-scattered-35-17x45.runner.json",
+      "sha256": "f5d5d22b79b77f4e46e1419c6f59cc84f94c52a7b6a329f6104b70b0b1e55bf2"
+    },
+    {
+      "path": "hifi3-cases/tune-surface-256-64x64.json",
+      "sha256": "b22323fa5006f79e5524d84bdb15920f721658650f38a65980e115e4614ec8a7"
+    },
+    {
+      "path": "hifi3-cases/tune-surface-256-64x64.runner.json",
+      "sha256": "c6953c0f9be8929c9562c40615b48bdeb85bb40e1e103e91a655e5e81795fbcd"
+    },
+    {
+      "path": "hifi3-cases/tune-surface-4096-64x64.json",
+      "sha256": "b75e88868ef8d7bbdfa468feb3af9d54926718c369b40f9997aef8c396967601"
+    },
+    {
+      "path": "hifi3-cases/tune-surface-4096-64x64.runner.json",
+      "sha256": "48962655b74a2f3e556aa028ce4d370f9be1d49c4bbc71b122d4af1c0f30a723"
+    },
+    {
+      "path": "hifi3-cases/validation-clustered-1025-128x128.json",
+      "sha256": "c394fb5c758ce15bfb29fe7b7803baccb01a62a7f9beb7dbad84bb31e774d987"
+    },
+    {
+      "path": "hifi3-cases/validation-clustered-1025-128x128.runner.json",
+      "sha256": "9897d530c1a7187ee6c11d9900caa501affb2514f154e02e58405ee1efa43b55"
+    },
+    {
+      "path": "hifi3-cases/validation-scattered-257-32x256.json",
+      "sha256": "11dac258aaf1aa03ee2448742f67965b16a115fcd7cef54d18e1c43bd4021bc7"
+    },
+    {
+      "path": "hifi3-cases/validation-scattered-257-32x256.runner.json",
+      "sha256": "177210a253e4dd6f772711bb5211120fcd1b358c676357f1ffb368fab4b6655c"
+    },
+    {
+      "path": "hifi3-cases/validation-scattered-35-17x45.json",
+      "sha256": "85e0a210ff401347c6513c3b378f688c0957ec1962ae85741dfd9bd92bf3caf6"
+    },
+    {
+      "path": "hifi3-cases/validation-scattered-35-17x45.runner.json",
+      "sha256": "fb30c6da6f5b76866fc9ad8814a74b46bf195aaf30fad71cda2dc4deb3b16a18"
+    },
+    {
+      "path": "hifi3-cases/validation-surface-256-64x64.json",
+      "sha256": "7320d251407ab55421ea55073746599f18b80947448f3fbfa53fc33b209fdd58"
+    },
+    {
+      "path": "hifi3-cases/validation-surface-256-64x64.runner.json",
+      "sha256": "8edb72d056b6bfee5b0ad282d95ba54de411184a4aa8b99bcd21cda302d591d6"
+    },
+    {
+      "path": "hifi3-cases/validation-surface-4096-64x64.json",
+      "sha256": "39b2748a2a7f08546e6190f92dae19f64f77fef1cfd1b7d8c214fe7252cc8392"
+    },
+    {
+      "path": "hifi3-cases/validation-surface-4096-64x64.runner.json",
+      "sha256": "62e9790416281ea50c1fcee6d68837ca3f979f87215a7e28b6f13e38d5e132af"
+    },
+    {
+      "path": "hypothesis.json",
+      "sha256": "542baca30e62ea36e820feeec31bb7230b6929f72cd97ee8d72677209d99bcf6"
+    },
+    {
+      "path": "preflight.json",
+      "sha256": "ea55f7256f729ea04105980868d5d33f6107433c5a6b123ec77aed3144d99880"
+    },
+    {
+      "path": "probe-v0.py",
+      "sha256": "87c2037328c4861be219661024cc5298b19f6c480bc8eb9afaa8f71ae585520d"
+    },
+    {
+      "path": "provenance-v0.json",
+      "sha256": "2f6fa831a6f95c737a31fd7d0be428ffe7c82b8f77dbb39dd5591963f6b5a1f6"
+    },
+    {
+      "path": "watcher-small-hifi3.json",
+      "sha256": "e30cf1081c768167f7fdead544b6806a06d00303693c4ae42c521afc56469b1e"
+    },
+    {
+      "path": "watcher-small-hifi3.log",
+      "sha256": "49a965de3f9bd0223fbf53f9577e579bf1bb21696b7e996a6d6449cecfc42ae9"
+    },
+    {
+      "path": "watcher-small-hifi3.runner.json",
+      "sha256": "96a58c545d28c9c36d9a7f9d5167147990da2562b11092a54363fb9465abdff3"
+    },
+    {
+      "path": "watcher-small-port-hifi3.json",
+      "sha256": "f69367d14c48e7b4c7f84c9a920631f5dd69d544efed158405e2f67db33d0dbd"
+    },
+    {
+      "path": "watcher-small-port-hifi3.log",
+      "sha256": "e5d1dbd8289d15449a22146594ca088630d46d59b2745dff7b25835cbf31eb29"
+    },
+    {
+      "path": "watcher-small-port-hifi3.runner.json",
+      "sha256": "43d5ced6da7ff7ca2436bf4812c8d71cc0006898aee79edb1730d8df857e8326"
+    },
+    {
+      "path": "wormhole-port.patch",
+      "sha256": "355f718310b24b06051882337e40469bba7ba2695d0d68ba9f13d18e1826ae8e"
+    },
+    {
+      "path": "comparator/LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "comparator/NOTICE",
+      "sha256": "78a1b6aabe4e40ba955ea48fd8a0bff54ddb68b40292ef986528e404869959b5"
+    },
+    {
+      "path": "comparator/adapter-cpu-check.json",
+      "sha256": "cf72f448f14629692ec32b95fe0b0b8090b3eb00f627b55388140eeed1391c63"
+    },
+    {
+      "path": "comparator/adapter.py",
+      "sha256": "7a69a241ff664fffc175a958d9ada24aa1b893314d2224d56dacfa23251e2b16"
+    },
+    {
+      "path": "comparator/fidelity-selection.patch",
+      "sha256": "a88e498ef8b8d0411aad34d4593e8b64e17b83a224f9c4c26e54700054fc34fc"
+    },
+    {
+      "path": "comparator/kernels/k6_compute.cpp",
+      "sha256": "3e90a55804c69d0a4ab46c5210bcfd5e74bd320253d8c5a231b21731cd691572"
+    },
+    {
+      "path": "comparator/kernels/k6_gather.hpp",
+      "sha256": "65d87341df1520505bc29b978eb150ba833ed72f7d7d7a5213e06e880b24cb1d"
+    },
+    {
+      "path": "comparator/kernels/k6_reader.cpp",
+      "sha256": "6c0cbda26487ca64aa97820d5dc93ab5f19c0be88a08b6c7a20db8d35510c17d"
+    },
+    {
+      "path": "comparator/kernels/k6_writer.cpp",
+      "sha256": "ad34a8130564e554d545c62868b088beaab2b1c2fa72a53310dcaeb41243f1fa"
+    },
+    {
+      "path": "comparator/provenance.json",
+      "sha256": "ee1e65c17a0326e3322275467a6c80445793513744ee5e7bd464f6aa62f1906d"
+    },
+    {
+      "path": "comparator/sparse_k6.py",
+      "sha256": "4a57ee55b5820b2c4ead778fe7654c3d35f6d9bd8f82b36bd976562530224708"
+    },
+    {
+      "path": "upstream/inspection.json",
+      "sha256": "31e88635b59232a6051a0962ebe4b246e5008d7d886a2116b1d9d8eefac66e44"
+    },
+    {
+      "path": "upstream/sparse_k6.py",
+      "sha256": "aa09ed70c977ad243c10565e8e9511e200c033f434fb4aed8a326c3298f392f2"
+    },
+    {
+      "path": "upstream/k6_compute.cpp",
+      "sha256": "d05d8396f91d7a048768ce5862f68aa7aa5c99f807dad62e2c563097ea3fa8f4"
+    },
+    {
+      "path": "k6_probe.py",
+      "sha256": "9e1098c50abaa443432f880ea0886a22b9fa4cfd61e1ce057afd45b680fcdfcc"
+    },
+    {
+      "path": "campaign_driver.py",
+      "sha256": "c3343e16baa9886cdd2252b73b908a4f787855eee7cf4e0e8f57301971346e7c"
+    }
+  ],
+  "memory_replays": [
+    {
+      "report": "hifi3-cases/autoware-test-pcd-21359-128x128.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/autoware-test-pcd-21359-128x128.allocations.json.gz",
+      "original_trace_sha256": "a74ad6a86b1dfb1d96481b7367b6762340ca91abdcc164345adea7c65ba59420",
+      "event_count": 23,
+      "workspace_upper_bound_bytes": 100118528,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/autoware-test-pcd-21359-16x16.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/autoware-test-pcd-21359-16x16.allocations.json.gz",
+      "original_trace_sha256": "623b671476472309cf4a136f13f24eb400d989e88970024cf507dc8a52632dca",
+      "event_count": 13,
+      "workspace_upper_bound_bytes": 94676992,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/autoware-test-pcd-21359-17x35.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/autoware-test-pcd-21359-17x35.allocations.json.gz",
+      "original_trace_sha256": "9e7e961d66f41414b3985b0de30b5cffaa4bc90b4764ad88affaac724d580403",
+      "event_count": 13,
+      "workspace_upper_bound_bytes": 98804736,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/autoware-test-pcd-21359-256x256.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/autoware-test-pcd-21359-256x256.allocations.json.gz",
+      "original_trace_sha256": "98a1ce30156bc75c48d2cf3708b4135e8d9a64dccb703a5a2c11f9729a4e7d96",
+      "event_count": 41,
+      "workspace_upper_bound_bytes": 111054848,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/autoware-test-pcd-21359-32x64.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/autoware-test-pcd-21359-32x64.allocations.json.gz",
+      "original_trace_sha256": "918e9afe20bd1649ded8fec98f0147d8bffe7f013d8548fd6c52cb0c923f2cf3",
+      "event_count": 11,
+      "workspace_upper_bound_bytes": 96052224,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/autoware-test-pcd-21359-64x64.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/autoware-test-pcd-21359-64x64.allocations.json.gz",
+      "original_trace_sha256": "bed4761351267f0003704490377cae9b9895384f356b1492c3322ea32810a1c6",
+      "event_count": 17,
+      "workspace_upper_bound_bytes": 96144384,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/n125219-256x256-k3x3x3.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/n125219-256x256-k3x3x3.allocations.json.gz",
+      "original_trace_sha256": "2d6e9beb6ae5296394e31be31de5578e35a41400368c27842c14016a984cbd25",
+      "event_count": 191,
+      "workspace_upper_bound_bytes": 217407488,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/n1711800-64x64-k3x3x3.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/n1711800-64x64-k3x3x3.allocations.json.gz",
+      "original_trace_sha256": "0fdee4b153f66cfeec3a46fc4d1d2ea797cec2ec3830819fff3ba1d785cbe333",
+      "event_count": 635,
+      "workspace_upper_bound_bytes": 527404544,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/n2389000-64x64-k3x3x3.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/n2389000-64x64-k3x3x3.allocations.json.gz",
+      "original_trace_sha256": "70366fb488aa51494a2bf5cb75028be6a8b9a1d46ddece761268b6887f6caf49",
+      "event_count": 881,
+      "workspace_upper_bound_bytes": 700768256,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/n388659-128x128-k3x3x3.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/n388659-128x128-k3x3x3.allocations.json.gz",
+      "original_trace_sha256": "831dbf0349c0bc989956b8d35b782cdcee008bd91d58aaa990be5a5c5ff92c99",
+      "event_count": 293,
+      "workspace_upper_bound_bytes": 288180224,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/n388659-128x512-k3x3x3.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/n388659-128x512-k3x3x3.allocations.json.gz",
+      "original_trace_sha256": "667551dbe4a5ef482fde6b8eedfabef665bab30f195cbc114032e55e89bcf35c",
+      "event_count": 293,
+      "workspace_upper_bound_bytes": 288180224,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/n551044-128x128-k3x3x3.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/n551044-128x128-k3x3x3.allocations.json.gz",
+      "original_trace_sha256": "69ba0cf593e9e87de182b85a292c73dc5e5863ecce8ce87baea5c680e3b2694c",
+      "event_count": 413,
+      "workspace_upper_bound_bytes": 371320832,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/n551044-128x512-k3x3x3.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/n551044-128x512-k3x3x3.allocations.json.gz",
+      "original_trace_sha256": "b0c2d5362981ee7934d11868eb9223184a26ba2d1322b94e29e4df3228acd426",
+      "event_count": 413,
+      "workspace_upper_bound_bytes": 371320832,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/n88524-256x256-k3x3x3.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/n88524-256x256-k3x3x3.allocations.json.gz",
+      "original_trace_sha256": "8c302f1f918d759dcda17c71a00ae925b4d3fc5226b7cdde5bff4fd2d8a3480c",
+      "event_count": 137,
+      "workspace_upper_bound_bytes": 179836928,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/tune-clustered-1025-128x128.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/tune-clustered-1025-128x128.allocations.json.gz",
+      "original_trace_sha256": "9eaa600b8c033563019c1689e3495533afcd1aa26fc6416237cb7bc0d00a5e7c",
+      "event_count": 11,
+      "workspace_upper_bound_bytes": 89984000,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/tune-scattered-257-32x256.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/tune-scattered-257-32x256.allocations.json.gz",
+      "original_trace_sha256": "48d7e89c8a935cbcf2afff6b6d84c2237c72dbf9d71bdc8d1666b01789ac5c59",
+      "event_count": 11,
+      "workspace_upper_bound_bytes": 89487872,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/tune-scattered-35-17x45.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/tune-scattered-35-17x45.allocations.json.gz",
+      "original_trace_sha256": "e75cfbc17fa062af5c954ab65db2005fe926ea1340e87bafded064c96765b98d",
+      "event_count": 13,
+      "workspace_upper_bound_bytes": 89254656,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/tune-surface-256-64x64.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/tune-surface-256-64x64.allocations.json.gz",
+      "original_trace_sha256": "83b1cbf000b07d591b091ddf03bf325ba5ebe21193b4f8adeb3fedea9916d54c",
+      "event_count": 11,
+      "workspace_upper_bound_bytes": 89315328,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/tune-surface-4096-64x64.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/tune-surface-4096-64x64.allocations.json.gz",
+      "original_trace_sha256": "fef461f53e0934fb5081748fd4c9215914434b06ea758fda6bd82613819ebdfb",
+      "event_count": 11,
+      "workspace_upper_bound_bytes": 90789888,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/validation-clustered-1025-128x128.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/validation-clustered-1025-128x128.allocations.json.gz",
+      "original_trace_sha256": "ed2b88959d33b917cd9d76185e86db2c579cfcb8c958576f66fe11536528b3b7",
+      "event_count": 11,
+      "workspace_upper_bound_bytes": 89984000,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/validation-scattered-257-32x256.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/validation-scattered-257-32x256.allocations.json.gz",
+      "original_trace_sha256": "c83ffe93d9fa3aa1954d0a8ccdb87a278e7a7e684e091020f072ff20d312f030",
+      "event_count": 11,
+      "workspace_upper_bound_bytes": 89487872,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/validation-scattered-35-17x45.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/validation-scattered-35-17x45.allocations.json.gz",
+      "original_trace_sha256": "cb006ed42f791dfb79ca0c596bddc28017a97fb04c3a9e68a1ead692465a774e",
+      "event_count": 13,
+      "workspace_upper_bound_bytes": 89254656,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/validation-surface-256-64x64.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/validation-surface-256-64x64.allocations.json.gz",
+      "original_trace_sha256": "331dceddd4b3f138a88c01a8a0f56ad9564b3d7f075eec6e35bbd4053cbb62c4",
+      "event_count": 11,
+      "workspace_upper_bound_bytes": 89315328,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "hifi3-cases/validation-surface-4096-64x64.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/hifi3-cases/validation-surface-4096-64x64.allocations.json.gz",
+      "original_trace_sha256": "efd54bedcd276c235231b9f989df207199be9d789391e61591b83191d106ff00",
+      "event_count": 11,
+      "workspace_upper_bound_bytes": 90789888,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    },
+    {
+      "report": "watcher-small-port-hifi3.json",
+      "original_trace": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-016/watcher-small-port-hifi3.allocations.json.gz",
+      "original_trace_sha256": "c1dd1ae546cfe2f17b0a441eba94b138677c33145fda42c4c24770c4bec2446d",
+      "event_count": 21,
+      "workspace_upper_bound_bytes": 89254656,
+      "original_output_event_counter": 35,
+      "compact_output_event_index": 3
+    }
+  ],
+  "allocation_event_bundle": {
+    "path": "allocation-events.json.gz",
+    "sha256": "a7dfd06e83381ac91361a4d61d688b7cc9280aba243147f8b9cec1a738d4a036",
+    "bytes": 23418
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "status": "execution_failure",
+  "scope": "unscored K6 portability study with same BF16-rounded operand values, numerical/residency/workspace gates; native HiFi4 is separate from HiFi3 contract; no paired timing or promotion",
+  "comparator_sha256": {
+    "adapter.py": "cb0ac9ac4c357a4f08739ff2eb9fbdcb9d4cc1467e2f338ee0cf07748326116d",
+    "kernels/k6_compute.cpp": "d05d8396f91d7a048768ce5862f68aa7aa5c99f807dad62e2c563097ea3fa8f4",
+    "kernels/k6_gather.hpp": "65d87341df1520505bc29b978eb150ba833ed72f7d7d7a5213e06e880b24cb1d",
+    "kernels/k6_reader.cpp": "6c0cbda26487ca64aa97820d5dc93ab5f19c0be88a08b6c7a20db8d35510c17d",
+    "kernels/k6_writer.cpp": "ad34a8130564e554d545c62868b088beaab2b1c2fa72a53310dcaeb41243f1fa",
+    "sparse_k6.py": "4a57ee55b5820b2c4ead778fe7654c3d35f6d9bd8f82b36bd976562530224708"
+  },
+  "upstream": {
+    "status": "prepared for future isolated device probe; not compiled or measured",
+    "upstream": "https://huggingface.co/changh95/bevfusion-p150/tree/300095a42e61075a3d5c9916620344c1067200b8",
+    "license": "Apache-2.0",
+    "upstream_python_sha256": "aa09ed70c977ad243c10565e8e9511e200c033f434fb4aed8a326c3298f392f2",
+    "modified_python_sha256": "4a57ee55b5820b2c4ead778fe7654c3d35f6d9bd8f82b36bd976562530224708",
+    "kernel_files_unchanged_sha256": {
+      "kernels/k6_reader.cpp": "6c0cbda26487ca64aa97820d5dc93ab5f19c0be88a08b6c7a20db8d35510c17d",
+      "kernels/k6_writer.cpp": "ad34a8130564e554d545c62868b088beaab2b1c2fa72a53310dcaeb41243f1fa",
+      "kernels/k6_compute.cpp": "d05d8396f91d7a048768ce5862f68aa7aa5c99f807dad62e2c563097ea3fa8f4",
+      "kernels/k6_gather.hpp": "65d87341df1520505bc29b978eb150ba833ed72f7d7d7a5213e06e880b24cb1d"
+    },
+    "changes": "Python constructor permits explicit HiFi3 or native HiFi4. Kernel source unchanged; Wormhole compatibility remains unverified. Adapter must enforce tiled-DRAM I/O, BF16-rounded weights/bias, no ReLU/residual, dead_skip=False and bounded-row chunks."
+  },
+  "fidelity": "HiFi3",
+  "case": {
+    "name": "tune-scattered-35-17x45",
+    "split": "tune",
+    "file": "tune-scattered-35-17x45.pt",
+    "sha256": "3d72acd75e96af23ce395564a583355565de600fa2a49fce13b46becc4b27ac6",
+    "points": 35,
+    "ci": 17,
+    "co": 45,
+    "volume": 27,
+    "valid_interactions": 77,
+    "occurrences": null,
+    "provenance": {
+      "kind": "synthetic",
+      "seed": 20261102,
+      "topology": "scattered"
+    },
+    "prepare_seconds": 0.009726904041599482
+  },
+  "fixture_sha256": "3d72acd75e96af23ce395564a583355565de600fa2a49fce13b46becc4b27ac6",
+  "original_contract_sha256": "f49de05e37d42f895008c14caeac408513fad7a3537fbca5d74ad265131f5733",
+  "numerical_gate": {
+    "atol": 0.025,
+    "rtol": 0.025,
+    "max_relative_l2": 0.01
+  },
+  "row_chunk": 32,
+  "checks": [],
+  "samples": [],
+  "source": {
+    "root": "/home/user/GitHub/flexgemm-evaluator",
+    "commit": "8c1c896b19892e9abcd340de9f8f8942f13c0728",
+    "dirty": false,
+    "sha256": {
+      "flex_gemm/tenstorrent/__init__.py": "3c46ffc40c3b93e480d8dd830404921675c490ccb1a94f609a7423cdc151bb8c",
+      "flex_gemm/tenstorrent/conv.py": "389903b43e5246a94bfba678070a0b031da45c749de5e5c0484c20ac65c7f6c5",
+      "flex_gemm/tenstorrent/digits.py": "ac35d99eabf040e81d039f7178c1cd4eb254a2112d31b7634b0ccb53ad5f1641",
+      "flex_gemm/tenstorrent/feature_digits.py": "33a6117dcfc96b4224fc7c82ddccb4fda00308f1999aff5cbc7209867659fd76",
+      "flex_gemm/tenstorrent/gather.py": "84bb18bfd4d77468aee9366342a3976f92cf0d71dd2da13a157d955156895315",
+      "flex_gemm/tenstorrent/implicit.py": "b512b11eff94b770c9131ba3a1f376b7f060bd17206a8ab0c3aae693e0eee688",
+      "flex_gemm/tenstorrent/masking.py": "32c66f47bd2caef0ec94e34c23e0ae09562206a47267cc490db304cf7f0d10b7",
+      "flex_gemm/tenstorrent/ops.py": "c5e99c9032b6f472ee6d276ad196bb6caeaaadc539cb96a6fad25eb17b4a12db",
+      "flex_gemm/tenstorrent/reference.py": "a0dc3709115acfb282ea9d472b63ed470e62421e478ab67d20b2387b8ea0bdd3",
+      "flex_gemm/tenstorrent/resident.py": "011696c79b5b108c29a9d256878e70d44957a1d46f0612411eeb1581e11bdc6c",
+      "flex_gemm/tenstorrent/kernels/compute.cpp": "431780ae171a14f2e4ea9db2b8b7db5fc23b064bde7e12623da60070a4cee075",
+      "flex_gemm/tenstorrent/kernels/copy_output_tiles.cpp": "c1f12ea86cbc2545842495c5c9cf8774e9bf45b1533b3cbb40859834e2e2c642",
+      "flex_gemm/tenstorrent/kernels/feature_digits_compute.cpp": "671870f8c356b59efbf92f719fe52216f3907f0583c32464ec6bd09117b45a19",
+      "flex_gemm/tenstorrent/kernels/feature_digits_reader.cpp": "f68826bc0b439952af1f9afd70b2130632a0d2b4ee3ff2f2c1dc08f37cfe7263",
+      "flex_gemm/tenstorrent/kernels/feature_digits_writer.cpp": "b3014798f33717b0e77c0ad86c0dd298903cb9bb13aabdde02aeb6bb1fc0ec0c",
+      "flex_gemm/tenstorrent/kernels/gather.cpp": "b546a590ae983e7a16c6cd0d9029ae6ed15eb5923b25a06cc85a882b67c537a7",
+      "flex_gemm/tenstorrent/kernels/reader.cpp": "6ba3b2ef6f4f80f3b354cb40210c181753d593236ffb080ff36825d61ceeddab",
+      "flex_gemm/tenstorrent/kernels/writer.cpp": "494dcd0566cec973a6b792109071a37f40c6579a155ed1d4d6ef3029505d83fc"
+    }
+  },
+  "probe_sha256": "87c2037328c4861be219661024cc5298b19f6c480bc8eb9afaa8f71ae585520d",
+  "promotion": "not_evaluated",
+  "tt_metal_commit": "9f9cd4fd590f4b606bd0981a4fe0b6403eb38ec9",
+  "phase": "complete",
+  "plans": [
+    {
+      "start": 0,
+      "end": 32,
+      "tap_chunk": 27,
+      "tap_chunks": 1,
+      "cb_bytes": 532352
+    },
+    {
+      "start": 32,
+      "end": 35,
+      "tap_chunk": 27,
+      "tap_chunks": 1,
+      "cb_bytes": 532352
+    }
+  ],
+  "input_contract": [
+    {
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1
+    },
+    {
+      "dtype_valid": true,
+      "layout_valid": true,
+      "device_valid": true,
+      "dram_valid": true,
+      "tensor_contract_valid": true,
+      "storage_type": "StorageType.DEVICE",
+      "buffer_type": "BufferType.DRAM",
+      "device_id": 1
+    }
+  ],
+  "error": "TT_THROW @ /home/user/tt-metal/tt_metal/impl/program/program.cpp:332: tt::exception\ninfo:\nFailed to generate binaries for k6_compute TT_THROW @ /home/user/tt-metal/tt_metal/jit_build/build.cpp:70: tt::exception\ninfo:\ntrisc0 build failed. Log: In file included from ../chlkc_unpack.cpp:3,\n                 from /home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common/chlkc_list.h:26,\n                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/trisck.cc:13:\n/home/user/tt-scratchpad/flexgemm-autoresearch/comparators/k6-wormhole-probe/kernels/k6_compute.cpp: In function 'void kernel_main()':\n/home/user/tt-scratchpad/flexgemm-autoresearch/comparators/k6-wormhole-probe/kernels/k6_compute.cpp:108:21: error: 'copy_init' was not declared in this scope; did you mean 'noc_init'?\n  108 |                     copy_init(CB_ACC);\n      |                     ^~~~~~~~~\n      |                     noc_init\n/home/user/tt-scratchpad/flexgemm-autoresearch/comparators/k6-wormhole-probe/kernels/k6_compute.cpp:140:17: error: 'copy_init' was not declared in this scope; did you mean 'noc_init'?\n  140 |                 copy_init(CB_BIAS);\n      |                 ^~~~~~~~~\n      |                 noc_init\n\nbacktrace:\n --- /home/user/tt-metal/build/lib/_ttnncpp.so(+0x14fb848) [0x7dbac6b06848]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xc2ed7f) [0x7dbac4d10d7f]\n --- tt::tt_metal::JitBuildState::compile_one(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, tt::tt_metal::JitBuildSettings const*, unsigned long) const\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xc51158) [0x7dbac4d33158]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xc510de) [0x7dbac4d330de]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x8111ff) [0x7dbac48f31ff]\n --- /lib/x86_64-linux-gnu/libc.so.6(+0x99ea8) [0x7dbb8340eea8]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x811059) [0x7dbac48f3059]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xc50f2e) [0x7dbac4d32f2e]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x95f705) [0x7dbac4a41705]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x95e210) [0x7dbac4a40210]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x95d6f8) [0x7dbac4a3f6f8]\n --- /lib/x86_64-linux-gnu/libstdc++.so.6(+0xdc253) [0x7dbb6bfc9253]\n --- /lib/x86_64-linux-gnu/libc.so.6(+0x94a83) [0x7dbb83409a83]\n --- /lib/x86_64-linux-gnu/libc.so.6(+0x126890) [0x7dbb8349b890]\n\nbacktrace:\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xa13928) [0x7dbac4af5928]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x9e61bb) [0x7dbac4ac81bb]\n --- tt::tt_metal::JitBuildCache::build_once(unsigned long, std::function<void ()> const&)\n --- tt::tt_metal::jit_build_once(unsigned long, std::function<void ()> const&)\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x9e5d12) [0x7dbac4ac7d12]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xc51158) [0x7dbac4d33158]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xc510de) [0x7dbac4d330de]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x8111ff) [0x7dbac48f31ff]\n --- /lib/x86_64-linux-gnu/libc.so.6(+0x99ea8) [0x7dbb8340eea8]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x811059) [0x7dbac48f3059]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xc50f2e) [0x7dbac4d32f2e]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x95f705) [0x7dbac4a41705]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x95e210) [0x7dbac4a40210]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x95d6f8) [0x7dbac4a3f6f8]\n --- /lib/x86_64-linux-gnu/libstdc++.so.6(+0xdc253) [0x7dbb6bfc9253]\n --- /lib/x86_64-linux-gnu/libc.so.6(+0x94a83) [0x7dbb83409a83]\n --- /lib/x86_64-linux-gnu/libc.so.6(+0x126890) [0x7dbb8349b890]\n",
+  "traceback": "Traceback (most recent call last):\n  File \"/tmp/flexgemm_k6_probe.py\", line 52, in worker\n    result=forward(i);first.append(check(result,i,'warmup'));del result\n  File \"/tmp/flexgemm_k6_probe.py\", line 45, in forward\n    result=layer(features[index]);ttnn.synchronize_device(device);return result\n  File \"/home/user/tt-scratchpad/flexgemm-autoresearch/comparators/k6-wormhole-probe/adapter.py\", line 92, in __call__\n    _, rows = self.layer(table, index, identity=None, write_y=False,\n  File \"/home/user/tt-scratchpad/flexgemm-autoresearch/comparators/k6-wormhole-probe/sparse_k6.py\", line 230, in __call__\n    ttnn.generic_op(ios, ttnn.ProgramDescriptor(kernels=ks, semaphores=sems, cbs=cbs))\n  File \"/home/user/tt-metal/ttnn/ttnn/decorators.py\", line 650, in __call__\n    result = self.function(*function_args, **function_kwargs)\nRuntimeError: TT_THROW @ /home/user/tt-metal/tt_metal/impl/program/program.cpp:332: tt::exception\ninfo:\nFailed to generate binaries for k6_compute TT_THROW @ /home/user/tt-metal/tt_metal/jit_build/build.cpp:70: tt::exception\ninfo:\ntrisc0 build failed. Log: In file included from ../chlkc_unpack.cpp:3,\n                 from /home/user/tt-metal/tt_metal/hw/ckernels/wormhole_b0/metal/common/chlkc_list.h:26,\n                 from /home/user/tt-metal/tt_metal/hw/firmware/src/tt-1xx/trisck.cc:13:\n/home/user/tt-scratchpad/flexgemm-autoresearch/comparators/k6-wormhole-probe/kernels/k6_compute.cpp: In function 'void kernel_main()':\n/home/user/tt-scratchpad/flexgemm-autoresearch/comparators/k6-wormhole-probe/kernels/k6_compute.cpp:108:21: error: 'copy_init' was not declared in this scope; did you mean 'noc_init'?\n  108 |                     copy_init(CB_ACC);\n      |                     ^~~~~~~~~\n      |                     noc_init\n/home/user/tt-scratchpad/flexgemm-autoresearch/comparators/k6-wormhole-probe/kernels/k6_compute.cpp:140:17: error: 'copy_init' was not declared in this scope; did you mean 'noc_init'?\n  140 |                 copy_init(CB_BIAS);\n      |                 ^~~~~~~~~\n      |                 noc_init\n\nbacktrace:\n --- /home/user/tt-metal/build/lib/_ttnncpp.so(+0x14fb848) [0x7dbac6b06848]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xc2ed7f) [0x7dbac4d10d7f]\n --- tt::tt_metal::JitBuildState::compile_one(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, tt::tt_metal::JitBuildSettings const*, unsigned long) const\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xc51158) [0x7dbac4d33158]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xc510de) [0x7dbac4d330de]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x8111ff) [0x7dbac48f31ff]\n --- /lib/x86_64-linux-gnu/libc.so.6(+0x99ea8) [0x7dbb8340eea8]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x811059) [0x7dbac48f3059]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xc50f2e) [0x7dbac4d32f2e]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x95f705) [0x7dbac4a41705]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x95e210) [0x7dbac4a40210]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x95d6f8) [0x7dbac4a3f6f8]\n --- /lib/x86_64-linux-gnu/libstdc++.so.6(+0xdc253) [0x7dbb6bfc9253]\n --- /lib/x86_64-linux-gnu/libc.so.6(+0x94a83) [0x7dbb83409a83]\n --- /lib/x86_64-linux-gnu/libc.so.6(+0x126890) [0x7dbb8349b890]\n\nbacktrace:\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xa13928) [0x7dbac4af5928]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x9e61bb) [0x7dbac4ac81bb]\n --- tt::tt_metal::JitBuildCache::build_once(unsigned long, std::function<void ()> const&)\n --- tt::tt_metal::jit_build_once(unsigned long, std::function<void ()> const&)\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x9e5d12) [0x7dbac4ac7d12]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xc51158) [0x7dbac4d33158]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xc510de) [0x7dbac4d330de]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x8111ff) [0x7dbac48f31ff]\n --- /lib/x86_64-linux-gnu/libc.so.6(+0x99ea8) [0x7dbb8340eea8]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x811059) [0x7dbac48f3059]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0xc50f2e) [0x7dbac4d32f2e]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x95f705) [0x7dbac4a41705]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x95e210) [0x7dbac4a40210]\n --- /home/user/tt-metal/build/tt_metal/libtt_metal.so(+0x95d6f8) [0x7dbac4a3f6f8]\n --- /lib/x86_64-linux-gnu/libstdc++.so.6(+0xdc253) [0x7dbb6bfc9253]\n --- /lib/x86_64-linux-gnu/libc.so.6(+0x94a83) [0x7dbb83409a83]\n --- /lib/x86_64-linux-gnu/libc.so.6(+0x126890) [0x7dbb8349b890]\n\n"
+}

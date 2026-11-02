@@ -1,0 +1,704 @@
+{
+  "scope": "CPU CB feasibility only, before device runs; no accuracy or performance claim",
+  "assumed_grid": [
+    8,
+    8
+  ],
+  "cb_budget": 921600,
+  "cases": [
+    {
+      "case": "autoware-test-pcd-21359-16x16",
+      "corpus": "autoware-lidar-corpus-v1",
+      "row_chunk": 32768,
+      "plans": [
+        {
+          "rows": 21359,
+          "tap_chunk": 27,
+          "tap_chunks": 1,
+          "cb_bytes": 413504,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "autoware-test-pcd-21359-32x64",
+      "corpus": "autoware-lidar-corpus-v1",
+      "row_chunk": 32768,
+      "plans": [
+        {
+          "rows": 21359,
+          "tap_chunk": 27,
+          "tap_chunks": 1,
+          "cb_bytes": 532352,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "autoware-test-pcd-21359-64x64",
+      "corpus": "autoware-lidar-corpus-v1",
+      "row_chunk": 16384,
+      "plans": [
+        {
+          "rows": 4975,
+          "tap_chunk": 14,
+          "tap_chunks": 2,
+          "cb_bytes": 579456,
+          "within_budget": true
+        },
+        {
+          "rows": 16384,
+          "tap_chunk": 14,
+          "tap_chunks": 2,
+          "cb_bytes": 620416,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "autoware-test-pcd-21359-128x128",
+      "corpus": "autoware-lidar-corpus-v1",
+      "row_chunk": 8192,
+      "plans": [
+        {
+          "rows": 4975,
+          "tap_chunk": 6,
+          "tap_chunks": 5,
+          "cb_bytes": 751616,
+          "within_budget": true
+        },
+        {
+          "rows": 8192,
+          "tap_chunk": 6,
+          "tap_chunks": 5,
+          "cb_bytes": 768000,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "autoware-test-pcd-21359-256x256",
+      "corpus": "autoware-lidar-corpus-v1",
+      "row_chunk": 4096,
+      "plans": [
+        {
+          "rows": 879,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 489728,
+          "within_budget": true
+        },
+        {
+          "rows": 4096,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 522496,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "autoware-test-pcd-21359-17x35",
+      "corpus": "autoware-lidar-corpus-v1",
+      "row_chunk": 32768,
+      "plans": [
+        {
+          "rows": 21359,
+          "tap_chunk": 27,
+          "tap_chunks": 1,
+          "cb_bytes": 532352,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "tune-scattered-35-17x45",
+      "corpus": "corpus-v2",
+      "row_chunk": 32768,
+      "plans": [
+        {
+          "rows": 35,
+          "tap_chunk": 27,
+          "tap_chunks": 1,
+          "cb_bytes": 532352,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "tune-surface-256-64x64",
+      "corpus": "corpus-v2",
+      "row_chunk": 16384,
+      "plans": [
+        {
+          "rows": 256,
+          "tap_chunk": 14,
+          "tap_chunks": 2,
+          "cb_bytes": 563072,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "tune-clustered-1025-128x128",
+      "corpus": "corpus-v2",
+      "row_chunk": 8192,
+      "plans": [
+        {
+          "rows": 1025,
+          "tap_chunk": 7,
+          "tap_chunks": 4,
+          "cb_bytes": 825344,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "tune-scattered-257-32x256",
+      "corpus": "corpus-v2",
+      "row_chunk": 32768,
+      "plans": [
+        {
+          "rows": 257,
+          "tap_chunk": 14,
+          "tap_chunks": 2,
+          "cb_bytes": 719104,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "tune-surface-4096-64x64",
+      "corpus": "corpus-v2",
+      "row_chunk": 16384,
+      "plans": [
+        {
+          "rows": 4096,
+          "tap_chunk": 14,
+          "tap_chunks": 2,
+          "cb_bytes": 571264,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "validation-scattered-35-17x45",
+      "corpus": "corpus-v2",
+      "row_chunk": 32768,
+      "plans": [
+        {
+          "rows": 35,
+          "tap_chunk": 27,
+          "tap_chunks": 1,
+          "cb_bytes": 532352,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "validation-surface-256-64x64",
+      "corpus": "corpus-v2",
+      "row_chunk": 16384,
+      "plans": [
+        {
+          "rows": 256,
+          "tap_chunk": 14,
+          "tap_chunks": 2,
+          "cb_bytes": 563072,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "validation-clustered-1025-128x128",
+      "corpus": "corpus-v2",
+      "row_chunk": 8192,
+      "plans": [
+        {
+          "rows": 1025,
+          "tap_chunk": 7,
+          "tap_chunks": 4,
+          "cb_bytes": 825344,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "validation-scattered-257-32x256",
+      "corpus": "corpus-v2",
+      "row_chunk": 32768,
+      "plans": [
+        {
+          "rows": 257,
+          "tap_chunk": 14,
+          "tap_chunks": 2,
+          "cb_bytes": 719104,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "validation-surface-4096-64x64",
+      "corpus": "corpus-v2",
+      "row_chunk": 16384,
+      "plans": [
+        {
+          "rows": 4096,
+          "tap_chunk": 14,
+          "tap_chunks": 2,
+          "cb_bytes": 571264,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "corpus": "corpus-v2",
+      "row_chunk": 1024,
+      "plans": [
+        {
+          "rows": 394,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 18831104,
+          "within_budget": false
+        },
+        {
+          "rows": 1024,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 18831104,
+          "within_budget": false
+        }
+      ],
+      "eligible": false
+    },
+    {
+      "case": "shape-norm-silu-513-known-failure",
+      "corpus": "corpus-v2",
+      "row_chunk": 1024,
+      "plans": [
+        {
+          "rows": 513,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 18831104,
+          "within_budget": false
+        }
+      ],
+      "eligible": false
+    },
+    {
+      "case": "n4490-1024x1024-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "row_chunk": 1024,
+      "plans": [
+        {
+          "rows": 394,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5062400,
+          "within_budget": false
+        },
+        {
+          "rows": 1024,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5062400,
+          "within_budget": false
+        }
+      ],
+      "eligible": false
+    },
+    {
+      "case": "n4490-1024x4096-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "row_chunk": 1024,
+      "plans": [
+        {
+          "rows": 394,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 18831104,
+          "within_budget": false
+        },
+        {
+          "rows": 1024,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 18831104,
+          "within_budget": false
+        }
+      ],
+      "eligible": false
+    },
+    {
+      "case": "n20251-512x512-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "row_chunk": 2048,
+      "plans": [
+        {
+          "rows": 1819,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1489664,
+          "within_budget": false
+        },
+        {
+          "rows": 2048,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1489664,
+          "within_budget": false
+        }
+      ],
+      "eligible": false
+    },
+    {
+      "case": "n20251-512x2048-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "row_chunk": 2048,
+      "plans": [
+        {
+          "rows": 1819,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5228288,
+          "within_budget": false
+        },
+        {
+          "rows": 2048,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5228288,
+          "within_budget": false
+        }
+      ],
+      "eligible": false
+    },
+    {
+      "case": "n88524-256x256-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "row_chunk": 4096,
+      "plans": [
+        {
+          "rows": 2508,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 522496,
+          "within_budget": true
+        },
+        {
+          "rows": 4096,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 522496,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "n88524-256x1024-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "row_chunk": 4096,
+      "plans": [
+        {
+          "rows": 2508,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1703680,
+          "within_budget": false
+        },
+        {
+          "rows": 4096,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1703680,
+          "within_budget": false
+        }
+      ],
+      "eligible": false
+    },
+    {
+      "case": "n388659-128x128-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "row_chunk": 8192,
+      "plans": [
+        {
+          "rows": 3635,
+          "tap_chunk": 7,
+          "tap_chunks": 4,
+          "cb_bytes": 841728,
+          "within_budget": true
+        },
+        {
+          "rows": 8192,
+          "tap_chunk": 6,
+          "tap_chunks": 5,
+          "cb_bytes": 768000,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "n388659-128x512-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "row_chunk": 8192,
+      "plans": [
+        {
+          "rows": 3635,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 596736,
+          "within_budget": true
+        },
+        {
+          "rows": 8192,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 727808,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "n1711800-64x64-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "row_chunk": 16384,
+      "plans": [
+        {
+          "rows": 7864,
+          "tap_chunk": 14,
+          "tap_chunks": 2,
+          "cb_bytes": 587648,
+          "within_budget": true
+        },
+        {
+          "rows": 16384,
+          "tap_chunk": 14,
+          "tap_chunks": 2,
+          "cb_bytes": 620416,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "n6181-1024x1024-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "row_chunk": 1024,
+      "plans": [
+        {
+          "rows": 37,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5062400,
+          "within_budget": false
+        },
+        {
+          "rows": 1024,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5062400,
+          "within_budget": false
+        }
+      ],
+      "eligible": false
+    },
+    {
+      "case": "n6181-1024x4096-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "row_chunk": 1024,
+      "plans": [
+        {
+          "rows": 37,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 18831104,
+          "within_budget": false
+        },
+        {
+          "rows": 1024,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 18831104,
+          "within_budget": false
+        }
+      ],
+      "eligible": false
+    },
+    {
+      "case": "n28223-512x512-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "row_chunk": 2048,
+      "plans": [
+        {
+          "rows": 1599,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1489664,
+          "within_budget": false
+        },
+        {
+          "rows": 2048,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1489664,
+          "within_budget": false
+        }
+      ],
+      "eligible": false
+    },
+    {
+      "case": "n28223-512x2048-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "row_chunk": 2048,
+      "plans": [
+        {
+          "rows": 1599,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5228288,
+          "within_budget": false
+        },
+        {
+          "rows": 2048,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 5228288,
+          "within_budget": false
+        }
+      ],
+      "eligible": false
+    },
+    {
+      "case": "n125219-256x256-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "row_chunk": 4096,
+      "plans": [
+        {
+          "rows": 2339,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 522496,
+          "within_budget": true
+        },
+        {
+          "rows": 4096,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 522496,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "n125219-256x1024-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "row_chunk": 4096,
+      "plans": [
+        {
+          "rows": 2339,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1703680,
+          "within_budget": false
+        },
+        {
+          "rows": 4096,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 1703680,
+          "within_budget": false
+        }
+      ],
+      "eligible": false
+    },
+    {
+      "case": "n551044-128x128-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "row_chunk": 8192,
+      "plans": [
+        {
+          "rows": 2180,
+          "tap_chunk": 7,
+          "tap_chunks": 4,
+          "cb_bytes": 841728,
+          "within_budget": true
+        },
+        {
+          "rows": 8192,
+          "tap_chunk": 6,
+          "tap_chunks": 5,
+          "cb_bytes": 768000,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "n551044-128x512-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "row_chunk": 8192,
+      "plans": [
+        {
+          "rows": 2180,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 596736,
+          "within_budget": true
+        },
+        {
+          "rows": 8192,
+          "tap_chunk": 1,
+          "tap_chunks": 27,
+          "cb_bytes": 727808,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "n2389000-64x64-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "row_chunk": 16384,
+      "plans": [
+        {
+          "rows": 13320,
+          "tap_chunk": 14,
+          "tap_chunks": 2,
+          "cb_bytes": 612224,
+          "within_budget": true
+        },
+        {
+          "rows": 16384,
+          "tap_chunk": 14,
+          "tap_chunks": 2,
+          "cb_bytes": 620416,
+          "within_budget": true
+        }
+      ],
+      "eligible": true
+    }
+  ]
+}

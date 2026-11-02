@@ -1,0 +1,269 @@
+{
+  "scope": "Unpaired three-repeat diagnostic. Failing cases have no speedup ratio and cannot qualify for promotion. Earlier baseline measured separately; no controlled paired comparison or full application result.",
+  "cases": [
+    {
+      "case": "autoware-test-pcd-21359-16x16",
+      "corpus": "autoware-lidar-corpus-v1",
+      "baseline_report": "iteration-015/full-validation/autoware-test-pcd-21359-16x16.json",
+      "baseline_report_sha256": "7bc23dafd3cd71d38abdccfcd58327aab63ef241b0330ff941663f2ecdb8af66",
+      "baseline_ms": 10.156537988223135,
+      "comparator_ms": 2.237756969407201,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 4.538713598963198,
+      "paired_confirmation": false
+    },
+    {
+      "case": "autoware-test-pcd-21359-32x64",
+      "corpus": "autoware-lidar-corpus-v1",
+      "baseline_report": "iteration-015/full-validation/autoware-test-pcd-21359-32x64.json",
+      "baseline_report_sha256": "5b3554f789faa9f58a2616365a7f980305d0720616d7c47c61e1f09174dc8a47",
+      "baseline_ms": 10.900530032813549,
+      "comparator_ms": 1.6721459687687457,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 6.518886650093088,
+      "paired_confirmation": false
+    },
+    {
+      "case": "autoware-test-pcd-21359-64x64",
+      "corpus": "autoware-lidar-corpus-v1",
+      "baseline_report": "iteration-015/full-validation/autoware-test-pcd-21359-64x64.json",
+      "baseline_report_sha256": "292ca742f1f6df1b398dffd3dfed08aa0be3c69145d51d17d10a84fdb9509b52",
+      "baseline_ms": 14.82707605464384,
+      "comparator_ms": 2.7083290042355657,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 5.474621447931813,
+      "paired_confirmation": false
+    },
+    {
+      "case": "autoware-test-pcd-21359-128x128",
+      "corpus": "autoware-lidar-corpus-v1",
+      "baseline_report": "iteration-015/full-validation/autoware-test-pcd-21359-128x128.json",
+      "baseline_report_sha256": "60fca88b037079af4986a5cd0e8087c673a8da3ecdc45e6bd82e962e6af6f74f",
+      "baseline_ms": 26.700789981987327,
+      "comparator_ms": 4.018322972115129,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 6.64475955946687,
+      "paired_confirmation": false
+    },
+    {
+      "case": "autoware-test-pcd-21359-256x256",
+      "corpus": "autoware-lidar-corpus-v1",
+      "baseline_report": "iteration-015/full-validation/autoware-test-pcd-21359-256x256.json",
+      "baseline_report_sha256": "673b4e6829a997bca6ee65368d4a6903ef2b25c4a4a516aca377a09d20c7503c",
+      "baseline_ms": 50.306407967582345,
+      "comparator_ms": 13.071132998447865,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 3.848664685269134,
+      "paired_confirmation": false
+    },
+    {
+      "case": "autoware-test-pcd-21359-17x35",
+      "corpus": "autoware-lidar-corpus-v1",
+      "baseline_report": "iteration-015/full-validation/autoware-test-pcd-21359-17x35.json",
+      "baseline_report_sha256": "146a3764d928b240acd4b791a5a5469d4197550d2ffc7af5cbba4fb373cca687",
+      "baseline_ms": 10.997451026923954,
+      "comparator_ms": 2.1203969954513013,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 5.186505664041124,
+      "paired_confirmation": false
+    },
+    {
+      "case": "tune-scattered-35-17x45",
+      "corpus": "corpus-v2",
+      "baseline_report": "iteration-015/full-validation/tune-scattered-35-17x45.json",
+      "baseline_report_sha256": "71ad7d301df764bd6db35247371dd8913c0f35e907aaba88062103ad166b5545",
+      "baseline_ms": 4.207064979709685,
+      "comparator_ms": 2.1178469760343432,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 1.9864820392205063,
+      "paired_confirmation": false
+    },
+    {
+      "case": "tune-surface-256-64x64",
+      "corpus": "corpus-v2",
+      "baseline_report": "iteration-015/full-validation/tune-surface-256-64x64.json",
+      "baseline_report_sha256": "52faecde5c9f0c1d4851cda47cda5285508b78a3c25c0a5004e8283fd356900a",
+      "baseline_ms": 3.734734025783837,
+      "comparator_ms": 2.182128024287522,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 1.711510041672853,
+      "paired_confirmation": false
+    },
+    {
+      "case": "tune-clustered-1025-128x128",
+      "corpus": "corpus-v2",
+      "baseline_report": "iteration-015/full-validation/tune-clustered-1025-128x128.json",
+      "baseline_report_sha256": "d99d42018211e69e58e6585ed75f63c9b9cf4c85d9997ffbc97b411f2bc250c2",
+      "baseline_ms": 4.797847999725491,
+      "comparator_ms": 2.492948027793318,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 1.9245679999082854,
+      "paired_confirmation": false
+    },
+    {
+      "case": "tune-scattered-257-32x256",
+      "corpus": "corpus-v2",
+      "baseline_report": "iteration-015/full-validation/tune-scattered-257-32x256.json",
+      "baseline_report_sha256": "c29843c62f5b401ae2ffee1e36808b4c95d4dc96961335f2d1cfe8b40edfc6f0",
+      "baseline_ms": 4.341297026257962,
+      "comparator_ms": 2.3240880109369755,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 1.8679572399273003,
+      "paired_confirmation": false
+    },
+    {
+      "case": "tune-surface-4096-64x64",
+      "corpus": "corpus-v2",
+      "baseline_report": "iteration-015/full-validation/tune-surface-4096-64x64.json",
+      "baseline_report_sha256": "37890654227b1aef2e5b97fc3de1166c61cec72942f0e07c01e94d67e2e504a8",
+      "baseline_ms": 5.347209982573986,
+      "comparator_ms": 2.457828028127551,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 2.1755834506646323,
+      "paired_confirmation": false
+    },
+    {
+      "case": "validation-scattered-35-17x45",
+      "corpus": "corpus-v2",
+      "baseline_report": "iteration-015/full-validation/validation-scattered-35-17x45.json",
+      "baseline_report_sha256": "cb5999f9f5a9d5ae12d83833b36070426a976e6844d816dd4add9ea964b4344f",
+      "baseline_ms": 4.193786007817835,
+      "comparator_ms": 2.1642069914378226,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 1.9377933924109687,
+      "paired_confirmation": false
+    },
+    {
+      "case": "validation-surface-256-64x64",
+      "corpus": "corpus-v2",
+      "baseline_report": "iteration-015/full-validation/validation-surface-256-64x64.json",
+      "baseline_report_sha256": "211449cfd382dbd63c6eff5dd54219b9c15e611f6deaa6e074f46f48da7886a8",
+      "baseline_ms": 3.837094991467893,
+      "comparator_ms": 2.121957018971443,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 1.8082812032299378,
+      "paired_confirmation": false
+    },
+    {
+      "case": "validation-clustered-1025-128x128",
+      "corpus": "corpus-v2",
+      "baseline_report": "iteration-015/full-validation/validation-clustered-1025-128x128.json",
+      "baseline_report_sha256": "ff1cc1dd1ecd4f600d41314b401370eb9ac5b3953c36f27107090e59fe608d1e",
+      "baseline_ms": 4.769017978105694,
+      "comparator_ms": 2.3838579654693604,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 2.0005461932656363,
+      "paired_confirmation": false
+    },
+    {
+      "case": "validation-scattered-257-32x256",
+      "corpus": "corpus-v2",
+      "baseline_report": "iteration-015/full-validation/validation-scattered-257-32x256.json",
+      "baseline_report_sha256": "80f9e55d15e6300a679fb5985bc12e6bebe524c9156bcd8f12b70ef1cfe743fb",
+      "baseline_ms": 5.132029007654637,
+      "comparator_ms": 2.2838079603388906,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 2.247136841966828,
+      "paired_confirmation": false
+    },
+    {
+      "case": "validation-surface-4096-64x64",
+      "corpus": "corpus-v2",
+      "baseline_report": "iteration-015/full-validation/validation-surface-4096-64x64.json",
+      "baseline_report_sha256": "797899310f0417360c610a38355a0282b3c74884fb8b24b450d1ccdf4bb138c7",
+      "baseline_ms": 5.488861002959311,
+      "comparator_ms": 2.5497290189377964,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 2.1527232745877996,
+      "paired_confirmation": false
+    },
+    {
+      "case": "n88524-256x256-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "baseline_report": "iteration-015/full-validation/n88524-256x256-k3x3x3.json",
+      "baseline_report_sha256": "854fbc9d784d8f3a8b8e2b3326808d803b1affdec27925506668a19bc28c7310",
+      "baseline_ms": 226.3758049812168,
+      "comparator_ms": 48.390332027338445,
+      "comparator_status": "numerical_or_integrity_failure",
+      "ratio_for_passed_case_only": null,
+      "paired_confirmation": false
+    },
+    {
+      "case": "n388659-128x128-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "baseline_report": "iteration-015/full-validation/n388659-128x128-k3x3x3.json",
+      "baseline_report_sha256": "af056ee836356a4afabf201c3ec6f7b0c81dbda3a7172ec634012f03154cdf34",
+      "baseline_ms": 499.49922400992364,
+      "comparator_ms": 45.54993298370391,
+      "comparator_status": "numerical_or_integrity_failure",
+      "ratio_for_passed_case_only": null,
+      "paired_confirmation": false
+    },
+    {
+      "case": "n388659-128x512-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "baseline_report": "iteration-015/full-validation/n388659-128x512-k3x3x3.json",
+      "baseline_report_sha256": "385d2f5bae658e1cd4658f26e400268abb54dc64240460b5f563d2791e9a2f49",
+      "baseline_ms": 619.6404920192435,
+      "comparator_ms": 153.88579102000222,
+      "comparator_status": "numerical_or_integrity_failure",
+      "ratio_for_passed_case_only": null,
+      "paired_confirmation": false
+    },
+    {
+      "case": "n1711800-64x64-k3x3x3",
+      "corpus": "poster-shape-corpus-v1",
+      "baseline_report": "iteration-015/full-validation/n1711800-64x64-k3x3x3.json",
+      "baseline_report_sha256": "c24edb64c2b052565ba528ea4b252f1d349431316f76e9e77eb1e792caed2d11",
+      "baseline_ms": 1122.7904690313153,
+      "comparator_ms": 100.04359995946288,
+      "comparator_status": "numerical_or_integrity_failure",
+      "ratio_for_passed_case_only": null,
+      "paired_confirmation": false
+    },
+    {
+      "case": "n125219-256x256-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "baseline_report": "iteration-015/full-validation/n125219-256x256-k3x3x3.json",
+      "baseline_report_sha256": "c112c3a338a2bbbfc85218c0d81c283a89583acbafffb3fae982f24100ad026f",
+      "baseline_ms": 322.47347303200513,
+      "comparator_ms": 68.25452297925949,
+      "comparator_status": "numerical_or_integrity_failure",
+      "ratio_for_passed_case_only": null,
+      "paired_confirmation": false
+    },
+    {
+      "case": "n551044-128x128-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "baseline_report": "iteration-015/full-validation/n551044-128x128-k3x3x3.json",
+      "baseline_report_sha256": "c3e677f1378f49da8b98c713d35a6d31c7a13c16af3f3497988c3bfadf769905",
+      "baseline_ms": 704.2113679926842,
+      "comparator_ms": 63.511567015666515,
+      "comparator_status": "numerical_or_integrity_failure",
+      "ratio_for_passed_case_only": null,
+      "paired_confirmation": false
+    },
+    {
+      "case": "n551044-128x512-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "baseline_report": "iteration-015/full-validation/n551044-128x512-k3x3x3.json",
+      "baseline_report_sha256": "7aae27af94737df943a02be8867b0bfbe73905dc4638a8b5476685ca905b5c16",
+      "baseline_ms": 872.8084960021079,
+      "comparator_ms": 216.213844018057,
+      "comparator_status": "numerical_or_integrity_failure",
+      "ratio_for_passed_case_only": null,
+      "paired_confirmation": false
+    },
+    {
+      "case": "n2389000-64x64-k3x3x3",
+      "corpus": "full-sampler-shape-corpus-v1",
+      "baseline_report": "iteration-015/full-validation/n2389000-64x64-k3x3x3.json",
+      "baseline_report_sha256": "90fec0a0a34ae255f196c0f57defb1b086703a663ea226ea16ae164a2afbb044",
+      "baseline_ms": 1562.2078989981674,
+      "comparator_ms": 135.2524079848081,
+      "comparator_status": "passed_probe_gates",
+      "ratio_for_passed_case_only": 11.55031486887567,
+      "paired_confirmation": false
+    }
+  ]
+}

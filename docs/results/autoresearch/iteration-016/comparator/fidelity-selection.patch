@@ -1,0 +1,24 @@
+--- upstream/sparse_k6.py
++++ probe/sparse_k6.py
+@@ -53,8 +53,11 @@
+ class K6Layer:
+     """One sparse conv layer of a :class:`ttaw.models.sparse_encoder.SparseConvSpec` as the K6 ``generic_op``."""
+ 
+-    def __init__(self, spec: Any, *, budget_tiles: int = WEIGHT_BUDGET_TILES):
++    def __init__(self, spec: Any, *, budget_tiles: int = WEIGHT_BUDGET_TILES, fidelity: str = "HiFi4"):
+         self.spec = spec
++        if fidelity not in ("HiFi3", "HiFi4"):
++            raise ValueError("unsupported comparison fidelity")
++        self.fidelity = fidelity
+         self.name = spec.name
+         self.K = spec.kernel_volume
+         self.cin_t = spec.cin_pad // 32
+@@ -184,7 +187,7 @@
+         um = [ttnn.UnpackToDestMode.Default] * 64
+         for i in (2, 3, 6):
+             um[i] = ttnn.UnpackToDestMode.UnpackToDestFp32
+-        ccfg = ttnn.ComputeConfigDescriptor(math_fidelity=ttnn.MathFidelity.HiFi4, fp32_dest_acc_en=True,
++        ccfg = ttnn.ComputeConfigDescriptor(math_fidelity=getattr(ttnn.MathFidelity, self.fidelity), fp32_dest_acc_en=True,
+                                             math_approx_mode=False)
+         ccfg.unpack_to_dest_mode = um
+         SRC = ttnn.KernelDescriptor.SourceType.FILE_PATH

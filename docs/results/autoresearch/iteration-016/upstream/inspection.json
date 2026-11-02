@@ -1,0 +1,21 @@
+{
+  "repo": "changh95/bevfusion-p150",
+  "revision": "300095a42e61075a3d5c9916620344c1067200b8",
+  "inspected_at_utc": "2026-11-02",
+  "purpose": "Public sparse-convolution comparator source inspection; no device execution or weights download.",
+  "source_url": "https://huggingface.co/changh95/bevfusion-p150/tree/300095a42e61075a3d5c9916620344c1067200b8",
+  "files": {
+    "README.md": "a88df3a5e6981ebc64af2bf378535080c470c44f7a96fafb6bd9bcaa8d186815",
+    "tt-model.yaml": "cb5ab9c97df2f5cd3d4ece0941d4f5a517244fd83b3055febc0138cfcbae9140",
+    "code/tt_bevfusion/tt/sparse_k6.py": "aa09ed70c977ad243c10565e8e9511e200c033f434fb4aed8a326c3298f392f2",
+    "code/tt_bevfusion/tt/sparse_mks.py": "01e89d15a58b25d1fa7b0db39b2f07ac8fc99bfc7cfedbfbe54534defc4b130e",
+    "code/tt_bevfusion/tt/kernels/README.md": "241b99b1392c561ab17bd8710e4d7a09d3e5d9641ec801c9147268846c9cbb8b"
+  },
+  "findings": [
+    "K6 fuses row-major gather, tilize, FP32-weight tap matmuls and SFPU bias/residual/ReLU; multicast weights along grid rows, exact FP32 partial reload, two data-movement cores gather alternate present taps.",
+    "Blackhole p150 native path uses HiFi4, FP32 weights and row-major BF16 tables; complete sparse encoder supports multi-layer fused MKS levels.",
+    "Native full-model trace timings and PCC gates are not comparable to the Wormhole HiFi3 tiled-BF16 contract. Need architecture port, input/output conversions, disabled ReLU and residuals, every output row written, matched goldens and complete-operator scope.",
+    "K6 plans by taps, but a single 1024x4096 tap needs 16 MiB FP32 weights per core; current planner cannot fit our largest widths without additional channel partitioning. Narrow 64/128-channel layers are the reasonable port starting point.",
+    "Local hf CLI returned exit 1 due click.exceptions.Exit: 0 after completing downloads. Files inspected directly; pinned TT environment was not upgraded."
+  ]
+}

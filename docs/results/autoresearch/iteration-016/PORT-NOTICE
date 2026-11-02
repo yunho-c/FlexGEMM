@@ -1,0 +1,5 @@
+Local changes to the archived Apache-2.0 comparator include an explicit math
+fidelity selector, a matched-operand bounded-row adapter, renaming copy_init
+to copy_tile_init for the pinned SDK, and a physical-coordinate multicast
+guard. See comparator/NOTICE, comparator/LICENSE, provenance.json inside
+comparator/, and the exact patches. No original author endorsement is implied.

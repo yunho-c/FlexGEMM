@@ -688,6 +688,29 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   Prepared decoder integration and K6 comparator probes have not yet run;
   application benefit, matched external comparisons and SOTA remain pending.
 
+### 016 — reject ordinary K6 as a broad replacement
+
+- Port the pinned Apache-2.0 bevfusion-p150 K6 comparator to the current SDK
+  and explicitly select HiFi3 on Wormhole. The adapter uses identical BF16-rounded
+  fixture operands, encoded in K6's FP32 weight/bias storage, and includes fresh
+  layout conversion, padding and output assembly in forward timing.
+- Of 36 fixtures, 24 fit the 900 KiB per-core CB budget. Seventeen pass all probe
+  gates; seven decoder-derived cases fail accuracy. Twelve wider cases are
+  unsupported. All six LiDAR and ten synthetic cases pass, plus the largest
+  full-sampler 64→64 case. A passing width does not imply universal correctness.
+- The largest passing case takes 135.252 ms in an unpaired three-sample probe.
+  The 388,659-row 128→128 case takes 45.550 ms but fails accuracy; no qualifying
+  speedup is assigned. Neither result is a paired or application-level win.
+- All 25 allocator captures meet the workspace bound (maximum 700,768,256 bytes).
+  All 26 workers exit normally: 18 successes, seven numerical failures and an
+  initial API compilation failure. The explicit copy_tile_init port passes a
+  subsequent Watcher probe. No timeout or device reset occurs.
+- Decision: retain iteration 015. Preserve the complete comparator, failures,
+  provenance, source patches and allocator replays in iteration-016. Next test
+  fused K6 data movement with validated four-product arithmetic; wide shapes
+  still require channel partitioning or incumbent fallback. Full application
+  validation and SOTA remain pending.
+
 The additional CPU capture tools are:
 
 ```bash

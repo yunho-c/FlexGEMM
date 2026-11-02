@@ -1,0 +1,12 @@
+{
+  "status": "CPU packing checks passed; device adapter not compiled or executed",
+  "adapter_sha256": "cb0ac9ac4c357a4f08739ff2eb9fbdcb9d4cc1467e2f338ee0cf07748326116d",
+  "checks": [
+    "all neighbor indices retained",
+    "tap/row packing inverted exactly",
+    "missing neighbors use sentinel",
+    "tail rows use sentinel",
+    "BF16-rounded weight values and bias preserved",
+    "weight channel padding zero"
+  ]
+}

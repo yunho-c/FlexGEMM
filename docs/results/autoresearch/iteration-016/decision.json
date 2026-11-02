@@ -1,0 +1,636 @@
+{
+  "iteration": 16,
+  "decision": "reject ordinary K6 as broad replacement; retain iteration015; preserve fused-dataflow comparator for four-product follow-up",
+  "baseline_commit": "8c1c896b19892e9abcd340de9f8f8942f13c0728",
+  "contract_unchanged": true,
+  "kernel_sources_unchanged": true,
+  "scope": "HiFi3 matched-operand portability and numerical/workspace study; no promotion",
+  "passed_cases": 17,
+  "numerical_failure_cases": 7,
+  "unsupported_cases": 12,
+  "maximum_workspace_bytes": 700768256,
+  "device_workers": 26,
+  "normal_returncode_zero": 18,
+  "normal_returncode_one": 8,
+  "timeouts": 0,
+  "device_recovery_required": false,
+  "initial_compilation_failure": "copy_init unavailable on pinned SDK; explicitly ported to copy_tile_init, then new Watcher probe passed",
+  "failures": [
+    {
+      "case": "n88524-256x256-k3x3x3",
+      "checks": [
+        {
+          "variant": 0,
+          "label": "warmup",
+          "relative_l2": 0.001840859862207759,
+          "max_abs_error": 7.990698218345642,
+          "elementwise_failures": 3,
+          "first_failures": [
+            [
+              4756,
+              57
+            ],
+            [
+              16614,
+              214
+            ],
+            [
+              47343,
+              200
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "label": "warmup",
+          "relative_l2": 0.0019817895102831736,
+          "max_abs_error": 8.017283886671066,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              53063,
+              174
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "memory_capture",
+          "relative_l2": 0.001840859862207759,
+          "max_abs_error": 7.990698218345642,
+          "elementwise_failures": 3,
+          "first_failures": [
+            [
+              4756,
+              57
+            ],
+            [
+              16614,
+              214
+            ],
+            [
+              47343,
+              200
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "timed",
+          "relative_l2": 0.001840859862207759,
+          "max_abs_error": 7.990698218345642,
+          "elementwise_failures": 3,
+          "first_failures": [
+            [
+              4756,
+              57
+            ],
+            [
+              16614,
+              214
+            ],
+            [
+              47343,
+              200
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "label": "timed",
+          "relative_l2": 0.0019817895102831736,
+          "max_abs_error": 8.017283886671066,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              53063,
+              174
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "timed",
+          "relative_l2": 0.001840859862207759,
+          "max_abs_error": 7.990698218345642,
+          "elementwise_failures": 3,
+          "first_failures": [
+            [
+              4756,
+              57
+            ],
+            [
+              16614,
+              214
+            ],
+            [
+              47343,
+              200
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "case": "n388659-128x128-k3x3x3",
+      "checks": [
+        {
+          "variant": 0,
+          "label": "warmup",
+          "relative_l2": 0.0016569842895289883,
+          "max_abs_error": 4.014089822769165,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              376250,
+              54
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "memory_capture",
+          "relative_l2": 0.0016569842895289883,
+          "max_abs_error": 4.014089822769165,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              376250,
+              54
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "timed",
+          "relative_l2": 0.0016569842895289883,
+          "max_abs_error": 4.014089822769165,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              376250,
+              54
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "timed",
+          "relative_l2": 0.0016569842895289883,
+          "max_abs_error": 4.014089822769165,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              376250,
+              54
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "case": "n388659-128x512-k3x3x3",
+      "checks": [
+        {
+          "variant": 0,
+          "label": "warmup",
+          "relative_l2": 0.0016892840986293682,
+          "max_abs_error": 7.99497377872467,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              51931,
+              38
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "label": "warmup",
+          "relative_l2": 0.0016686634379594453,
+          "max_abs_error": 0.9999976754188538,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              125441,
+              213
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "memory_capture",
+          "relative_l2": 0.0016892840986293682,
+          "max_abs_error": 7.99497377872467,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              51931,
+              38
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "timed",
+          "relative_l2": 0.0016892840986293682,
+          "max_abs_error": 7.99497377872467,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              51931,
+              38
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "label": "timed",
+          "relative_l2": 0.0016686634379594453,
+          "max_abs_error": 0.9999976754188538,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              125441,
+              213
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "timed",
+          "relative_l2": 0.0016892840986293682,
+          "max_abs_error": 7.99497377872467,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              51931,
+              38
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "case": "n1711800-64x64-k3x3x3",
+      "checks": [
+        {
+          "variant": 0,
+          "label": "warmup",
+          "relative_l2": 0.0016681270033841607,
+          "max_abs_error": 3.9987246990203857,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              1092937,
+              62
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "memory_capture",
+          "relative_l2": 0.0016681270033841607,
+          "max_abs_error": 3.9987246990203857,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              1092937,
+              62
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "timed",
+          "relative_l2": 0.0016681270033841607,
+          "max_abs_error": 3.9987246990203857,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              1092937,
+              62
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "timed",
+          "relative_l2": 0.0016681270033841607,
+          "max_abs_error": 3.9987246990203857,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              1092937,
+              62
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "case": "n125219-256x256-k3x3x3",
+      "checks": [
+        {
+          "variant": 0,
+          "label": "warmup",
+          "relative_l2": 0.0016946849230827553,
+          "max_abs_error": 3.984728217124939,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              48652,
+              167
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "memory_capture",
+          "relative_l2": 0.0016946849230827553,
+          "max_abs_error": 3.984728217124939,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              48652,
+              167
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "timed",
+          "relative_l2": 0.0016946849230827553,
+          "max_abs_error": 3.984728217124939,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              48652,
+              167
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "timed",
+          "relative_l2": 0.0016946849230827553,
+          "max_abs_error": 3.984728217124939,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              48652,
+              167
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "case": "n551044-128x128-k3x3x3",
+      "checks": [
+        {
+          "variant": 0,
+          "label": "warmup",
+          "relative_l2": 0.0016874027926377174,
+          "max_abs_error": 2.000462144613266,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              265199,
+              119
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "label": "warmup",
+          "relative_l2": 0.0016474437270729574,
+          "max_abs_error": 1.9978371560573578,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              457149,
+              18
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "memory_capture",
+          "relative_l2": 0.0016874027926377174,
+          "max_abs_error": 2.000462144613266,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              265199,
+              119
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "timed",
+          "relative_l2": 0.0016874027926377174,
+          "max_abs_error": 2.000462144613266,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              265199,
+              119
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "label": "timed",
+          "relative_l2": 0.0016474437270729574,
+          "max_abs_error": 1.9978371560573578,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              457149,
+              18
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "timed",
+          "relative_l2": 0.0016874027926377174,
+          "max_abs_error": 2.000462144613266,
+          "elementwise_failures": 1,
+          "first_failures": [
+            [
+              265199,
+              119
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "case": "n551044-128x512-k3x3x3",
+      "checks": [
+        {
+          "variant": 0,
+          "label": "warmup",
+          "relative_l2": 0.0016735197586297216,
+          "max_abs_error": 4.006279349327087,
+          "elementwise_failures": 4,
+          "first_failures": [
+            [
+              347872,
+              259
+            ],
+            [
+              410965,
+              171
+            ],
+            [
+              442406,
+              197
+            ],
+            [
+              514230,
+              457
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "label": "warmup",
+          "relative_l2": 0.0016770683066369483,
+          "max_abs_error": 2.003251902759075,
+          "elementwise_failures": 5,
+          "first_failures": [
+            [
+              225452,
+              282
+            ],
+            [
+              236095,
+              467
+            ],
+            [
+              318558,
+              270
+            ],
+            [
+              426398,
+              104
+            ],
+            [
+              458015,
+              25
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "memory_capture",
+          "relative_l2": 0.0016735197586297216,
+          "max_abs_error": 4.006279349327087,
+          "elementwise_failures": 4,
+          "first_failures": [
+            [
+              347872,
+              259
+            ],
+            [
+              410965,
+              171
+            ],
+            [
+              442406,
+              197
+            ],
+            [
+              514230,
+              457
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "timed",
+          "relative_l2": 0.0016735197586297216,
+          "max_abs_error": 4.006279349327087,
+          "elementwise_failures": 4,
+          "first_failures": [
+            [
+              347872,
+              259
+            ],
+            [
+              410965,
+              171
+            ],
+            [
+              442406,
+              197
+            ],
+            [
+              514230,
+              457
+            ]
+          ]
+        },
+        {
+          "variant": 1,
+          "label": "timed",
+          "relative_l2": 0.0016770683066369483,
+          "max_abs_error": 2.003251902759075,
+          "elementwise_failures": 5,
+          "first_failures": [
+            [
+              225452,
+              282
+            ],
+            [
+              236095,
+              467
+            ],
+            [
+              318558,
+              270
+            ],
+            [
+              426398,
+              104
+            ],
+            [
+              458015,
+              25
+            ]
+          ]
+        },
+        {
+          "variant": 0,
+          "label": "timed",
+          "relative_l2": 0.0016735197586297216,
+          "max_abs_error": 4.006279349327087,
+          "elementwise_failures": 4,
+          "first_failures": [
+            [
+              347872,
+              259
+            ],
+            [
+              410965,
+              171
+            ],
+            [
+              442406,
+              197
+            ],
+            [
+              514230,
+              457
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "next_hypothesis": "Combine fused gather/matmul dataflow with validated four-product integer decomposition; validate FP32 output path before paired timing. Wide shapes need channel partitioning or incumbent fallback."
+}

@@ -1,0 +1,14 @@
+{
+  "status": "prepared for future isolated device probe; not compiled or measured",
+  "upstream": "https://huggingface.co/changh95/bevfusion-p150/tree/300095a42e61075a3d5c9916620344c1067200b8",
+  "license": "Apache-2.0",
+  "upstream_python_sha256": "aa09ed70c977ad243c10565e8e9511e200c033f434fb4aed8a326c3298f392f2",
+  "modified_python_sha256": "4a57ee55b5820b2c4ead778fe7654c3d35f6d9bd8f82b36bd976562530224708",
+  "kernel_files_unchanged_sha256": {
+    "kernels/k6_reader.cpp": "6c0cbda26487ca64aa97820d5dc93ab5f19c0be88a08b6c7a20db8d35510c17d",
+    "kernels/k6_writer.cpp": "ad34a8130564e554d545c62868b088beaab2b1c2fa72a53310dcaeb41243f1fa",
+    "kernels/k6_compute.cpp": "d05d8396f91d7a048768ce5862f68aa7aa5c99f807dad62e2c563097ea3fa8f4",
+    "kernels/k6_gather.hpp": "65d87341df1520505bc29b978eb150ba833ed72f7d7d7a5213e06e880b24cb1d"
+  },
+  "changes": "Python constructor permits explicit HiFi3 or native HiFi4. Kernel source unchanged; Wormhole compatibility remains unverified. Adapter must enforce tiled-DRAM I/O, BF16-rounded weights/bias, no ReLU/residual, dead_skip=False and bounded-row chunks."
+}
