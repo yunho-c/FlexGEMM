@@ -4,6 +4,7 @@ import argparse
 import gc
 import gzip
 import json
+import math
 import os
 from pathlib import Path
 import subprocess
@@ -105,7 +106,8 @@ def main():
             raise ValueError("candidate changed the fixed Wormhole fidelity")
         report["work"] = work_accounting(fixture["mapping"], entry["ci"], entry["co"],
             algorithm=config["algorithm"], split_k=config.get("split_k", 1),
-            row_chunk=config.get("row_chunk", 256), available_cores=grid.x * grid.y)
+            row_chunk=config.get("row_chunk", 256), available_cores=grid.x * grid.y,
+            digit_output_assembly=getattr(sys.modules.get("flex_gemm.tenstorrent.digits"), "OUTPUT_ASSEMBLY", "concat"))
         mandatory = report["work"]["split_partial_bytes"] + report["work"]["explicit_expansion_bytes"]
         if mandatory > contract["workspace_limit_bytes"]:
             raise ValueError("mandatory intermediate storage exceeds workspace cap")
@@ -165,7 +167,8 @@ def main():
             l1 = ttnn.get_memory_view(device, ttnn.BufferType.L1)
             report["workspace"] = workspace_bound(allocation_trace, dram_banks=dram.num_banks,
                 l1_capacity_bytes=l1.num_banks * l1.total_bytes_per_bank,
-                limit_bytes=contract["workspace_limit_bytes"])
+                limit_bytes=contract["workspace_limit_bytes"], output_address=output.buffer_address(),
+                expected_output_bytes=math.prod(output.padded_shape) * 2)
             report["workspace"].update(trace_path=str(trace_path), trace_sha256=sha256(trace_path))
             check(output, 0, "memory_capture")
             output = None

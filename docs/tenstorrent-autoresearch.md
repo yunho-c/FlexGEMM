@@ -6,6 +6,16 @@ prototype is not sufficient evidence for a state-of-the-art claim. Published
 comparators, multiple workloads, independent confirmation, and representative
 application measurements remain required.
 
+Comparator discovery also needs to distinguish hardware and numerical scopes.
+The [Tenstorrent model catalog](https://docs.tenstorrent.com/tt-awesome/models/bevfusion/)
+lists a community BEVFusion-L bundle with a sparse 3D encoder on p150. That is
+a lead to inspect, not a measured n150 comparator or evidence of equivalent
+operator accuracy. No claim that this branch is the only TT implementation is
+made. GPU engines such as [SpConv](https://github.com/traveller59/spconv) and
+[Spira](https://github.com/SPIN-Research-Group/Spira) provide additional comparison
+leads; published results on different shapes/hardware are not substituted for
+measurements on this corpus.
+
 ## Contract and evaluator
 
 The versioned contract is `benchmarks/tenstorrent/contract.json`. The first track
@@ -91,19 +101,27 @@ logical padded-GEMM estimate; internal physical scheduling is unavailable.
 
 Split partial storage and FP32-add payloads are separate fields. Live allocator
 snapshots are not peaks. The runner rejects mandatory buffers above the 1 GiB
-workspace limit, but complete peak-workspace verification is still pending;
-passing this lower-bound check does not prove compliance with the full cap.
+workspace limit; passing that lower-bound check alone does not establish
+compliance with the full cap.
 
 The new `--mode memory` run captures actual allocator events across a warmed
-forward. Its conservative bound counts all new aligned DRAM allocations,
-including the final output, and adds the entire device L1 capacity. Resident
-inputs, weights and topology predate capture. The smoke capture passed on
-hardware in iteration 002; each promoted candidate/case still requires its own
-capture. The compressed allocation trace is saved beside the report.
+forward. It reports the inclusive peak of all new aligned DRAM allocations and
+a temporary-only bound that excludes the final output, as specified by the
+original contract. Only the final live allocation at the returned output's
+address is eligible for exclusion: earlier allocations reusing that address
+still count. Exclude only the padded output tensor's bytes, retaining any extra
+backing-buffer capacity and bank-alignment padding in the temporary bound.
+An absent, ambiguous or undersized output allocation invalidates the trace.
+Both bounds add the entire device L1 capacity. Resident inputs, weights and
+topology predate capture. Iterations 002–006 used the stricter inclusive bound;
+their original reports remain unchanged. Each promoted candidate/case requires
+its own capture. The compressed allocation trace is saved beside the report.
 
-The accounting model is tagged `baseline_v1`. Structural kernel changes require
-an updated model; do not continue reporting obsolete traffic counts. Missing
-measurements are null. Iteration 002 establishes initial dense/gather empirical
+Accounting models distinguish baseline, tiled gather and four-product digit
+implementations. The latter also distinguishes concatenation from direct output
+tile copies when evaluating an older candidate checkout. Structural kernel
+changes require an updated model; missing measurements are null.
+Iteration 002 establishes initial dense/gather empirical
 references and device wait timing. Hardware counters and a complete memory/
 communication lower bound remain outstanding.
 
@@ -368,6 +386,58 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   assembly rather than repeated full-output concatenation. Full-suite reruns,
   paired performance confirmation and application integration remain required
   before promotion; the default algorithm is unchanged.
+
+### 007 — bounded output assembly and larger row chunks
+
+- For tile-aligned row chunks, allocate the final tiled output once and copy
+  each completed chunk directly to disjoint tile positions. The data-movement
+  kernel batches eight tiles per core through bounded L1 scratch. It supports
+  BF16 and FP32 storage, ragged tails/channels and changing tensor addresses.
+  Unaligned interior chunks retain the concatenation path.
+- The fixed contract has always excluded the final output from temporary
+  workspace. The evaluator now identifies its final live allocation, preserves
+  earlier lifetimes at reused addresses, and reports inclusive and temporary
+  peaks separately. Missing, ambiguous and undersized output identities are
+  rejected; tests cover those cases. Only padded tensor bytes are excluded, so
+  oversized backing allocations cannot hide workspace. A final CPU replay of
+  all 31 captured traces, including the initial probe, verifies this stricter
+  accounting and preserves every pass. `memory-reaudit.json` records both bounds
+  and source/trace digests. The 1 GiB cap and numerical gates are unchanged,
+  and all earlier failed reports remain available.
+- Tested a bounded-expansion configuration policy: row_chunk is
+  `floor_to_32(1048576 / padded_Ci)`, giving 1024/2048/4096/8192/16384 rows for
+  Ci=1024/512/256/128/64. This is a recorded experiment configuration, not a
+  new API default. Every gather still accesses the complete input topology.
+- All 30 prepared cases pass numerical, changing-feature, dtype/layout,
+  input-mutation, source-integrity and workspace checks. Coverage includes both
+  real topologies, both feature variants, the original regression and all ten
+  synthetic fixtures. Maximum temporary-workspace bound is 1,007,091,200 bytes
+  on the 2,389,000-row case, including the entire device L1 capacity.
+- Three-repetition screening medians include 139.543 ms for the 4,490-row
+  1024→4096 layer, 953.455 ms for 388,659 rows at 128→512, 2,332.506 ms for
+  1,711,800 rows at 64→64, and 3,225.740 ms for 2,389,000 rows at 64→64.
+  The occurrence-weighted proxy is 12.954 s for the original shape corpus and
+  18.221 s for the new topology. These use representative layers, not complete
+  decoder inference, and are not paired application speedups.
+- The arithmetic model now charges all four products and direct output-copy
+  traffic, while retaining the previous model for older candidate checkouts.
+  The wide layer issues 4.088 TFLOP in 139.543 ms (29.29 issued TFLOP/s), but
+  the 388,659-row narrow layer reaches only 1.84 issued TFLOP/s. This points to
+  a different bottleneck in narrow layers; profiling gather, feature-digit
+  preparation and matmul separately is the next diagnostic step.
+- Three independent A/B/A rounds, eleven repetitions per trial, confirm the
+  388,659-row 128→512 improvement against iteration 006 at row_chunk=1024.
+  Candidate medians are 953.430, 953.468 and 953.484 ms. Bracketed speedups are
+  1.26890×, 1.26869× and 1.26885×; maximum baseline drift is 0.0176% and the
+  maximum noise proxy is 0.0634%. All nine trials pass. This combines direct
+  output assembly with row_chunk=8192; it does not isolate the two changes.
+- Ten focused Watcher tests and 12 CPU evaluator tests pass. The Watcher suite
+  covers device chaining and changing-feature reuse with both aligned and
+  unaligned chunks, ragged channels, FP32 cancellation and many output chunks.
+  Decision: retain the memory fix and this confirmed case-specific performance
+  lead. Default dispatch, full-decoder accuracy/runtime, independent scenes and
+  external comparator measurements remain outstanding; no global or SOTA
+  promotion is claimed. All device workers exited normally.
 
 The additional CPU capture tools are:
 

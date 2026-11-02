@@ -10,7 +10,8 @@ from test_explicit import device
 @pytest.mark.parametrize("algorithm", ["explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
                                         "implicit_gemm_splitk", "masked_implicit_gemm_splitk"])
 @pytest.mark.parametrize("ci,co", [(32, 64), (17, 35)])
-def test_resident_chain_and_reuse(device, algorithm, ci, co):
+@pytest.mark.parametrize("row_chunk", [17, 32])
+def test_resident_chain_and_reuse(device, algorithm, ci, co, row_chunk):
     import ttnn
     torch.manual_seed(73)
     x = torch.randn(37, ci).bfloat16()
@@ -27,12 +28,12 @@ def test_resident_chain_and_reuse(device, algorithm, ci, co):
     for delta in (0, 0.5):
         xx = (x.float() + delta).bfloat16()
         xd = ttnn.from_torch(xx, dtype=ttnn.bfloat16, layout=ttnn.TILE_LAYOUT, device=device)
-        y = sparse_conv_device(xd, p1, top, algorithm=algorithm, row_chunk=17)
+        y = sparse_conv_device(xd, p1, top, algorithm=algorithm, row_chunk=row_chunk)
         expected = sparse_conv_reference(xx, w1, mapping, b)
         yh = ttnn.to_torch(y).float()
         torch.testing.assert_close(yh, expected, atol=0.025, rtol=0.025)
         # The second convolution consumes the first device tensor directly.
-        z = sparse_conv_device(y, p2, top, algorithm=algorithm, row_chunk=17)
+        z = sparse_conv_device(y, p2, top, algorithm=algorithm, row_chunk=row_chunk)
         expected2 = sparse_conv_reference(yh, w2, mapping)
         torch.testing.assert_close(ttnn.to_torch(z).float(), expected2, atol=0.025, rtol=0.025)
 

@@ -5,11 +5,14 @@ BF16 reference and tolerances still apply; this is not an FP32-exact mode.
 """
 
 from dataclasses import dataclass
+from pathlib import Path
 
 import torch
 
 from .implicit import _round32
 from .ops import _add_bias, _compute_config
+
+OUTPUT_ASSEMBLY = "tile_copy"
 
 
 @dataclass
@@ -73,6 +76,33 @@ def _concat_outputs(chunks):
     return _concat(chunks)
 
 
+def _copy_output_rows(chunk, output, start):
+    """Copy complete tile rows directly to their final, disjoint positions."""
+    import ttnn
+    nt = _round32(output.shape[1]) // 32
+    tasks = _round32(chunk.shape[0]) // 32 * nt
+    grid = output.device().compute_with_storage_grid_size()
+    ncores = min(tasks, grid.x * grid.y)
+    cores = [ttnn.CoreCoord(i % grid.x, i // grid.x) for i in range(ncores)]
+    ranges = ttnn.CoreRangeSet([ttnn.CoreRange(c, c) for c in cores])
+    runtime = ttnn.RuntimeArgs()
+    for i, core in enumerate(cores):
+        begin, end = tasks * i // ncores, tasks * (i + 1) // ncores
+        runtime[core.x][core.y] = [chunk.buffer_address(), output.buffer_address(),
+                                  begin, end - begin, start // 32 * nt]
+    page = 2048 if output.dtype == ttnn.bfloat16 else 4096
+    compile_args = [page]
+    for tensor in (chunk, output):
+        compile_args.extend(ttnn.TensorAccessorArgs(tensor).get_compile_time_args())
+    kernel = ttnn.KernelDescriptor(
+        kernel_source=str(Path(__file__).parent / "kernels/copy_output_tiles.cpp"),
+        core_ranges=ranges, compile_time_args=compile_args, runtime_args=runtime,
+        config=ttnn.ReaderConfigDescriptor())
+    cb = ttnn.CBDescriptor(total_size=page * 8, core_ranges=ranges,
+        format_descriptors=[ttnn.CBFormatDescriptor(buffer_index=0, data_format=output.dtype, page_size=page)])
+    ttnn.generic_op([chunk, output], ttnn.ProgramDescriptor(kernels=[kernel], cbs=[cb], semaphores=[]))
+
+
 def _feature_digits(features, cp):
     """Recompute digits each call, with bounded FP32 conversion scratch."""
     import ttnn
@@ -110,6 +140,10 @@ def sparse_digit_conv_device(features, weights, topology, *, row_chunk=256, fp32
     scale = ttnn.multiply(ttnn.repeat(feature_scale, [1, weights.co]), weights.scale)
     outputs = []
     m = len(topology.host_indices)
+    output = None
+    if m > row_chunk and row_chunk % 32 == 0:
+        output = ttnn.allocate_tensor_on_device(ttnn.Shape([m, weights.co]),
+            ttnn.float32 if fp32_output else ttnn.bfloat16, ttnn.TILE_LAYOUT, weights.device)
     compute = _compute_config(weights.device)
     for start in range(0, m, row_chunk):
         end = min(start + row_chunk, m)
@@ -141,7 +175,12 @@ def sparse_digit_conv_device(features, weights, topology, *, row_chunk=256, fp32
         result = ttnn.slice(result, [0, 0], [end - start, weights.co])
         result = ttnn.multiply(result, ttnn.repeat(scale, [end - start, 1]))
         result = _add_bias(result, weights.bias, fp32_output=True)
-        outputs.append(result if fp32_output else ttnn.typecast(result, ttnn.bfloat16))
+        if not fp32_output:
+            result = ttnn.typecast(result, ttnn.bfloat16)
+        if output is None:
+            outputs.append(result)
+        else:
+            _copy_output_rows(result, output, start)
         del result
     del high, low
-    return _concat_outputs(outputs)
+    return _concat_outputs(outputs) if output is None else output

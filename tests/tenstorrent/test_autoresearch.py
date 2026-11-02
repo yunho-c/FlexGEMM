@@ -85,11 +85,15 @@ def test_tiled_gather_accounts_for_one_feature_read_per_edge():
 def test_digit_accounting_charges_all_four_products_and_both_gathers():
     mapping = torch.zeros(65, 3, dtype=torch.long)
     base = work_accounting(mapping, 17, 35, algorithm="explicit_gemm", row_chunk=32)
-    digit = work_accounting(mapping, 17, 35, algorithm="digit_explicit_gemm", row_chunk=32)
+    digit = work_accounting(mapping, 17, 35, algorithm="digit_explicit_gemm", row_chunk=32,
+                            digit_output_assembly="tile_copy")
     assert digit["useful_flops"] == base["useful_flops"]
     assert digit["issued_flops"] == base["issued_flops"] * 4
     assert digit["explicit_expansion_bytes"] == base["explicit_expansion_bytes"] * 2
-    assert digit["model"] == "digit_explicit_v1"
+    assert digit["model"] == "digit_explicit_v2"
+    assert digit["output_assembly_copy_bytes"] == 3 * 2 * 1024 * 4
+    concat = work_accounting(mapping, 17, 35, algorithm="digit_explicit_gemm", row_chunk=32)
+    assert concat["model"] == "digit_explicit_v1" and concat["output_assembly_copy_bytes"] == 0
 
 
 def test_runner_timeout_and_exit_failure_are_terminal(tmp_path):
@@ -153,3 +157,29 @@ def test_workspace_trace_counts_overlapping_allocations_and_reused_addresses():
     assert report["workspace_upper_bound_bytes"] == 140
     trace.append(event("buffer_allocate", 10))
     assert not workspace_bound(trace, dram_banks=2, l1_capacity_bytes=50, limit_bytes=140)["trace_valid"]
+
+
+def test_workspace_excludes_only_final_output_lifetime_at_reused_address():
+    def event(kind, address, per_bank, device=0):
+        return {"node_type": kind, "params": {"type": "DRAM", "device_id": device,
+            "address": address, "max_size_per_bank": per_bank, "size": per_bank * 2}}
+    trace = [event("buffer_allocate", 10, 30), event("buffer_allocate", 20, 8),
+             event("buffer_deallocate", 10, 30), event("buffer_allocate", 10, 50)]
+    report = workspace_bound(trace, dram_banks=2, l1_capacity_bytes=50, limit_bytes=130,
+                             output_address=10, expected_output_bytes=96)
+    assert report["new_dram_peak_bytes"] == 116
+    assert report["temporary_dram_peak_bytes"] == 76
+    assert report["workspace_upper_bound_bytes"] == 126 and report["within_limit"]
+    assert report["excluded_final_output"]["event_index"] == 3
+    oversized = trace[:-1] + [event("buffer_allocate", 10, 500)]
+    excess = workspace_bound(oversized, dram_banks=2, l1_capacity_bytes=50, limit_bytes=130,
+                             output_address=10, expected_output_bytes=96)
+    assert excess["temporary_dram_peak_bytes"] == 920 and not excess["within_limit"]
+    for address, size in [(999, 96), (10, 101)]:
+        invalid = workspace_bound(trace, dram_banks=2, l1_capacity_bytes=50, limit_bytes=1000,
+                                  output_address=address, expected_output_bytes=size)
+        assert not invalid["trace_valid"] and not invalid["within_limit"]
+    trace.append(event("buffer_allocate", 10, 50, device=1))
+    ambiguous = workspace_bound(trace, dram_banks=2, l1_capacity_bytes=50, limit_bytes=1000,
+                                output_address=10, expected_output_bytes=96)
+    assert not ambiguous["trace_valid"] and not ambiguous["within_limit"]
