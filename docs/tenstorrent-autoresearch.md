@@ -55,8 +55,9 @@ records terminal process status; an evaluation JSON alone is not proof that the
 process has exited. Logs sit beside the output. Fresh report paths are required.
 
 Before using the hardware, coordinate with other active conversations in
-addition to honoring the lock. The current GenRecon pipeline has been granted
-uninterrupted board use until its owner announces completion.
+addition to honoring the lock. The other GenRecon conversation completed its
+pipeline and was idle before iteration 004 began; workers still acquire the
+shared lock separately for each trial.
 
 ## Corpus and score
 
@@ -312,6 +313,37 @@ interpretation. Keep benchmark/evaluator changes separate from kernel changes.
   device correctness, full-decoder numerical equivalence, or runtime improvement.
   `python -m benchmarks.tenstorrent.digit_study --corpus ... --base 256
   --digits 2 --output ...` reproduces the study with source/fixture digests.
+
+### 005 — four integer products restore numerical correctness
+
+- Baseline audit: explicit row_chunk=1024 passes only 13 of the 21 existing
+  synthetic, regression and real-shape cases. Eight cases fail the unchanged
+  numerical gate. Several real cases contain repeatable isolated errors near
+  4, 8 or 16, beyond ordinary BF16 rounding; repeated outputs are bitwise equal.
+- Candidate: `prepare_sparse_digit_weights` plus `digit_explicit_gemm` use two
+  signed base-256 digits for each BF16 operand. Immutable weights have per-output
+  power-of-two scales. Each forward recomputes a global feature scale and both
+  feature digit tensors on the device. Two gathers feed four FP32-output GEMMs;
+  equal-shaped FP32 arithmetic reconstructs the result, adds bias, and rounds to
+  BF16 once. Feature-dependent work is timed and never cached across calls.
+- All 21 cases pass numerical, changing-feature, layout, input-mutation and
+  source-integrity checks. Six focused Watcher tests pass, covering chaining,
+  reuse, ragged dimensions, bias cancellation and many chunks; 11 CPU evaluator
+  tests pass. This is a BF16-accuracy operator result, not FP32-exact inference.
+- Resource gate: 20/21 cases pass the conservative workspace bound. The
+  388,659-row 128→512 layer fails at 1,681,338,368 bytes against the 1 GiB cap.
+  Its numerical checks pass. The allocator trace identifies the final ragged
+  tiled concat: the SDK retains tiled inputs, untilized inputs, row-major output
+  and retilized output together. The report remains failed; no limit changed.
+- Screening medians, three repetitions: 141.118 ms for 4,490 rows at 1024→4096,
+  1,218.730 ms for 388,659 rows at 128→512, and 2,802.346 ms for 1,711,800 rows
+  at 64→64. This candidate is slower than ordinary BF16 GEMM and is retained
+  as an experimental accuracy path. It is not a promoted performance winner.
+- Raw reports, test reports and exact DRAM allocation/deallocation events are
+  archived under `iteration-005`. The compact event archives reproduce the
+  workspace bound; `allocation-evidence.json` also records full trace digests
+  and external paths. Next: remove the ragged-concat memory overhead, then
+  optimize the valid path and test the new full-sampler topology.
 
 The additional CPU capture tools are:
 

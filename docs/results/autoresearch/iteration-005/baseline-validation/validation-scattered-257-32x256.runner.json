@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "lock": "/tmp/genrecon-tt-pjrt.lock",
+  "case": "validation-scattered-257-32x256",
+  "config": {
+    "algorithm": "explicit_gemm",
+    "row_chunk": 1024
+  },
+  "candidate_root": "/home/user/GitHub/flexgemm-evaluator",
+  "workload": "convolution",
+  "lock_wait_seconds": 1.955998595803976e-05,
+  "returncode": 0,
+  "timeout": null,
+  "elapsed_seconds": 5.613719938031863,
+  "device_recovery_required": false
+}

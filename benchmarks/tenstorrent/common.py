@@ -95,7 +95,8 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
     edges = int((mapping >= 0).sum())
     useful = 2 * edges * ci * co
     fused_gather = algorithm == "tiled_gather_gemm"
-    explicit = algorithm in ("explicit_gemm", "tiled_gather_gemm")
+    digit_products = algorithm == "digit_explicit_gemm"
+    explicit = algorithm in ("explicit_gemm", "tiled_gather_gemm", "digit_explicit_gemm")
     if fused_gather and row_chunk < m and row_chunk % 32:
         raise ValueError("tiled gather chunk must be tile aligned")
     masked = algorithm.startswith("masked")
@@ -118,7 +119,7 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
     if explicit:
         padded_rows = sum(math.ceil(min(row_chunk, m - start) / 32) * 32
                           for start in range(0, m, row_chunk))
-        tile_products = padded_rows // 32 * nt * volume * ct
+        tile_products = padded_rows // 32 * nt * volume * ct * (4 if digit_products else 1)
         if fused_gather:
             feature_bytes = edges * ct * 64
             map_reads = padded_rows // 32 * volume
@@ -145,7 +146,7 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
     # Payload of S-1 FP32 adds: two inputs and one output per add. Slices/casts
     # may add traffic, so this is not total reduction traffic or peak workspace.
     reduction_bytes = (split_k - 1) * mt * 32 * nt * 32 * 12
-    return {"kind": "modeled", "model": "tiled_gather_v1" if fused_gather else "baseline_v1",
+    return {"kind": "modeled", "model": "digit_explicit_v1" if digit_products else "tiled_gather_v1" if fused_gather else "baseline_v1",
             "valid_interactions": edges, "useful_flops": useful, "issued_flops": issued,
             "issued_scope": "logical_padded_gemm" if explicit else "custom_kernel_tile_products",
             "work_efficiency": useful / issued, "dummy_tile_products": dummy,
@@ -155,7 +156,7 @@ def work_accounting(mapping, ci, co, *, algorithm, split_k=1, row_chunk=256, ava
             "requested_map_bytes": map_reads * 128 if fused_gather or not explicit else None,
             "gather_output_bytes": padded_rows * volume * ct * 64 if fused_gather else None,
             "split_partial_bytes": partial_bytes, "reduction_add_payload_bytes": reduction_bytes,
-            "explicit_expansion_bytes": math.ceil(min(row_chunk, m) / 32) * 32 * volume * ct * 32 * 2 if explicit else 0,
+            "explicit_expansion_bytes": math.ceil(min(row_chunk, m) / 32) * 32 * volume * ct * 32 * 2 * (2 if digit_products else 1) if explicit else 0,
             "available_cores": available_cores, "selected_cores": ncores,
             "core_tile_products": core_work,
             "core_work_max_over_mean": max(core_work) / statistics.mean(core_work) if core_work else None,

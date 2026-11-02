@@ -112,7 +112,9 @@ def main():
         phase("prepare")
         before = memory(device)
         start = time.perf_counter()
-        weights = candidate.prepare_sparse_weights(fixture["weight"], bias=fixture["bias"], device=device)
+        prepare_weights = (candidate.prepare_sparse_digit_weights if config["algorithm"] == "digit_explicit_gemm"
+                           else candidate.prepare_sparse_weights)
+        weights = prepare_weights(fixture["weight"], bias=fixture["bias"], device=device)
         topology = candidate.prepare_sparse_topology(fixture["mapping"], len(fixture["features"][0]),
             device=device, masked=config["algorithm"].startswith("masked"))
         ttnn.synchronize_device(device)

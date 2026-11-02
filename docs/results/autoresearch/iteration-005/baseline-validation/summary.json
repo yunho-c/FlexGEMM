@@ -1,0 +1,135 @@
+{
+  "status": "complete",
+  "config": {
+    "algorithm": "explicit_gemm",
+    "row_chunk": 1024
+  },
+  "trials": [
+    {
+      "case": "tune-scattered-35-17x45",
+      "status": "passed",
+      "returncode": 0,
+      "ms": 1.2322739930823445
+    },
+    {
+      "case": "tune-surface-256-64x64",
+      "status": "passed",
+      "returncode": 0,
+      "ms": 1.365145028103143
+    },
+    {
+      "case": "tune-clustered-1025-128x128",
+      "status": "passed",
+      "returncode": 0,
+      "ms": 1.9857470178976655
+    },
+    {
+      "case": "tune-scattered-257-32x256",
+      "status": "passed",
+      "returncode": 0,
+      "ms": 0.5283820210024714
+    },
+    {
+      "case": "tune-surface-4096-64x64",
+      "status": "passed",
+      "returncode": 0,
+      "ms": 2.5630880263634026
+    },
+    {
+      "case": "validation-scattered-35-17x45",
+      "status": "passed",
+      "returncode": 0,
+      "ms": 1.238363969605416
+    },
+    {
+      "case": "validation-surface-256-64x64",
+      "status": "passed",
+      "returncode": 0,
+      "ms": 1.0665139998309314
+    },
+    {
+      "case": "validation-clustered-1025-128x128",
+      "status": "passed",
+      "returncode": 0,
+      "ms": 1.9421469769440591
+    },
+    {
+      "case": "validation-scattered-257-32x256",
+      "status": "passed",
+      "returncode": 0,
+      "ms": 1.0555440094321966
+    },
+    {
+      "case": "validation-surface-4096-64x64",
+      "status": "passed",
+      "returncode": 0,
+      "ms": 2.7647989918477833
+    },
+    {
+      "case": "poster-shape-wide-4490",
+      "status": "passed",
+      "returncode": 0,
+      "ms": 38.58597401995212
+    },
+    {
+      "case": "shape-norm-silu-513-known-failure",
+      "status": "numerical_or_integrity_failure",
+      "returncode": 1,
+      "ms": 5.356118956115097
+    },
+    {
+      "case": "n4490-1024x1024-k3x3x3",
+      "status": "numerical_or_integrity_failure",
+      "returncode": 1,
+      "ms": 20.27970098424703
+    },
+    {
+      "case": "n4490-1024x4096-k3x3x3",
+      "status": "passed",
+      "returncode": 0,
+      "ms": 38.22649299399927
+    },
+    {
+      "case": "n20251-512x512-k3x3x3",
+      "status": "passed",
+      "returncode": 0,
+      "ms": 47.0310440286994
+    },
+    {
+      "case": "n20251-512x2048-k3x3x3",
+      "status": "numerical_or_integrity_failure",
+      "returncode": 1,
+      "ms": 59.841869049705565
+    },
+    {
+      "case": "n88524-256x256-k3x3x3",
+      "status": "numerical_or_integrity_failure",
+      "returncode": 1,
+      "ms": 119.24494698178023
+    },
+    {
+      "case": "n88524-256x1024-k3x3x3",
+      "status": "numerical_or_integrity_failure",
+      "returncode": 1,
+      "ms": 132.02818302670494
+    },
+    {
+      "case": "n388659-128x128-k3x3x3",
+      "status": "numerical_or_integrity_failure",
+      "returncode": 1,
+      "ms": 329.9886889872141
+    },
+    {
+      "case": "n388659-128x512-k3x3x3",
+      "status": "numerical_or_integrity_failure",
+      "returncode": 1,
+      "ms": 379.4339550076984
+    },
+    {
+      "case": "n1711800-64x64-k3x3x3",
+      "status": "numerical_or_integrity_failure",
+      "returncode": 1,
+      "ms": 1054.199191974476
+    }
+  ]
+}

@@ -100,7 +100,7 @@ def sparse_conv_device(features, weights, topology, *, algorithm="implicit_gemm"
     each chunk can access every input row, including neighbors outside it.
     """
     import ttnn
-    choices = {"explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
+    choices = {"explicit_gemm", "digit_explicit_gemm", "implicit_gemm", "masked_implicit_gemm",
                "implicit_gemm_splitk", "masked_implicit_gemm_splitk"}
     if algorithm not in choices:
         raise ValueError(f"unknown Tenstorrent algorithm: {algorithm}")
@@ -116,6 +116,9 @@ def sparse_conv_device(features, weights, topology, *, algorithm="implicit_gemm"
         raise ValueError("masked algorithms require a masked topology")
     if not masked and topology.masks is not None and algorithm != "explicit_gemm":
         raise ValueError("unmasked algorithms require an unmasked topology")
+    if algorithm == "digit_explicit_gemm":
+        from .digits import sparse_digit_conv_device
+        return sparse_digit_conv_device(features, weights, topology, row_chunk=row_chunk, fp32_output=fp32_output)
     cp = _round32(weights.ci)
     x = ttnn.to_layout(features, ttnn.ROW_MAJOR_LAYOUT)
     if cp != weights.ci:

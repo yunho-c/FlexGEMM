@@ -1,0 +1,152 @@
+{
+  "scope": "Exact DRAM allocation/deallocation nodes from full graph traces; sufficient to reproduce memory.workspace_bound. Full traces remain at source paths with recorded digests. No events in that scope removed.",
+  "traces": [
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/n4490-1024x1024-k3x3x3.allocations.json.gz",
+      "source_sha256": "e9ec95517de43d56f0021d8f47f3e14548e6446b2947bf796f69b654a88199ff",
+      "archived_events": "digit-validation/n4490-1024x1024-k3x3x3.allocation-events.json.gz",
+      "archived_sha256": "4e0db30ae0277302b7bb4534cf3b37b9f1f7e68c8bb8f03b45713c6395991b55",
+      "events": 453
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/poster-shape-wide-4490.allocations.json.gz",
+      "source_sha256": "e4a169e3a18cd21da9fb47e9b2eaffb8618dd2c20b23fa3462c31557470c7ab5",
+      "archived_events": "digit-validation/poster-shape-wide-4490.allocation-events.json.gz",
+      "archived_sha256": "42a16c2eed8f5609552dce9eeb7ac6c130e1f38bca66d5ae039ec519ea4d954c",
+      "events": 453
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/validation-surface-4096-64x64.allocations.json.gz",
+      "source_sha256": "343a2c1ffeebf0e3e47d6be45d9354aab7149a2be1e2142e356213d1285f9101",
+      "archived_events": "digit-validation/validation-surface-4096-64x64.allocation-events.json.gz",
+      "archived_sha256": "8965be5e97abecbc7447284a060b63e045a59b4c3a5dba43386957c158fcb9a7",
+      "events": 265
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/tune-scattered-35-17x45.allocations.json.gz",
+      "source_sha256": "6477766e7f83ed123aaf372114f1114a48d5a7b3ff5f133b77d8b3bdc60ed931",
+      "archived_events": "digit-validation/tune-scattered-35-17x45.allocation-events.json.gz",
+      "archived_sha256": "81ed8a09c6af73c4dc0e466e2b69126271c493d10d5cccc4400a9d63308d143c",
+      "events": 119
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/n88524-256x256-k3x3x3.allocations.json.gz",
+      "source_sha256": "efe25949b6c41445253a11ee1d5e73b6d7ee53b8aa226d835df64bf01a6e6567",
+      "archived_events": "digit-validation/n88524-256x256-k3x3x3.allocation-events.json.gz",
+      "archived_sha256": "012ec0987e8f19710276f2ec2d833e2c3a2edbd90e39514df44f325ee51e6b07",
+      "events": 5165
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/n4490-1024x4096-k3x3x3.allocations.json.gz",
+      "source_sha256": "5be18315ce8f4ba8f9e9d946145ff4241c1bb28e27bba384e6a126b88d4c93c0",
+      "archived_events": "digit-validation/n4490-1024x4096-k3x3x3.allocation-events.json.gz",
+      "archived_sha256": "42a16c2eed8f5609552dce9eeb7ac6c130e1f38bca66d5ae039ec519ea4d954c",
+      "events": 453
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/n1711800-64x64-k3x3x3.allocations.json.gz",
+      "source_sha256": "111925e208d27ca2e1eb342324641a4777baa2f02283883078714e2402d233cc",
+      "archived_events": "digit-validation/n1711800-64x64-k3x3x3.allocation-events.json.gz",
+      "archived_sha256": "e1a381e6523ecfaeeb7b20db43ae609cbc74ed6fc5cdca44ea9dbd95269eaa06",
+      "events": 88085
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/validation-scattered-257-32x256.allocations.json.gz",
+      "source_sha256": "bb9387fa40fec4bfa3f79aea15a4cfa40a93c66a2de7a95e82a31266bc7716b4",
+      "archived_events": "digit-validation/validation-scattered-257-32x256.allocation-events.json.gz",
+      "archived_sha256": "e6f15da7f614c0a36df1f21c75e05878ab4d9021fe45ea33afe0ca84fb39d347",
+      "events": 113
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/n20251-512x512-k3x3x3.allocations.json.gz",
+      "source_sha256": "14ce5bf079ede7a127530b38a4fb1fde5b4ccebe929a63d82810af8843fac8de",
+      "archived_events": "digit-validation/n20251-512x512-k3x3x3.allocation-events.json.gz",
+      "archived_sha256": "2d97ea0fc80a407afa4bb74f504dc74d96bee9fc9674a4c46f7e1b770305602a",
+      "events": 1377
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/validation-scattered-35-17x45.allocations.json.gz",
+      "source_sha256": "2aeaf57bfefe7704c131700a7df59f368f15617a9024ff67b8e6f39114b527b2",
+      "archived_events": "digit-validation/validation-scattered-35-17x45.allocation-events.json.gz",
+      "archived_sha256": "81ed8a09c6af73c4dc0e466e2b69126271c493d10d5cccc4400a9d63308d143c",
+      "events": 119
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/validation-surface-256-64x64.allocations.json.gz",
+      "source_sha256": "0baaa852428d8b00f55bb824ab5d267608dbf54170df214533800da500b8cab2",
+      "archived_events": "digit-validation/validation-surface-256-64x64.allocation-events.json.gz",
+      "archived_sha256": "a714a2493a636c8b0b0612d50e57a5c542b24338f0d180dd4ba1ae4c7f8e54eb",
+      "events": 113
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/tune-surface-256-64x64.allocations.json.gz",
+      "source_sha256": "0e6950dbf4a72a9b0c87a1fe79ea86856fe1ecf0f947d09df2c2fb1997ee1d06",
+      "archived_events": "digit-validation/tune-surface-256-64x64.allocation-events.json.gz",
+      "archived_sha256": "a714a2493a636c8b0b0612d50e57a5c542b24338f0d180dd4ba1ae4c7f8e54eb",
+      "events": 113
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/validation-clustered-1025-128x128.allocations.json.gz",
+      "source_sha256": "a8ad4c01fa7299a1b904946e34843f2755b2c52efb7728e9fb4c58d52c828cb3",
+      "archived_events": "digit-validation/validation-clustered-1025-128x128.allocation-events.json.gz",
+      "archived_sha256": "7427606b579df67e786c86b3813ee3c5de22dee40be43fae673df623dc7b7377",
+      "events": 159
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/shape-norm-silu-513-known-failure.allocations.json.gz",
+      "source_sha256": "a027ddf6c4c6e6b538b2e7d891a837c7dfc68774b8b368df1e04fded66eefc1a",
+      "archived_events": "digit-validation/shape-norm-silu-513-known-failure.allocation-events.json.gz",
+      "archived_sha256": "484976ef64fe823e381dc964df77d8c13232fd63c1b7bc7abfce808a92b47232",
+      "events": 113
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/n388659-128x512-k3x3x3.allocations.json.gz",
+      "source_sha256": "13ef281b8da2061a5554825b65177fa41ef3652a506a52dae665430750910d23",
+      "archived_events": "digit-validation/n388659-128x512-k3x3x3.allocation-events.json.gz",
+      "archived_sha256": "5f5835bd8abc052abf4bdadba464ca6a54047dfd77a5b17dbad8a89a9ec774d1",
+      "events": 20831
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/n88524-256x1024-k3x3x3.allocations.json.gz",
+      "source_sha256": "4ad5095e97b2d37f752712167a380495e2358061f681c32a542fcd5f956cbde4",
+      "archived_events": "digit-validation/n88524-256x1024-k3x3x3.allocation-events.json.gz",
+      "archived_sha256": "9597323a96ad1ed597ce2ab2d0288b7ad8257504560b01bfc348b5db185c1366",
+      "events": 5165
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/tune-clustered-1025-128x128.allocations.json.gz",
+      "source_sha256": "f0094411056aefc06a93a28edd842d185b7780b9ff51b636705e8266e2312a46",
+      "archived_events": "digit-validation/tune-clustered-1025-128x128.allocation-events.json.gz",
+      "archived_sha256": "7427606b579df67e786c86b3813ee3c5de22dee40be43fae673df623dc7b7377",
+      "events": 159
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/n388659-128x128-k3x3x3.allocations.json.gz",
+      "source_sha256": "89b2d8eb07985cf49c966f0a0cac731db60d3e30dc38264c0da7bb12270b68ab",
+      "archived_events": "digit-validation/n388659-128x128-k3x3x3.allocation-events.json.gz",
+      "archived_sha256": "7ac6c701d43b3a525e6bc1ef901829b52da64a7906a15f47d45d9efe5954395c",
+      "events": 20831
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/tune-scattered-257-32x256.allocations.json.gz",
+      "source_sha256": "605023547645b78001190319be064e28c86ac5ff1c7fe266e59310083a55d58e",
+      "archived_events": "digit-validation/tune-scattered-257-32x256.allocation-events.json.gz",
+      "archived_sha256": "e6f15da7f614c0a36df1f21c75e05878ab4d9021fe45ea33afe0ca84fb39d347",
+      "events": 113
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/tune-surface-4096-64x64.allocations.json.gz",
+      "source_sha256": "d6e6733ffe19e6fc27781eca94eb605014ffaaa1a0a0711a2754b85fede0e2fc",
+      "archived_events": "digit-validation/tune-surface-4096-64x64.allocation-events.json.gz",
+      "archived_sha256": "8965be5e97abecbc7447284a060b63e045a59b4c3a5dba43386957c158fcb9a7",
+      "events": 265
+    },
+    {
+      "source": "/home/user/tt-scratchpad/flexgemm-autoresearch/iteration-005/digit-validation/n20251-512x2048-k3x3x3.allocations.json.gz",
+      "source_sha256": "4bdb4b77203656e2176f756808f487e453441cbd6bdc3d9c72323a38337aba67",
+      "archived_events": "digit-validation/n20251-512x2048-k3x3x3.allocation-events.json.gz",
+      "archived_sha256": "d417bd68d853b5f06c116b62c2c02191f0727c399ea7f0169cba103f38e23a3f",
+      "events": 1377
+    }
+  ]
+}

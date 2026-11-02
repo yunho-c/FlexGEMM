@@ -82,6 +82,16 @@ def test_tiled_gather_accounts_for_one_feature_read_per_edge():
     assert fused["model"] == "tiled_gather_v1"
 
 
+def test_digit_accounting_charges_all_four_products_and_both_gathers():
+    mapping = torch.zeros(65, 3, dtype=torch.long)
+    base = work_accounting(mapping, 17, 35, algorithm="explicit_gemm", row_chunk=32)
+    digit = work_accounting(mapping, 17, 35, algorithm="digit_explicit_gemm", row_chunk=32)
+    assert digit["useful_flops"] == base["useful_flops"]
+    assert digit["issued_flops"] == base["issued_flops"] * 4
+    assert digit["explicit_expansion_bytes"] == base["explicit_expansion_bytes"] * 2
+    assert digit["model"] == "digit_explicit_v1"
+
+
 def test_runner_timeout_and_exit_failure_are_terminal(tmp_path):
     with (tmp_path / "child.log").open("w") as log:
         timeout = monitor([sys.executable, "-c", "import time; time.sleep(30)"],
